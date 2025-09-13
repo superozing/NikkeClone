@@ -2,11 +2,12 @@ using UnityEngine;
 
 public class SoundManager : IManagerBase
 {
-    eManagerType type = eManagerType.Sound;
+    const eManagerType type = eManagerType.Sound;
     public eManagerType GetManagerType() => type;
 
     public void Init()
     {
+        Debug.Log($"{type} Manager Init 합니다.");
     }
 
     public void Update()
@@ -15,5 +16,6 @@ public class SoundManager : IManagerBase
 
     public void Clear()
     {
+        Debug.Log($"{type} Manager Clear 합니다.");
     }
 }

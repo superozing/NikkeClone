@@ -2,11 +2,12 @@ using UnityEngine;
 
 public class DataManager : IManagerBase
 {
-    eManagerType type = eManagerType.Data;
+    const eManagerType type = eManagerType.Data;
     public eManagerType GetManagerType() => type;
 
     public void Init()
     {
+        Debug.Log($"{type} Manager Init 합니다.");
     }
 
     public void Update()
@@ -15,5 +16,6 @@ public class DataManager : IManagerBase
 
     public void Clear()
     {
+        Debug.Log($"{type} Manager Clear 합니다.");
     }
 }

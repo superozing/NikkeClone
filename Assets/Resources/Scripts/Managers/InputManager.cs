@@ -2,11 +2,12 @@ using UnityEngine;
 
 public class InputManager : IManagerBase
 {
-    eManagerType type = eManagerType.Input;
+    const eManagerType type = eManagerType.Input;
     public eManagerType GetManagerType() => type;
 
     public void Init()
     {
+        Debug.Log($"{type} Manager Init 합니다.");
     }
 
     public void Update()
@@ -15,5 +16,6 @@ public class InputManager : IManagerBase
 
     public void Clear()
     {
+        Debug.Log($"{type} Manager Clear 합니다.");
     }
 }

@@ -2,11 +2,12 @@ using UnityEngine;
 
 public class ResourceManagerEx : IManagerBase
 {
-    eManagerType type = eManagerType.Resource;
+    const eManagerType type = eManagerType.Resource;
     public eManagerType GetManagerType() => type;
 
     public void Init()
     {
+        Debug.Log($"{type} Manager Init 합니다.");
     }
 
     public void Update()
@@ -15,5 +16,6 @@ public class ResourceManagerEx : IManagerBase
 
     public void Clear()
     {
+        Debug.Log($"{type} Manager Clear 합니다.");
     }
 }
