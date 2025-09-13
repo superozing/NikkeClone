@@ -8,7 +8,7 @@ public enum eManagerType
     Camera,
     Input,
     Sound,
-    Resoruce,
+    Resource,
 
     End,
 }
