@@ -2,12 +2,10 @@ using UnityEngine;
 
 public class SceneManagerEx : IManagerBase
 {
-    const eManagerType type = eManagerType.Scene;
-    public eManagerType GetManagerType() => type;
-
+    public eManagerType ManagerType { get; } = eManagerType.Scene;
     public void Init()
     {
-        Debug.Log($"{type} Manager Init 합니다.");
+        Debug.Log($"{ManagerType} Manager Init 합니다.");
     }
 
     public void Update()
@@ -16,6 +14,6 @@ public class SceneManagerEx : IManagerBase
 
     public void Clear()
     {
-        Debug.Log($"{type} Manager Clear 합니다.");
+        Debug.Log($"{ManagerType} Manager Clear 합니다.");
     }
 }
