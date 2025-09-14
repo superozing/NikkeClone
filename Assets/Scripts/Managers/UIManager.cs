@@ -2,12 +2,10 @@ using UnityEngine;
 
 public class UIManager : IManagerBase
 {
-    const eManagerType type = eManagerType.UI;
-    public eManagerType GetManagerType() => type;
-
+    public eManagerType ManagerType { get; } = eManagerType.UI;
     public void Init()
     {
-        Debug.Log($"{type} Manager Init 합니다.");
+        Debug.Log($"{ManagerType} Manager Init 합니다.");
     }
 
     public void Update()
@@ -16,6 +14,6 @@ public class UIManager : IManagerBase
 
     public void Clear()
     {
-        Debug.Log($"{type} Manager Clear 합니다.");
+        Debug.Log($"{ManagerType} Manager Clear 합니다.");
     }
 }
