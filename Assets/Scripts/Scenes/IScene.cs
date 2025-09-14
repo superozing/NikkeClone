@@ -1,5 +1,5 @@
 
-interface IScene
+public interface IScene
 {
     public void Init();
     public void Clear();
