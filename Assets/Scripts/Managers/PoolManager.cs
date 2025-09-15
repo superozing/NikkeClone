@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -7,19 +6,17 @@ public class PoolManager : IManagerBase
 {
     public eManagerType ManagerType { get; } = eManagerType.Pool;
 
-    private readonly Dictionary<string, ObjectPool<GameObject>> _pools = new();
+    private readonly Dictionary<int, IObjectPool<GameObject>> _pools = new();
     private Transform _root;
 
     public void Init()
     {
-        // 풀 매니저 루트 설정
         if (_root == null)
         {
             GameObject root = GameObject.Find("@PoolRoot") ?? new GameObject { name = "@PoolRoot" };
             Object.DontDestroyOnLoad(root);
             _root = root.transform;
         }
-
         Debug.Log($"{ManagerType} Manager Init 합니다.");
     }
 
@@ -31,94 +28,73 @@ public class PoolManager : IManagerBase
             pool.Clear();
 
         _pools.Clear();
-        
         Debug.Log($"{ManagerType} Manager Clear 합니다.");
     }
 
-    public void Register(string key, int defaultCapacity = 10, int maxSize = 50)
+    /// <summary>
+    /// 프리팹 원본을 받아 풀에서 GameObject 인스턴스를 가져옵니다.
+    /// 만약 해당 프리팹의 풀이 없다면 새로 생성합니다.
+    /// </summary>
+    /// <param name="prefab">인스턴스화할 프리팹 원본</param>
+    /// <param name="position">배치될 위치</param>
+    /// <param name="rotation">초기 회전값</param>
+    /// <param name="parent">부모 Transform</param>
+    /// <param name="defaultCapacity">풀의 기본 용량</param>
+    /// <param name="maxSize">풀의 최대 용량</param>
+    /// <returns>풀에서 나온 활성화된 GameObject 인스턴스</returns>
+    public GameObject Spawn(GameObject prefab, Vector3 position, Quaternion rotation, Transform parent = null, int defaultCapacity = 10, int maxSize = 50)
     {
-        if (_pools.ContainsKey(key))
-        {
-            Debug.LogWarning($"[PoolManager] 이미 등록된 key입니다: {key}");
-            return;
-        }
+        int key = prefab.GetInstanceID();
 
-        GameObject prefab = Resources.Load<GameObject>($"Prefabs/{key}");
-        if (prefab == null)
-        {
-            Debug.LogError($"[PoolManager] 프리팹 로드 실패: Prefabs/{key}");
-            return;
-        }
-        if (prefab.GetComponent<Poolable>() == null)
-        {
-            Debug.LogError($"[PoolManager] Poolable 컴포넌트가 없습니다: Prefabs/{key}");
-            return;
-        }
-
-        var pool = new ObjectPool<GameObject>(
-            createFunc: () =>
-            {
-                GameObject go = Object.Instantiate(prefab, _root);
-                go.GetComponent<Poolable>().PrefabKey = key;
-                return go;
-            },
-            actionOnGet: go => go.SetActive(true),
-            actionOnRelease: go => go.SetActive(false),
-            actionOnDestroy: go => Object.Destroy(go),
-            collectionCheck: false,
-            defaultCapacity: defaultCapacity,
-            maxSize: maxSize
-        );
-
-        _pools.Add(key, pool);
-
-        WarmUpPool(pool, defaultCapacity);
-    }
-
-    public GameObject Spawn(string key, Vector3 position, Quaternion rotation)
-    {
         if (!_pools.TryGetValue(key, out var pool))
         {
-            Debug.LogError($"[PoolManager] Spawn 실패 - key 미등록: {key}");
-            return null;
+            pool = new ObjectPool<GameObject>(
+                createFunc: () =>
+                {
+                    GameObject go = Object.Instantiate(prefab, parent);
+                    go.name = prefab.name;
+                    go.GetComponent<Poolable>().PoolKey = key;
+                    return go;
+                },
+                actionOnGet: go =>
+                {
+                    go.transform.SetParent(parent);
+                    go.transform.SetPositionAndRotation(position, rotation);
+                    go.SetActive(true);
+                },
+                actionOnRelease: go =>
+                {
+                    go.transform.SetParent(_root);
+                    go.SetActive(false);
+                },
+                actionOnDestroy: go => Object.Destroy(go),
+                collectionCheck: false,
+                defaultCapacity: defaultCapacity, // 파라미터로 받은 값 사용
+                maxSize: maxSize              // 파라미터로 받은 값 사용
+            );
+            _pools.Add(key, pool);
         }
 
-        GameObject go = pool.Get();
-        go.transform.SetPositionAndRotation(position, rotation);
-        return go;
+        return pool.Get();
     }
 
+    /// <summary>
+    /// 사용이 끝난 GameObject를 풀에 반환합니다.
+    /// </summary>
+    /// <param name="go">반환할 GameObject</param>
     public void Despawn(GameObject go)
     {
-        if (go == null)
-        {
-            Debug.LogWarning("[PoolManager] Despawn 실패 - null GameObject");
+        if (go == null) 
             return;
-        }
 
-        if (go.TryGetComponent<Poolable>(out var poolable) && !string.IsNullOrEmpty(poolable.PrefabKey))
+        if (go.TryGetComponent<Poolable>(out var poolable) && _pools.TryGetValue(poolable.PoolKey, out var pool))
         {
-            if (_pools.TryGetValue(poolable.PrefabKey, out var pool))
-            {
-                pool.Release(go);
-                return;
-            }
+            pool.Release(go);
         }
-
-        Debug.LogWarning($"[PoolManager] 풀에 등록되지 않은 오브젝트({go.name})입니다. Destroy 합니다.");
-        Object.Destroy(go);
-    }
-
-    private void WarmUpPool(ObjectPool<GameObject> pool, int count)
-    {
-        var warmUpList = new List<GameObject>();
-        for (int i = 0; i < count; i++)
+        else
         {
-            warmUpList.Add(pool.Get());
-        }
-        foreach (var item in warmUpList)
-        {
-            pool.Release(item);
+            Debug.LogWarning($"[PoolManager] 오브젝트 '{go.name}'는 풀에 할당되지 않았습니다. Destroy를 호출합니다.");
+            Object.Destroy(go);
         }
     }
 }
