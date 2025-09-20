@@ -42,7 +42,7 @@ public class PoolManager : IManagerBase
     /// <param name="defaultCapacity">풀의 기본 용량</param>
     /// <param name="maxSize">풀의 최대 용량</param>
     /// <returns>풀에서 나온 활성화된 GameObject 인스턴스</returns>
-    public GameObject Spawn(GameObject prefab, Vector3 position, Quaternion rotation, Transform parent = null, int defaultCapacity = 10, int maxSize = 50)
+    public GameObject Spawn(GameObject prefab, Vector3? position = null, Quaternion? rotation = null, Transform parent = null, int defaultCapacity = 10, int maxSize = 50)
     {
         int key = prefab.GetInstanceID();
 
@@ -51,17 +51,12 @@ public class PoolManager : IManagerBase
             pool = new ObjectPool<GameObject>(
                 createFunc: () =>
                 {
-                    GameObject go = Object.Instantiate(prefab, parent);
+                    GameObject go = Object.Instantiate(prefab);
                     go.name = prefab.name;
                     go.GetComponent<Poolable>().PoolKey = key;
                     return go;
                 },
-                actionOnGet: go =>
-                {
-                    go.transform.SetParent(parent);
-                    go.transform.SetPositionAndRotation(position, rotation);
-                    go.SetActive(true);
-                },
+                actionOnGet: go => go.SetActive(true),
                 actionOnRelease: go =>
                 {
                     go.transform.SetParent(_root);
@@ -75,7 +70,15 @@ public class PoolManager : IManagerBase
             _pools.Add(key, pool);
         }
 
-        return pool.Get();
+        GameObject go = pool.Get();
+
+        Vector3 finalPosition = position ?? prefab.transform.position;
+        Quaternion finalRotation = rotation ?? prefab.transform.rotation;
+
+        go.transform.SetParent(parent);
+        go.transform.SetPositionAndRotation(finalPosition, finalRotation);
+
+        return go;
     }
 
     /// <summary>
