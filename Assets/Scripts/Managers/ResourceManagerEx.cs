@@ -37,7 +37,7 @@ public class ResourceManagerEx : IManagerBase
     /// <param name="onCompleted">생성이 완료되었을 때 생성된 GameObject를 전달받는 콜백</param>
     /// <param name="defaultCapacity">생성할 풀의 기본 용량</param>
     /// <param name="maxSize">생성할 풀의 최대 용량</param>
-    public void InstantiateAsync(string key, Vector3 position, Quaternion rotation, Transform parent = null, System.Action<GameObject> onCompleted = null, int defaultCapacity = 10, int maxSize = 50)
+    public void InstantiateAsync(string key, Vector3? position = null, Quaternion? rotation = null, Transform parent = null, System.Action<GameObject> onCompleted = null, int defaultCapacity = 10, int maxSize = 50)
     {
         // 프리팹을 비동기적으로 로드하거나 캐시에서 가져옵니다.
         LoadPrefabAsync(key, (prefab) =>
