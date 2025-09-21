@@ -84,6 +84,43 @@ public class UIManager : IManagerBase
         return view;
     }
 
+    /// <summary>
+    /// 씬이 전환되어도 파괴되지 않는 UI_View를 비동기적으로 로드하고 반환합니다.
+    /// 이 UI는 Popup Stack으로 관리되지 않으며, 항상 최상단에 표시됩니다.
+    /// </summary>
+    /// <typeparam name="T">생성할 UI의 타입이며, UI_View를 상속해야 합니다.</typeparam>
+    /// <param name="parent">UI가 위치할 부모 Transform입니다. null일 경우 DontDestroyRoot가 기본값으로 사용됩니다.</param>
+    /// <returns>생성된 UI의 인스턴스입니다.</returns>
+    public async Task<T> ShowDontDestroyAsync<T>(Transform parent = null) where T : UI_View
+    {
+        string prefabName = typeof(T).Name;
+        string path = GetPrefabPath<T>(prefabName);
+
+        // ResourceManagerEx를 통해 프리팹을 비동기 로드 및 풀링합니다.
+        GameObject go = await Managers.Resource.InstantiateAsync(path, parent: parent ?? _dontDestroyRoot);
+        if (go == null)
+        {
+            Debug.LogError($"[UIManager] 프리팹 로드 실패. path: {path}");
+            return null;
+        }
+
+        T view = go.GetOrAddComponent<T>();
+
+        // RectTransform 초기화
+        var rectTransform = view.GetComponent<RectTransform>();
+        rectTransform.offsetMax = Vector2.zero;
+        rectTransform.offsetMin = Vector2.zero;
+        rectTransform.localScale = Vector3.one;
+
+        // Canvas 및 Sorting Order 설정
+        Canvas canvas = go.GetOrAddComponent<Canvas>();
+        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        canvas.overrideSorting = true;
+        canvas.sortingOrder = 999999;
+
+        return view;
+    }
+
 
     /// <summary>
     /// 지정된 UI_View를 닫고 Pool에 반환합니다.
