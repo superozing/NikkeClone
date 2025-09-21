@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UI;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
 public class UIManager : IManagerBase
@@ -22,6 +23,14 @@ public class UIManager : IManagerBase
         GameObject dontDestroyGo = GameObject.Find("@UI_Root_DontDestroy") ?? new GameObject { name = "@UI_Root_DontDestroy" };
         Object.DontDestroyOnLoad(dontDestroyGo);
         _dontDestroyRoot = dontDestroyGo.transform;
+
+        if (Object.FindAnyObjectByType<EventSystem>() == null)
+        {
+            GameObject eventSystemGo = new GameObject { name = "@EventSystem" };
+            eventSystemGo.AddComponent<EventSystem>();
+            eventSystemGo.AddComponent<StandaloneInputModule>();
+            Object.DontDestroyOnLoad(eventSystemGo);
+        }
 
         SceneManager.sceneLoaded += OnSceneLoaded;
 
