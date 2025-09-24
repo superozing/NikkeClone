@@ -141,7 +141,7 @@ public class UIManager : IManagerBase
     {
         if (view == null) return;
         
-        if (view is UI_Popup popup && view is UI_DontDestroyPopup ddpopup))
+        if (view is UI_Popup popup && view is not UI_DontDestroyPopup)
         {
             if (_popupStack.Count == 0 || _popupStack.Peek() != popup)
             {
