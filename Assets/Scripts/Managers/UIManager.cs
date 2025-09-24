@@ -140,8 +140,8 @@ public class UIManager : IManagerBase
     public void Close(UI_View view)
     {
         if (view == null) return;
-
-        if (view is UI_Popup popup)
+        
+        if (view is UI_Popup popup && view is UI_DontDestroyPopup ddpopup))
         {
             if (_popupStack.Count == 0 || _popupStack.Peek() != popup)
             {
