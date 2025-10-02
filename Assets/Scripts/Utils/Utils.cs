@@ -12,12 +12,15 @@ public class Utils
     {
         if (go == null)
         {
-            Debug.Log("GetOrAddComponent 오류: 게임 오브젝트가 null입니다.");
+            Debug.LogError("GetOrAddComponent 오류: 게임 오브젝트가 null입니다.");
             return null;
         }
 
         if (!go.TryGetComponent<T>(out T component))
+        {
             component = go.AddComponent<T>();
+            Debug.Log($"GetOrAddComponent: [{go.name}] {component.GetType()} 컴포넌트가 없어 생성합니다.");
+        }
 
         return component;
     }

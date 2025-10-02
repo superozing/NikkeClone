@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -34,28 +35,23 @@ public class ResourceManagerEx : IManagerBase
     /// <param name="position">생성될 위치</param>
     /// <param name="rotation">생성될 회전값</param>
     /// <param name="parent">부모 Transform</param>
-    /// <param name="onCompleted">생성이 완료되었을 때 생성된 GameObject를 전달받는 콜백</param>
     /// <param name="defaultCapacity">생성할 풀의 기본 용량</param>
     /// <param name="maxSize">생성할 풀의 최대 용량</param>
-    public void InstantiateAsync(string key, Vector3? position = null, Quaternion? rotation = null, Transform parent = null, System.Action<GameObject> onCompleted = null, int defaultCapacity = 10, int maxSize = 50)
+    /// <returns>생성된 GameObject를 포함하는 Task. 프리팹 로드 실패 시 null을 반환합니다.</returns>
+    public async Task<GameObject> InstantiateAsync(string key, Vector3? position = null, Quaternion? rotation = null, Transform parent = null, int defaultCapacity = 10, int maxSize = 50)
     {
-        // 프리팹을 비동기적으로 로드하거나 캐시에서 가져옵니다.
-        LoadPrefabAsync(key, (prefab) =>
+        // LoadPrefabAsyncTask를 await 하여 프리팹이 로드될 때까지 비동기적으로 대기합니다.
+        GameObject prefab = await LoadPrefabAsyncTask(key);
+
+        if (prefab == null)
         {
-            // 프리팹 로드 실패 시 null 반환됨
-            if (prefab == null)
-            {
-                Debug.LogError($"[ResourceManager] 객체화에 실패했습니다. addressable key: {key}");
-                onCompleted?.Invoke(null);
-                return;
-            }
+            Debug.LogError($"[ResourceManager] 객체화에 실패했습니다. addressable key: {key}");
+            return null;
+        }
 
-            // 로드된 프리팹을 사용하여 PoolManager를 통해 객체를 생성
-            GameObject go = Managers.Pool.Spawn(prefab, position, rotation, parent, defaultCapacity, maxSize);
-
-            // 비동기이기 때문에 완료 시점에 호출해주기 위해서 onCompleted를 사용
-            onCompleted?.Invoke(go);
-        });
+        // 프리팹 로드가 완료된 후 PoolManager를 통해 동기적으로 객체를 생성하고 반환합니다.
+        GameObject go = Managers.Pool.Spawn(prefab, position, rotation, parent, defaultCapacity, maxSize);
+        return go;
     }
 
     /// <summary>
@@ -72,40 +68,32 @@ public class ResourceManagerEx : IManagerBase
     /// Addressable 주소를 이용해 프리팹을 비동기 로드합니다.
     /// </summary>
     /// <param name="key">Addressable 주소</param>
-    /// <param name="onCompleted">로드 완료 시 콜백 동작</param>
-    private void LoadPrefabAsync(string key, System.Action<GameObject> onCompleted)
+    /// <returns>로드된 프리팹 GameObject를 포함하는 Task. 실패 시 null을 포함합니다.</returns>
+    private Task<GameObject> LoadPrefabAsyncTask(string key)
     {
-        // 이미 로드된 핸들이 있으면 사용
+        // 이미 로드 요청이 있었던 핸들인지 확인합니다.
         if (_prefabHandles.TryGetValue(key, out var handle))
         {
-            if (handle.IsDone)
-            {
-                onCompleted?.Invoke(handle.Result);
-                return;
-            }
-
-            // 핸들이 아직 로딩 중이면 완료 콜백 연결
-            handle.Completed += (op) => onCompleted?.Invoke(op.Result);
-            return;
+            // Why: AsyncOperationHandle.Task는 작업의 완료를 나타내는 Task를 반환하므로,
+            // 이미 로드가 진행 중이거나 완료된 경우 해당 Task를 즉시 반환하여 중복 처리를 방지합니다.
+            Debug.Log($"[ResourceManager] 프리팹 로드가 진행 중이거나 완료되었습니다. addressables key: {key}");
+            return handle.Task;
         }
 
-        // 로드된 핸들이 없다면 새로 로드
-        // 중복 방지를 위해서 딕셔너리에 바로 추가해요.
+        // 새로운 로드 요청을 생성하고 즉시 딕셔너리에 추가하여, 동일 프레임 내의 다른 요청이 중복으로 로드하는 것을 방지합니다.
         var newHandle = Addressables.LoadAssetAsync<GameObject>(key);
         _prefabHandles.Add(key, newHandle);
 
         newHandle.Completed += (op) =>
         {
-            if (op.Status == AsyncOperationStatus.Succeeded)
-            {
-                onCompleted?.Invoke(op.Result);
-            }
-            else
+            if (op.Status != AsyncOperationStatus.Succeeded)
             {
                 Debug.LogError($"[ResourceManager] 프리팹 로드를 실패했습니다. addressables key: {key} - {op.OperationException}");
-                _prefabHandles.Remove(key); // 실패 시 딕셔너리에서 제거
-                onCompleted?.Invoke(null);
+                // 로드에 실패한 핸들은 딕셔너리에서 제거하여 메모리 누수를 방지하고, 다음 요청 시 재시도를 허용합니다.
+                _prefabHandles.Remove(key);
             }
         };
+
+        return newHandle.Task;
     }
 }
