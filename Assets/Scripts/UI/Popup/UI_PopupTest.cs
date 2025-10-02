@@ -29,5 +29,8 @@ public class UI_PopupTest : UI_Popup
             return;
 
         _titleText.text = _viewModel.Title;
+
+        if (_viewModel._clickCount == 10)
+            Managers.UI.Close(this);
     }
 }

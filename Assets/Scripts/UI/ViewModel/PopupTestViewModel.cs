@@ -6,7 +6,7 @@ public class PopupTestViewModel : IViewModel
     public event Action OnStateChanged;
 
     public string Title { get; private set; } = "Å×½ºÆ® ÆË¾÷";
-    private int _clickCount = 0;
+    public int _clickCount = 0;
 
     public void OnConfirm()
     {
