@@ -72,12 +72,15 @@ public class PoolManager : IManagerBase
         }
 
         GameObject go = pool.Get();
+        go.transform.SetParent(parent, false);
 
-        Vector3 finalPosition = position ?? prefab.transform.position;
-        Quaternion finalRotation = rotation ?? prefab.transform.rotation;
-
-        go.transform.SetParent(parent);
-        go.transform.SetPositionAndRotation(finalPosition, finalRotation);
+        // 값이 있을 경우 UI가 아닌 오브젝트로 판단
+        if (position.HasValue || rotation.HasValue)
+        {
+            Vector3 finalPosition = position ?? go.transform.position;
+            Quaternion finalRotation = rotation ?? go.transform.rotation;
+            go.transform.SetPositionAndRotation(finalPosition, finalRotation);
+        }
 
         return go;
     }
