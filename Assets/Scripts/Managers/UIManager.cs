@@ -85,8 +85,6 @@ public class UIManager : IManagerBase
         }
 
         var rectTransform = view.GetComponent<RectTransform>();
-        rectTransform.offsetMax = Vector2.zero;
-        rectTransform.offsetMin = Vector2.zero;
         rectTransform.localScale = Vector3.one;
 
         // Sorting Group의 순서를 설정합니다.
@@ -130,8 +128,6 @@ public class UIManager : IManagerBase
         }
 
         var rectTransform = view.GetComponent<RectTransform>();
-        rectTransform.offsetMax = Vector2.zero;
-        rectTransform.offsetMin = Vector2.zero;
         rectTransform.localScale = Vector3.one;
 
         // Sorting Group의 순서를 설정합니다.
@@ -163,8 +159,6 @@ public class UIManager : IManagerBase
         TView view = go.GetOrAddComponent<TView>();
 
         var rectTransform = view.GetComponent<RectTransform>();
-        rectTransform.offsetMax = Vector2.zero;
-        rectTransform.offsetMin = Vector2.zero;
         rectTransform.localScale = Vector3.one;
 
         Canvas canvas = go.GetOrAddComponent<Canvas>();
@@ -200,8 +194,6 @@ public class UIManager : IManagerBase
         T view = go.GetOrAddComponent<T>();
 
         var rectTransform = view.GetComponent<RectTransform>();
-        rectTransform.offsetMax = Vector2.zero;
-        rectTransform.offsetMin = Vector2.zero;
         rectTransform.localScale = Vector3.one;
 
         Canvas canvas = go.GetOrAddComponent<Canvas>();
