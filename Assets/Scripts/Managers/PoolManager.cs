@@ -51,9 +51,10 @@ public class PoolManager : IManagerBase
             pool = new ObjectPool<GameObject>(
                 createFunc: () =>
                 {
-                    GameObject go = Object.Instantiate(prefab);
+                    GameObject go = Object.Instantiate(prefab, _root);
                     go.name = prefab.name;
-                    go.GetComponent<Poolable>().PoolKey = key;
+
+                    go.GetOrAddComponent<Poolable>().PoolKey = key;
                     return go;
                 },
                 actionOnGet: go => go.SetActive(true),
@@ -64,8 +65,8 @@ public class PoolManager : IManagerBase
                 },
                 actionOnDestroy: go => Object.Destroy(go),
                 collectionCheck: false,
-                defaultCapacity: defaultCapacity, // 파라미터로 받은 값 사용
-                maxSize: maxSize              // 파라미터로 받은 값 사용
+                defaultCapacity: defaultCapacity,
+                maxSize: maxSize
             );
             _pools.Add(key, pool);
         }
