@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class UI_PopupTest : UI_Popup
 {
+    public override string ActionMapKey => "UI_PopupTest";
+
     [SerializeField] private Button _confirmButton;
     [SerializeField] private TMP_Text _titleText;
 
@@ -27,7 +29,6 @@ public class UI_PopupTest : UI_Popup
     {
         base.Awake();
 
-        Managers.Input.SwitchActionMap("UI_PopupTest"); // 사실 여기서 바꿀 게 아니라, UI매니저가 PopupUI 생성 시 바꿔주어야 해요.
         Managers.Input.BindAction("Close", OnEscapeAction, UnityEngine.InputSystem.InputActionPhase.Performed);
         _confirmButton.onClick.AddListener(OnConfirmAction);
 
