@@ -82,6 +82,7 @@ public class UIManager : IManagerBase
         if (parent == null && view is UI_Popup popup)
         {
             _popupStack.Push(popup);
+            Managers.Input.SwitchActionMap(popup.ActionMapKey);
         }
 
         var rectTransform = view.GetComponent<RectTransform>();
@@ -125,6 +126,7 @@ public class UIManager : IManagerBase
         if (parent == null && view is UI_Popup popup)
         {
             _popupStack.Push(popup);
+            Managers.Input.SwitchActionMap(popup.ActionMapKey);
         }
 
         var rectTransform = view.GetComponent<RectTransform>();
@@ -221,6 +223,18 @@ public class UIManager : IManagerBase
             {
                 _popupStack.Pop();
                 _sortingOrder -= ORDER_STEP;
+
+                // 스택 상단 Popup의 ActionMapKey 세팅
+                if (_popupStack.Count > 0)
+                {
+                    var nextPopup = _popupStack.Peek();
+                    Managers.Input.SwitchActionMap(nextPopup.ActionMapKey);
+                }
+                // 스택이 빈 경우 기본 세팅("None")
+                else
+                {
+                    Managers.Input.SwitchActionMap("None");
+                }
             }
         }
 
