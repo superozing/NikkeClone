@@ -1,8 +1,10 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class TestScene : MonoBehaviour, IScene
 {
     eSceneType IScene.SceneType => eSceneType.Test;
+    public List<string> RequiredDataFiles => new List<string>();
 
     void Awake()
     {
