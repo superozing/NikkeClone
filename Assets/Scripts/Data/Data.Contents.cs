@@ -4,7 +4,7 @@ using System.Collections.Generic;
 /// <summary>
 /// 모든 GameDB 데이터가 고유 ID를 갖도록 강제하는 인터페이스입니다.
 /// </summary>
-public interface IDataWithId
+public interface IDataId
 {
     int ID { get; }
 }
@@ -12,7 +12,7 @@ public interface IDataWithId
 // ======================= Game Data (읽기 전용) =======================
 
 [Serializable]
-public class StatData : IDataWithId
+public class StatData : IDataId
 {
     public int id;
     public string name;
@@ -23,7 +23,7 @@ public class StatData : IDataWithId
 }
 
 [Serializable]
-public class ItemData : IDataWithId
+public class ItemData : IDataId
 {
     public int id;
     public string name;
