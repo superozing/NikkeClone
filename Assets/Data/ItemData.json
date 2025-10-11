@@ -1,0 +1,16 @@
+{
+  "items": [
+    {
+      "id": 0,
+      "name": "기본 체력 포션",
+      "description": "체력을 50만큼 회복합니다.",
+      "iconPath": "Sprites/Items/Potion_Red"
+    },
+    {
+      "id": 1,
+      "name": "기본 마나 포션",
+      "description": "마나를 30만큼 회복합니다.",
+      "iconPath": "Sprites/Items/Potion_Blue"
+    }
+  ]
+}

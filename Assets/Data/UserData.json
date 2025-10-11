@@ -1,0 +1,54 @@
+{
+  "Gold": {
+    "_value": 5000
+  },
+  "Dia": {
+    "_value": 300
+  },
+  "Inventory": {
+    "0": 10,
+    "1": 5
+  },
+  "Characters": {
+    "0": {
+      "characterId": 0,
+      "level": {
+        "_value": 15
+      },
+      "skill1Level": {
+        "_value": 2
+      },
+      "skill2Level": {
+        "_value": 3
+      }
+    },
+    "1": {
+      "characterId": 1,
+      "level": {
+        "_value": 10
+      },
+      "skill1Level": {
+        "_value": 1
+      },
+      "skill2Level": {
+        "_value": 1
+      }
+    },
+    "2": {
+      "characterId": 2,
+      "level": {
+        "_value": 1
+      },
+      "skill1Level": {
+        "_value": 1
+      },
+      "skill2Level": {
+        "_value": 1
+      }
+    }
+  },
+  "AcquiredCharacterIDs": [
+    0,
+    1
+  ]
+}
