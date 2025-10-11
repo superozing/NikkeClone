@@ -32,6 +32,22 @@ public class Managers : MonoBehaviour
         Init();
     }
 
+    private async void Start()
+    {
+        // 첫 씬 초기화
+        if (Scene.CurrentScene != null)
+        {
+            var requiredFiles = Scene.CurrentScene.RequiredDataFiles;
+
+            // 첫 씬에 필요한 데이터 파일 로드
+            if (requiredFiles != null)
+                await Data.LoadDataForSceneAsync(requiredFiles);
+
+            // 첫 씬 데이터 파일 로드 후 Init() 호출
+            Scene.CurrentScene.Init();
+        }
+    }
+
     private void Init()
     {
         Scene = new SceneManagerEx();
