@@ -15,6 +15,21 @@ MonoBehaviour:
   m_GroupName: Default Local Group
   m_GUID: 6adaca73f249e3645986912f8bbe7c27
   m_SerializeEntries:
+  - m_GUID: 138452f05ddd16b428cc18bb0c6096d0
+    m_Address: UserData.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1d43cab4b1953fe469e7d0c8a16eff96
+    m_Address: StatData.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3c007bc872aa4604c8d78ab5c047fece
+    m_Address: ItemData.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6337c7980aa26e3479291c6aec0cc13e
     m_Address: UI/Popup/UI_PopupTest
     m_ReadOnly: 0
