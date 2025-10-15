@@ -21,12 +21,12 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 1d43cab4b1953fe469e7d0c8a16eff96
-    m_Address: StatData.json
+    m_Address: NikkeGameData.json
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3c007bc872aa4604c8d78ab5c047fece
-    m_Address: ItemData.json
+    m_Address: ItemGameData.json
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

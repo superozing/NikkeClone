@@ -1,54 +1,110 @@
 {
-  "Gold": {
-    "_value": 5000
-  },
-  "Dia": {
-    "_value": 300
-  },
-  "Inventory": {
-    "0": 10,
-    "1": 5
-  },
-  "Characters": {
+  "Nikkes": {
     "0": {
-      "characterId": 0,
-      "level": {
-        "_value": 15
-      },
-      "skill1Level": {
-        "_value": 2
-      },
-      "skill2Level": {
-        "_value": 3
+      "id": 0,
+      "level": { "_value": 1 },
+      "skill1Level": { "_value": 1 },
+      "skill2Level": { "_value": 1 },
+      "skill3Level": { "_value": 1 }
+    },
+    "1": {
+      "id": 1,
+      "level": { "_value": 1 },
+      "skill1Level": { "_value": 1 },
+      "skill2Level": { "_value": 1 },
+      "skill3Level": { "_value": 1 }
+    },
+    "2": {
+      "id": 2,
+      "level": { "_value": 1 },
+      "skill1Level": { "_value": 1 },
+      "skill2Level": { "_value": 1 },
+      "skill3Level": { "_value": 1 }
+    },
+    "3": {
+      "id": 3,
+      "level": { "_value": 1 },
+      "skill1Level": { "_value": 1 },
+      "skill2Level": { "_value": 1 },
+      "skill3Level": { "_value": 1 }
+    },
+    "4": {
+      "id": 4,
+      "level": { "_value": 1 },
+      "skill1Level": { "_value": 1 },
+      "skill2Level": { "_value": 1 },
+      "skill3Level": { "_value": 1 }
+    },
+    "5": {
+      "id": 5,
+      "level": { "_value": 1 },
+      "skill1Level": { "_value": 1 },
+      "skill2Level": { "_value": 1 },
+      "skill3Level": { "_value": 1 }
+    },
+    "6": {
+      "id": 6,
+      "level": { "_value": 1 },
+      "skill1Level": { "_value": 1 },
+      "skill2Level": { "_value": 1 },
+      "skill3Level": { "_value": 1 }
+    },
+    "7": {
+      "id": 7,
+      "level": { "_value": 1 },
+      "skill1Level": { "_value": 1 },
+      "skill2Level": { "_value": 1 },
+      "skill3Level": { "_value": 1 }
+    },
+    "8": {
+      "id": 8,
+      "level": { "_value": 1 },
+      "skill1Level": { "_value": 1 },
+      "skill2Level": { "_value": 1 },
+      "skill3Level": { "_value": 1 }
+    },
+    "9": {
+      "id": 9,
+      "level": { "_value": 1 },
+      "skill1Level": { "_value": 1 },
+      "skill2Level": { "_value": 1 },
+      "skill3Level": { "_value": 1 }
+    }
+  },
+  "Items": {
+    "0": {
+      "id": 0,
+      "count": {
+        "_value": 1200
       }
     },
     "1": {
-      "characterId": 1,
-      "level": {
-        "_value": 10
-      },
-      "skill1Level": {
-        "_value": 1
-      },
-      "skill2Level": {
-        "_value": 1
-      }
-    },
-    "2": {
-      "characterId": 2,
-      "level": {
-        "_value": 1
-      },
-      "skill1Level": {
-        "_value": 1
-      },
-      "skill2Level": {
-        "_value": 1
+      "id": 1,
+      "count": {
+        "_value": 50000
       }
     }
   },
-  "AcquiredCharacterIDs": [
-    0,
-    1
-  ]
+  "Squads": {
+    "0": {
+      "id": 0,
+      "slot": [ 0, 1, 2, 3, 4 ]
+    },
+    "1": {
+      "id": 1,
+      "slot": [ 5, 6, 7, 8, 9 ]
+    },
+    "2": {
+      "id": 2,
+      "slot": [ -1, -1, -1, -1, -1 ]
+    },
+    "3": {
+      "id": 3,
+      "slot": [ -1, -1, -1, -1, -1 ]
+    },
+    "4": {
+      "id": 4,
+      "slot": [ -1, -1, -1, -1, -1 ]
+    }
+  }
 }
