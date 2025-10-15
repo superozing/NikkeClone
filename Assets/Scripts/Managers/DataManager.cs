@@ -48,11 +48,11 @@ public class DataManager : IManagerBase
             // switch 문을 통해 파일 이름(string)과 실제 데이터 타입(class)을 명확하게 연결합니다.
             switch (fileName)
             {
-                case "StatData.json":
-                    loadingTasks.Add(LoadJsonAsync<StatData>(fileName));
+                case "NikkeGameData.json":
+                    loadingTasks.Add(LoadJsonAsync<NikkeGameData>(fileName));
                     break;
-                case "ItemData.json":
-                    loadingTasks.Add(LoadJsonAsync<ItemData>(fileName));
+                case "ItemGameData.json":
+                    loadingTasks.Add(LoadJsonAsync<ItemGameData>(fileName));
                     break;
                 
                     // 새로운 GameData를 추가할 경우 여기에 case 구문을 추가
@@ -144,6 +144,11 @@ public class DataManager : IManagerBase
         if (File.Exists(savePath))
         {
             string json = File.ReadAllText(savePath);
+
+            Debug.Log("===== DataManager가 읽어들인 UserData.json 실제 내용 =====");
+            Debug.Log(json);
+            Debug.Log("======================================================");
+
             UserData = JsonUtility.FromJson<UserDataModel>(json);
             Debug.Log($"[DataManager] 유저 데이터 로드 완료: {savePath}");
         }
