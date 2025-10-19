@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
+using Newtonsoft.Json;
 
 public class DataManager : IManagerBase
 {
@@ -15,6 +16,14 @@ public class DataManager : IManagerBase
 
     // --- 게임 데이터 (읽기 전용) ---
     private readonly Dictionary<Type, object> _dataTables = new();
+
+    // Why: Newtonsoft.Json 사용 시 ReactiveProperty<T>를 올바르게 처리하기 위해
+    // 사용자 정의 컨버터를 포함하는 JsonSerializerSettings를 미리 정의해 둡니다.
+    // 이렇게 하면 직렬화/역직렬화가 필요할 때마다 설정을 반복해서 생성할 필요가 없어 효율적입니다.
+    private readonly JsonSerializerSettings _jsonSettings = new JsonSerializerSettings
+    {
+        Converters = new List<JsonConverter> { new ReactivePropertyConverter() }
+    };
 
     public void Init()
     {
@@ -54,8 +63,8 @@ public class DataManager : IManagerBase
                 case "ItemGameData.json":
                     loadingTasks.Add(LoadJsonAsync<ItemGameData>(fileName));
                     break;
-                
-                    // 새로운 GameData를 추가할 경우 여기에 case 구문을 추가
+
+                // 새로운 GameData를 추가할 경우 여기에 case 구문을 추가
 
                 default:
                     Debug.LogWarning($"[DataManager] 로드 규칙이 정의되지 않은 파일입니다: {fileName}");
@@ -101,10 +110,14 @@ public class DataManager : IManagerBase
 
         if (textAsset != null)
         {
-            var list = JsonUtility.FromJson<DataListWrapper<T>>(textAsset.text);
-            var dict = list.items.ToDictionary(item => item.ID);
+            // Why: JSON 파일이 Dictionary<string, T> 형태로 되어있다고 가정하고 직접 파싱합니다.
+            // 이렇게 하면 List<T>로 변환 후 다시 ToDictionary()를 호출하는 중간 과정이 생략되어 더 효율적입니다.
+            // JSON의 키는 문자열이므로, 먼저 Dictionary<string, T>로 받은 후, int 키를 사용하는 최종 Dictionary로 변환합니다.
+            var rawDict = JsonConvert.DeserializeObject<Dictionary<string, T>>(textAsset.text);
+            var dict = rawDict.ToDictionary(pair => int.Parse(pair.Key), pair => pair.Value);
+
             _dataTables.Add(typeof(T), dict);
-            Debug.Log($"[DataManager] JSON 데이터 파싱 성공: {key}");
+            Debug.Log($"[DataManager] JSON 데이터 파싱 성공 (Newtonsoft.Json): {key}");
         }
         else
         {
@@ -130,9 +143,13 @@ public class DataManager : IManagerBase
         }
 
         string savePath = Path.Combine(Application.persistentDataPath, UserDataPath);
-        string json = JsonUtility.ToJson(UserData, true);
+
+        // Formatting.Indented 옵션은 JSON을 사람이 읽기 쉽게 들여쓰기하여 저장합니다.
+        // _jsonSettings를 전달하여 ReactiveProperty<T>가 올바르게 직렬화되도록 합니다.
+        string json = JsonConvert.SerializeObject(UserData, Formatting.Indented, _jsonSettings);
+
         File.WriteAllText(savePath, json);
-        Debug.Log($"[DataManager] 유저 데이터 저장 완료: {savePath}");
+        Debug.Log($"[DataManager] 유저 데이터 저장 완료 (Newtonsoft.Json): {savePath}");
     }
 
     /// <summary>
@@ -145,11 +162,9 @@ public class DataManager : IManagerBase
         {
             string json = File.ReadAllText(savePath);
 
-            Debug.Log("===== DataManager가 읽어들인 UserData.json 실제 내용 =====");
-            Debug.Log(json);
-            Debug.Log("======================================================");
+            // _jsonSettings를 전달하여 JSON의 값을 ReactiveProperty<T> 객체로 올바르게 변환합니다.
+            UserData = JsonConvert.DeserializeObject<UserDataModel>(json, _jsonSettings);
 
-            UserData = JsonUtility.FromJson<UserDataModel>(json);
             Debug.Log($"[DataManager] 유저 데이터 로드 완료: {savePath}");
         }
         else
@@ -160,12 +175,4 @@ public class DataManager : IManagerBase
     }
 
     #endregion
-
-    // ================================================================================
-
-    /// <summary>
-    /// JsonUtility가 배열 형태의 JSON을 파싱하기 위해 필요한 래퍼(Wrapper) 클래스입니다.
-    /// </summary>
-    [Serializable]
-    private class DataListWrapper<T> { public List<T> items; }
 }
