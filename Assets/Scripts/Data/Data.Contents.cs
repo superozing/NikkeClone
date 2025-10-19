@@ -98,67 +98,12 @@ public class ItemGameData : IDataId
 
 // ======================= User Data (읽기/쓰기) =======================
 
-
 [Serializable]
-public class UserDataModel : ISerializationCallbackReceiver
+public class UserDataModel
 {
-    // Dictionary들은 NonSerialized로 설정하여 JsonUtility가 직접 처리하지 않도록 합니다.
-    [NonSerialized]
-    public Dictionary<int, UserNikkeData> Nikkes = new Dictionary<int, UserNikkeData>();
-    [NonSerialized]
-    public Dictionary<int, UserItemData> Items = new Dictionary<int, UserItemData>();
-    [NonSerialized]
-    public Dictionary<int, UserSquadData> Squads = new Dictionary<int, UserSquadData>();
-
-    // JsonUtility가 직렬화할 임시 리스트들
-    [SerializeField] private List<UserNikkeData> _nikkesForSave;
-    [SerializeField] private List<UserItemData> _itemsForSave;
-    [SerializeField] private List<UserSquadData> _squadsForSave;
-
-    /// <summary>
-    /// 데이터를 JSON으로 저장하기 직전에 Unity에 의해 호출됩니다.
-    /// </summary>
-    public void OnBeforeSerialize()
-    {
-        // 각 Dictionary의 Value들을 임시 리스트로 복사합니다.
-        _nikkesForSave = new List<UserNikkeData>(Nikkes.Values);
-        _itemsForSave = new List<UserItemData>(Items.Values);
-        _squadsForSave = new List<UserSquadData>(Squads.Values);
-    }
-
-    /// <summary>
-    /// JSON에서 데이터를 불러온 직후 Unity에 의해 호출됩니다.
-    /// </summary>
-    public void OnAfterDeserialize()
-    {
-        // 임시 리스트들의 내용으로 각 Dictionary를 다시 재구성합니다.
-        Nikkes = new Dictionary<int, UserNikkeData>();
-        if (_nikkesForSave != null)
-        {
-            foreach (var nikke in _nikkesForSave)
-            {
-                Nikkes.Add(nikke.id, nikke);
-            }
-        }
-
-        Items = new Dictionary<int, UserItemData>();
-        if (_itemsForSave != null)
-        {
-            foreach (var item in _itemsForSave)
-            {
-                Items.Add(item.id, item);
-            }
-        }
-
-        Squads = new Dictionary<int, UserSquadData>();
-        if (_squadsForSave != null)
-        {
-            foreach (var squad in _squadsForSave)
-            {
-                Squads.Add(squad.id, squad);
-            }
-        }
-    }
+    public Dictionary<int, UserNikkeData> Nikkes { get; set; } = new Dictionary<int, UserNikkeData>();
+    public Dictionary<int, UserItemData> Items { get; set; } = new Dictionary<int, UserItemData>();
+    public Dictionary<int, UserSquadData> Squads { get; set; } = new Dictionary<int, UserSquadData>();
 }
 
 [Serializable]
