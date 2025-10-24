@@ -52,7 +52,7 @@ public class MoneyViewModel : IViewModel, IDisposable
     {
         Debug.Log($"OnClickItem() 호출됨: {itemType}");
 
-        // ItemModal 구현 후 생성 코드 추가해야 해요.
+        // ItemModal 구현 후 생성 코드 추가해야 해요. 이 때 비동기로 로드할 것이기에 await 사용 예정
     }
 
     private void OnDataChanged(int newValue)
