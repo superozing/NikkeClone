@@ -8,8 +8,6 @@ public class UI_Money : UI_View
     [Header("Components")]
     [SerializeField] private TMP_Text _jewelCountText;
     [SerializeField] private TMP_Text _creditCountText;
-    [SerializeField] private Image _jewelImage;
-    [SerializeField] private Image _creditImage;
 
     [Header("Buttons")]
     [SerializeField] private Button _jewelButton;
@@ -41,10 +39,6 @@ public class UI_Money : UI_View
             Debug.LogError($"[UI_Money] 잘못된 ViewModel 타입이 주입되었습니다. Expected: MoneyViewModel, Actual: {viewModel.GetType()}");
             return;
         }
-
-        // 아이콘 세팅
-        if (_viewModel != null)
-            LoadIconsAsync();
     }
 
     /// <summary>
@@ -55,15 +49,6 @@ public class UI_Money : UI_View
         // 뷰모델에서 포매팅 된 문자열을 세팅
         _jewelCountText.text = _viewModel.JewelCountText;
         _creditCountText.text = _viewModel.CreditCountText;
-    }
-
-    /// <summary>
-    /// ViewModel에서 제공하는 주소를 기반으로 재화 아이콘을 비동기적으로 로드합니다.
-    /// </summary>
-    private async void LoadIconsAsync()
-    {
-        _jewelImage.sprite = await Managers.Resource.LoadAsync<Sprite>(_viewModel.JewelIconAddress);
-        _creditImage.sprite = await Managers.Resource.LoadAsync<Sprite>(_viewModel.CreditIconAddress);
     }
 
     /// <summary>

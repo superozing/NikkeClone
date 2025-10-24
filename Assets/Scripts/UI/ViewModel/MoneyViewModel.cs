@@ -12,9 +12,6 @@ public class MoneyViewModel : IViewModel, IDisposable
     public string JewelCountText { get; private set; } = "0";
     public string CreditCountText { get; private set; } = "0";
 
-    public string JewelIconAddress { get; private set; }
-    public string CreditIconAddress { get; private set; }
-
     public MoneyViewModel()
     {
         // 뷰가 데이터를 가져갈 수 있도록 이것저것 초기화 해요.
@@ -31,9 +28,6 @@ public class MoneyViewModel : IViewModel, IDisposable
         // 2. GameData에서 게임 아이템 데이터 참조
         var jewelGameData = Managers.Data.Get<ItemGameData>((int)eItemType.Jewel);
         var creditGameData = Managers.Data.Get<ItemGameData>((int)eItemType.Credit);
-
-        JewelIconAddress = jewelGameData?.iconPath;
-        CreditIconAddress = creditGameData?.iconPath;
 
         // 초기 문자열 값 설정
         UpdateTextProperties();
