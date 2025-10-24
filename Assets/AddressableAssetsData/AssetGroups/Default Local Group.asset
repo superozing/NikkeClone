@@ -30,6 +30,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 582541f48350c8c43badd93a0f1bd193
+    m_Address: UI/View/UI_Money
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6337c7980aa26e3479291c6aec0cc13e
     m_Address: UI/Popup/UI_PopupTest
     m_ReadOnly: 0
