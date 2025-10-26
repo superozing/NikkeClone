@@ -112,9 +112,9 @@ public class Utils
     public static string FormatNumber(int number)
     {
         if (number >= 1_000_000)
-            return $"{number / 1_000_000.0f:F1} M";
+            return $"{(number / 1_000_000.0f):0.#} M";
         else if (number >= 10_000)
-            return $"{number / 1_000.0f:F1} K";
+            return $"{(number / 1_000.0f):0.#} K";
         else
             return number.ToString();
     }

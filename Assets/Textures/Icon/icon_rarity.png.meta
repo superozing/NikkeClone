@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 2e9acb1c49c380e46964edfe7c7a3ce1
+guid: 08bec450e4368ac4da2db64a5ca25d50
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -97,23 +97,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: icon_defaultbg_with_shadow_0
+      name: icon_rarity_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 106
-        height: 109
-      alignment: 9
-      pivot: {x: 0.45482913, y: 0.5439277}
+        width: 95
+        height: 97
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6fdeabe8ae2fc9a4b83ae2fe5722ea66
-      internalID: 302308150
+      spriteID: 4f05e2c69daf2bd47817f33d2f4d3b19
+      internalID: 794861044
       vertices: []
       indices: 
       edges: []
@@ -122,7 +122,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 1ce57f559e56b8e4cbf6ac131ab7f1a0
+    spriteID: 6131ae7f324d5f545a436757f589b208
     internalID: 0
     vertices: []
     indices: 
@@ -132,7 +132,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      icon_defaultbg_with_shadow_0: 302308150
+      icon_rarity_0: 794861044
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

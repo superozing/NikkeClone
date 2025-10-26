@@ -23,8 +23,16 @@ public class TestScene : MonoBehaviour, IScene
         Debug.Log("Test Scene Init() ÇÕ´Ï´Ù.");
         Debug.Log($"persistentDataPath: {Application.persistentDataPath}");
 
-        _ = Managers.UI.ShowAsync<UI_PopupTest>(new PopupTestViewModel());
+        ShowTestUI();
+    }
+    
+    private async void ShowTestUI()
+    {
         _ = Managers.UI.ShowAsync<UI_Money>(new MoneyViewModel());
+
+        ItemIconViewModel itemIconViewModel = new ItemIconViewModel();
+        await itemIconViewModel.SetItem(eItemType.Jewel);
+        _ = Managers.UI.ShowAsync<UI_Icon>(itemIconViewModel);
     }
 
     void IScene.Clear()
