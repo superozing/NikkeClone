@@ -3,12 +3,12 @@
     "id": 0,
     "name": "쥬얼",
     "desc": "높은 가치를 지니는 보석입니다. 세상이 망해도 보석의 가치는 빛을 잃지 않는군요.",
-    "iconPath": "Icons/Items/Icon_Jewel"
+    "iconPath": "Icons/Items/icon_jewel"
   },
   "1": {
     "id": 1,
     "name": "크레디트",
     "desc": "방주 내에서 통용되는 화폐입니다. 요약하자면 돈입니다.",
-    "iconPath": "Icons/Items/Icon_Credit"
+    "iconPath": "Icons/Items/icon_credit"
   }
 }

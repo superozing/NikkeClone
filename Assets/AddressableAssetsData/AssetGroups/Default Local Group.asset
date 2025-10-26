@@ -20,6 +20,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 17b88067e2035914ea1b0012be9754d9
+    m_Address: Icons/Items/icon_credit
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 1d43cab4b1953fe469e7d0c8a16eff96
     m_Address: NikkeGameData.json
     m_ReadOnly: 0
@@ -37,6 +42,16 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6337c7980aa26e3479291c6aec0cc13e
     m_Address: UI/Popup/UI_PopupTest
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a77d3a024182e324a87f2c782b4ab311
+    m_Address: Icons/Items/icon_jewel
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c3788e7b1806a664f91898638828653d
+    m_Address: UI/View/UI_Icon
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
