@@ -14,7 +14,21 @@ public class UI_Icon : UI_View
     [SerializeField] private GameObject _quantityRoot;
     [SerializeField] private TMP_Text _quantityText;
 
+    [Header("Button")]
+    [SerializeField] private Button _clickButton;
+    public event Action OnClicked;
+
     private IIconViewModel _viewModel;
+
+    protected override void Awake()
+    {
+        base.Awake();
+
+        // 버튼 클릭 이벤트 바인딩
+        _clickButton.onClick.AddListener(OnButtonClick);
+    }
+
+    private void OnButtonClick() => OnClicked?.Invoke();
 
     public override void SetViewModel(IViewModel viewModel)
     {
@@ -51,7 +65,11 @@ public class UI_Icon : UI_View
 
     protected override void OnDestroy()
     {
-        base.OnDestroy();
+        base.OnDestroy(); 
+        
+        if (_clickButton != null)
+            _clickButton.onClick.RemoveListener(OnButtonClick);
+
         (_viewModel as IDisposable)?.Dispose();
         _viewModel = null;
     }
