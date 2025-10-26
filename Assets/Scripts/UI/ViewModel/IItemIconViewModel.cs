@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using UI;
 using UnityEngine;
 
@@ -6,29 +7,48 @@ public class ItemIconViewModel : IIconViewModel, IDisposable
 {
     public event Action OnStateChanged;
 
-    private readonly ItemGameData _gameData;
-    private readonly UserItemData _userData;
+    private ItemGameData _gameData;
+    private UserItemData _userData;
 
-    public string MainIconAddress => _gameData?.iconPath;
-    public string RarityFrameAddress => null; // 아이템은 희귀도 프레임을 사용하지 않을 생각이에요.
-    public string QuantityText => "X " + Utils.FormatNumber(_userData.count.Value); // 앞에 X를 붙여서 개수임을 나타내요.
+    public Sprite MainIconSprite { get; private set; }
+
+    // --- 사용하지 않을 스프라이트 --- 
+    public Sprite RarityFrameSprite { get; private set; } = null;
+    // ------------------------------
+
+    public string QuantityText
+    {
+        get
+        {
+            if (_userData == null)
+                return "X 0";
+            return "X " + Utils.FormatNumber(_userData.count.Value);
+        }
+    }
 
     /// <summary>
-    /// 표시할 아이템의 eItemType을 받아 ViewModel을 생성합니다.
+    /// ViewModel에 새로운 아이템 타입을 설정합니다.
     /// </summary>
-    /// <param name="itemType">표시할 아이템의 eItemType</param>
-    public ItemIconViewModel(eItemType itemType)
+    /// <param name="itemType"></param>
+    public async Task SetItem(eItemType itemType)
     {
+        // 1. 기존 데이터 구독 해제
+        if (_userData != null)
+            _userData.count.OnValueChanged -= OnValueChanged;
+
+        // 2. 아이템 게임 데이터와 아이템 유저 데이터 세팅
         int itemID = (int)itemType;
-
         _gameData = Managers.Data.Get<ItemGameData>(itemID);
-        if (_gameData == null)
-            Debug.LogError($"[ItemIconViewModel] ID({itemID}, {itemType})에 해당하는 ItemGameData를 찾을 수 없습니다.");
-
         if (!Managers.Data.UserData.Items.TryGetValue(itemID, out _userData))
-            Debug.LogError($"[ItemIconViewModel] ID({itemID}, {itemType})에 해당하는 UserItemData를 찾을 수 없습니다.");
+            _userData = null;
+        else
+            _userData.count.OnValueChanged += OnValueChanged;
 
-        _userData.count.OnValueChanged += OnValueChanged;
+        // 3. 리소스 비동기 로드
+        MainIconSprite = await Managers.Resource.LoadAsync<Sprite>(_gameData.iconPath);
+
+        // 4. View 갱신
+        OnStateChanged?.Invoke();
     }
 
     private void OnValueChanged(int _) => OnStateChanged?.Invoke();
