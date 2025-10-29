@@ -120,6 +120,34 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""UI_ItemDetailPopup"",
+            ""id"": ""3e0a6d3d-5c38-4831-b226-2282c3dafcd1"",
+            ""actions"": [
+                {
+                    ""name"": ""Close"",
+                    ""type"": ""Button"",
+                    ""id"": ""d14020b9-02d5-456c-b51d-ebb7f4604234"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""7da74c52-012e-44f0-8c0e-f1264fb6d3b4"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Close"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -129,12 +157,16 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
         // UI_PopupTest
         m_UI_PopupTest = asset.FindActionMap("UI_PopupTest", throwIfNotFound: true);
         m_UI_PopupTest_Close = m_UI_PopupTest.FindAction("Close", throwIfNotFound: true);
+        // UI_ItemDetailPopup
+        m_UI_ItemDetailPopup = asset.FindActionMap("UI_ItemDetailPopup", throwIfNotFound: true);
+        m_UI_ItemDetailPopup_Close = m_UI_ItemDetailPopup.FindAction("Close", throwIfNotFound: true);
     }
 
     ~@GameInputActions()
     {
         UnityEngine.Debug.Assert(!m_None.enabled, "This will cause a leak and performance issues, GameInputActions.None.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_UI_PopupTest.enabled, "This will cause a leak and performance issues, GameInputActions.UI_PopupTest.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_UI_ItemDetailPopup.enabled, "This will cause a leak and performance issues, GameInputActions.UI_ItemDetailPopup.Disable() has not been called.");
     }
 
     /// <summary>
@@ -387,6 +419,102 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
     /// Provides a new <see cref="UI_PopupTestActions" /> instance referencing this action map.
     /// </summary>
     public UI_PopupTestActions @UI_PopupTest => new UI_PopupTestActions(this);
+
+    // UI_ItemDetailPopup
+    private readonly InputActionMap m_UI_ItemDetailPopup;
+    private List<IUI_ItemDetailPopupActions> m_UI_ItemDetailPopupActionsCallbackInterfaces = new List<IUI_ItemDetailPopupActions>();
+    private readonly InputAction m_UI_ItemDetailPopup_Close;
+    /// <summary>
+    /// Provides access to input actions defined in input action map "UI_ItemDetailPopup".
+    /// </summary>
+    public struct UI_ItemDetailPopupActions
+    {
+        private @GameInputActions m_Wrapper;
+
+        /// <summary>
+        /// Construct a new instance of the input action map wrapper class.
+        /// </summary>
+        public UI_ItemDetailPopupActions(@GameInputActions wrapper) { m_Wrapper = wrapper; }
+        /// <summary>
+        /// Provides access to the underlying input action "UI_ItemDetailPopup/Close".
+        /// </summary>
+        public InputAction @Close => m_Wrapper.m_UI_ItemDetailPopup_Close;
+        /// <summary>
+        /// Provides access to the underlying input action map instance.
+        /// </summary>
+        public InputActionMap Get() { return m_Wrapper.m_UI_ItemDetailPopup; }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
+        public void Enable() { Get().Enable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Disable()" />
+        public void Disable() { Get().Disable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.enabled" />
+        public bool enabled => Get().enabled;
+        /// <summary>
+        /// Implicitly converts an <see ref="UI_ItemDetailPopupActions" /> to an <see ref="InputActionMap" /> instance.
+        /// </summary>
+        public static implicit operator InputActionMap(UI_ItemDetailPopupActions set) { return set.Get(); }
+        /// <summary>
+        /// Adds <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <param name="instance">Callback instance.</param>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c> or <paramref name="instance"/> have already been added this method does nothing.
+        /// </remarks>
+        /// <seealso cref="UI_ItemDetailPopupActions" />
+        public void AddCallbacks(IUI_ItemDetailPopupActions instance)
+        {
+            if (instance == null || m_Wrapper.m_UI_ItemDetailPopupActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_UI_ItemDetailPopupActionsCallbackInterfaces.Add(instance);
+            @Close.started += instance.OnClose;
+            @Close.performed += instance.OnClose;
+            @Close.canceled += instance.OnClose;
+        }
+
+        /// <summary>
+        /// Removes <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <remarks>
+        /// Calling this method when <paramref name="instance" /> have not previously been registered has no side-effects.
+        /// </remarks>
+        /// <seealso cref="UI_ItemDetailPopupActions" />
+        private void UnregisterCallbacks(IUI_ItemDetailPopupActions instance)
+        {
+            @Close.started -= instance.OnClose;
+            @Close.performed -= instance.OnClose;
+            @Close.canceled -= instance.OnClose;
+        }
+
+        /// <summary>
+        /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="UI_ItemDetailPopupActions.UnregisterCallbacks(IUI_ItemDetailPopupActions)" />.
+        /// </summary>
+        /// <seealso cref="UI_ItemDetailPopupActions.UnregisterCallbacks(IUI_ItemDetailPopupActions)" />
+        public void RemoveCallbacks(IUI_ItemDetailPopupActions instance)
+        {
+            if (m_Wrapper.m_UI_ItemDetailPopupActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        /// <summary>
+        /// Replaces all existing callback instances and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
+        /// </summary>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
+        /// </remarks>
+        /// <seealso cref="UI_ItemDetailPopupActions.AddCallbacks(IUI_ItemDetailPopupActions)" />
+        /// <seealso cref="UI_ItemDetailPopupActions.RemoveCallbacks(IUI_ItemDetailPopupActions)" />
+        /// <seealso cref="UI_ItemDetailPopupActions.UnregisterCallbacks(IUI_ItemDetailPopupActions)" />
+        public void SetCallbacks(IUI_ItemDetailPopupActions instance)
+        {
+            foreach (var item in m_Wrapper.m_UI_ItemDetailPopupActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_UI_ItemDetailPopupActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    /// <summary>
+    /// Provides a new <see cref="UI_ItemDetailPopupActions" /> instance referencing this action map.
+    /// </summary>
+    public UI_ItemDetailPopupActions @UI_ItemDetailPopup => new UI_ItemDetailPopupActions(this);
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "None" which allows adding and removing callbacks.
     /// </summary>
@@ -401,6 +529,21 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
     /// <seealso cref="UI_PopupTestActions.AddCallbacks(IUI_PopupTestActions)" />
     /// <seealso cref="UI_PopupTestActions.RemoveCallbacks(IUI_PopupTestActions)" />
     public interface IUI_PopupTestActions
+    {
+        /// <summary>
+        /// Method invoked when associated input action "Close" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnClose(InputAction.CallbackContext context);
+    }
+    /// <summary>
+    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI_ItemDetailPopup" which allows adding and removing callbacks.
+    /// </summary>
+    /// <seealso cref="UI_ItemDetailPopupActions.AddCallbacks(IUI_ItemDetailPopupActions)" />
+    /// <seealso cref="UI_ItemDetailPopupActions.RemoveCallbacks(IUI_ItemDetailPopupActions)" />
+    public interface IUI_ItemDetailPopupActions
     {
         /// <summary>
         /// Method invoked when associated input action "Close" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.

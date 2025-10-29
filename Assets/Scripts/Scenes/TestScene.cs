@@ -30,9 +30,9 @@ public class TestScene : MonoBehaviour, IScene
     {
         _ = Managers.UI.ShowAsync<UI_Money>(new MoneyViewModel());
 
-        ItemIconViewModel itemIconViewModel = new ItemIconViewModel();
-        await itemIconViewModel.SetItem(eItemType.Jewel);
-        _ = Managers.UI.ShowAsync<UI_Icon>(itemIconViewModel);
+        ItemDetailPopupViewModel viewModel = new();
+        await viewModel.SetItem(eItemType.Jewel);
+        _ = Managers.UI.ShowAsync<UI_ItemDetailPopup>(viewModel);
     }
 
     void IScene.Clear()
