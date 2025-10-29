@@ -34,6 +34,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "UI_ItemDetailPopup",
+            "id": "3e0a6d3d-5c38-4831-b226-2282c3dafcd1",
+            "actions": [
+                {
+                    "name": "Close",
+                    "type": "Button",
+                    "id": "d14020b9-02d5-456c-b51d-ebb7f4604234",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "7da74c52-012e-44f0-8c0e-f1264fb6d3b4",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Close",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []
