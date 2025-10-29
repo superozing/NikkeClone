@@ -57,7 +57,8 @@ public class ItemDetailPopupViewModel : IViewModel, IDisposable
 
     private void OnDataChanged(int _)
     {
-        QuantityText = $"보유량: {Utils.FormatNumber(_userData?.count.Value ?? 0)}"; 
+        //QuantityText = $"보유량: {Utils.FormatNumber(_userData?.count.Value ?? 0)}"; 
+        QuantityText = $"보유량: {_userData.count.Value.ToString()}";
         OnStateChanged?.Invoke();
     }
 
