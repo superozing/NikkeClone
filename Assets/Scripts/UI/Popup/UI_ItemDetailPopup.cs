@@ -21,6 +21,10 @@ public class UI_ItemDetailPopup : UI_Popup
     [SerializeField] private Button _blocker;
 
     private ItemDetailPopupViewModel _viewModel;
+    
+    private readonly FadeInUIAnimation _fadeIn = new(0.2f);
+    private readonly FadeOutUIAnimation _fadeOut = new(0.2f);
+    private CanvasGroup _cg;
 
     protected override void Awake()
     {
@@ -33,6 +37,16 @@ public class UI_ItemDetailPopup : UI_Popup
         _okButton.onClick.AddListener(OnExitClick);
         _exitButton.onClick.AddListener(OnExitClick);
         _blocker.onClick.AddListener(OnExitClick);
+
+        // 3. CanvasGroup 캐싱 (연출 호출 위해서)
+        _cg = gameObject.GetOrAddComponent<CanvasGroup>();
+    }
+
+    protected async void Start()
+    {
+        // 활성화 시 연출 시작
+        if (_fadeIn != null)
+            await _fadeIn.ExecuteAsync(_cg);
     }
 
     public override void SetViewModel(IViewModel viewModel)
@@ -74,11 +88,12 @@ public class UI_ItemDetailPopup : UI_Popup
     /// <summary>
     /// ViewModel이 OnClose 이벤트를 호출했을 때(버튼 클릭 시) 실행됩니다.
     /// </summary>
-    private void OnCloseRequested()
+    private async void OnCloseRequested()
     {
-        // TODO: IUIAnimation 상속받은 Fade In Out 구현해서 이 곳에 await로 추가해야 해요.
+        if (_fadeOut != null)
+            await _fadeOut.ExecuteAsync(_cg);
 
-        // 연출 이후 UIManager에 이 팝업을 닫도록 요청
+        // 연출 이후 자신을 닫아요.
         Managers.UI.Close(this);
     }
 
