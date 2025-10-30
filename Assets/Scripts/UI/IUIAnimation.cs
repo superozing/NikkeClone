@@ -7,9 +7,9 @@ using UnityEngine;
 public interface IUIAnimation
 {
     /// <summary>
-    /// 대상 GameObject에 대해 연출을 비동기적으로 실행합니다.
+    /// 대상 CanvasGroup에 대해 연출을 비동기적으로 실행합니다.
     /// </summary>
-    /// <param name="target">연출을 적용할 대상 GameObject</param>
+    /// <param name="cg">연출을 적용할 대상 CanvasGroup</param>
     /// <returns>연출 완료를 알리는 Task</returns>
-    Task ExecuteAsync(GameObject target);
+    Task ExecuteAsync(CanvasGroup cg);
 }
