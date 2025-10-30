@@ -29,10 +29,6 @@ public class TestScene : MonoBehaviour, IScene
     private async void ShowTestUI()
     {
         _ = Managers.UI.ShowAsync<UI_Money>(new MoneyViewModel());
-
-        ItemDetailPopupViewModel viewModel = new();
-        await viewModel.SetItem(eItemType.Jewel);
-        _ = Managers.UI.ShowAsync<UI_ItemDetailPopup>(viewModel);
     }
 
     void IScene.Clear()
