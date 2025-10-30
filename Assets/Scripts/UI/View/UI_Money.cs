@@ -31,15 +31,20 @@ public class UI_Money : UI_View
     /// <param name="viewModel">[이 View에서는 반드시 MoneyViewModel과 대응되어야 합니다.] 주입할 ViewModel입니다. UIManager.ShowAsync를 통해 전달됩니다.</param>
     public override void SetViewModel(IViewModel viewModel)
     {
-        _viewModel = viewModel as MoneyViewModel;
+        if (_viewModel != null)
+            _viewModel.OnRequestItemDetail -= ShowItemDetailPopup;
 
-        base.SetViewModel(viewModel);
+        _viewModel = viewModel as MoneyViewModel;
 
         if (_viewModel == null && viewModel != null)
         {
             Debug.LogError($"[UI_Money] 잘못된 ViewModel 타입이 주입되었습니다. Expected: MoneyViewModel, Actual: {viewModel.GetType()}");
             return;
         }
+        if (_viewModel != null)
+            _viewModel.OnRequestItemDetail += ShowItemDetailPopup;
+
+        base.SetViewModel(viewModel);
     }
 
     /// <summary>
@@ -50,6 +55,13 @@ public class UI_Money : UI_View
         // 뷰모델에서 포매팅 된 문자열을 세팅
         _jewelCountText.text = _viewModel.JewelCountText;
         _creditCountText.text = _viewModel.CreditCountText;
+    }
+
+    private async void ShowItemDetailPopup(eItemType itemType)
+    {
+        ItemDetailPopupViewModel viewModel = new();
+        await viewModel.SetItem(itemType);
+        await Managers.UI.ShowAsync<UI_ItemDetailPopup>(viewModel);
     }
 
     /// <summary>

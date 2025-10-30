@@ -5,6 +5,7 @@ using UnityEngine;
 public class MoneyViewModel : IViewModel, IDisposable
 {
     public event Action OnStateChanged;
+    public event Action<eItemType> OnRequestItemDetail;
 
     private ReactiveProperty<int> _jewelCountRef;
     private ReactiveProperty<int> _creditCountRef;
@@ -42,11 +43,10 @@ public class MoneyViewModel : IViewModel, IDisposable
     /// Item 버튼 클릭 시 호출될 콜백입니다. 해당 Item Popup Modal을 생성합니다.
     /// </summary>
     /// <param name="itemType">클릭된 아이템의 타입입니다.</param>
-    public async void OnClickItem(eItemType itemType)
+    public void OnClickItem(eItemType itemType)
     {
         Debug.Log($"OnClickItem() 호출됨: {itemType}");
-
-        // ItemModal 구현 후 생성 코드 추가해야 해요. 이 때 비동기로 로드할 것이기에 await 사용 예정
+        OnRequestItemDetail.Invoke(itemType);
     }
 
     private void OnDataChanged(int newValue)
