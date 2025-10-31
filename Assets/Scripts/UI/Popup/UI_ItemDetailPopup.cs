@@ -42,7 +42,7 @@ public class UI_ItemDetailPopup : UI_Popup
         _cg = gameObject.GetOrAddComponent<CanvasGroup>();
     }
 
-    protected async void Start()
+    protected async void OnEnable()
     {
         // 활성화 시 연출 시작
         if (_fadeIn != null)
