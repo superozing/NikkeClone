@@ -9,14 +9,21 @@ public class PoolManager : IManagerBase
     private readonly Dictionary<int, IObjectPool<GameObject>> _pools = new();
     private Transform _root;
 
+    private Transform Root
+    {
+        get
+        {
+            if (_root == null)
+            {
+                GameObject rootGo = GameObject.Find("@PoolRoot") ?? new GameObject { name = "@PoolRoot" };
+                _root = rootGo.transform;
+            }
+            return _root;
+        }
+    }
+
     public void Init()
     {
-        if (_root == null)
-        {
-            GameObject root = GameObject.Find("@PoolRoot") ?? new GameObject { name = "@PoolRoot" };
-            Object.DontDestroyOnLoad(root);
-            _root = root.transform;
-        }
         Debug.Log($"{ManagerType} Manager Init 합니다.");
     }
 
@@ -51,7 +58,7 @@ public class PoolManager : IManagerBase
             pool = new ObjectPool<GameObject>(
                 createFunc: () =>
                 {
-                    GameObject go = Object.Instantiate(prefab, _root);
+                    GameObject go = Object.Instantiate(prefab, Root);
                     go.name = prefab.name;
 
                     go.GetOrAddComponent<Poolable>().PoolKey = key;
@@ -60,7 +67,8 @@ public class PoolManager : IManagerBase
                 actionOnGet: go => go.SetActive(true),
                 actionOnRelease: go =>
                 {
-                    go.transform.SetParent(_root);
+                    if (go != null) 
+                        go.transform.SetParent(Root);
                     go.SetActive(false);
                 },
                 actionOnDestroy: go => Object.Destroy(go),
@@ -72,8 +80,16 @@ public class PoolManager : IManagerBase
         }
 
         GameObject go = pool.Get();
-        go.transform.SetParent(parent, false);
+        
+        if (go.transform is RectTransform rectTransform)
+        {
+            rectTransform.anchoredPosition = Vector2.zero;
+            rectTransform.localScale = Vector3.one;
+            rectTransform.localRotation = Quaternion.identity;
+        }
 
+        go.transform.SetParent(parent, false);
+        
         // 값이 있을 경우 UI가 아닌 오브젝트로 판단
         if (position.HasValue || rotation.HasValue)
         {
