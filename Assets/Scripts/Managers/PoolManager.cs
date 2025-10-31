@@ -80,12 +80,13 @@ public class PoolManager : IManagerBase
         }
 
         GameObject go = pool.Get();
-        
+
         if (go.transform is RectTransform rectTransform)
         {
-            rectTransform.anchoredPosition = Vector2.zero;
-            rectTransform.localScale = Vector3.one;
-            rectTransform.localRotation = Quaternion.identity;
+            RectTransform prefabRectTransform = prefab.transform as RectTransform;
+            rectTransform.anchoredPosition = prefabRectTransform.anchoredPosition;
+            rectTransform.localScale = prefabRectTransform.localScale;
+            rectTransform.localRotation = prefabRectTransform.localRotation;
         }
 
         go.transform.SetParent(parent, false);
