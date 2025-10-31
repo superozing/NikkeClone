@@ -35,6 +35,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 43df375964175034087c91cb422a34fe
+    m_Address: UI/Popup/UI_ItemDetailPopup
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 582541f48350c8c43badd93a0f1bd193
     m_Address: UI/View/UI_Money
     m_ReadOnly: 0
@@ -52,11 +57,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c3788e7b1806a664f91898638828653d
     m_Address: UI/View/UI_Icon
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: d281c09b6f4ebd140b267fdf76294127
-    m_Address: UI/Popup/UI_ItemDetailPopup
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
