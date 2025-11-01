@@ -40,6 +40,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4f4c6843a71482f4caa973a913436f48
+    m_Address: UI/View/UI_TabButtonGroup
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 582541f48350c8c43badd93a0f1bd193
     m_Address: UI/View/UI_Money
     m_ReadOnly: 0
@@ -50,6 +55,26 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 64771e6f9a61bca4d82aebb85ed3f74c
+    m_Address: UI/Popup/UI_TabGroupPopup
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 657f108a3c9968e47993ae7ceede25d0
+    m_Address: UI/View/UI_RecruitTab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 683ffcad19981244fb158be5cbe5dbe8
+    m_Address: UI/View/UI_NikkeTab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8342a7aab9c151b47b69ea5f61ce16e9
+    m_Address: UI/View/UI_LobbyTab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a77d3a024182e324a87f2c782b4ab311
     m_Address: Icons/Items/icon_jewel
     m_ReadOnly: 0
@@ -57,6 +82,16 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c3788e7b1806a664f91898638828653d
     m_Address: UI/View/UI_Icon
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d838b12b712e82a44940307b4b6800c9
+    m_Address: UI/View/UI_InventoryTab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f7cfd2e46a9f22241a0cefe89192346d
+    m_Address: UI/View/UI_SquadTab
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
