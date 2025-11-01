@@ -28,7 +28,7 @@ public class TestScene : MonoBehaviour, IScene
     
     private async void ShowTestUI()
     {
-        _ = Managers.UI.ShowAsync<UI_Money>(new MoneyViewModel());
+        _ = Managers.UI.ShowAsync<UI_TabGroupPopup>(new TabGroupPopupViewModel());
     }
 
     void IScene.Clear()
