@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem.UI;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class UIManager : IManagerBase
 {
@@ -267,14 +268,18 @@ public class UIManager : IManagerBase
         if (_sceneRoot == null)
         {
             GameObject rootGo = GameObject.Find("@UI_Root_Scene");
-            
+
             //씬에 UI 루트가 없을 경우, Canvas와 필수 컴포넌트를 포함하여 새로 생성합니다.
             if (rootGo == null)
             {
                 rootGo = new GameObject { name = "@UI_Root_Scene" };
                 rootGo.AddComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
-                rootGo.AddComponent<UnityEngine.UI.CanvasScaler>();
-                rootGo.AddComponent<UnityEngine.UI.GraphicRaycaster>();
+                CanvasScaler scaler = rootGo.AddComponent<CanvasScaler>();
+                scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+                scaler.referenceResolution = new Vector2(1920, 1080);
+                scaler.matchWidthOrHeight = 1.0f;
+
+                rootGo.AddComponent<GraphicRaycaster>();
             }
             _sceneRoot = rootGo.transform;
         }
