@@ -84,7 +84,7 @@ public class PoolManager : IManagerBase
         if (go.transform is RectTransform rectTransform)
         {
             RectTransform prefabRectTransform = prefab.transform as RectTransform;
-            rectTransform.anchoredPosition = prefabRectTransform.anchoredPosition;
+            rectTransform.localPosition = prefabRectTransform.localPosition; // z값까지 초기화
             rectTransform.localScale = prefabRectTransform.localScale;
             rectTransform.localRotation = prefabRectTransform.localRotation;
         }
