@@ -95,6 +95,19 @@ public class ItemGameData : IDataId
 }
 #endregion
 
+#region MissionGameData
+[Serializable]
+public class MissionGameData : IDataId
+{
+    public int id;
+    public string title;
+    public string description;
+    public eMissionType missionType;
+    public int targetCount;
+
+    public int ID => id;
+}
+#endregion
 
 // ======================= User Data (읽기/쓰기) =======================
 
@@ -104,6 +117,7 @@ public class UserDataModel
     public Dictionary<int, UserNikkeData> Nikkes { get; set; } = new Dictionary<int, UserNikkeData>();
     public Dictionary<int, UserItemData> Items { get; set; } = new Dictionary<int, UserItemData>();
     public Dictionary<int, UserSquadData> Squads { get; set; } = new Dictionary<int, UserSquadData>();
+    public Dictionary<int, UserMissionData> Missions { get; set; } = new Dictionary<int, UserMissionData>();
 }
 
 [Serializable]
@@ -152,5 +166,21 @@ public class UserSquadData
         this.id = id;
         // 5개의 빈 슬롯으로 초기화
         this.slot = new List<int>(5) { -1, -1, -1, -1, -1 }; // -1을 빈 슬롯으로 가정
+    }
+}
+
+[Serializable]
+public class UserMissionData
+{
+    public int id;
+    public ReactiveProperty<eMissionProgressState> progressState; // 미션 진행도
+    public ReactiveProperty<int> currentCount; // 현재 개수
+
+    public UserMissionData() { }
+    public UserMissionData(int id)
+    {
+        this.id = id;
+        this.progressState = new ReactiveProperty<eMissionProgressState>(eMissionProgressState.InProgress);
+        this.currentCount = new ReactiveProperty<int>(0);
     }
 }
