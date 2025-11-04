@@ -1,5 +1,5 @@
 
-public enum eMissionProgressState
+public enum eMissionState
 {
     InProgress,
     Completed,

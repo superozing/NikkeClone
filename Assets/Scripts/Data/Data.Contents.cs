@@ -173,14 +173,14 @@ public class UserSquadData
 public class UserMissionData
 {
     public int id;
-    public ReactiveProperty<eMissionProgressState> progressState; // 미션 진행도
+    public ReactiveProperty<eMissionState> state; // 미션 진행도
     public ReactiveProperty<int> currentCount; // 현재 개수
 
     public UserMissionData() { }
     public UserMissionData(int id)
     {
         this.id = id;
-        this.progressState = new ReactiveProperty<eMissionProgressState>(eMissionProgressState.InProgress);
+        this.state = new ReactiveProperty<eMissionState>(eMissionState.InProgress);
         this.currentCount = new ReactiveProperty<int>(0);
     }
 }
