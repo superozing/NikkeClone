@@ -132,5 +132,17 @@
         -1
       ]
     }
+  },
+  "Missions": {
+    "1": {
+      "id": 1,
+      "state": "InProgress",
+      "currentCount": 0
+    },
+    "2": {
+      "id": 2,
+      "state": "InProgress",
+      "currentCount": 0
+    }
   }
 }
