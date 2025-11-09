@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class Managers : MonoBehaviour
@@ -72,21 +73,28 @@ public class Managers : MonoBehaviour
     private async void Start()
     {
         // 첫 씬 초기화 (씬 스크립트가 자신을 씬 매니저에 세팅한 이후)
-        if (Scene.CurrentScene != null)
+        await StartSceneAsync();
+    }
+
+    public async Task StartSceneAsync()
+    {
+        if (Scene.CurrentScene == null)
         {
-            var requiredFiles = Scene.CurrentScene.RequiredDataFiles;
-
-            // 첫 씬에 필요한 데이터 파일 로드
-            if (requiredFiles != null)
-                await Data.LoadDataForSceneAsync(requiredFiles);
-
-            // 첫 씬 데이터 파일 로드 후 Init() 호출
-            Scene.CurrentScene.Init();
+            Debug.LogError("[Managers] InitializeSceneAsync: IScene이 null입니다.");
+            return;
         }
 
-        // 모든 매니저에 Start() 호출
+        // 1. 씬(Scene)에 필요한 GameData 비동기 로드
+        var requiredFiles = Scene.CurrentScene.RequiredDataFiles;
+        if (requiredFiles != null && requiredFiles.Count > 0)
+            await Data.LoadDataForSceneAsync(requiredFiles);
+
+        // 2. 모든 매니저의 Start() 호출
         foreach (IManagerBase manager in _managers)
             manager?.Start();
+
+        // 3. 씬(Scene)의 Init() 호출
+        Scene.CurrentScene.Init();
     }
 
     private void Update()
