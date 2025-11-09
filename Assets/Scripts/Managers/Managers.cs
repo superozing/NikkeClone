@@ -13,6 +13,7 @@ public class Managers : MonoBehaviour
     public static InputManager Input { get; private set; }
     public static SoundManager Sound { get; private set; }
     public static ResourceManagerEx Resource { get; private set; }
+    public static GameSystemManager GameSystem { get; private set; }
 
     private readonly IManagerBase[] _managers = new IManagerBase[(int)eManagerType.End];
 
@@ -73,6 +74,9 @@ public class Managers : MonoBehaviour
         
         Resource = new ResourceManagerEx();
         _managers[(int)eManagerType.Resource] = Resource;
+
+        GameSystem = new GameSystemManager();
+        _managers[(int)eManagerType.GameSystem] = GameSystem;
 
         // 모든 매니저에 Init() 호출
         foreach (IManagerBase manager in _managers)
