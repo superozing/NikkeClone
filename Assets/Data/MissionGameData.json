@@ -1,0 +1,23 @@
+{
+  "0": {
+    "id": 0,
+    "title": "니케 레벨업 해요",
+    "description": "니케 1회 레벨업",
+    "missionType": "NikkeLevelUp",
+    "targetCount": 1
+  },
+  "1": {
+    "id": 1,
+    "title": "니케 레벨업 또 해요",
+    "description": "니케 3회 레벨업",
+    "missionType": "NikkeLevelUp",
+    "targetCount": 3
+  },
+  "2": {
+    "id": 2,
+    "title": "스테이지 밀어요",
+    "description": "스테이지 1회 클리어",
+    "missionType": "StageClear",
+    "targetCount": 1
+  }
+}

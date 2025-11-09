@@ -31,6 +31,11 @@ public class DataManager : IManagerBase
         Debug.Log($"{ManagerType} Manager Init 합니다.");
     }
 
+    public void Start()
+    {
+        Debug.Log($"{ManagerType} Manager Start 합니다.");
+    }
+
     public void Update() { }
 
     public void Clear()
@@ -62,6 +67,9 @@ public class DataManager : IManagerBase
                     break;
                 case "ItemGameData.json":
                     loadingTasks.Add(LoadJsonAsync<ItemGameData>(fileName));
+                    break;
+                case "MissionGameData.json":
+                    loadingTasks.Add(LoadJsonAsync<MissionGameData>(fileName));
                     break;
 
                 // 새로운 GameData를 추가할 경우 여기에 case 구문을 추가
