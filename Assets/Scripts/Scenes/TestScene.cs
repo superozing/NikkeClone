@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Text;
 using UnityEngine;
 
 public class TestScene : MonoBehaviour, IScene
@@ -8,7 +7,8 @@ public class TestScene : MonoBehaviour, IScene
     public List<string> RequiredDataFiles => new() 
     { 
         "NikkeGameData.json", 
-        "ItemGameData.json"
+        "ItemGameData.json",
+        "MissionGameData.json",
     };
 
 
