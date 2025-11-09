@@ -7,10 +7,15 @@ public class GameSystemManager : IManagerBase
 
     public void Init()
     {
+        Debug.Log($"{ManagerType} Manager Init 합니다.");
+    }
+
+    public void Start()
+    {
         MissionSystem = new MissionSystem();
         MissionSystem.Init();
 
-        Debug.Log($"{ManagerType} Manager Init 합니다.");
+        Debug.Log($"{ManagerType} Manager Start 합니다.");
     }
 
     public void Update() { }
@@ -21,4 +26,6 @@ public class GameSystemManager : IManagerBase
 
         Debug.Log($"{ManagerType} Manager Clear 합니다.");
     }
+
+
 }
