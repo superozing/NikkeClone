@@ -8,6 +8,7 @@ public class UI_MissionButton : UI_View
 {
     [SerializeField] private Button _missionButton;
     [SerializeField] private TMP_Text _missionDescText;
+    [SerializeField] private GameObject _redDot;
 
     private MissionButtonViewModel _viewModel;
 
@@ -46,6 +47,9 @@ public class UI_MissionButton : UI_View
             return;
 
         _missionDescText.text = _viewModel.MissionDesc;
+
+        if (_redDot != null)
+            _redDot.SetActive(_viewModel.IsRedDotActive);
     }
 
     /// <summary>
