@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class MissionSystem : IDisposable
 {
-    private DataManager _dataManager;
     private UserDataModel _userData;
     private IReadOnlyDictionary<int, MissionGameData> _missionGameData;
     private Dictionary<int, UserMissionData> _userMissions;
@@ -14,11 +13,9 @@ public class MissionSystem : IDisposable
         Debug.Log("[MissionSystem] Init() 합니다.");
 
         // 1. DataManager 전역 참조 및 캐싱
-        _dataManager = Managers.Data;
-
         // 2. 데이터 참조
-        _userData = _dataManager.UserData;
-        _missionGameData = _dataManager.GetTable<MissionGameData>();
+        _userData = Managers.Data.UserData;
+        _missionGameData = Managers.Data.GetTable<MissionGameData>();
         _userMissions = _userData?.Missions;
 
         if (_userData == null || _missionGameData == null || _userMissions == null)
@@ -93,7 +90,6 @@ public class MissionSystem : IDisposable
                 nikke.level.OnValueChanged -= OnNikkeLevelChanged;
 
         // 2. 참조 해제
-        _dataManager = null;
         _userData = null;
         _missionGameData = null;
         _userMissions = null;
