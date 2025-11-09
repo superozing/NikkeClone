@@ -33,22 +33,6 @@ public class Managers : MonoBehaviour
         Init();
     }
 
-    private async void Start()
-    {
-        // 첫 씬 초기화
-        if (Scene.CurrentScene != null)
-        {
-            var requiredFiles = Scene.CurrentScene.RequiredDataFiles;
-
-            // 첫 씬에 필요한 데이터 파일 로드
-            if (requiredFiles != null)
-                await Data.LoadDataForSceneAsync(requiredFiles);
-
-            // 첫 씬 데이터 파일 로드 후 Init() 호출
-            Scene.CurrentScene.Init();
-        }
-    }
-
     private void Init()
     {
         Scene = new SceneManagerEx();
@@ -83,6 +67,26 @@ public class Managers : MonoBehaviour
             manager?.Init();
 
         Debug.Log("모든 매니저 초기화 완료.");
+    }
+
+    private async void Start()
+    {
+        // 첫 씬 초기화 (씬 스크립트가 자신을 씬 매니저에 세팅한 이후)
+        if (Scene.CurrentScene != null)
+        {
+            var requiredFiles = Scene.CurrentScene.RequiredDataFiles;
+
+            // 첫 씬에 필요한 데이터 파일 로드
+            if (requiredFiles != null)
+                await Data.LoadDataForSceneAsync(requiredFiles);
+
+            // 첫 씬 데이터 파일 로드 후 Init() 호출
+            Scene.CurrentScene.Init();
+        }
+
+        // 모든 매니저에 Start() 호출
+        foreach (IManagerBase manager in _managers)
+            manager?.Start();
     }
 
     private void Update()
