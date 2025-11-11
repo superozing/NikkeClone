@@ -80,6 +80,51 @@ public class MissionSystem : IDisposable
     }
 
     /// <summary>
+    /// 미션의 보상을 수령합니다.
+    /// </summary>
+    /// <param name="missionID">보상 받을 미션 ID</param>
+    /// <returns>보상 수령 성공 여부</returns>
+    public bool ClaimMissionReward(int missionID)
+    {
+        if (!_userMissions.TryGetValue(missionID, out UserMissionData userMission))
+        {
+            Debug.LogError($"[MissionSystem] ID({missionID})에 해당하는 UserMissionData가 없습니다.");
+            return false;
+        }
+        if (!_missionGameData.TryGetValue(missionID, out MissionGameData gameData))
+        {
+            Debug.LogError($"[MissionSystem] ID({missionID})에 해당하는 MissionGameData가 없습니다.");
+            return false;
+        }
+
+        // 1. 상태 확인
+        if (userMission.state.Value != eMissionState.Completed)
+        {
+            if (userMission.state.Value == eMissionState.InProgress)
+                Debug.Log($"[MissionSystem] ID({missionID}) 미션이 아직 완료되지 않았습니다.");
+            else if (userMission.state.Value == eMissionState.RewardClaimed)
+                Debug.Log($"[MissionSystem] ID({missionID}) 미션은 이미 보상을 받았습니다.");
+            return false;
+        }
+
+        // 2. 보상 지급
+        if (!Managers.Data.UserData.Items.TryGetValue(gameData.rewardItemID, out UserItemData userItem))
+        {
+            Debug.LogError($"[MissionSystem] ID({gameData.rewardItemID})에 해당하는 UserItemData가 없습니다.");
+            return false;
+        }
+
+        userItem.count.Value += gameData.rewardItemCount;
+        Debug.Log($"[MissionSystem] 보상 지급 완료: MissionID({missionID}), ItemID({gameData.rewardItemID}), Count({gameData.rewardItemCount})");
+
+        // 3. 상태 변경
+        // 변경 시 상태 구독한 UI 쪽에서 RewardPopup 생성해야 해요.
+        userMission.state.Value = eMissionState.RewardClaimed;
+
+        return true;
+    }
+
+    /// <summary>
     /// DataManager 클리어 시점에 호출되어야 한다.
     /// </summary>
     public void Dispose()
