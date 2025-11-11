@@ -53,6 +53,9 @@ public class ItemIconViewModel : IIconViewModel, IDisposable
 
     private void OnValueChanged(int _) => OnStateChanged?.Invoke();
 
+    // 아이템 팝업에서 아이콘의 버튼 입력 동작은 없다.
+    public void OnClickButton() { }
+
     public void Dispose()
     {
         if (_userData != null)
