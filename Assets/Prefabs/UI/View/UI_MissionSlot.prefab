@@ -359,7 +359,7 @@ GameObject:
   - component: {fileID: 5476766648006474025}
   - component: {fileID: 4108554115552397164}
   m_Layer: 0
-  m_Name: MissionDescText
+  m_Name: DescText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -531,6 +531,7 @@ GameObject:
   - component: {fileID: 4545094008155780320}
   - component: {fileID: 7158653941895821817}
   - component: {fileID: -4856161284107647202}
+  - component: {fileID: 352060350335576506}
   m_Layer: 0
   m_Name: UI_MissionSlot
   m_TagString: Untagged
@@ -608,6 +609,24 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &352060350335576506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4629620218956793228}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e8b1dea1a8935648ba90d00aea44cc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _titleText: {fileID: 6735377756501959535}
+  _descText: {fileID: 4108554115552397164}
+  _progressBar: {fileID: 7341364247520871174}
+  _fillImage: {fileID: 5804848536094150348}
+  _progressText: {fileID: 8688204159974359693}
+  _rewardIcon: {fileID: 3126393774106686100}
 --- !u!1 &5429511164001618272
 GameObject:
   m_ObjectHideFlags: 0
@@ -831,7 +850,7 @@ GameObject:
   - component: {fileID: 1997974180906895751}
   - component: {fileID: 6735377756501959535}
   m_Layer: 0
-  m_Name: MissionTitleText
+  m_Name: TitleText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1048,7 +1067,7 @@ GameObject:
   - component: {fileID: 2983117020034844347}
   - component: {fileID: 7341364247520871174}
   m_Layer: 0
-  m_Name: MissionProgress
+  m_Name: MissionProgressBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1284,3 +1303,14 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3499127779867149766, guid: c3788e7b1806a664f91898638828653d, type: 3}
   m_PrefabInstance: {fileID: 1726221712328994527}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3126393774106686100 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4366216830116731979, guid: c3788e7b1806a664f91898638828653d, type: 3}
+  m_PrefabInstance: {fileID: 1726221712328994527}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94cc592092e90e84eb9d139785af2064, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
