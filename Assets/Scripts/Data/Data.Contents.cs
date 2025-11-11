@@ -105,6 +105,8 @@ public class MissionGameData : IDataId
     public eMissionType missionType;
     public int targetCount;
 
+    public int rewardItemID;
+    public int rewardItemCount;
     public int ID => id;
 }
 #endregion
