@@ -46,10 +46,12 @@ public class UI_MissionSlot : UI_View
         // 2. 진행도 설정
         if (_progressBar != null)
             _progressBar.value = _viewModel.Progress;
-        
+
         // 3. 진행 완료 시 색상 변경
-        if (_viewModel.Progress == 1f)
+        if (_viewModel.MissionState == eMissionState.Completed)
             _fillImage.color = new Color(.2f, .7f, .9f);
+        else
+            _fillImage.color = new Color(1f, 1f, 1f);
     }
 
     protected override void OnDestroy()
