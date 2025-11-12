@@ -18,6 +18,9 @@ public class UI_MissionSlot : UI_View
 
     public override void SetViewModel(IViewModel viewModel)
     {
+        if (_viewModel != null)
+            _viewModel.OnRequestRewardPopup -= ShowRewardPopup;
+
         _viewModel = viewModel as MissionSlotViewModel;
         if (_viewModel == null && viewModel != null)
         {
@@ -32,7 +35,14 @@ public class UI_MissionSlot : UI_View
         if (_rewardIcon != null)
             _rewardIcon.SetViewModel(_viewModel.RewardIconViewModel);
 
+        _viewModel.OnRequestRewardPopup += ShowRewardPopup;
+
         base.SetViewModel(_viewModel);
+    }
+
+    private async void ShowRewardPopup(int itemID, int count)
+    {
+        Debug.Log($"[UI_MissionSlot] 팝업 생성 요청: ItemID({itemID}), Count({count})");
     }
 
     protected override void OnStateChanged()
