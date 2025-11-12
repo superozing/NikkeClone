@@ -39,26 +39,31 @@ public class MissionSlotViewModel : IViewModel, IDisposable
         Title = _gameData.title;
         Description = _gameData.description;
 
-        // 3. 보상 아이콘 뷰모델 생성 (해야 한다)
+        // 3. 보상 아이콘 뷰모델 생성
+        // 자신에게 세팅된 미션을 아이템 아이콘에 전달해요.
+        RewardIconViewModel = new RewardItemIconViewModel(_gameData, _userData);
 
         // 4. 데이터 변경 감지
         _userData.currentCount.OnValueChanged += OnDataChanged;
         _userData.state.OnValueChanged += OnMissionStateChanged;
 
         // 5. 초기 값 세팅
-
+        OnDataChanged(_userData.currentCount.Value);
+        OnMissionStateChanged(_userData.state.Value);
     }
 
     private void OnMissionStateChanged(eMissionState state)
     {
         MissionState = state;
+
         OnStateChanged?.Invoke();
     }
 
     private void OnDataChanged(int _)
     {
         Progress = Mathf.Clamp01((float)_userData.currentCount.Value / _gameData.targetCount);
-        ProgressText = $"{_userData.currentCount.Value} / {_gameData.targetCount}";
+        ProgressText = $"{Utils.FormatNumber(_userData.currentCount.Value)} / {Utils.FormatNumber(_gameData.targetCount)}";
+
         OnStateChanged?.Invoke();
     }
 
@@ -69,5 +74,8 @@ public class MissionSlotViewModel : IViewModel, IDisposable
             _userData.currentCount.OnValueChanged -= OnDataChanged;
             _userData.state.OnValueChanged -= OnMissionStateChanged;
         }
+
+        // UI_Icon 쪽에서 호출해주기는 하는데.. 혹시 모르니 Dispose 호출해요.
+        (RewardIconViewModel as IDisposable)?.Dispose();
     }
 }
