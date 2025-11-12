@@ -64,9 +64,16 @@ public class RewardItemIconViewModel : IIconViewModel, IDisposable
 
     private void OnStateDataChanged(eMissionState state)
     {
-        // 상태가 보상 수령으로 변경된 경우 팝업 생성
+        // 상태가 보상 수령으로 변경된 경우 팝업 생성 요청
         if (state == eMissionState.RewardClaimed)
+        {
             OnRequestRewardPopup?.Invoke(_gameData.rewardItemID, _gameData.rewardItemCount);
+
+            // 아이콘과 텍스트 비우기
+            MainIconSprite = null;
+            QuantityText = null;    
+            OnStateChanged?.Invoke();
+        }
     }
 
     public void Dispose()
