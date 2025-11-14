@@ -61,7 +61,7 @@ public class UI_MissionSlot : UI_View
         if (_viewModel.MissionState == eMissionState.Completed)
             _fillImage.color = new Color(.2f, .7f, .9f);
         else
-            _fillImage.color = new Color(1f, 1f, 1f);
+            _fillImage.color = new Color(.2f, .2f, .2f);
     }
 
     protected override void OnDestroy()
