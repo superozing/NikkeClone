@@ -14,6 +14,7 @@ public class TimeSystem : IDisposable
 
     public void Init()
     {
+        RemainingTime = new ReactiveProperty<TimeSpan>(TimeSpan.Zero);
         _timerCts = new CancellationTokenSource();
         RunTimerAsync(_timerCts.Token);
     }
