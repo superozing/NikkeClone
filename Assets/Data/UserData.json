@@ -134,6 +134,11 @@
     }
   },
   "Missions": {
+    "0": {
+      "id": 0,
+      "state": "InProgress",
+      "currentCount": 0
+    },
     "1": {
       "id": 1,
       "state": "InProgress",
@@ -141,6 +146,21 @@
     },
     "2": {
       "id": 2,
+      "state": "InProgress",
+      "currentCount": 0
+    },
+    "3": {
+      "id": 3,
+      "state": "InProgress",
+      "currentCount": 0
+    },
+    "4": {
+      "id": 4,
+      "state": "InProgress",
+      "currentCount": 0
+    },
+    "5": {
+      "id": 5,
       "state": "InProgress",
       "currentCount": 0
     }

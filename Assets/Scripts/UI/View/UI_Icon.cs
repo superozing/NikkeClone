@@ -16,7 +16,6 @@ public class UI_Icon : UI_View
 
     [Header("Button")]
     [SerializeField] private Button _clickButton;
-    public event Action OnClicked;
 
     private IIconViewModel _viewModel;
 
@@ -28,7 +27,7 @@ public class UI_Icon : UI_View
         _clickButton.onClick.AddListener(OnButtonClick);
     }
 
-    private void OnButtonClick() => OnClicked?.Invoke();
+    private void OnButtonClick() => _viewModel?.OnClickButton();
 
     public override void SetViewModel(IViewModel viewModel)
     {

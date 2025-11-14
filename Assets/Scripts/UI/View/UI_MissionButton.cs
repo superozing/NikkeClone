@@ -17,6 +17,7 @@ public class UI_MissionButton : UI_View
         base.Awake();
 
         _missionButton.onClick.AddListener(() => _viewModel?.OnMissionButtonClicked());
+        _missionButton.onClick.AddListener(ShowMissionPopup); // 뷰모델 연결 전 임시 바인드에요. 나중에 지울 것
     }
 
     /// <summary>
@@ -57,7 +58,7 @@ public class UI_MissionButton : UI_View
     /// </summary>
     private async void ShowMissionPopup()
     {
-        // await Managers.UI.ShowAsync<UI_MissionPopup>(new MissionPopupViewModel());
+        await Managers.UI.ShowAsync<UI_MissionPopup>(new MissionPopupViewModel());
     }
 
     protected override void OnDestroy()
