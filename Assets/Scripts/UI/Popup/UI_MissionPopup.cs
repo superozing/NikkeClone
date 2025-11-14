@@ -10,7 +10,7 @@ public class UI_MissionPopup : UI_Popup
     public override string ActionMapKey => "UI_MissionPopup";
 
     [Header("Components")]
-    [SerializeField] private TMP_Text _missionResetTimeText; // "H시간 MM분 남음"
+    [SerializeField] private TMP_Text _missionResetTimeText; // "H시간 M분 남음"
     [SerializeField] private Transform _missionSlotRoot;
     [SerializeField] private GameObject _missionCompleteBlockerImage;
     [SerializeField] private TMP_Text _missionCompleteTimerText; // "HH:MM::SS"
@@ -20,6 +20,9 @@ public class UI_MissionPopup : UI_Popup
     [SerializeField] private Button _exitButton;
 
     private MissionPopupViewModel _viewModel;
+
+    private readonly FadeInUIAnimation _fadeIn = new(0.2f);
+    private readonly FadeOutUIAnimation _fadeOut = new(0.2f);
 
     protected override void Awake()
     {
@@ -31,6 +34,12 @@ public class UI_MissionPopup : UI_Popup
         // 2. Button OnClick 리스너 바인딩
         _blocker.onClick.AddListener(OnCloseClick);
         _exitButton.onClick.AddListener(OnCloseClick);
+    }
+
+    protected async void OnEnable()
+    {
+        if (_fadeIn != null)
+            await _fadeIn.ExecuteAsync(_canvasGroup);
     }
 
     private void OnEscapeAction(InputAction.CallbackContext _) => OnCloseClick();
@@ -81,10 +90,10 @@ public class UI_MissionPopup : UI_Popup
         _missionCompleteBlockerImage.SetActive(_viewModel.IsAllMissionsComplete);
     }
 
-    private void OnCloseRequested()
+    private async void OnCloseRequested()
     {
-        // 연출 추가해야 해요
-
+        // FadeOut 이후 UI를 닫아요.
+        await _fadeOut.ExecuteAsync(_canvasGroup);
         Managers.UI.Close(this);
     }
 
