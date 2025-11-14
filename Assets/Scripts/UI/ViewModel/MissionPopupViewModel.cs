@@ -73,8 +73,8 @@ public class MissionPopupViewModel : IViewModel, IDisposable
     /// <param name="remainingTime">TimeSystem에서 전달받은 남은 시간</param>
     private void OnTimeUpdated(TimeSpan remainingTime)
     {
-        // "H시간 MM분 남음" 포멧
-        MissionResetTimeText = $"{remainingTime.Hours}시간 {remainingTime.Minutes:D2}분 남음";
+        // "H시간 M분 남음" 포멧
+        MissionResetTimeText = $"{remainingTime.Hours}시간 {remainingTime.Minutes}분 남음";
 
         // "HH:MM::SS" 포맷
         MissionCompleteTimerText = $"{remainingTime.Hours:D2}:{remainingTime.Minutes:D2}::{remainingTime.Seconds:D2}";
