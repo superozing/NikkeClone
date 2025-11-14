@@ -10,7 +10,7 @@ public class UI_MissionPopup : UI_Popup
     public override string ActionMapKey => "UI_MissionPopup";
 
     [Header("Components")]
-    [SerializeField] private TMP_Text _missionResetTimeText; // "HH시간 MM분 남음"
+    [SerializeField] private TMP_Text _missionResetTimeText; // "H시간 MM분 남음"
     [SerializeField] private Transform _missionSlotRoot;
     [SerializeField] private GameObject _missionCompleteBlockerImage;
     [SerializeField] private TMP_Text _missionCompleteTimerText; // "HH:MM::SS"
