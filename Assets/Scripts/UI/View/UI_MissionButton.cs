@@ -12,14 +12,6 @@ public class UI_MissionButton : UI_View
 
     private MissionButtonViewModel _viewModel;
 
-    protected override void Awake()
-    {
-        base.Awake();
-
-        _missionButton.onClick.AddListener(() => _viewModel?.OnMissionButtonClicked());
-        _missionButton.onClick.AddListener(ShowMissionPopup); // 뷰모델 연결 전 임시 바인드에요. 나중에 지울 것
-    }
-
     /// <summary>
     /// 이 View와 상호작용할 ViewModel을 설정(주입)하고 데이터 바인딩을 시작합니다.
     /// </summary>
@@ -36,8 +28,9 @@ public class UI_MissionButton : UI_View
             return;
         }
 
-        if (_viewModel != null)
-            _viewModel.OnRequestMissionPopup += ShowMissionPopup;
+        _viewModel.OnRequestMissionPopup += ShowMissionPopup;
+
+        _missionButton.onClick.AddListener(() => _viewModel?.OnMissionButtonClicked());
 
         base.SetViewModel(_viewModel);
     }
@@ -67,6 +60,8 @@ public class UI_MissionButton : UI_View
 
         if (_viewModel != null)
             _viewModel.OnRequestMissionPopup -= ShowMissionPopup;
+
+        _missionButton.onClick.RemoveAllListeners();
 
         (_viewModel as IDisposable)?.Dispose();
         _viewModel = null;
