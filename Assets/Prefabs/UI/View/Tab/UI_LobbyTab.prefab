@@ -205,6 +205,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e2eef0ca60cc3f468ac293f25a549ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _shopButton: {fileID: 5554330759485526848}
+  _outpostButton: {fileID: 465961712789626261}
+  _arkButton: {fileID: 3234942875845510548}
+  _campaignButton: {fileID: 5211374666625155721}
+  _friendButton: {fileID: 8978912852409242650}
+  _unionButton: {fileID: 6346614096260329646}
+  _commanderButton: {fileID: 5596349588785992205}
+  _missionButton: {fileID: 5976367217932868248}
 --- !u!1 &910198509565998691
 GameObject:
   m_ObjectHideFlags: 0
@@ -2135,3 +2143,14 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5937160059750507072, guid: c6c238ec1498f33439d351d404d03784, type: 3}
   m_PrefabInstance: {fileID: 9017723883573393215}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5976367217932868248 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3446720781459860903, guid: c6c238ec1498f33439d351d404d03784, type: 3}
+  m_PrefabInstance: {fileID: 9017723883573393215}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0275182d3e6425a4a98931d67a225471, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
