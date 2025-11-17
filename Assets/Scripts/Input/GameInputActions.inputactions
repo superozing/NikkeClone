@@ -90,6 +90,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "UI_MissionPopup",
+            "id": "e650f4dc-bbce-4571-a8ac-f4bc304b7a08",
+            "actions": [
+                {
+                    "name": "Close",
+                    "type": "Button",
+                    "id": "ea6b5e42-3429-4d91-8587-edabc2c29cf0",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "4306c2c7-ddfc-4d01-b5e9-c0011e6c9bf1",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Close",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []

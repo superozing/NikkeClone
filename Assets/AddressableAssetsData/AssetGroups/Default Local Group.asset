@@ -70,6 +70,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 755b8595f6ac0124da2ec09505f8a82b
+    m_Address: UI/View/UI_MissionSlot
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8342a7aab9c151b47b69ea5f61ce16e9
     m_Address: UI/View/UI_LobbyTab
     m_ReadOnly: 0
@@ -80,6 +85,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b74f450e5cc21ae4a81f923b8851a38c
+    m_Address: MissionGameData.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c3788e7b1806a664f91898638828653d
     m_Address: UI/View/UI_Icon
     m_ReadOnly: 0
@@ -87,6 +97,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d838b12b712e82a44940307b4b6800c9
     m_Address: UI/View/UI_InventoryTab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e61175f8771ac5042ad55c345138e973
+    m_Address: UI/Popup/UI_MissionPopup
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

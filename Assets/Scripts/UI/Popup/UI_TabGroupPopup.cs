@@ -35,11 +35,17 @@ public class UI_TabGroupPopup : UI_Popup
             return;
         }
 
-        base.SetViewModel(_viewModel);
+        if (_viewModel == null)
+            return;
 
-        // ÀÚ½Ä¿¡µµ ºä¸ðµ¨ ¼¼ÆÃ
+        // ÀÚ½Ä UI ºä¸ðµ¨ ¼¼ÆÃ
         if (_tabButtonGroup != null)
-            _tabButtonGroup?.SetViewModel(_viewModel);
+            _tabButtonGroup.SetViewModel(_viewModel);
+
+        for (int i = 0; i < _tabs.Length; ++i)
+            _tabs[i].SetViewModel(_viewModel.TabViewModels[i]);
+
+        base.SetViewModel(_viewModel);
     }
 
     protected override void OnStateChanged()

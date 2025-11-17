@@ -21,5 +21,10 @@ namespace UI
         /// 수량을 표시하지 않으려면 null 또는 string.Empty를 반환해야 합니다.
         /// </summary>
         string QuantityText { get; }
+
+        /// <summary>
+        /// UI_Icon이 클릭되었을 때 호출될 메서드입니다.
+        /// </summary>
+        void OnClickButton();
     }
 }

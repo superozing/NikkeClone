@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class Managers : MonoBehaviour
@@ -13,6 +14,7 @@ public class Managers : MonoBehaviour
     public static InputManager Input { get; private set; }
     public static SoundManager Sound { get; private set; }
     public static ResourceManagerEx Resource { get; private set; }
+    public static GameSystemManager GameSystem { get; private set; }
 
     private readonly IManagerBase[] _managers = new IManagerBase[(int)eManagerType.End];
 
@@ -30,22 +32,6 @@ public class Managers : MonoBehaviour
 
         // 매니저들을 생성하고 초기화
         Init();
-    }
-
-    private async void Start()
-    {
-        // 첫 씬 초기화
-        if (Scene.CurrentScene != null)
-        {
-            var requiredFiles = Scene.CurrentScene.RequiredDataFiles;
-
-            // 첫 씬에 필요한 데이터 파일 로드
-            if (requiredFiles != null)
-                await Data.LoadDataForSceneAsync(requiredFiles);
-
-            // 첫 씬 데이터 파일 로드 후 Init() 호출
-            Scene.CurrentScene.Init();
-        }
     }
 
     private void Init()
@@ -74,11 +60,41 @@ public class Managers : MonoBehaviour
         Resource = new ResourceManagerEx();
         _managers[(int)eManagerType.Resource] = Resource;
 
+        GameSystem = new GameSystemManager();
+        _managers[(int)eManagerType.GameSystem] = GameSystem;
+
         // 모든 매니저에 Init() 호출
         foreach (IManagerBase manager in _managers)
             manager?.Init();
 
         Debug.Log("모든 매니저 초기화 완료.");
+    }
+
+    private async void Start()
+    {
+        // 첫 씬 초기화 (씬 스크립트가 자신을 씬 매니저에 세팅한 이후)
+        await StartSceneAsync();
+    }
+
+    public async Task StartSceneAsync()
+    {
+        if (Scene.CurrentScene == null)
+        {
+            Debug.LogError("[Managers] InitializeSceneAsync: IScene이 null입니다.");
+            return;
+        }
+
+        // 1. 씬(Scene)에 필요한 GameData 비동기 로드
+        var requiredFiles = Scene.CurrentScene.RequiredDataFiles;
+        if (requiredFiles != null && requiredFiles.Count > 0)
+            await Data.LoadDataForSceneAsync(requiredFiles);
+
+        // 2. 모든 매니저의 Start() 호출
+        foreach (IManagerBase manager in _managers)
+            manager?.Start();
+
+        // 3. 씬(Scene)의 Init() 호출
+        Scene.CurrentScene.Init();
     }
 
     private void Update()
