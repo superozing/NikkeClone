@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UI;
 using UnityEngine;
 
-public class MissionPopupViewModel : IViewModel, IDisposable
+public class MissionPopupViewModel : ViewModelBase
 {
-    public event Action OnStateChanged;
+    public override event Action OnStateChanged;
     public event Action OnCloseRequested;
 
     /// <summary>
@@ -85,7 +85,7 @@ public class MissionPopupViewModel : IViewModel, IDisposable
         OnStateChanged?.Invoke();
     }
 
-    public void Dispose()
+    protected override void OnDispose()
     {
         if (Managers.GameSystem?.TimeSystem != null)
             Managers.GameSystem.TimeSystem.RemainingTime.OnValueChanged -= OnTimeUpdated;

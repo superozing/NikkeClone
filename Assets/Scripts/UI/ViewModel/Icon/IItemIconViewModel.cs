@@ -3,9 +3,9 @@ using System.Threading.Tasks;
 using UI;
 using UnityEngine;
 
-public class ItemIconViewModel : IIconViewModel, IDisposable
+public class ItemIconViewModel : ViewModelBase, IIconViewModel
 {
-    public event Action OnStateChanged;
+    public override event Action OnStateChanged;
 
     private ItemGameData _gameData;
     private UserItemData _userData;
@@ -56,9 +56,10 @@ public class ItemIconViewModel : IIconViewModel, IDisposable
     // 아이템 팝업에서 아이콘의 버튼 입력 동작은 없다.
     public void OnClickButton() { }
 
-    public void Dispose()
+    protected override void OnDispose()
     {
         if (_userData != null)
             _userData.count.OnValueChanged -= OnValueChanged;
+        OnStateChanged = null;
     }
 }

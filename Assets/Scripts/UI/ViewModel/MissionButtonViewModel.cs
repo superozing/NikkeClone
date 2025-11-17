@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UI;
 using UnityEngine;
 
-public class MissionButtonViewModel : IViewModel, IDisposable
+public class MissionButtonViewModel : ViewModelBase
 {
-    public event Action OnStateChanged;
+    public override event Action OnStateChanged;
     public event Action OnRequestMissionPopup;
 
     /// <summary>
@@ -80,7 +80,7 @@ public class MissionButtonViewModel : IViewModel, IDisposable
         }
     }
 
-    public void Dispose()
+    protected override void OnDispose()
     {
         if (_userMissions != null)
         {

@@ -1,9 +1,9 @@
 using System;
 using UI;
 
-public class TabGroupPopupViewModel : IViewModel, IDisposable
+public class TabGroupPopupViewModel : ViewModelBase
 {
-    public event Action OnStateChanged;
+    public override event Action OnStateChanged;
     public eTabType CurrentTabType { get; private set; } = eTabType.Lobby;
 
     /// <summary>
@@ -20,6 +20,9 @@ public class TabGroupPopupViewModel : IViewModel, IDisposable
         TabViewModels[(int)eTabType.Nikke] = new NikkeTabViewModel();
         TabViewModels[(int)eTabType.Inventory] = new InventoryTabViewModel();
         TabViewModels[(int)eTabType.Recruit] = new RecruitTabViewModel();
+
+        foreach (var vm in TabViewModels)
+            (vm as ViewModelBase)?.AddRef();
     }
 
     /// <summary>
@@ -38,15 +41,16 @@ public class TabGroupPopupViewModel : IViewModel, IDisposable
         OnStateChanged?.Invoke();
     }
 
-    public void Dispose()
+    protected override void OnDispose()
     {
         if (TabViewModels == null)
             return;
 
         // 자식 UI의 뷰모델을 정리합니다.
-        foreach (IViewModel viewModel in TabViewModels)
-            (viewModel as IDisposable)?.Dispose();
-        
+        foreach (var vm in TabViewModels)
+            (vm as ViewModelBase)?.Release();
+
         TabViewModels = null;
+        OnStateChanged = null;
     }
 }

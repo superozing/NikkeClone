@@ -3,18 +3,24 @@ using System.Threading.Tasks;
 using UI;
 using UnityEngine;
 
-public class ItemDetailPopupViewModel : IViewModel, IDisposable
+public class ItemDetailPopupViewModel : ViewModelBase
 {
-    public event Action OnStateChanged;
+    public override event Action OnStateChanged;
     public event Action OnClose;
 
     private ItemGameData _gameData;
     private UserItemData _userData;
 
-    public ItemIconViewModel IconViewModel { get; private set; } = new ItemIconViewModel(); // UI_Icon에 사용할 뷰모델
+    public ItemIconViewModel IconViewModel { get; private set; }
     public string ItemName { get; private set; }
     public string QuantityText { get; private set; }
     public string DescText { get; private set; }
+
+    public ItemDetailPopupViewModel()
+    {
+        IconViewModel = new ItemIconViewModel();
+        IconViewModel.AddRef();
+    }
 
     /// <summary>
     /// 팝업에 표시할 아이템 타입을 설정하고, 현재 뷰모델과 자식 뷰모델을 초기화 합니다.
@@ -61,12 +67,12 @@ public class ItemDetailPopupViewModel : IViewModel, IDisposable
         OnStateChanged?.Invoke();
     }
 
-    public void Dispose()
+    protected override void OnDispose()
     {
         if (_userData != null)
             _userData.count.OnValueChanged -= OnDataChanged;
 
         // 자식 뷰모델도..
-        IconViewModel?.Dispose();
+        IconViewModel?.Release();
     }
 }

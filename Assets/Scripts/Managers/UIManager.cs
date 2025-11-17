@@ -97,7 +97,7 @@ public class UIManager : IManagerBase
         // Sorting Group의 순서를 설정합니다.
         SetSortingGroupOrder(go, view is UI_Popup);
 
-        // 입력받은 뷰모델을 세팅합니다.
+        // 입력받은 뷰모델을 세팅합니다. (여기서 AddRef)
         view.SetViewModel(viewModel);
 
         view.gameObject.SetActive(true);
@@ -243,6 +243,10 @@ public class UIManager : IManagerBase
                 }
             }
         }
+
+        // UI를 풀로 반환하거나 파괴하기 전에 ViewModel과의 연결을 명시적으로 끊습니다.
+        // 기존 ViewModel이 Release() 될 때 참조 카운트가 감소하고, 필요시 OnDispose()가 호출됩니다.
+        view.SetViewModel(null);
 
         Managers.Resource.Destroy(view.gameObject);
     }

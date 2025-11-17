@@ -1,9 +1,9 @@
 using System;
 using UI;
 
-public class LobbyTabViewModel : IViewModel, IDisposable
+public class LobbyTabViewModel : ViewModelBase
 {
-    public event Action OnStateChanged;
+    public override event Action OnStateChanged;
     public event Action OnRequestUnusedButton; // 사용하지 않는 버튼
     public event Action OnRequestCampaignButton; // 캠페인 버튼
 
@@ -12,6 +12,7 @@ public class LobbyTabViewModel : IViewModel, IDisposable
     public LobbyTabViewModel()
     {
         MissionButtonViewModel = new MissionButtonViewModel();
+        MissionButtonViewModel.AddRef();
     }
 
     /// <summary>
@@ -30,12 +31,16 @@ public class LobbyTabViewModel : IViewModel, IDisposable
         OnRequestCampaignButton?.Invoke();
     }
 
-    public void Dispose()
+    protected override void OnDispose()
     {
-        (MissionButtonViewModel as IDisposable)?.Dispose();
-        MissionButtonViewModel = null;
+        if (MissionButtonViewModel != null)
+        {
+            MissionButtonViewModel.Release();
+            MissionButtonViewModel = null;
+        }
 
         OnRequestUnusedButton = null;
         OnRequestCampaignButton = null;
+        OnStateChanged = null;
     }
 }

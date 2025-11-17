@@ -11,6 +11,7 @@ public class TestScene : MonoBehaviour, IScene
         "MissionGameData.json",
     };
 
+    UI_TabGroupPopup popup;
 
     void Awake()
     {
@@ -28,11 +29,13 @@ public class TestScene : MonoBehaviour, IScene
     
     private async void ShowTestUI()
     {
-        _ = Managers.UI.ShowAsync<UI_TabGroupPopup>(new TabGroupPopupViewModel());
+        popup = await Managers.UI.ShowAsync<UI_TabGroupPopup>(new TabGroupPopupViewModel());
     }
 
     void IScene.Clear()
     {
-        Debug.Log("Test Scene Clear() 합니다.");
+        //Debug.Log("Test Scene Clear() 합니다.");
+
+        Managers.UI.Close(popup);
     }
 }
