@@ -8,18 +8,18 @@ public class GameSystemManager : IManagerBase
 
     public void Init()
     {
-        Debug.Log($"{ManagerType} Manager Init 합니다.");
-    }
-
-    public void Start()
-    {
         MissionSystem = new MissionSystem();
         MissionSystem.Init();
 
         TimeSystem = new TimeSystem();
         TimeSystem.Init();
 
-        Debug.Log($"{ManagerType} Manager Start 합니다.");
+        Debug.Log($"{ManagerType} Manager Init 합니다.");
+    }
+
+    public void Start()
+    {
+
     }
 
     public void Update() { }

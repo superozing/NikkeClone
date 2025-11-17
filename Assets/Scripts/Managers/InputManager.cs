@@ -21,11 +21,6 @@ public class InputManager : IManagerBase
         Debug.Log($"{ManagerType} Manager Init 합니다.");
     }
 
-    public void Start()
-    {
-        Debug.Log($"{ManagerType} Manager Start 합니다.");
-    }
-
     public void Update() { }
 
     /// <summary>
