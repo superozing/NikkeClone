@@ -8,6 +8,7 @@ public class UI_TabGroupPopup : UI_Popup
 
     [SerializeField] private UI_TabBase[] _tabs = new UI_TabBase[(int)eTabType.End];
     [SerializeField] private UI_TabButtonGroup _tabButtonGroup;
+    [SerializeField] private UI_Money _moneyView;
 
     private TabGroupPopupViewModel _viewModel;
     private UI_TabBase _curTab;
@@ -21,7 +22,7 @@ public class UI_TabGroupPopup : UI_Popup
         {
             if (_tabs[i] == null)
                 Debug.LogError($"[UI_TabGroupPopup] _tabs 배열의 인덱스 {i} ({(eTabType)i})가 Inspector에서 할당되지 않았습니다.");
-            
+
             _tabs[i].OnTabDeselected();
         }
     }
@@ -38,12 +39,17 @@ public class UI_TabGroupPopup : UI_Popup
         if (_viewModel == null)
             return;
 
-        // 자식 UI 뷰모델 세팅
+        // 1. 탭 버튼 그룹 ViewModel 설정
         if (_tabButtonGroup != null)
             _tabButtonGroup.SetViewModel(_viewModel);
 
+        // 2. 개별 탭 ViewModel 설정
         for (int i = 0; i < _tabs.Length; ++i)
             _tabs[i].SetViewModel(_viewModel.TabViewModels[i]);
+
+        // 3. 재화 UI ViewModel 설정 (추가됨)
+        if (_moneyView != null)
+            _moneyView.SetViewModel(_viewModel.MoneyViewModel);
 
         base.SetViewModel(_viewModel);
     }
