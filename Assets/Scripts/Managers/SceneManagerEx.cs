@@ -40,6 +40,9 @@ public class SceneManagerEx : IManagerBase
         if (requiredFiles != null && requiredFiles.Count > 0)
             await Managers.Data.LoadDataForSceneAsync(requiredFiles);
 
+        // 게임 데이터 로드 후 게임 시스템 설정
+        Managers.GameSystem.OnDataLoaded();
+
         // 현재 씬 스크립트 초기화
         scene.Init();
     }
