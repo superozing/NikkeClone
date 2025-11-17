@@ -70,33 +70,6 @@ public class Managers : MonoBehaviour
         Debug.Log("모든 매니저 초기화 완료.");
     }
 
-    private async void Start()
-    {
-        // 첫 씬 초기화 (씬 스크립트가 자신을 씬 매니저에 세팅한 이후)
-        await StartSceneAsync();
-    }
-
-    public async Task StartSceneAsync()
-    {
-        if (Scene.CurrentScene == null)
-        {
-            Debug.LogError("[Managers] InitializeSceneAsync: IScene이 null입니다.");
-            return;
-        }
-
-        // 1. 씬(Scene)에 필요한 GameData 비동기 로드
-        var requiredFiles = Scene.CurrentScene.RequiredDataFiles;
-        if (requiredFiles != null && requiredFiles.Count > 0)
-            await Data.LoadDataForSceneAsync(requiredFiles);
-
-        // 2. 모든 매니저의 Start() 호출
-        foreach (IManagerBase manager in _managers)
-            manager?.Start();
-
-        // 3. 씬(Scene)의 Init() 호출
-        Scene.CurrentScene.Init();
-    }
-
     private void Update()
     {
         // 모든 매니저에 Update() 호출

@@ -8,18 +8,22 @@ public class GameSystemManager : IManagerBase
 
     public void Init()
     {
-        Debug.Log($"{ManagerType} Manager Init 합니다.");
-    }
-
-    public void Start()
-    {
         MissionSystem = new MissionSystem();
         MissionSystem.Init();
 
         TimeSystem = new TimeSystem();
         TimeSystem.Init();
 
-        Debug.Log($"{ManagerType} Manager Start 합니다.");
+        Debug.Log($"{ManagerType} Manager Init 합니다.");
+    }
+
+    /// <summary>
+    /// 씬 데이터 로드가 완료되었을 때 SceneManagerEx에 의해 호출됩니다.
+    /// </summary>
+    public void OnDataLoaded()
+    {
+        MissionSystem?.OnDataLoaded();
+        // ...
     }
 
     public void Update() { }

@@ -11,9 +11,14 @@ public class TabGroupPopupViewModel : ViewModelBase
     /// </summary>
     public IViewModel[] TabViewModels { get; private set; }
 
+    /// <summary>
+    /// »ó´Ü ÀçÈ­ UIÀÇ ºä¸ðµ¨ÀÔ´Ï´Ù.
+    /// </summary>
+    public MoneyViewModel MoneyViewModel { get; private set; }
+
     public TabGroupPopupViewModel()
     {
-        // ÀÚ½Ä ÅÇ UIÀÇ ºä¸ðµ¨ »ý¼º
+        // 1. ÀÚ½Ä ÅÇ UIÀÇ ºä¸ðµ¨ »ý¼º
         TabViewModels = new IViewModel[(int)eTabType.End];
         TabViewModels[(int)eTabType.Lobby] = new LobbyTabViewModel();
         TabViewModels[(int)eTabType.Squad] = new SquadTabViewModel();
@@ -23,6 +28,10 @@ public class TabGroupPopupViewModel : ViewModelBase
 
         foreach (var vm in TabViewModels)
             (vm as ViewModelBase)?.AddRef();
+
+        // 2. ÀçÈ­ UI ºä¸ðµ¨ »ý¼º
+        MoneyViewModel = new MoneyViewModel();
+        MoneyViewModel.AddRef();
     }
 
     /// <summary>
@@ -43,14 +52,21 @@ public class TabGroupPopupViewModel : ViewModelBase
 
     protected override void OnDispose()
     {
-        if (TabViewModels == null)
-            return;
+        // ÀÚ½Ä ÅÇ ºä¸ðµ¨ Á¤¸®
+        if (TabViewModels != null)
+        {
+            foreach (var vm in TabViewModels)
+                (vm as ViewModelBase)?.Release();
+            TabViewModels = null;
+        }
 
-        // ÀÚ½Ä UIÀÇ ºä¸ðµ¨À» Á¤¸®ÇÕ´Ï´Ù.
-        foreach (var vm in TabViewModels)
-            (vm as ViewModelBase)?.Release();
+        // ÀçÈ­ ºä¸ðµ¨ Á¤¸®
+        if (MoneyViewModel != null)
+        {
+            MoneyViewModel.Release();
+            MoneyViewModel = null;
+        }
 
-        TabViewModels = null;
         OnStateChanged = null;
     }
 }
