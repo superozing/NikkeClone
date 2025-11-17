@@ -2,9 +2,9 @@ using System;
 using UI;
 using UnityEngine;
 
-public class MissionSlotViewModel : IViewModel, IDisposable
+public class MissionSlotViewModel : ViewModelBase
 {
-    public event Action OnStateChanged;
+    public override event Action OnStateChanged;
     public event Action<int, int> OnRequestRewardPopup;
 
     private readonly UserMissionData _userData;
@@ -44,6 +44,7 @@ public class MissionSlotViewModel : IViewModel, IDisposable
         // 3. 보상 아이콘 뷰모델 생성
         // 자신에게 세팅된 미션을 아이템 아이콘에 전달해요.
         _rewardIconViewModel = new RewardItemIconViewModel(_gameData, _userData);
+        _rewardIconViewModel.AddRef();
         _rewardIconViewModel.OnRequestRewardPopup += OnChildRequestRewardPopup;
 
         // 4. 데이터 변경 감지
@@ -77,7 +78,7 @@ public class MissionSlotViewModel : IViewModel, IDisposable
         OnStateChanged?.Invoke();
     }
 
-    public void Dispose()
+    protected override void OnDispose()
     {
         if (_userData != null)
         {
@@ -85,10 +86,13 @@ public class MissionSlotViewModel : IViewModel, IDisposable
             _userData.state.OnValueChanged -= OnMissionStateChanged;
         }
 
-        _rewardIconViewModel.OnRequestRewardPopup -= OnChildRequestRewardPopup;
-
         // UI_Icon 쪽에서 호출해주기는 하는데.. 혹시 모르니 Dispose 호출해요.
-        (RewardIconViewModel as IDisposable)?.Dispose();
+        if (_rewardIconViewModel != null)
+        {
+            _rewardIconViewModel.OnRequestRewardPopup -= OnChildRequestRewardPopup;
+            _rewardIconViewModel.Release(); // 소유권 해제
+            _rewardIconViewModel = null;
+        }
 
         OnRequestRewardPopup = null;
     }

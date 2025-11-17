@@ -1,16 +1,16 @@
 using System;
 using UI;
 
-public class RecruitTabViewModel : IViewModel, IDisposable
+public class RecruitTabViewModel : ViewModelBase
 {
-    public event Action OnStateChanged;
+    public override event Action OnStateChanged;
 
     public RecruitTabViewModel()
     {
         // 탭에 필요한 데이터 로드 및 ReactiveProperty 구독
     }
 
-    public void Dispose()
+    protected override void OnDispose()
     {
         // 구독한 ReactiveProperty 이벤트 해제
     }

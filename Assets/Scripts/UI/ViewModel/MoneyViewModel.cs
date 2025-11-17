@@ -2,9 +2,9 @@ using System;
 using UI;
 using UnityEngine;
 
-public class MoneyViewModel : IViewModel, IDisposable
+public class MoneyViewModel : ViewModelBase
 {
-    public event Action OnStateChanged;
+    public override event Action OnStateChanged;
     public event Action<eItemType> OnRequestItemDetail;
 
     private ReactiveProperty<int> _jewelCountRef;
@@ -61,7 +61,7 @@ public class MoneyViewModel : IViewModel, IDisposable
         CreditCountText = Utils.FormatNumber(_creditCountRef.Value);
     }
 
-    public void Dispose()
+    protected override void OnDispose()
     {
         if (_jewelCountRef != null)
             _jewelCountRef.OnValueChanged -= OnDataChanged;

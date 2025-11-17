@@ -2,9 +2,9 @@ using System;
 using UI;
 using UnityEngine;
 
-public class RewardItemIconViewModel : IIconViewModel, IDisposable
+public class RewardItemIconViewModel : ViewModelBase, IIconViewModel
 {
-    public event Action OnStateChanged;
+    public override event Action OnStateChanged;
     public event Action<int, int> OnRequestRewardPopup; // Icon이 아닌 MissionSlot이 팝업을 열어야 해요.
 
     private readonly MissionGameData _gameData;
@@ -76,7 +76,7 @@ public class RewardItemIconViewModel : IIconViewModel, IDisposable
         }
     }
 
-    public void Dispose()
+    protected override void OnDispose()
     {
         if (_userData != null)
             _userData.state.OnValueChanged -= OnStateDataChanged;
