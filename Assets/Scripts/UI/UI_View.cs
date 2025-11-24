@@ -10,7 +10,7 @@ namespace UI
         /// <summary>
         /// View와 상호작용할 ViewModel
         /// </summary>
-        public IViewModel ViewModel { get; private set; }
+        public ViewModelBase ViewModel { get; private set; }
 
         /// <summary>
         /// UI 연출을 제어하기 위한 CanvasGroup
@@ -64,29 +64,20 @@ namespace UI
         /// 이 View와 상호작용할 ViewModel을 설정(주입)하고 데이터 바인딩을 시작합니다.
         /// </summary>
         /// <param name="viewModel">주입할 ViewModel입니다.</param>
-        public virtual void SetViewModel(IViewModel viewModel)
+        public virtual void SetViewModel(ViewModelBase viewModel)
         {
             // 1. 기존 바인딩(Bind 함수로 등록된 것들) 해제
             UnbindAll();
 
             // 2. 기존 ViewModel 연결 해제 및 참조 감소
             if (ViewModel != null)
-            {
-                ViewModel.OnStateChanged -= OnStateChanged;
                 (ViewModel as ViewModelBase)?.Release();
-            }
 
             ViewModel = viewModel;
 
             // 3. 새 ViewModel 연결 및 참조 증가
             if (ViewModel != null)
-            {
-                ViewModel.OnStateChanged += OnStateChanged;
                 (ViewModel as ViewModelBase)?.AddRef();
-
-                // ViewModel이 설정된 직후, 초기 데이터를 UI에 반영하기 위해 OnStateChanged를 호출합니다.
-                OnStateChanged();
-            }
         }
 
         /// <summary>
@@ -107,8 +98,8 @@ namespace UI
             UnbindAll();
 
             // OnStateChanged 구독 해제
-            if (ViewModel != null)
-                ViewModel.OnStateChanged -= OnStateChanged;
+            ViewModel?.Release();
+            ViewModel = null;
         }
     }
 }
