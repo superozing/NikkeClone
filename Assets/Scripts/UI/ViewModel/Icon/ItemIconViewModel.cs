@@ -1,30 +1,19 @@
-using System;
 using System.Threading.Tasks;
 using UI;
 using UnityEngine;
 
-public class ItemIconViewModel : ViewModelBase, IIconViewModel
+public class ItemIconViewModel : IconViewModel // 상속 변경
 {
-    public override event Action OnStateChanged;
-
     private ItemGameData _gameData;
     private UserItemData _userData;
 
-    public Sprite MainIconSprite { get; private set; }
+    public override ReactiveProperty<Sprite> MainIconSprite { get; } = new();
 
     // --- 사용하지 않을 스프라이트 --- 
-    public Sprite RarityFrameSprite { get; private set; } = null;
+    public override ReactiveProperty<Sprite> RarityFrameSprite { get; } = new();
     // ------------------------------
 
-    public string QuantityText
-    {
-        get
-        {
-            if (_userData == null)
-                return "X 0";
-            return "X " + Utils.FormatNumber(_userData.count.Value);
-        }
-    }
+    public override ReactiveProperty<string> QuantityText { get; } = new();
 
     /// <summary>
     /// ViewModel에 새로운 아이템 타입을 설정합니다.
@@ -42,24 +31,33 @@ public class ItemIconViewModel : ViewModelBase, IIconViewModel
         if (!Managers.Data.UserData.Items.TryGetValue(itemID, out _userData))
             _userData = null;
         else
+        {
             _userData.count.OnValueChanged += OnValueChanged;
+            // 초기값 설정
+            OnValueChanged(_userData.count.Value);
+        }
+
+        if (_userData == null)
+        {
+            QuantityText.Value = "X 0";
+        }
 
         // 3. 리소스 비동기 로드
-        MainIconSprite = await Managers.Resource.LoadAsync<Sprite>(_gameData.iconPath);
-
-        // 4. View 갱신
-        OnStateChanged?.Invoke();
+        if (_gameData != null)
+            MainIconSprite.Value = await Managers.Resource.LoadAsync<Sprite>(_gameData.iconPath);
     }
 
-    private void OnValueChanged(int _) => OnStateChanged?.Invoke();
+    private void OnValueChanged(int count)
+    {
+        QuantityText.Value = "X " + Utils.FormatNumber(count);
+    }
 
     // 아이템 팝업에서 아이콘의 버튼 입력 동작은 없다.
-    public void OnClickButton() { }
+    public override void OnClickButton() { }
 
     protected override void OnDispose()
     {
         if (_userData != null)
             _userData.count.OnValueChanged -= OnValueChanged;
-        OnStateChanged = null;
     }
 }
