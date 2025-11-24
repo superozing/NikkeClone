@@ -26,7 +26,7 @@ public class UI_TabButtonGroup : UI_View
         _buttonArray[(int)eTabType.Recruit] = _recruitButton;
     }
 
-    public override void SetViewModel(IViewModel viewModel)
+    public override void SetViewModel(ViewModelBase viewModel)
     {
         if (_viewModel != null)
             UnbindButtonListeners();
@@ -42,19 +42,19 @@ public class UI_TabButtonGroup : UI_View
         }
 
         if (_viewModel != null)
+        {
             BindButtonListeners();
+            Bind(_viewModel.CurrentTabType, UpdateButtonStates);
+        }
     }
 
-    protected override void OnStateChanged()
+    private void UpdateButtonStates(eTabType currentTab)
     {
-        if (_viewModel == null)
-            return;
-
         for (int i = 0; i < _buttonArray.Length; ++i)
         {
             // 선택된 탭은 버튼 비활성화
             // 시각효과도 넣으면 좋겠네요.
-            _buttonArray[i].interactable = (i != (int)_viewModel.CurrentTabType);
+            _buttonArray[i].interactable = (i != (int)currentTab);
         }
     }
 

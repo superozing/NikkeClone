@@ -2,10 +2,8 @@ using System;
 using UI;
 using UnityEngine;
 
-public abstract class ViewModelBase : IViewModel, IDisposable
+public abstract class ViewModelBase : IDisposable
 {
-    public abstract event Action OnStateChanged;
-
     private int _refCount = 0;
     private bool _boundOnce = false; // 생성 직후 바로 해제되는 것을 방지하기 위한 플래그
 

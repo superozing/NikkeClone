@@ -1,17 +1,15 @@
 using System;
-using UI;
 using UnityEngine;
 
 public class MoneyViewModel : ViewModelBase
 {
-    public override event Action OnStateChanged;
     public event Action<eItemType> OnRequestItemDetail;
 
     private ReactiveProperty<int> _jewelCountRef;
     private ReactiveProperty<int> _creditCountRef;
 
-    public string JewelCountText { get; private set; } = "0";
-    public string CreditCountText { get; private set; } = "0";
+    public ReactiveProperty<string> JewelCountText { get; private set; } = new("0");
+    public ReactiveProperty<string> CreditCountText { get; private set; } = new("0");
 
     public MoneyViewModel()
     {
@@ -26,17 +24,13 @@ public class MoneyViewModel : ViewModelBase
         if (Managers.Data.UserData.Items.TryGetValue((int)eItemType.Credit, out UserItemData creditItem))
             _creditCountRef = creditItem.count;
 
-        // 2. GameData에서 게임 아이템 데이터 참조
-        var jewelGameData = Managers.Data.Get<ItemGameData>((int)eItemType.Jewel);
-        var creditGameData = Managers.Data.Get<ItemGameData>((int)eItemType.Credit);
-
         // 초기 문자열 값 설정
         UpdateTextProperties();
 
-        // 3. 이벤트 구독
+        // 2. 이벤트 구독
         // 값 변경 시 View에 상태 변경 호출해요.
-        _jewelCountRef.OnValueChanged += OnDataChanged;
-        _creditCountRef.OnValueChanged += OnDataChanged;
+        if (_jewelCountRef != null) _jewelCountRef.OnValueChanged += OnDataChanged;
+        if (_creditCountRef != null) _creditCountRef.OnValueChanged += OnDataChanged;
     }
 
     /// <summary>
@@ -46,19 +40,18 @@ public class MoneyViewModel : ViewModelBase
     public void OnClickItem(eItemType itemType)
     {
         Debug.Log($"OnClickItem() 호출됨: {itemType}");
-        OnRequestItemDetail.Invoke(itemType);
+        OnRequestItemDetail?.Invoke(itemType);
     }
 
     private void OnDataChanged(int newValue)
     {
         UpdateTextProperties();
-        OnStateChanged?.Invoke();
     }
 
     private void UpdateTextProperties()
     {
-        JewelCountText = _jewelCountRef.Value.ToString();
-        CreditCountText = Utils.FormatNumber(_creditCountRef.Value);
+        if (_jewelCountRef != null) JewelCountText.Value = _jewelCountRef.Value.ToString();
+        if (_creditCountRef != null) CreditCountText.Value = Utils.FormatNumber(_creditCountRef.Value);
     }
 
     protected override void OnDispose()
@@ -67,5 +60,7 @@ public class MoneyViewModel : ViewModelBase
             _jewelCountRef.OnValueChanged -= OnDataChanged;
         if (_creditCountRef != null)
             _creditCountRef.OnValueChanged -= OnDataChanged;
+
+        OnRequestItemDetail = null;
     }
 }

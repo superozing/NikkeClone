@@ -27,7 +27,7 @@ public class UI_TabGroupPopup : UI_Popup
         }
     }
 
-    public override void SetViewModel(IViewModel viewModel)
+    public override void SetViewModel(ViewModelBase viewModel)
     {
         _viewModel = viewModel as TabGroupPopupViewModel;
         if (_viewModel == null && viewModel != null)
@@ -35,6 +35,8 @@ public class UI_TabGroupPopup : UI_Popup
             Debug.LogError($"[UI_TabGroupPopup] 잘못된 ViewModel 타입이 주입되었습니다.");
             return;
         }
+
+        base.SetViewModel(_viewModel);
 
         if (_viewModel == null)
             return;
@@ -51,15 +53,7 @@ public class UI_TabGroupPopup : UI_Popup
         if (_moneyView != null)
             _moneyView.SetViewModel(_viewModel.MoneyViewModel);
 
-        base.SetViewModel(_viewModel);
-    }
-
-    protected override void OnStateChanged()
-    {
-        if (_viewModel == null)
-            return;
-
-        ChangeTab(_viewModel.CurrentTabType);
+        Bind(_viewModel.CurrentTabType, ChangeTab);
     }
 
     /// <summary>

@@ -17,7 +17,7 @@ public class UI_Icon : UI_View
     [Header("Button")]
     [SerializeField] private Button _clickButton;
 
-    private IIconViewModel _viewModel;
+    private IconViewModel _viewModel;
 
     protected override void Awake()
     {
@@ -29,43 +29,48 @@ public class UI_Icon : UI_View
 
     private void OnButtonClick() => _viewModel?.OnClickButton();
 
-    public override void SetViewModel(IViewModel viewModel)
+    public override void SetViewModel(ViewModelBase viewModel)
     {
-        if (viewModel != null && viewModel is not IIconViewModel)
-        {
-            Debug.LogError($"[UI_Icon] 잘못된 ViewModel 타입이 주입되었습니다. Expected: {typeof(IIconViewModel).Name}, Actual: {viewModel.GetType().Name}");
-            return;
-        }
+        _viewModel = viewModel as IconViewModel;
 
-        _viewModel = viewModel as IIconViewModel;
+        base.SetViewModel(viewModel);
 
-        base.SetViewModel(_viewModel);
+        if (_viewModel == null) return;
+
+        // ReactiveProperty 바인딩
+        Bind(_viewModel.MainIconSprite, UpdateMainIcon);
+        Bind(_viewModel.RarityFrameSprite, UpdateFrameIcon);
+        Bind(_viewModel.QuantityText, UpdateQuantity);
     }
 
-    protected override void OnStateChanged()
+    private void UpdateMainIcon(Sprite sprite)
     {
-        // 1. 수량 텍스트 갱신
-        bool showQuantity = !string.IsNullOrEmpty(_viewModel.QuantityText);
-        _quantityRoot.SetActive(showQuantity);
-        if (showQuantity)
-            _quantityText.text = _viewModel.QuantityText;
-
-        // 2. 스프라이트 갱신
-        bool hasIcon = _viewModel.MainIconSprite != null;
+        bool hasIcon = sprite != null;
         _iconImage.gameObject.SetActive(hasIcon);
         if (hasIcon)
-            _iconImage.sprite = _viewModel.MainIconSprite;
+            _iconImage.sprite = sprite;
+    }
 
-        bool hasFrame = _viewModel.RarityFrameSprite != null;
+    private void UpdateFrameIcon(Sprite sprite)
+    {
+        bool hasFrame = sprite != null;
         _rarityFrameImage.gameObject.SetActive(hasFrame);
         if (hasFrame)
-            _rarityFrameImage.sprite = _viewModel.RarityFrameSprite;
+            _rarityFrameImage.sprite = sprite;
+    }
+
+    private void UpdateQuantity(string text)
+    {
+        bool showQuantity = !string.IsNullOrEmpty(text);
+        _quantityRoot.SetActive(showQuantity);
+        if (showQuantity)
+            _quantityText.text = text;
     }
 
     protected override void OnDestroy()
     {
-        base.OnDestroy(); 
-        
+        base.OnDestroy();
+
         if (_clickButton != null)
             _clickButton.onClick.RemoveListener(OnButtonClick);
 

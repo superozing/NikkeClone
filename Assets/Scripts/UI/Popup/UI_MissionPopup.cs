@@ -45,7 +45,7 @@ public class UI_MissionPopup : UI_Popup
     private void OnEscapeAction(InputAction.CallbackContext _) => OnCloseClick();
     private void OnCloseClick() => _viewModel?.OnClose();
 
-    public override void SetViewModel(IViewModel viewModel)
+    public override void SetViewModel(ViewModelBase viewModel)
     {
         if (_viewModel != null)
             _viewModel.OnCloseRequested -= OnCloseRequested;
@@ -57,14 +57,19 @@ public class UI_MissionPopup : UI_Popup
             return;
         }
 
+        base.SetViewModel(viewModel);
+
         if (_viewModel != null)
+        {
             _viewModel.OnCloseRequested += OnCloseRequested;
 
+            Bind(_viewModel.MissionResetTimeText, text => _missionResetTimeText.text = text);
+            Bind(_viewModel.MissionCompleteTimerText, text => _missionCompleteTimerText.text = text);
+            Bind(_viewModel.IsAllMissionsComplete, isComplete => _missionCompleteBlockerImage.SetActive(isComplete));
 
-        // UI_MissionSlot 생성
-        GenerateMissionSlots();
-
-        base.SetViewModel(_viewModel);
+            // UI_MissionSlot 생성
+            GenerateMissionSlots();
+        }
     }
 
     /// <summary>
@@ -78,16 +83,6 @@ public class UI_MissionPopup : UI_Popup
         // ViewModel 리스트를 순회하며 UIManager에 생성을 요청합니다.
         foreach (var slotViewModel in _viewModel.SlotViewModels)
             await Managers.UI.ShowAsync<UI_MissionSlot>(slotViewModel, _missionSlotRoot);
-    }
-
-    protected override void OnStateChanged()
-    {
-        if (_viewModel == null) 
-            return;
-
-        _missionResetTimeText.text = _viewModel.MissionResetTimeText;
-        _missionCompleteTimerText.text = _viewModel.MissionCompleteTimerText;
-        _missionCompleteBlockerImage.SetActive(_viewModel.IsAllMissionsComplete);
     }
 
     private async void OnCloseRequested()
