@@ -3,7 +3,6 @@ using UI;
 
 public class LobbyTabViewModel : ViewModelBase
 {
-    public override event Action OnStateChanged;
     public event Action OnRequestUnusedButton; // 사용하지 않는 버튼
     public event Action OnRequestCampaignButton; // 캠페인 버튼
 
@@ -41,6 +40,5 @@ public class LobbyTabViewModel : ViewModelBase
 
         OnRequestUnusedButton = null;
         OnRequestCampaignButton = null;
-        OnStateChanged = null;
     }
 }
