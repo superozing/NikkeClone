@@ -62,7 +62,7 @@ public class UIManager : IManagerBase
     /// <param name="viewModel">UI에 주입할 ViewModel 인스턴스입니다.</param>
     /// <param name="parent">UI가 위치할 부모 Transform입니다. null일 경우 타입에 따라 자동으로 Root가 결정됩니다.</param>
     /// <returns>생성 및 초기화가 완료된 UI의 인스턴스입니다.</returns>
-    public async Task<TView> ShowAsync<TView>(IViewModel viewModel, Transform parent = null) where TView : UI_View
+    public async Task<TView> ShowAsync<TView>(ViewModelBase viewModel, Transform parent = null) where TView : UI_View
     {
         // 부모가 명시되지 않은 경우, 현재 씬의 UI 루트를 사용합니다.
         Transform root = parent == null ? GetSceneRoot() : parent;
@@ -147,7 +147,7 @@ public class UIManager : IManagerBase
     /// <param name="viewModel">UI에 주입할 ViewModel 인스턴스입니다.</param>
     /// <param name="parent">UI가 위치할 부모 Transform입니다. null일 경우 DontDestroyRoot가 기본값으로 사용됩니다.</param>
     /// <returns>생성된 UI의 인스턴스입니다.</returns>
-    public async Task<TView> ShowDontDestroyAsync<TView>(IViewModel viewModel, Transform parent = null) where TView : UI_DontDestroyPopup
+    public async Task<TView> ShowDontDestroyAsync<TView>(ViewModelBase viewModel, Transform parent = null) where TView : UI_DontDestroyPopup
     {
         string prefabName = typeof(TView).Name;
         string path = GetPrefabPath<TView>(prefabName);
