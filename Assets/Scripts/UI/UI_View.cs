@@ -70,24 +70,12 @@ namespace UI
             UnbindAll();
 
             // 2. 기존 ViewModel 연결 해제 및 참조 감소
-            if (ViewModel != null)
-                (ViewModel as ViewModelBase)?.Release();
-
-            ViewModel = viewModel;
+            ViewModel?.Release();
 
             // 3. 새 ViewModel 연결 및 참조 증가
-            if (ViewModel != null)
-                (ViewModel as ViewModelBase)?.AddRef();
+            ViewModel = viewModel;
+            ViewModel?.AddRef();
         }
-
-        /// <summary>
-        /// ViewModel의 상태가 변경되었을 때 호출되는 메서드입니다.
-        /// 파생 클래스는 이 메서드를 재정의하여 UI 컴포넌트를 갱신해야 합니다.
-        /// 이제 제거해도 될 함수이긴 한데. 좀 더 고민해보는 것이 좋겠어요.
-        /// 전체 초기화를 담당했었지만 이제 필요가 사라졌다.
-        /// 이 것을 제거하고 추상 클래스로 만드려면 뭘 골라야 할 지도 생각해보아야 해요.
-        /// </summary>
-        protected abstract void OnStateChanged();
 
         /// <summary>
         /// 오브젝트 파괴 시 이벤트 구독을 확실히 해제합니다.
@@ -97,8 +85,8 @@ namespace UI
             // Bind 함수로 등록된 구독 해제
             UnbindAll();
 
-            // OnStateChanged 구독 해제
             ViewModel?.Release();
+
             ViewModel = null;
         }
     }
