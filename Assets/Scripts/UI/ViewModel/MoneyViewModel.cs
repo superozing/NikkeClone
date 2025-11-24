@@ -1,17 +1,15 @@
 using System;
-using UI;
 using UnityEngine;
 
 public class MoneyViewModel : ViewModelBase
 {
-    public override event Action OnStateChanged;
     public event Action<eItemType> OnRequestItemDetail;
 
     private ReactiveProperty<int> _jewelCountRef;
     private ReactiveProperty<int> _creditCountRef;
 
-    public string JewelCountText { get; private set; } = "0";
-    public string CreditCountText { get; private set; } = "0";
+    public ReactiveProperty<string> JewelCountText { get; private set; } = new("0");
+    public ReactiveProperty<string> CreditCountText { get; private set; } = new("0");
 
     public MoneyViewModel()
     {
@@ -35,8 +33,8 @@ public class MoneyViewModel : ViewModelBase
 
         // 3. 이벤트 구독
         // 값 변경 시 View에 상태 변경 호출해요.
-        _jewelCountRef.OnValueChanged += OnDataChanged;
-        _creditCountRef.OnValueChanged += OnDataChanged;
+        if (_jewelCountRef != null) _jewelCountRef.OnValueChanged += OnDataChanged;
+        if (_creditCountRef != null) _creditCountRef.OnValueChanged += OnDataChanged;
     }
 
     /// <summary>
@@ -46,19 +44,18 @@ public class MoneyViewModel : ViewModelBase
     public void OnClickItem(eItemType itemType)
     {
         Debug.Log($"OnClickItem() 호출됨: {itemType}");
-        OnRequestItemDetail.Invoke(itemType);
+        OnRequestItemDetail?.Invoke(itemType);
     }
 
     private void OnDataChanged(int newValue)
     {
         UpdateTextProperties();
-        OnStateChanged?.Invoke();
     }
 
     private void UpdateTextProperties()
     {
-        JewelCountText = _jewelCountRef.Value.ToString();
-        CreditCountText = Utils.FormatNumber(_creditCountRef.Value);
+        if (_jewelCountRef != null) JewelCountText.Value = _jewelCountRef.Value.ToString();
+        if (_creditCountRef != null) CreditCountText.Value = Utils.FormatNumber(_creditCountRef.Value);
     }
 
     protected override void OnDispose()
@@ -67,5 +64,7 @@ public class MoneyViewModel : ViewModelBase
             _jewelCountRef.OnValueChanged -= OnDataChanged;
         if (_creditCountRef != null)
             _creditCountRef.OnValueChanged -= OnDataChanged;
+
+        OnRequestItemDetail = null;
     }
 }
