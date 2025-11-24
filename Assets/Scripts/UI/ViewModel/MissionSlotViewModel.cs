@@ -4,24 +4,23 @@ using UnityEngine;
 
 public class MissionSlotViewModel : ViewModelBase
 {
-    public override event Action OnStateChanged;
     public event Action<int, int> OnRequestRewardPopup;
 
     private readonly UserMissionData _userData;
     private readonly MissionGameData _gameData;
     private RewardItemIconViewModel _rewardIconViewModel;
 
+    // 변하지 않는 데이터는 일반 프로퍼티
     public string Title { get; private set; }
     public string Description { get; private set; }
-    public float Progress { get; private set; }
-    public string ProgressText { get; private set; }
-    public eMissionState MissionState { get; private set; }
-    public IIconViewModel RewardIconViewModel => _rewardIconViewModel;
 
-    /// <summary>
-    /// ID 값을 받아 미션 뷰모델을 생성합니다.
-    /// </summary>
-    /// <param name="missionID">참조할 미션의 고유 ID입니다.</param>
+    // 변하는 데이터는 ReactiveProperty
+    public ReactiveProperty<float> Progress { get; private set; } = new(0f);
+    public ReactiveProperty<string> ProgressText { get; private set; } = new("");
+    public ReactiveProperty<eMissionState> MissionState { get; private set; } = new(eMissionState.InProgress);
+
+    public IconViewModel RewardIconViewModel => _rewardIconViewModel;
+
     public MissionSlotViewModel(int missionID)
     {
         // 1. DataManager 참조
@@ -65,17 +64,13 @@ public class MissionSlotViewModel : ViewModelBase
 
     private void OnMissionStateChanged(eMissionState state)
     {
-        MissionState = state;
-
-        OnStateChanged?.Invoke();
+        MissionState.Value = state;
     }
 
     private void OnDataChanged(int _)
     {
-        Progress = Mathf.Clamp01((float)_userData.currentCount.Value / _gameData.targetCount);
-        ProgressText = $"{Utils.FormatNumber(_userData.currentCount.Value)} / {Utils.FormatNumber(_gameData.targetCount)}";
-
-        OnStateChanged?.Invoke();
+        Progress.Value = Mathf.Clamp01((float)_userData.currentCount.Value / _gameData.targetCount);
+        ProgressText.Value = $"{Utils.FormatNumber(_userData.currentCount.Value)} / {Utils.FormatNumber(_gameData.targetCount)}";
     }
 
     protected override void OnDispose()
@@ -86,7 +81,6 @@ public class MissionSlotViewModel : ViewModelBase
             _userData.state.OnValueChanged -= OnMissionStateChanged;
         }
 
-        // UI_Icon 쪽에서 호출해주기는 하는데.. 혹시 모르니 Dispose 호출해요.
         if (_rewardIconViewModel != null)
         {
             _rewardIconViewModel.OnRequestRewardPopup -= OnChildRequestRewardPopup;

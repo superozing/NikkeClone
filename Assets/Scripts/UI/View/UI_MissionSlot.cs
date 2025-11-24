@@ -16,7 +16,7 @@ public class UI_MissionSlot : UI_View
 
     private MissionSlotViewModel _viewModel;
 
-    public override void SetViewModel(IViewModel viewModel)
+    public override void SetViewModel(ViewModelBase viewModel)
     {
         if (_viewModel != null)
             _viewModel.OnRequestRewardPopup -= ShowRewardPopup;
@@ -28,40 +28,41 @@ public class UI_MissionSlot : UI_View
             return;
         }
 
-        // 최초 1회만 설정되어야 하는 데이터는 이 때 초기화하면 되겠죠.
-        _titleText.text = _viewModel.Title;
-        _descText.text = _viewModel.Description;
+        base.SetViewModel(viewModel);
 
-        if (_rewardIcon != null)
-            _rewardIcon.SetViewModel(_viewModel.RewardIconViewModel);
+        if (_viewModel != null)
+        {
+            // 정적 프로퍼티는 이벤트 바인딩을 하지 않아요.
+            _titleText.text = _viewModel.Title;
+            _descText.text = _viewModel.Description;
 
-        _viewModel.OnRequestRewardPopup += ShowRewardPopup;
+            // 자식 뷰모델 연결
+            if (_rewardIcon != null)
+                _rewardIcon.SetViewModel(_viewModel.RewardIconViewModel);
 
-        base.SetViewModel(_viewModel);
+            _viewModel.OnRequestRewardPopup += ShowRewardPopup;
+
+            // ReactiveProperty 바인딩
+            Bind(_viewModel.ProgressText, text => _progressText.text = text);
+            Bind(_viewModel.Progress, value => { if (_progressBar != null) _progressBar.value = value; });
+            Bind(_viewModel.MissionState, UpdateStateVisuals);
+        }
+    }
+
+    private void UpdateStateVisuals(eMissionState state)
+    {
+        if (_fillImage != null)
+        {
+            if (state == eMissionState.Completed)
+                _fillImage.color = new Color(.2f, .7f, .9f);
+            else
+                _fillImage.color = new Color(.2f, .2f, .2f);
+        }
     }
 
     private async void ShowRewardPopup(int itemID, int count)
     {
         Debug.Log($"[UI_MissionSlot] 팝업 생성 요청: ItemID({itemID}), Count({count})");
-    }
-
-    protected override void OnStateChanged()
-    {
-        if (_viewModel == null)
-            return;
-
-        // 1. 미션 정보 설정
-        _progressText.text = _viewModel.ProgressText;
-
-        // 2. 진행도 설정
-        if (_progressBar != null)
-            _progressBar.value = _viewModel.Progress;
-
-        // 3. 진행 완료 시 색상 변경
-        if (_viewModel.MissionState == eMissionState.Completed)
-            _fillImage.color = new Color(.2f, .7f, .9f);
-        else
-            _fillImage.color = new Color(.2f, .2f, .2f);
     }
 
     protected override void OnDestroy()

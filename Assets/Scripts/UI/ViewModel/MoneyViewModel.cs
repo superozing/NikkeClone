@@ -24,14 +24,10 @@ public class MoneyViewModel : ViewModelBase
         if (Managers.Data.UserData.Items.TryGetValue((int)eItemType.Credit, out UserItemData creditItem))
             _creditCountRef = creditItem.count;
 
-        // 2. GameData에서 게임 아이템 데이터 참조
-        var jewelGameData = Managers.Data.Get<ItemGameData>((int)eItemType.Jewel);
-        var creditGameData = Managers.Data.Get<ItemGameData>((int)eItemType.Credit);
-
         // 초기 문자열 값 설정
         UpdateTextProperties();
 
-        // 3. 이벤트 구독
+        // 2. 이벤트 구독
         // 값 변경 시 View에 상태 변경 호출해요.
         if (_jewelCountRef != null) _jewelCountRef.OnValueChanged += OnDataChanged;
         if (_creditCountRef != null) _creditCountRef.OnValueChanged += OnDataChanged;

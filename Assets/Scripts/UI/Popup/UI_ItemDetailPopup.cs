@@ -24,7 +24,7 @@ public class UI_ItemDetailPopup : UI_Popup
     [SerializeField] private RectTransform _bgImageRectTransform;
 
     private ItemDetailPopupViewModel _viewModel;
-    
+
     private readonly FadeInUIAnimation _fadeIn = new(0.2f);
     private readonly FadeOutUIAnimation _fadeOut = new(0.2f);
     private CanvasGroup _cg;
@@ -52,12 +52,11 @@ public class UI_ItemDetailPopup : UI_Popup
             await _fadeIn.ExecuteAsync(_cg);
     }
 
-    public override void SetViewModel(IViewModel viewModel)
+    public override void SetViewModel(ViewModelBase viewModel)
     {
         if (_viewModel != null)
             _viewModel.OnClose -= OnCloseRequested;
 
-        // ViewModel 타입 캐스팅
         _viewModel = viewModel as ItemDetailPopupViewModel;
         if (_viewModel == null && viewModel != null)
         {
@@ -65,28 +64,27 @@ public class UI_ItemDetailPopup : UI_Popup
             return;
         }
 
-        base.SetViewModel(_viewModel);
+        base.SetViewModel(viewModel);
 
         if (_viewModel != null)
+        {
             _viewModel.OnClose += OnCloseRequested;
-    }
 
-    protected override void OnStateChanged()
-    {
-        if (_viewModel == null) return;
+            // ReactiveProperty 바인딩
+            Bind(_viewModel.ItemName, text => _itemNameText.text = text);
+            Bind(_viewModel.QuantityText, text => _quantityText.text = text);
+            Bind(_viewModel.DescText, text =>
+            {
+                _descText.text = text;
+                // 텍스트 변경 시 레이아웃 갱신
+                if (_bgImageRectTransform != null)
+                    LayoutRebuilder.ForceRebuildLayoutImmediate(_bgImageRectTransform);
+            });
 
-        // 1. 텍스트 정보 바인딩
-        _itemNameText.text = _viewModel.ItemName;
-        _quantityText.text = _viewModel.QuantityText;
-        _descText.text = _viewModel.DescText;
-
-        // 2. 자식 View(UI_Icon)에 자식 ViewModel(IconViewModel)을 바인딩
-        if (_icon != null)
-            _icon.SetViewModel(_viewModel.IconViewModel);
-
-        // 3. 배경 레이아웃 갱신(설명 텍스트 크기 대응)
-        if (_bgImageRectTransform != null)
-            LayoutRebuilder.ForceRebuildLayoutImmediate(_bgImageRectTransform);
+            // 자식 ViewModel 바인딩
+            if (_icon != null)
+                _icon.SetViewModel(_viewModel.IconViewModel);
+        }
     }
 
     private void OnExitClick() => _viewModel?.OnExit();

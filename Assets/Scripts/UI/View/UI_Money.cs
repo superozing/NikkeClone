@@ -28,8 +28,8 @@ public class UI_Money : UI_View
     /// 외부에서 생성된 ViewModel을 주입받고,
     /// 해당 ViewModel 타입으로 캐스팅하여 멤버 변수에 저장하며 데이터 바인딩을 설정합니다.
     /// </summary>
-    /// <param name="viewModel">[이 View에서는 반드시 MoneyViewModel과 대응되어야 합니다.] 주입할 ViewModel입니다. UIManager.ShowAsync를 통해 전달됩니다.</param>
-    public override void SetViewModel(IViewModel viewModel)
+    /// <param name="viewModel">[이 View에서는 반드시 MoneyViewModel과 대응되어야 합니다.] 주입할 ViewModel입니다.</param>
+    public override void SetViewModel(ViewModelBase viewModel)
     {
         if (_viewModel != null)
             _viewModel.OnRequestItemDetail -= ShowItemDetailPopup;
@@ -41,20 +41,16 @@ public class UI_Money : UI_View
             Debug.LogError($"[UI_Money] 잘못된 ViewModel 타입이 주입되었습니다. Expected: MoneyViewModel, Actual: {viewModel.GetType()}");
             return;
         }
-        if (_viewModel != null)
-            _viewModel.OnRequestItemDetail += ShowItemDetailPopup;
 
         base.SetViewModel(viewModel);
-    }
 
-    /// <summary>
-    /// ViewModel의 상태가 변경되었을 때(OnStateChanged 호출 시) UI 컴포넌트를 갱신합니다.
-    /// </summary>
-    protected override void OnStateChanged()
-    {
-        // 뷰모델에서 포매팅 된 문자열을 세팅
-        _jewelCountText.text = _viewModel.JewelCountText;
-        _creditCountText.text = _viewModel.CreditCountText;
+        if (_viewModel != null)
+        {
+            _viewModel.OnRequestItemDetail += ShowItemDetailPopup;
+
+            Bind(_viewModel.JewelCountText, text => _jewelCountText.text = text);
+            Bind(_viewModel.CreditCountText, text => _creditCountText.text = text);
+        }
     }
 
     private async void ShowItemDetailPopup(eItemType itemType)

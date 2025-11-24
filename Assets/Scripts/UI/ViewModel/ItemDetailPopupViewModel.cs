@@ -5,16 +5,16 @@ using UnityEngine;
 
 public class ItemDetailPopupViewModel : ViewModelBase
 {
-    public override event Action OnStateChanged;
     public event Action OnClose;
 
     private ItemGameData _gameData;
     private UserItemData _userData;
 
     public ItemIconViewModel IconViewModel { get; private set; }
-    public string ItemName { get; private set; }
-    public string QuantityText { get; private set; }
-    public string DescText { get; private set; }
+
+    public ReactiveProperty<string> ItemName { get; private set; } = new("");
+    public ReactiveProperty<string> QuantityText { get; private set; } = new("");
+    public ReactiveProperty<string> DescText { get; private set; } = new("");
 
     public ItemDetailPopupViewModel()
     {
@@ -48,8 +48,8 @@ public class ItemDetailPopupViewModel : ViewModelBase
         await IconViewModel.SetItem(itemType);
 
         // 4. View에 바인딩할 프로퍼티 설정
-        ItemName = _gameData.name;
-        DescText = _gameData.desc;
+        ItemName.Value = _gameData.name;
+        DescText.Value = _gameData.desc;
 
         // 5. 새 데이터 구독
         if (_userData != null)
@@ -63,8 +63,10 @@ public class ItemDetailPopupViewModel : ViewModelBase
 
     private void OnDataChanged(int _)
     {
-        QuantityText = $"보유량: {_userData.count.Value}";
-        OnStateChanged?.Invoke();
+        if (_userData != null)
+            QuantityText.Value = $"보유량: {_userData.count.Value}";
+        else
+            QuantityText.Value = "보유량: 0";
     }
 
     protected override void OnDispose()
