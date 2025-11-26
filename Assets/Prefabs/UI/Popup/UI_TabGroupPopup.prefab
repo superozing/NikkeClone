@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 3600859316593003099}
   - component: {fileID: 2944006214773331493}
   - component: {fileID: 2634495220069238089}
-  - component: {fileID: 754230727547292269}
   m_Layer: 0
   m_Name: UI_TabGroupPopup
   m_TagString: Untagged
@@ -86,18 +85,6 @@ MonoBehaviour:
   - {fileID: 5326563480798402175}
   - {fileID: 7521409441650071874}
   _tabButtonGroup: {fileID: 3767962292374063840}
---- !u!114 &754230727547292269
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 544962131655027270}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 33f9fbad24598474c8b887f7da69b26b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
   _moneyView: {fileID: 3480262637477299636}
 --- !u!1 &5881339458913707934
 GameObject:

@@ -4,8 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using System;
+using System.Threading.Tasks;
 
-public class UI_ItemDetailPopup : UI_Popup
+public class UI_ItemDetailPopup : UI_Popup, IUIShowHideAnimation
 {
     public override string ActionMapKey => "UI_ItemDetailPopup";
 
@@ -25,9 +26,8 @@ public class UI_ItemDetailPopup : UI_Popup
 
     private ItemDetailPopupViewModel _viewModel;
 
-    private readonly FadeInUIAnimation _fadeIn = new(0.2f);
-    private readonly FadeOutUIAnimation _fadeOut = new(0.2f);
-    private CanvasGroup _cg;
+    private readonly IUIAnimation _fadeIn = new FadeInUIAnimation(0.2f);
+    private readonly IUIAnimation _fadeOut = new FadeOutUIAnimation(0.2f);
 
     protected override void Awake()
     {
@@ -40,17 +40,29 @@ public class UI_ItemDetailPopup : UI_Popup
         _okButton.onClick.AddListener(OnExitClick);
         _exitButton.onClick.AddListener(OnExitClick);
         _blocker.onClick.AddListener(OnExitClick);
-
-        // 3. CanvasGroup 캐싱 (연출 호출 위해서)
-        _cg = gameObject.GetOrAddComponent<CanvasGroup>();
     }
 
     protected async void OnEnable()
     {
         // 활성화 시 연출 시작
-        if (_fadeIn != null)
-            await _fadeIn.ExecuteAsync(_cg);
+        await PlayShowAnimationAsync();
     }
+
+    // --- IUIShowHideAnimation 구현 ---
+
+    public async Task PlayShowAnimationAsync()
+    {
+        if (_fadeIn != null && _canvasGroup != null)
+            await _fadeIn.ExecuteAsync(_canvasGroup);
+    }
+
+    public async Task PlayHideAnimationAsync()
+    {
+        if (_fadeOut != null && _canvasGroup != null)
+            await _fadeOut.ExecuteAsync(_canvasGroup);
+    }
+
+    // --------------------------------
 
     public override void SetViewModel(ViewModelBase viewModel)
     {
@@ -95,8 +107,7 @@ public class UI_ItemDetailPopup : UI_Popup
     /// </summary>
     private async void OnCloseRequested()
     {
-        if (_fadeOut != null)
-            await _fadeOut.ExecuteAsync(_cg);
+        await PlayHideAnimationAsync();
 
         // 연출 이후 자신을 닫아요.
         Managers.UI.Close(this);

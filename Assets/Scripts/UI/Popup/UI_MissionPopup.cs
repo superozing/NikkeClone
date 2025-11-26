@@ -4,8 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using System;
+using System.Threading.Tasks;
+using DG.Tweening;
 
-public class UI_MissionPopup : UI_Popup
+public class UI_MissionPopup : UI_Popup, IUIShowHideAnimation
 {
     public override string ActionMapKey => "UI_MissionPopup";
 
@@ -21,8 +23,9 @@ public class UI_MissionPopup : UI_Popup
 
     private MissionPopupViewModel _viewModel;
 
-    private readonly FadeInUIAnimation _fadeIn = new(0.2f);
-    private readonly FadeOutUIAnimation _fadeOut = new(0.2f);
+    // 내부 연출 객체
+    private IUIAnimation _fadeInAnimation = new FadeInUIAnimation(0.3f, Ease.OutQuad);
+    private IUIAnimation _fadeOutAnimation = new FadeOutUIAnimation(0.2f, Ease.InQuad);
 
     protected override void Awake()
     {
@@ -34,12 +37,28 @@ public class UI_MissionPopup : UI_Popup
         // 2. Button OnClick 리스너 바인딩
         _blocker.onClick.AddListener(OnCloseClick);
         _exitButton.onClick.AddListener(OnCloseClick);
+
+        // 연출 전략 수립
+        _fadeInAnimation  = new FadeInUIAnimation(0.3f, Ease.OutQuad);
+        _fadeOutAnimation = new FadeOutUIAnimation(0.2f, Ease.InQuad);
     }
 
     protected async void OnEnable()
     {
-        if (_fadeIn != null)
-            await _fadeIn.ExecuteAsync(_canvasGroup);
+        await PlayShowAnimationAsync();
+    }
+
+    public async Task PlayShowAnimationAsync()
+    {
+        // CanvasGroup은 부모(UI_View)의 protected 멤버 사용
+        if (_fadeInAnimation != null && _canvasGroup != null)
+            await _fadeInAnimation.ExecuteAsync(_canvasGroup);
+    }
+
+    public async Task PlayHideAnimationAsync()
+    {
+        if (_fadeOutAnimation != null && _canvasGroup != null)
+            await _fadeOutAnimation.ExecuteAsync(_canvasGroup);
     }
 
     private void OnEscapeAction(InputAction.CallbackContext _) => OnCloseClick();
@@ -88,7 +107,8 @@ public class UI_MissionPopup : UI_Popup
     private async void OnCloseRequested()
     {
         // FadeOut 이후 UI를 닫아요.
-        await _fadeOut.ExecuteAsync(_canvasGroup);
+        await PlayHideAnimationAsync();
+
         Managers.UI.Close(this);
     }
 
