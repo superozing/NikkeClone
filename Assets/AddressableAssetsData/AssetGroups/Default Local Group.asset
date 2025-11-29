@@ -30,6 +30,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 242b251ddaea9f84c92b66547428302f
+    m_Address: UI/View/UI_InventoryIcon
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3c007bc872aa4604c8d78ab5c047fece
     m_Address: ItemGameData.json
     m_ReadOnly: 0
