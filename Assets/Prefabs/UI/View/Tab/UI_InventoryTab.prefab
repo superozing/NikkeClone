@@ -81,6 +81,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _iconTemplate: {fileID: 1156525610239496737, guid: 242b251ddaea9f84c92b66547428302f, type: 3}
   _itemBg: {fileID: 1171142816577598903}
+  _bgCanvasGroup: {fileID: 8841515022136161305}
   _scrollCanvasGroup: {fileID: 7232781983068016184}
   _contentTransform: {fileID: 5382093390642205555}
 --- !u!1 &1357114843538794944
@@ -481,8 +482,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -30}
-  m_SizeDelta: {x: 0, y: -100}
+  m_AnchoredPosition: {x: 0, y: -40}
+  m_SizeDelta: {x: 0, y: -120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3643443566867975290
 CanvasRenderer:
@@ -743,6 +744,7 @@ GameObject:
   - component: {fileID: 1171142816577598903}
   - component: {fileID: 8216545530607609476}
   - component: {fileID: 1550596688423692915}
+  - component: {fileID: 8841515022136161305}
   m_Layer: 0
   m_Name: ItemBg
   m_TagString: Untagged
@@ -808,6 +810,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!225 &8841515022136161305
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6677898430115343745}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &6990718708506777254
 GameObject:
   m_ObjectHideFlags: 0
@@ -842,8 +856,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -43.9, y: -53.24002}
-  m_SizeDelta: {x: 411.3628, y: 106.48}
+  m_AnchoredPosition: {x: -39.999977, y: -53.24002}
+  m_SizeDelta: {x: 419.16, y: 106.48}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7470531440265617142
 CanvasRenderer:
@@ -873,7 +887,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uC544\uC774\uD15C\uC744 \uD1B5\uD574 \uAC15\uD574\uC9C8 \uC218 \uC788\uC2B5\uB2C8\uB2E4."
+  m_text: "\uC778\uBCA4\uD1A0\uB9AC\uC5D0\uC11C \uD604\uC7AC \uBCF4\uC720 \uC911\uC778
+    \uC544\uC774\uD15C \uBAA9\uB85D\uC744 \uBCFC \uC218 \uC788\uC2B5\uB2C8\uB2E4."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1fa0cb169256f204789039fd4303854d, type: 2}
   m_sharedMaterial: {fileID: 7238114212914969422, guid: 1fa0cb169256f204789039fd4303854d, type: 2}
