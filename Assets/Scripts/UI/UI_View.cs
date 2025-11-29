@@ -69,12 +69,15 @@ namespace UI
             // 1. 기존 바인딩(Bind 함수로 등록된 것들) 해제
             UnbindAll();
 
-            // 2. 기존 ViewModel 연결 해제 및 참조 감소
+            // 2. 새 ViewModel 참조 증가
+            viewModel?.AddRef();
+
+            // 3. 기존 ViewModel 연결 해제 및 참조 감소
+            // (만약 ViewModel == viewModel 이라면 위에서 +1, 여기서 -1 되어 참조 카운트 유지됨)
             ViewModel?.Release();
 
-            // 3. 새 ViewModel 연결 및 참조 증가
+            // 4. 교체
             ViewModel = viewModel;
-            ViewModel?.AddRef();
         }
 
         /// <summary>
