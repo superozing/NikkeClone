@@ -15,6 +15,7 @@ public class UI_InventoryTab : UI_TabBase
     private InventoryTabViewModel _viewModel;
 
     private IUIAnimation _openAnimation;
+    private Vector2 _originScrollPos;
 
     protected override void Awake()
     {
@@ -22,9 +23,12 @@ public class UI_InventoryTab : UI_TabBase
         _iconTemplate.SetActive(false);
 
         
-        _openAnimation = new InventoryOpenAnimation(_itemBg, 0.3f);
+        _openAnimation = new InventoryOpenAnimation(_itemBg);
 
         _itemBg.localScale = new Vector3(0f, 1f, 1f); // x축 커지며 확장시키기 위해 0으로 설정
+
+        _originScrollPos = _scrollCanvasGroup.GetComponent<RectTransform>().anchoredPosition;
+
         _scrollCanvasGroup.alpha = 0f; 
         _scrollCanvasGroup.interactable = false;
     }
@@ -70,11 +74,17 @@ public class UI_InventoryTab : UI_TabBase
     {
         base.OnTabDeselected();
 
+        _scrollCanvasGroup.GetComponent<RectTransform>().anchoredPosition = _originScrollPos;
+
         _itemBg.localScale = new Vector3(0f, 1f, 1f);
         _scrollCanvasGroup.alpha = 0f;
     }
 
-    private async void PlayShowAnimation() => await _openAnimation.ExecuteAsync(_scrollCanvasGroup);
+    private async void PlayShowAnimation()
+    {
+        _scrollCanvasGroup.GetComponent<RectTransform>().anchoredPosition = _originScrollPos;
+        await _openAnimation.ExecuteAsync(_scrollCanvasGroup);
+    }
 
     private void RefreshList()
     {
