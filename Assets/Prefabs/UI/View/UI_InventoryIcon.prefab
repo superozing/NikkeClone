@@ -10,7 +10,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 544962131655027270, guid: c3788e7b1806a664f91898638828653d, type: 3}
       propertyPath: m_Name
-      value: UI_Icon Variant
+      value: UI_InventoryIcon
+      objectReference: {fileID: 0}
+    - target: {fileID: 544962131655027270, guid: c3788e7b1806a664f91898638828653d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1375758372997640970, guid: c3788e7b1806a664f91898638828653d, type: 3}
       propertyPath: m_fontSize
