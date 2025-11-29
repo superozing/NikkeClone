@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,12 +10,14 @@ public class UI_InventoryTab : UI_TabBase
     private List<UI_Icon> _spawnedIcons = new List<UI_Icon>();
 
     [SerializeField] private RectTransform _itemBg;
+    [SerializeField] private CanvasGroup _bgCanvasGroup;
     [SerializeField] private CanvasGroup _scrollCanvasGroup;
     [SerializeField] private Transform _contentTransform;
 
     private InventoryTabViewModel _viewModel;
 
-    private IUIAnimation _openAnimation;
+    private IUIAnimation _bgExpandAnim;
+    private IUIAnimation _contentSlideAnim;
     private Vector2 _originScrollPos;
 
     protected override void Awake()
@@ -22,8 +25,9 @@ public class UI_InventoryTab : UI_TabBase
         base.Awake();
         _iconTemplate.SetActive(false);
 
-        
-        _openAnimation = new InventoryOpenAnimation(_itemBg);
+        // UI 연출 객체 생성
+        _bgExpandAnim = new HorizontalExpandUIAnimation(0.3f, Ease.OutQuart);
+        _contentSlideAnim = new VerticalSlideFadeUIAnimation(0.3f, 100f, Ease.OutQuart);
 
         _itemBg.localScale = new Vector3(0f, 1f, 1f); // x축 커지며 확장시키기 위해 0으로 설정
 
@@ -75,7 +79,6 @@ public class UI_InventoryTab : UI_TabBase
         base.OnTabDeselected();
 
         _scrollCanvasGroup.GetComponent<RectTransform>().anchoredPosition = _originScrollPos;
-
         _itemBg.localScale = new Vector3(0f, 1f, 1f);
         _scrollCanvasGroup.alpha = 0f;
     }
@@ -83,7 +86,14 @@ public class UI_InventoryTab : UI_TabBase
     private async void PlayShowAnimation()
     {
         _scrollCanvasGroup.GetComponent<RectTransform>().anchoredPosition = _originScrollPos;
-        await _openAnimation.ExecuteAsync(_scrollCanvasGroup);
+        _itemBg.localScale = new Vector3(0f, 1f, 1f);
+        _scrollCanvasGroup.alpha = 0f;
+
+        // 1. 배경 확장
+        await _bgExpandAnim.ExecuteAsync(_bgCanvasGroup);
+
+        // 2. 콘텐츠 등장
+        await _contentSlideAnim.ExecuteAsync(_scrollCanvasGroup);
     }
 
     private void RefreshList()
