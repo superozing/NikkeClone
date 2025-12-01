@@ -3,13 +3,16 @@ using UnityEngine;
 
 public class NikkeCardViewModel : ViewModelBase
 {
-    // 클릭 이벤트. NikkeCardViewModel을 생성하는 객체가 세팅해주어야 해요.
+    // 클릭 이벤트는 이 ViewModel을 소유한 부모(ScrollViewModel)가 구독하여 처리합니다.
     public event Action<int> OnClick;
 
     private readonly UserNikkeData _userData;
     private readonly NikkeGameData _gameData;
 
-    // --- View 바인딩용 ReactiveProperty ---
+    public int NikkeId => _gameData.id;
+    public int BurstLevel => _gameData.burstLevel;
+
+    // --- View Binding Properties ---
     public ReactiveProperty<string> Name { get; private set; } = new();
     public ReactiveProperty<int> Level { get; private set; } = new();
     public ReactiveProperty<string> CombatPowerText { get; private set; } = new();
@@ -19,42 +22,37 @@ public class NikkeCardViewModel : ViewModelBase
     public ReactiveProperty<Sprite> CodeIcon { get; private set; } = new();
     public ReactiveProperty<Sprite> WeaponIcon { get; private set; } = new();
     public ReactiveProperty<Sprite> BurstIcon { get; private set; } = new();
+    // -------------------------------
 
-    // ------------------------------------
-
-    public int NikkeId => _gameData.id;
-    public int BurstLevel => _gameData.burstLevel; // 필터링 용도
+    // 정렬을 위한 Getter
+    public int CurrentLevel => _userData.level.Value;
+    public long CombatPower => CalculateCP(_userData.level.Value, _gameData.attack);
+    public string NikkeName => _gameData.name;
 
     public NikkeCardViewModel(UserNikkeData userData, NikkeGameData gameData)
     {
         _userData = userData;
         _gameData = gameData;
 
-        if (_userData == null || _gameData == null)
-        {
-            Debug.LogError("[NikkeCardViewModel] 데이터가 유효하지 않습니다.");
-            return;
-        }
-
-        // 1. 기본 텍스트 정보 설정
         Name.Value = _gameData.name;
 
-        // 2. 유저 데이터 변경 감지 (레벨 등)
+        // 레벨 변경 구독
         _userData.level.OnValueChanged += OnLevelChanged;
-        OnLevelChanged(_userData.level.Value); // 초기값 반영
+        OnLevelChanged(_userData.level.Value);
 
-        // 3. 리소스 비동기 로드 시작
         LoadAllResources();
     }
 
     private void OnLevelChanged(int level)
     {
         Level.Value = level;
+        CombatPowerText.Value = Utils.FormatNumber((int)CalculateCP(level, _gameData.attack));
+    }
 
-        // 전투력 계산 (임시 공식: 레벨 * 100 + 공격력)
-        // 실제 기획 데이터가 있다면 그에 맞춰 수정 필요
-        long cp = (long)level * 100 + _gameData.attack;
-        CombatPowerText.Value = Utils.FormatNumber((int)cp);
+    private long CalculateCP(int level, int attack)
+    {
+        // 임시 전투력 공식: 레벨 * 100 + 공격력
+        return (long)level * 100 + attack;
     }
 
     /// <summary>
@@ -62,27 +60,17 @@ public class NikkeCardViewModel : ViewModelBase
     /// </summary>
     private async void LoadAllResources()
     {
-        // 리소스 경로 규칙 (Naming Convention) 정의
-        // 실제 에셋 번들/Addressable 경로와 일치해야 합니다.
-        string facePath     = $"Assets/Textures/Nikke/{_gameData.name}_Crop";
-        string classPath    = $"Assets/Textures/Icon/Class/{_gameData.nikkeClass}";
-        string codePath     = $"Assets/Textures/Icon/Code/{_gameData.element}";
-        string weaponPath   = $"Assets/Textures/Icon/Weapon/{_gameData.weapon?.weaponClass}";
-        string burstPath    = $"Assets/Textures/Icon/Burst/burst_{_gameData.burstLevel}";
+        string facePath = $"Assets/Textures/Nikke/{_gameData.name}_Crop"; // 상반신 Crop 이미지 가정
+        string classPath = $"Assets/Textures/Icon/Class/{_gameData.nikkeClass}";
+        string codePath = $"Assets/Textures/Icon/Code/{_gameData.element}";
+        string weaponPath = $"Assets/Textures/Icon/Weapon/{_gameData.weapon?.weaponClass}";
+        string burstPath = $"Assets/Textures/Icon/Burst/burst_{_gameData.burstLevel}";
 
-        // 병렬 로드 (모두 동시에 요청)
-        var faceTask = Managers.Resource.LoadAsync<Sprite>(facePath);
-        var classTask = Managers.Resource.LoadAsync<Sprite>(classPath);
-        var codeTask = Managers.Resource.LoadAsync<Sprite>(codePath);
-        var weaponTask = Managers.Resource.LoadAsync<Sprite>(weaponPath);
-        var burstTask = Managers.Resource.LoadAsync<Sprite>(burstPath);
-
-        // 로드 완료되는 대로 프로퍼티 갱신
-        FaceImage.Value = await faceTask;
-        ClassIcon.Value = await classTask;
-        CodeIcon.Value = await codeTask;
-        WeaponIcon.Value = await weaponTask;
-        BurstIcon.Value = await burstTask;
+        FaceImage.Value = await Managers.Resource.LoadAsync<Sprite>(facePath);
+        ClassIcon.Value = await Managers.Resource.LoadAsync<Sprite>(classPath);
+        CodeIcon.Value = await Managers.Resource.LoadAsync<Sprite>(codePath);
+        WeaponIcon.Value = await Managers.Resource.LoadAsync<Sprite>(weaponPath);
+        BurstIcon.Value = await Managers.Resource.LoadAsync<Sprite>(burstPath);
     }
 
     public void OnCardClicked()
@@ -93,9 +81,8 @@ public class NikkeCardViewModel : ViewModelBase
     protected override void OnDispose()
     {
         if (_userData != null)
-        {
             _userData.level.OnValueChanged -= OnLevelChanged;
-        }
+
         OnClick = null;
     }
 }
