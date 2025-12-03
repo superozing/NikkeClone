@@ -9,6 +9,9 @@ public class NikkeCardScrollViewModel : ViewModelBase
     // 리스트 갱신 알림
     public event Action OnListUpdated;
 
+    // 뷰에게 클릭 시 id값 전달
+    public event Action<int> OnNikkeClickCallback;
+
     // --- Filter & Sort Status ---
     public ReactiveProperty<bool> IsSearchActive { get; private set; } = new(false);
     public ReactiveProperty<bool> IsSortActive { get; private set; } = new(false); // 정렬 상세 버튼 활성화 여부
@@ -51,14 +54,28 @@ public class NikkeCardScrollViewModel : ViewModelBase
 
     /// <summary>
     /// 필터/정렬 상태를 기반으로 리스트를 갱신합니다.
-    /// (현재는 로직이 들어갈 자리만 마련해 두었습니다)
     /// </summary>
     private void RefreshList()
     {
-        // TODO: 실제 필터링/정렬 로직 구현 (다음 단계)
+        // 필터링: Burst 1, 2, 3 (OR 조건)
+        // 아무 필터도 켜져있지 않으면 전체 표시
+        bool isAnyBurstFilterOn = IsBurst1Active.Value || IsBurst2Active.Value || IsBurst3Active.Value;
 
-        // 현재는 전체 리스트를 그대로 표시
-        DisplayNikkes = new List<NikkeCardViewModel>(_allNikkes);
+        IEnumerable<NikkeCardViewModel> query = _allNikkes;
+
+        if (isAnyBurstFilterOn)
+        {
+            query = query.Where(vm =>
+                (IsBurst1Active.Value && vm.BurstLevel == 1) ||
+                (IsBurst2Active.Value && vm.BurstLevel == 2) ||
+                (IsBurst3Active.Value && vm.BurstLevel == 3)
+            );
+        }
+
+        // 정렬: 기본 전투력 내림차순
+        query = query.OrderByDescending(vm => vm.CombatPower).ThenBy(vm => vm.NikkeName);
+
+        DisplayNikkes = query.ToList();
 
         OnListUpdated?.Invoke();
     }
@@ -68,27 +85,29 @@ public class NikkeCardScrollViewModel : ViewModelBase
     public void OnClickSearch()
     {
         IsSearchActive.Value = !IsSearchActive.Value;
+        // 구현해야 해요.
         RefreshList();
     }
 
     public void OnClickSort()
     {
         IsSortActive.Value = !IsSortActive.Value;
+        // 구현해야 해요.
         RefreshList();
     }
 
-    public void OnClickBurst(int level)
+    public void OnClickBurst(int burstLevel)
     {
-        if (level == 1) IsBurst1Active.Value = !IsBurst1Active.Value;
-        else if (level == 2) IsBurst2Active.Value = !IsBurst2Active.Value;
-        else if (level == 3) IsBurst3Active.Value = !IsBurst3Active.Value;
+        if (burstLevel == 1) IsBurst1Active.Value = !IsBurst1Active.Value;
+        else if (burstLevel == 2) IsBurst2Active.Value = !IsBurst2Active.Value;
+        else if (burstLevel == 3) IsBurst3Active.Value = !IsBurst3Active.Value;
 
         RefreshList();
     }
 
     private void OnCardClick(int nikkeId)
     {
-        Debug.Log($"[NikkeCardScrollViewModel] 니케 클릭됨: ID {nikkeId}");
+        OnNikkeClickCallback.Invoke(nikkeId);
     }
 
     protected override void OnDispose()
@@ -102,5 +121,6 @@ public class NikkeCardScrollViewModel : ViewModelBase
         DisplayNikkes.Clear();
 
         OnListUpdated = null;
+        OnNikkeClickCallback = null;
     }
 }
