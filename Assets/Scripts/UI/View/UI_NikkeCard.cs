@@ -1,10 +1,12 @@
+using DG.Tweening;
 using System;
-using UnityEngine;
-using UnityEngine.UI;
+using System.Threading.Tasks;
 using TMPro;
 using UI;
+using UnityEngine;
+using UnityEngine.UI;
 
-public class UI_NikkeCard : UI_View
+public class UI_NikkeCard : UI_View, IUIShowHideAnimation
 {
     [Header("Texts")]
     [SerializeField] private TMP_Text _levelText;
@@ -28,6 +30,8 @@ public class UI_NikkeCard : UI_View
     private NikkeCardViewModel _viewModel;
 
     private MarqueeUIAnimation _marqueeAnim;
+
+    private readonly IUIAnimation _showAnim = new VerticalSlideFadeUIAnimation(0.3f, 50f, Ease.OutQuad);
 
     protected override void Awake()
     {
@@ -65,6 +69,24 @@ public class UI_NikkeCard : UI_View
         Bind(_viewModel.WeaponIcon, SetSprite(_weaponIcon));
         Bind(_viewModel.BurstIcon, SetSprite(_burstIcon));
     }
+
+    // --- IUIShowHideAnimation Implementation ---
+
+    public async Task PlayShowAnimationAsync()
+    {
+        if (_showAnim != null && _canvasGroup != null)
+            await _showAnim.ExecuteAsync(_canvasGroup);
+    }
+
+    public Task PlayHideAnimationAsync()
+    {
+        // 퇴장 연출이 쓸모 없다. 사용할 일이 없다.
+        // 이렇게 되면 .. 인터페이스를 show와 hide를 분리해야 하는 게 올바른 방향 아닐까요?
+        // 일단 이렇게만 적어두고 나중에 수정하던가 해야겠어요.
+        return Task.CompletedTask;
+    }
+
+    // -------------------------------------------
 
     private Action<Sprite> SetSprite(Image targetImage)
     {
