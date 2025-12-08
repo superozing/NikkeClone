@@ -198,7 +198,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _levelText: {fileID: 7537996157112562439}
   _nameText: {fileID: 4095579574040980092}
-  _cpText: {fileID: 0}
   _nameTextRect: {fileID: 397536643305548320}
   _nameMaskRect: {fileID: 8178113912986012274}
   _faceImage: {fileID: 3815301621841046569}
@@ -1226,8 +1225,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4282624241
-  m_fontColor: {r: 0.9433962, g: 0.6575443, b: 0.26254895, a: 1}
+    rgba: 4281385976
+  m_fontColor: {r: 0.9725491, g: 0.76470596, b: 0.18823531, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
