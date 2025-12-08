@@ -42,7 +42,10 @@ public class UI_NikkeCardScrollView : UI_View
     public override void SetViewModel(ViewModelBase viewModel)
     {
         if (_viewModel != null)
+        {
             _viewModel.OnListUpdated -= RefreshScroll;
+            _viewModel.OnNikkeClickCallback -= OnNikkeClicked;
+        }
 
         _viewModel = viewModel as NikkeCardScrollViewModel;
         base.SetViewModel(viewModel);
@@ -50,6 +53,7 @@ public class UI_NikkeCardScrollView : UI_View
         if (_viewModel != null)
         {
             _viewModel.OnListUpdated += RefreshScroll;
+            _viewModel.OnNikkeClickCallback += OnNikkeClicked;
 
             // 버튼 색상 상태 바인딩
             Bind(_viewModel.IsSearchActive, isActive => UpdateButtonColor(_searchButton, isActive));
@@ -61,6 +65,11 @@ public class UI_NikkeCardScrollView : UI_View
             // 비동기 초기화 및 갱신 시작
             InitAndRefreshAsync();
         }
+    }
+
+    private void OnNikkeClicked(int nikkeId)
+    {
+        Debug.Log($"[UI_NikkeCardScrollView] 니케 클릭됨: ID {nikkeId}");
     }
 
     /// <summary>
@@ -132,6 +141,9 @@ public class UI_NikkeCardScrollView : UI_View
                 var cardUI = _cardInstances[i];
                 cardUI.gameObject.SetActive(true);
                 cardUI.SetViewModel(displayList[i]);
+
+                // 등장 연출 호출
+                _ = cardUI.PlayShowAnimationAsync();
             }
         }
 
@@ -161,6 +173,9 @@ public class UI_NikkeCardScrollView : UI_View
         _cardInstances.Clear();
 
         if (_viewModel != null)
+        {
             _viewModel.OnListUpdated -= RefreshScroll;
+            _viewModel.OnNikkeClickCallback -= OnNikkeClicked;
+        }
     }
 }
