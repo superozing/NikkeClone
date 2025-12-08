@@ -55,6 +55,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2eee948abd652524591a6ae74bdd9499
+    m_Address: UI/View/UI_NikkeCard
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 356e33b510d301d4cb87c5bb5ff03e2b
     m_Address: Assets/Textures/Icon/Weapon/SG
     m_ReadOnly: 0
