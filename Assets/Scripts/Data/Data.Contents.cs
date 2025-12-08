@@ -25,9 +25,14 @@ public class NikkeGameData : IDataId
     public int burstLevel;
     public string element;
     public string rarity;
+
+    public string manufacturer;
+    public string squad;
+
     public int hp;
     public int attack;
     public int defense;
+
     public Color color;
 
     /// <summary>
@@ -49,6 +54,7 @@ public class NikkeGameData : IDataId
 [Serializable]
 public class WeaponData
 {
+    public string weaponName;
     public string weaponClass;
     public int maxAmmo;
     public float reloadTime;
@@ -127,18 +133,14 @@ public class UserNikkeData
 {
     public int id; // 캐릭터 고유 번호
     public ReactiveProperty<int> level;
-    public ReactiveProperty<int> skill1Level;
-    public ReactiveProperty<int> skill2Level;
-    public ReactiveProperty<int> skill3Level;
+    public ReactiveProperty<int> combatPower; // 중복 계산 방지를 위한 전투력 저장
 
     public UserNikkeData() { }
     public UserNikkeData(int id, int level = 1)
     {
         this.id = id;
         this.level = new ReactiveProperty<int>(level);
-        this.skill1Level = new ReactiveProperty<int>(1);
-        this.skill2Level = new ReactiveProperty<int>(1);
-        this.skill3Level = new ReactiveProperty<int>(1);
+        this.combatPower = new ReactiveProperty<int>(0);
     }
 }
 
