@@ -20,8 +20,8 @@ public class UI_NikkeCardScrollView : UI_View
     private readonly List<UI_NikkeCard> _cardInstances = new();
 
     // 색상 정의
-    private readonly Color _activeColor = new Color(0f, 0f, 1f);
-    private readonly Color _inactiveColor = new Color(0f, 0f, 0f);
+    private readonly Color _activeColor = new Color(0.2f, 0.2f, 1f);
+    private readonly Color _inactiveColor = new Color(.2f, .2f, .2f);
 
     protected override void Awake()
     {
