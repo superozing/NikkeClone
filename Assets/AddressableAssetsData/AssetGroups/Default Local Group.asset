@@ -20,6 +20,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 032823f54f9eae9478dc74d42ecc57f0
+    m_Address: Assets/Textures/Nikke/DORO_Stand
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 11b0e73c6769e7b4d890800d839fa18a
     m_Address: Assets/Textures/Icon/Burst/burst_1
     m_ReadOnly: 0
@@ -92,6 +97,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 49780b5c534529f4aa7a2aacff654b76
     m_Address: "Assets/Textures/Nikke/\uB77C\uD53C_Stand"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4a2ab3e85bbb36c46896d46acc82ecdc
+    m_Address: Assets/Textures/Nikke/DORO_Crop
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -290,8 +300,18 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: edcf6cc3b1a1962418a8f04f2dc28d81
+    m_Address: Assets/Textures/Nikke/DORO_Shoot
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ef7375c8b1094b34cb0fd05fd2e48274
     m_Address: "Assets/Textures/Nikke/\uB77C\uD53C_Shoot"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f24757bc84c3ddb4a95612455896917b
+    m_Address: Assets/Textures/Nikke/DORO_Face
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
