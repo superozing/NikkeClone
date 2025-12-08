@@ -3,13 +3,22 @@ using UI;
 
 public class NikkeTabViewModel : ViewModelBase
 {
+    // 자식 ViewModel
+    public NikkeCardScrollViewModel ScrollViewModel { get; private set; }
+
     public NikkeTabViewModel()
     {
-        // 탭에 필요한 데이터 로드 및 ReactiveProperty 구독
+        // 스크롤 뷰모델 생성 및 소유
+        ScrollViewModel = new NikkeCardScrollViewModel();
+        ScrollViewModel.AddRef();
     }
 
     protected override void OnDispose()
     {
-        // 구독한 ReactiveProperty 이벤트 해제
+        if (ScrollViewModel != null)
+        {
+            ScrollViewModel.Release();
+            ScrollViewModel = null;
+        }
     }
 }
