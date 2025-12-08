@@ -26,7 +26,7 @@ public class NikkeCardViewModel : ViewModelBase
 
     // 정렬을 위한 Getter
     public int CurrentLevel => _userData.level.Value;
-    public long CombatPower => CalculateCP(_userData.level.Value, _gameData.attack);
+    public long CombatPower => _userData.combatPower.Value;
     public string NikkeName => _gameData.name;
 
     public NikkeCardViewModel(UserNikkeData userData, NikkeGameData gameData)
@@ -40,19 +40,20 @@ public class NikkeCardViewModel : ViewModelBase
         _userData.level.OnValueChanged += OnLevelChanged;
         OnLevelChanged(_userData.level.Value);
 
+        _userData.combatPower.OnValueChanged += OnCombatPowerChanged;
+        OnCombatPowerChanged(_userData.combatPower.Value);
+
         LoadAllResources();
     }
 
     private void OnLevelChanged(int level)
     {
         Level.Value = level;
-        CombatPowerText.Value = Utils.FormatNumber((int)CalculateCP(level, _gameData.attack));
     }
 
-    private long CalculateCP(int level, int attack)
+    private void OnCombatPowerChanged(int cp)
     {
-        // 임시 전투력 공식: 레벨 * 100 + 공격력
-        return (long)level * 100 + attack;
+        CombatPowerText.Value = Utils.FormatNumber(cp);
     }
 
     /// <summary>
@@ -82,6 +83,7 @@ public class NikkeCardViewModel : ViewModelBase
     {
         if (_userData != null)
             _userData.level.OnValueChanged -= OnLevelChanged;
+            _userData.combatPower.OnValueChanged -= OnLevelChanged;
 
         OnClick = null;
     }
