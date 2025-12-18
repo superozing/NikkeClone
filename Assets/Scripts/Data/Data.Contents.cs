@@ -53,6 +53,7 @@ public class NikkeGameData : IDataId
     public eNikkeCode CodeType => ParseCode(element);
     public eNikkeManufacturer ManufacturerType => ParseManufacturer(manufacturer);
     public eNikkeWeapon WeaponType => ParseWeapon(weapon?.weaponClass);
+    public eNikkeBurst BurstType => (eNikkeBurst)Mathf.Clamp(burstLevel, 0, 3);
 
     // --- Helper Methods for Conversion ---
 
