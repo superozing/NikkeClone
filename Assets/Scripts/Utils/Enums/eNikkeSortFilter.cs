@@ -1,4 +1,3 @@
-
 /// <summary>
 /// 정렬 기준
 /// </summary>
@@ -14,6 +13,7 @@ public enum eNikkeClass
     Attacker,   // 화력형
     Defender,   // 방어형
     Supporter,  // 지원형
+    End
 }
 
 public enum eNikkeCode
@@ -24,6 +24,7 @@ public enum eNikkeCode
     Wind,       // 풍압
     Electric,   // 전격
     Iron,       // 철갑
+    End
 }
 
 public enum eNikkeWeapon
@@ -34,7 +35,8 @@ public enum eNikkeWeapon
     SG,
     SR,
     RL,
-    MG
+    MG,
+    End
 }
 
 public enum eNikkeManufacturer
@@ -44,5 +46,15 @@ public enum eNikkeManufacturer
     Missilis,   // 미실리스
     Tetra,      // 테트라
     Pilgrim,    // 필그림
-    Abnormal    // 어브노멀
+    Abnormal,   // 어브노멀
+    End
+}
+
+public enum eNikkeBurst
+{
+    None = 0,
+    Burst1 = 1,
+    Burst2 = 2,
+    Burst3 = 3,
+    End
 }
