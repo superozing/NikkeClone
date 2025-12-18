@@ -165,6 +165,8 @@ public class UI_NikkeCardScrollView : UI_View
     /// </summary>
     public void PlayAnimationSequence()
     {
+        LayoutRebuilder.ForceRebuildLayoutImmediate(_content);
+
         float interval = 0.05f; // 카드 간 간격
         int activeIndex = 0;
 
