@@ -72,13 +72,13 @@ public class UI_NikkeCard : UI_View, IUIShowHideAnimation
 
     // --- IUIShowHideAnimation Implementation ---
 
-    public async Task PlayShowAnimationAsync()
+    public async Task PlayShowAnimationAsync(float delay = 0)
     {
         if (_showAnim != null && _canvasGroup != null)
             await _showAnim.ExecuteAsync(_canvasGroup);
     }
 
-    public Task PlayHideAnimationAsync()
+    public Task PlayHideAnimationAsync(float delay = 0)
     {
         // 퇴장 연출이 쓸모 없다. 사용할 일이 없다.
         // 이렇게 되면 .. 인터페이스를 show와 hide를 분리해야 하는 게 올바른 방향 아닐까요?

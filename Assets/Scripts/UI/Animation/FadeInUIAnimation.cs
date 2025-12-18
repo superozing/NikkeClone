@@ -29,7 +29,6 @@ public class FadeInUIAnimation : IUIAnimation
         await cg.DOFade(1f, _duration)
                 .SetEase(_ease)
                 .SetDelay(delay)
-
                 .SetUpdate(true)
                 .AsyncWaitForCompletion();
 

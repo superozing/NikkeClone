@@ -48,14 +48,14 @@ public class UI_MissionPopup : UI_Popup, IUIShowHideAnimation
         await PlayShowAnimationAsync();
     }
 
-    public async Task PlayShowAnimationAsync()
+    public async Task PlayShowAnimationAsync(float delay = 0f)
     {
         // CanvasGroup은 부모(UI_View)의 protected 멤버 사용
         if (_fadeInAnimation != null && _canvasGroup != null)
             await _fadeInAnimation.ExecuteAsync(_canvasGroup);
     }
 
-    public async Task PlayHideAnimationAsync()
+    public async Task PlayHideAnimationAsync(float delay = 0f)
     {
         if (_fadeOutAnimation != null && _canvasGroup != null)
             await _fadeOutAnimation.ExecuteAsync(_canvasGroup);
