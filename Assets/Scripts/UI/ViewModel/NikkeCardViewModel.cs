@@ -17,11 +17,7 @@ public class NikkeCardViewModel : ViewModelBase
     public eNikkeCode CodeType => _gameData.CodeType;
     public eNikkeWeapon WeaponType => _gameData.WeaponType;
     public eNikkeManufacturer ManufacturerType => _gameData.ManufacturerType;
-
-    public int CurrentLevel => _userData.level.Value;
-    public long CombatPower => _userData.combatPower.Value;
-    public string NikkeName => _gameData.name;
-    // ------------------------------------------
+    public eNikkeBurst BurstType => _gameData.BurstType;
 
     // --- View Binding Properties ---
     public ReactiveProperty<string> Name { get; private set; } = new();
@@ -34,6 +30,11 @@ public class NikkeCardViewModel : ViewModelBase
     public ReactiveProperty<Sprite> WeaponIcon { get; private set; } = new();
     public ReactiveProperty<Sprite> BurstIcon { get; private set; } = new();
     // -------------------------------
+
+    // 정렬을 위한 Getter
+    public int CurrentLevel => _userData.level.Value;
+    public long CombatPower => _userData.combatPower.Value;
+    public string NikkeName => _gameData.name;
 
     public NikkeCardViewModel(UserNikkeData userData, NikkeGameData gameData)
     {
