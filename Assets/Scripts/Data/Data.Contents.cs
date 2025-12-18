@@ -46,6 +46,51 @@ public class NikkeGameData : IDataId
     public List<SkillData> skills;
 
     public int ID => id;
+
+    // --- Converted Enum Properties ---
+
+    public eNikkeClass ClassType => ParseClass(nikkeClass);
+    public eNikkeCode CodeType => ParseCode(element);
+    public eNikkeManufacturer ManufacturerType => ParseManufacturer(manufacturer);
+    public eNikkeWeapon WeaponType => ParseWeapon(weapon?.weaponClass);
+
+    // --- Helper Methods for Conversion ---
+
+    private eNikkeClass ParseClass(string value) => value switch
+    {
+        "화력형" => eNikkeClass.Attacker,
+        "방어형" => eNikkeClass.Defender,
+        "지원형" => eNikkeClass.Supporter,
+        _ => eNikkeClass.None
+    };
+
+    private eNikkeCode ParseCode(string value) => value switch
+    {
+        "작열" => eNikkeCode.Fire,
+        "수냉" => eNikkeCode.Water,
+        "풍압" => eNikkeCode.Wind,
+        "전격" => eNikkeCode.Electric,
+        "철갑" => eNikkeCode.Iron,
+        _ => eNikkeCode.None
+    };
+
+    private eNikkeManufacturer ParseManufacturer(string value) => value switch
+    {
+        "엘리시온" => eNikkeManufacturer.Elysion,
+        "미실리스" => eNikkeManufacturer.Missilis,
+        "테트라" => eNikkeManufacturer.Tetra,
+        "필그림" => eNikkeManufacturer.Pilgrim,
+        "어브노멀" => eNikkeManufacturer.Abnormal,
+        _ => eNikkeManufacturer.None
+    };
+
+    private eNikkeWeapon ParseWeapon(string value)
+    {
+        if (string.IsNullOrEmpty(value)) return eNikkeWeapon.None;
+        if (Enum.TryParse(value, true, out eNikkeWeapon result))
+            return result;
+        return eNikkeWeapon.None;
+    }
 }
 
 /// <summary>
