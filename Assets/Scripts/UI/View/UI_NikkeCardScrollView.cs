@@ -24,9 +24,6 @@ public class UI_NikkeCardScrollView : UI_View
     private readonly Color _activeColor = new Color(0.2f, 0.2f, 1f);
     private readonly Color _inactiveColor = new Color(.2f, .2f, .2f);
 
-    // 연출 취소 용도
-    private CancellationTokenSource _seqCts;
-
     protected override void Awake()
     {
         base.Awake();
@@ -166,41 +163,27 @@ public class UI_NikkeCardScrollView : UI_View
     /// <summary>
     /// 활성화된 카드들에 대해 순차적으로 등장 연출을 재생합니다.
     /// </summary>
-    public async void PlayAnimationSequence()
+    public void PlayAnimationSequence()
     {
-        // 기존 연출 취소
-        _seqCts?.Cancel();
-        _seqCts = new CancellationTokenSource();
-        var token = _seqCts.Token;
+        float interval = 0.05f; // 카드 간 간격
+        int activeIndex = 0;
 
-        try
+        foreach (var card in _cardInstances)
         {
-            foreach (var card in _cardInstances)
-            {
-                if (token.IsCancellationRequested) return;
+            // 활성화된 카드만 연출
+            if (!card.gameObject.activeSelf) continue;
 
-                // 활성화된 카드만 연출
-                if (!card.gameObject.activeSelf) continue;
+            // 딜레이 계산: 인덱스 * 간격
+            float delay = activeIndex * interval;
+            _ = card.PlayShowAnimationAsync(delay);
 
-                _ = card.PlayShowAnimationAsync();
-
-                // 다음 카드 연출 전 딜레이
-                // 굳이 이렇게 기다리는 이유는 연출 클래스를 새로 감싸서 생성하거나 기존 연출 클래스를 수정하는 것보다 좋아보여서.
-                await Task.Delay(50, token);
-            }
-        }
-        catch (TaskCanceledException)
-        {
-            // 연출 중단
+            activeIndex++;
         }
     }
 
     protected override void OnDestroy()
     {
         base.OnDestroy();
-
-        _seqCts?.Cancel();
-        _seqCts?.Dispose();
 
         foreach (var card in _cardInstances)
         {
