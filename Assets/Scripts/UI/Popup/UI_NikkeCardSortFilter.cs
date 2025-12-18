@@ -39,7 +39,6 @@ public class UI_NikkeCardSortFilter : UI_View, IUIShowHideAnimation
     [SerializeField] private Button _manufAbnormalButton;
 
     [Header("Common")]
-    [SerializeField] private Button _closeButton;
     [SerializeField] private Button _blocker;
 
     // 활성/비활성 상태 색상 정의
@@ -66,8 +65,6 @@ public class UI_NikkeCardSortFilter : UI_View, IUIShowHideAnimation
 
     private void BindAll()
     {
-        _closeButton.onClick.RemoveAllListeners();
-        _closeButton.onClick.AddListener(OnClose);
         _blocker.onClick.RemoveAllListeners();
         _blocker.onClick.AddListener(OnClose);
 
