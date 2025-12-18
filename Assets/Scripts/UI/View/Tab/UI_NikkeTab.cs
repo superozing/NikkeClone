@@ -18,4 +18,13 @@ public class UI_NikkeTab : UI_TabBase
         if (_viewModel != null && _scrollView != null)
             _scrollView.SetViewModel(_viewModel.ScrollViewModel);
     }
+
+    public override void OnTabSelected()
+    {
+        base.OnTabSelected();
+
+        // 탭 활성화 시 연출 호출
+        if (_scrollView != null)
+            _scrollView.PlayAnimationSequence();
+    }
 }
