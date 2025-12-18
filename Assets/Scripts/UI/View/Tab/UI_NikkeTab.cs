@@ -25,6 +25,6 @@ public class UI_NikkeTab : UI_TabBase
 
         // 탭 활성화 시 연출 호출
         if (_scrollView != null)
-            _scrollView.PlayAnimationSequence();
+            _scrollView.PlayActiveAnimation();
     }
 }
