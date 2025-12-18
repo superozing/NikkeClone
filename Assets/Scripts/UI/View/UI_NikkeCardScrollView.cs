@@ -180,7 +180,7 @@ public class UI_NikkeCardScrollView : UI_View
     /// </summary>
     public void PlayButtonActiveAnimation()
     {
-        float defaultDelay = 0.1f; // 기본 대기시간
+        float defaultDelay = 0.3f; // 기본 대기시간
         _buttonGroupFadeIn.ExecuteAsync(_buttonGroup, defaultDelay);
     }
 
@@ -192,7 +192,7 @@ public class UI_NikkeCardScrollView : UI_View
         LayoutRebuilder.ForceRebuildLayoutImmediate(_content);
 
         float interval = 0.02f; // 카드 간 간격
-        float defaultDelay = 0.3f; // 기본 대기시간
+        float defaultDelay = 0.5f; // 기본 대기시간
 
         for (int i = 0; i < _cardInstances.Count; ++i)
         {
