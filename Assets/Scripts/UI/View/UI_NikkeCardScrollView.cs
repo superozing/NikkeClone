@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ public class UI_NikkeCardScrollView : UI_View
 {
     [Header("Content Area")]
     [SerializeField] private RectTransform _content;
+    [SerializeField] private CanvasGroup _buttonGroup; // 연출을 위해
 
     [Header("Buttons")]
     [SerializeField] private Button _searchButton;
@@ -19,6 +21,9 @@ public class UI_NikkeCardScrollView : UI_View
 
     private NikkeCardScrollViewModel _viewModel;
     private readonly List<UI_NikkeCard> _cardInstances = new();
+
+    // 버튼 등장시키기 위한 연출 클래스
+    private readonly IUIAnimation _buttonGroupFadeIn = new FadeInUIAnimation(0.2f, Ease.OutQuad);
 
     // 색상 정의
     private readonly Color _activeColor = new Color(0.2f, 0.2f, 1f);
@@ -157,29 +162,48 @@ public class UI_NikkeCardScrollView : UI_View
         }
 
         // 3. 순차 연출 실행
-        PlayAnimationSequence();
+        PlayCardRefreshAnimation();
+    }
+
+    /// <summary>
+    /// 탭 진입 시 호출되는 메서드입니다.
+    /// 버튼 그룹 등장 연출과 카드 리스트 등장 연출을 모두 실행합니다.
+    /// </summary>
+    public void PlayActiveAnimation()
+    {
+        PlayButtonActiveAnimation();
+        PlayCardRefreshAnimation();
+    }
+
+    /// <summary>
+    /// 버튼 그룹에 등장 연출을 재생합니다.
+    /// </summary>
+    public void PlayButtonActiveAnimation()
+    {
+        float defaultDelay = 0.1f; // 기본 대기시간
+        _buttonGroupFadeIn.ExecuteAsync(_buttonGroup, defaultDelay);
     }
 
     /// <summary>
     /// 활성화된 카드들에 대해 순차적으로 등장 연출을 재생합니다.
     /// </summary>
-    public void PlayAnimationSequence()
+    public void PlayCardRefreshAnimation()
     {
         LayoutRebuilder.ForceRebuildLayoutImmediate(_content);
 
-        float interval = 0.05f; // 카드 간 간격
-        int activeIndex = 0;
+        float interval = 0.02f; // 카드 간 간격
+        float defaultDelay = 0.3f; // 기본 대기시간
 
-        foreach (var card in _cardInstances)
+        for (int i = 0; i < _cardInstances.Count; ++i)
         {
+            var card = _cardInstances[i];
+
             // 활성화된 카드만 연출
             if (!card.gameObject.activeSelf) continue;
 
-            // 딜레이 계산: 인덱스 * 간격
-            float delay = activeIndex * interval;
+            // 딜레이 계산
+            float delay = defaultDelay + (i * interval);
             _ = card.PlayShowAnimationAsync(delay);
-
-            activeIndex++;
         }
     }
 
