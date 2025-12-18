@@ -9,10 +9,12 @@ public interface IUIShowHideAnimation
     /// <summary>
     /// 등장 연출을 실행하고 완료될 때까지 대기합니다.
     /// </summary>
-    Task PlayShowAnimationAsync();
+    /// <param name="delay">연출 시작 전 대기 시간(초)</param>
+    Task PlayShowAnimationAsync(float delay = 0f);
 
     /// <summary>
     /// 퇴장 연출을 실행하고 완료될 때까지 대기합니다.
     /// </summary>
-    Task PlayHideAnimationAsync();
+    /// <param name="delay">연출 시작 전 대기 시간(초)</param>
+    Task PlayHideAnimationAsync(float delay = 0f);
 }
