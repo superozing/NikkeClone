@@ -16,7 +16,7 @@ public class HorizontalExpandUIAnimation : IUIAnimation
         _ease = ease;
     }
 
-    public async Task ExecuteAsync(CanvasGroup cg)
+    public async Task ExecuteAsync(CanvasGroup cg, float delay = 0f)
     {
         if (cg == null) return;
 
@@ -30,6 +30,7 @@ public class HorizontalExpandUIAnimation : IUIAnimation
         // 2. 연출 실행
         await rt.DOScaleX(1f, _duration)
                 .SetEase(_ease)
+                .SetDelay(delay)
                 .SetUpdate(true)
                 .AsyncWaitForCompletion();
     }

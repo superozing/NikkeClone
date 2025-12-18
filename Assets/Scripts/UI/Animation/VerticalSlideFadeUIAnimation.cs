@@ -18,7 +18,7 @@ public class VerticalSlideFadeUIAnimation : IUIAnimation
         _ease = ease;
     }
 
-    public async Task ExecuteAsync(CanvasGroup cg)
+    public async Task ExecuteAsync(CanvasGroup cg, float delay = 0f)
     {
         if (cg == null) return;
 
@@ -37,6 +37,7 @@ public class VerticalSlideFadeUIAnimation : IUIAnimation
         // 2. 시퀀스 구성 (페이드 + 이동)
         Sequence seq = DOTween.Sequence();
         seq.SetUpdate(true);
+        seq.SetDelay(delay);
 
         seq.Append(cg.DOFade(1f, _duration).SetEase(Ease.OutQuad));
         seq.Join(rt.DOAnchorPos(targetPos, _duration).SetEase(_ease));

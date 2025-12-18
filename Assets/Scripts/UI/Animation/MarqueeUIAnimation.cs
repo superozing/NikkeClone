@@ -12,14 +12,14 @@ public class MarqueeUIAnimation : IUIAnimation
     private readonly float _delay;
     private Tween _currentTween;
 
-    public MarqueeUIAnimation(RectTransform maskRect, float speed = 30f, float delay = 1.5f)
+    public MarqueeUIAnimation(RectTransform maskRect, float speed = 30f, float defaultDelay = 1.5f)
     {
         _maskRect = maskRect;
         _speed = speed;
-        _delay = delay;
+        _delay = defaultDelay;
     }
 
-    public Task ExecuteAsync(CanvasGroup cg)
+    public Task ExecuteAsync(CanvasGroup cg, float delay = 0f)
     {
         if (cg == null || _maskRect == null)
             return Task.CompletedTask;
@@ -45,7 +45,7 @@ public class MarqueeUIAnimation : IUIAnimation
             _currentTween = targetRect.DOAnchorPosX(-moveDistance, duration)
                 .SetEase(Ease.Linear)
                 .SetLoops(-1, LoopType.Yoyo) // 무한 반복
-                .SetDelay(_delay)
+                .SetDelay(_delay + delay) // 기본 딜레이 + 인자 딜레이
                 .SetUpdate(true) // TimeScale 무관하게 동작 원할 시 true
                 .SetLink(targetRect.gameObject); // 오브젝트 파괴 시 트윈 자동 제거
         }
