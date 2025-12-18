@@ -53,13 +53,13 @@ public class UI_ItemDetailPopup : UI_Popup, IUIShowHideAnimation
     public async Task PlayShowAnimationAsync(float delay = 0f)
     {
         if (_fadeIn != null && _canvasGroup != null)
-            await _fadeIn.ExecuteAsync(_canvasGroup);
+            await _fadeIn.ExecuteAsync(_canvasGroup, delay);
     }
 
     public async Task PlayHideAnimationAsync(float delay = 0f)
     {
         if (_fadeOut != null && _canvasGroup != null)
-            await _fadeOut.ExecuteAsync(_canvasGroup);
+            await _fadeOut.ExecuteAsync(_canvasGroup, delay);
     }
 
     // --------------------------------

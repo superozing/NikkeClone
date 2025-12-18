@@ -75,7 +75,7 @@ public class UI_NikkeCard : UI_View, IUIShowHideAnimation
     public async Task PlayShowAnimationAsync(float delay = 0)
     {
         if (_showAnim != null && _canvasGroup != null)
-            await _showAnim.ExecuteAsync(_canvasGroup);
+            await _showAnim.ExecuteAsync(_canvasGroup, delay);
     }
 
     public Task PlayHideAnimationAsync(float delay = 0)
