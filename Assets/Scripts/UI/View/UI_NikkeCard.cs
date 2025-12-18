@@ -31,7 +31,7 @@ public class UI_NikkeCard : UI_View, IUIShowHideAnimation
 
     private MarqueeUIAnimation _marqueeAnim;
 
-    private readonly IUIAnimation _showAnim = new VerticalSlideFadeUIAnimation(0.3f, 50f, Ease.OutQuad);
+    private readonly IUIAnimation _showAnim = new VerticalSlideFadeUIAnimation(0.3f, -50f, Ease.OutQuad);
 
     protected override void Awake()
     {
