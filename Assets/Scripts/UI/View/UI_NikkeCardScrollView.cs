@@ -241,6 +241,12 @@ public class UI_NikkeCardScrollView : UI_View
         }
     }
 
+    protected void OnDisable()
+    {
+        // 뷰모델의 상태를 초기화하고 팝업을 닫도록 요청
+        _viewModel?.ResetFiltersAndPopup();
+    }
+
     protected override void OnDestroy()
     {
         base.OnDestroy();
