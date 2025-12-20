@@ -1,12 +1,15 @@
 using System;
+using System.Threading.Tasks;
+using TMPro;
 using UI;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
-using TMPro;
-using System.Threading.Tasks;
 
-public class UI_NikkeCardSortFilter : UI_View, IUIShowHideAnimation
+public class UI_NikkeCardSortFilter : UI_Popup, IUIShowHideAnimation
 {
+    public override string ActionMapKey => "UI_NikkeCardSortFilter";
+
     [Header("Sort Buttons")]
     [SerializeField] private Button _sortByPowerButton;
     [SerializeField] private Button _sortByLevelButton;
@@ -49,6 +52,13 @@ public class UI_NikkeCardSortFilter : UI_View, IUIShowHideAnimation
     private readonly IUIAnimation _fadeIn = new FadeInUIAnimation(0.2f);
     private readonly IUIAnimation _fadeOut = new FadeOutUIAnimation(0.2f);
 
+    protected override void Awake()
+    {
+        base.Awake();
+        // 팝업이므로 ESC 키 바인딩 (ViewModel에 닫기 요청)
+        Managers.Input.BindAction("Close", OnEscapeAction, InputActionPhase.Performed);
+    }
+
     public override void SetViewModel(ViewModelBase viewModel)
     {
         // 1. 부모 SetViewModel 호출
@@ -66,7 +76,7 @@ public class UI_NikkeCardSortFilter : UI_View, IUIShowHideAnimation
     private void BindAll()
     {
         _blocker.onClick.RemoveAllListeners();
-        _blocker.onClick.AddListener(OnClose);
+        _blocker.onClick.AddListener(() => _viewModel.RequestCloseSortFilter());
 
         _sortByPowerButton.onClick.RemoveAllListeners();
         _sortByPowerButton.onClick.AddListener(() => _viewModel.SetSortType(eNikkeSortType.CombatPower));
@@ -75,191 +85,55 @@ public class UI_NikkeCardSortFilter : UI_View, IUIShowHideAnimation
 
         Bind(_viewModel.SortType, UpdateSortButtons);
 
-        // -------------------------------------------------------------------------
-        // 클래스 필터
-        // -------------------------------------------------------------------------
+        // 클래스
+        BindFilter(_classAttackerButton, eNikkeClass.Attacker, _viewModel.ClassFilters);
+        BindFilter(_classDefenderButton, eNikkeClass.Defender, _viewModel.ClassFilters);
+        BindFilter(_classSupporterButton, eNikkeClass.Supporter, _viewModel.ClassFilters);
 
-        // 화력형
-        if (_classAttackerButton != null)
+        // 속성코드
+        BindFilter(_codeFireButton, eNikkeCode.Fire, _viewModel.CodeFilters);
+        BindFilter(_codeWaterButton, eNikkeCode.Water, _viewModel.CodeFilters);
+        BindFilter(_codeWindButton, eNikkeCode.Wind, _viewModel.CodeFilters);
+        BindFilter(_codeElectricButton, eNikkeCode.Electric, _viewModel.CodeFilters);
+        BindFilter(_codeIronButton, eNikkeCode.Iron, _viewModel.CodeFilters);
+
+        // 무기
+        BindFilter(_weaponARButton, eNikkeWeapon.AR, _viewModel.WeaponFilters);
+        BindFilter(_weaponSMGButton, eNikkeWeapon.SMG, _viewModel.WeaponFilters);
+        BindFilter(_weaponSGButton, eNikkeWeapon.SG, _viewModel.WeaponFilters);
+        BindFilter(_weaponSRButton, eNikkeWeapon.SR, _viewModel.WeaponFilters);
+        BindFilter(_weaponRLButton, eNikkeWeapon.RL, _viewModel.WeaponFilters);
+        BindFilter(_weaponMGButton, eNikkeWeapon.MG, _viewModel.WeaponFilters);
+
+        // 기업
+        BindFilter(_manufElysionButton, eNikkeManufacturer.Elysion, _viewModel.ManufacturerFilters);
+        BindFilter(_manufMissilisButton, eNikkeManufacturer.Missilis, _viewModel.ManufacturerFilters);
+        BindFilter(_manufTetraButton, eNikkeManufacturer.Tetra, _viewModel.ManufacturerFilters);
+        BindFilter(_manufPilgrimButton, eNikkeManufacturer.Pilgrim, _viewModel.ManufacturerFilters);
+        BindFilter(_manufAbnormalButton, eNikkeManufacturer.Abnormal, _viewModel.ManufacturerFilters);
+    }
+
+    /// <summary>
+    /// 바인딩 로직 중복 제거용 내부 헬퍼
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="btn"></param>
+    /// <param name="typeValue"></param>
+    /// <param name="filterArray"></param>
+    private void BindFilter<T>(Button btn, T typeValue, ReactiveProperty<bool>[] filterArray) where T : Enum
+    {
+        if (btn == null) return;
+        int index = Convert.ToInt32(typeValue);
+
+        if (index < filterArray.Length)
         {
-            var prop = _viewModel.ClassFilters[(int)eNikkeClass.Attacker];
-            _classAttackerButton.onClick.RemoveAllListeners();
-            _classAttackerButton.onClick.AddListener(() => prop.Value = !prop.Value);
-            Bind(prop, isActive => UpdateButtonColor(_classAttackerButton, isActive));
-        }
+            // Event
+            btn.onClick.RemoveAllListeners();
+            // 클릭 시 ViewModel의 배열 값을 직접 토글 (ViewModel 설계에 따름)
+            btn.onClick.AddListener(() => filterArray[index].Value = !filterArray[index].Value);
 
-        // 방어형
-        if (_classDefenderButton != null)
-        {
-            var prop = _viewModel.ClassFilters[(int)eNikkeClass.Defender];
-            _classDefenderButton.onClick.RemoveAllListeners();
-            _classDefenderButton.onClick.AddListener(() => prop.Value = !prop.Value);
-            Bind(prop, isActive => UpdateButtonColor(_classDefenderButton, isActive));
-        }
-
-        // 지원형
-        if (_classSupporterButton != null)
-        {
-            var prop = _viewModel.ClassFilters[(int)eNikkeClass.Supporter];
-            _classSupporterButton.onClick.RemoveAllListeners();
-            _classSupporterButton.onClick.AddListener(() => prop.Value = !prop.Value);
-            Bind(prop, isActive => UpdateButtonColor(_classSupporterButton, isActive));
-        }
-
-        // -------------------------------------------------------------------------
-        // 코드(속성) 필터
-        // -------------------------------------------------------------------------
-
-        // 작열
-        if (_codeFireButton != null)
-        {
-            var prop = _viewModel.CodeFilters[(int)eNikkeCode.Fire];
-            _codeFireButton.onClick.RemoveAllListeners();
-            _codeFireButton.onClick.AddListener(() => prop.Value = !prop.Value);
-            Bind(prop, isActive => UpdateButtonColor(_codeFireButton, isActive));
-        }
-
-        // 수냉
-        if (_codeWaterButton != null)
-        {
-            var prop = _viewModel.CodeFilters[(int)eNikkeCode.Water];
-            _codeWaterButton.onClick.RemoveAllListeners();
-            _codeWaterButton.onClick.AddListener(() => prop.Value = !prop.Value);
-            Bind(prop, isActive => UpdateButtonColor(_codeWaterButton, isActive));
-        }
-
-        // 풍압
-        if (_codeWindButton != null)
-        {
-            var prop = _viewModel.CodeFilters[(int)eNikkeCode.Wind];
-            _codeWindButton.onClick.RemoveAllListeners();
-            _codeWindButton.onClick.AddListener(() => prop.Value = !prop.Value);
-            Bind(prop, isActive => UpdateButtonColor(_codeWindButton, isActive));
-        }
-
-        // 전격
-        if (_codeElectricButton != null)
-        {
-            var prop = _viewModel.CodeFilters[(int)eNikkeCode.Electric];
-            _codeElectricButton.onClick.RemoveAllListeners();
-            _codeElectricButton.onClick.AddListener(() => prop.Value = !prop.Value);
-            Bind(prop, isActive => UpdateButtonColor(_codeElectricButton, isActive));
-        }
-
-        // 철갑
-        if (_codeIronButton != null)
-        {
-            var prop = _viewModel.CodeFilters[(int)eNikkeCode.Iron];
-            _codeIronButton.onClick.RemoveAllListeners();
-            _codeIronButton.onClick.AddListener(() => prop.Value = !prop.Value);
-            Bind(prop, isActive => UpdateButtonColor(_codeIronButton, isActive));
-        }
-
-        // -------------------------------------------------------------------------
-        // 무기 필터
-        // -------------------------------------------------------------------------
-
-        // AR (소총)
-        if (_weaponARButton != null)
-        {
-            var prop = _viewModel.WeaponFilters[(int)eNikkeWeapon.AR];
-            _weaponARButton.onClick.RemoveAllListeners();
-            _weaponARButton.onClick.AddListener(() => prop.Value = !prop.Value);
-            Bind(prop, isActive => UpdateButtonColor(_weaponARButton, isActive));
-        }
-
-        // SMG (기관단총)
-        if (_weaponSMGButton != null)
-        {
-            var prop = _viewModel.WeaponFilters[(int)eNikkeWeapon.SMG];
-            _weaponSMGButton.onClick.RemoveAllListeners();
-            _weaponSMGButton.onClick.AddListener(() => prop.Value = !prop.Value);
-            Bind(prop, isActive => UpdateButtonColor(_weaponSMGButton, isActive));
-        }
-
-        // SG (산탄총)
-        if (_weaponSGButton != null)
-        {
-            var prop = _viewModel.WeaponFilters[(int)eNikkeWeapon.SG];
-            _weaponSGButton.onClick.RemoveAllListeners();
-            _weaponSGButton.onClick.AddListener(() => prop.Value = !prop.Value);
-            Bind(prop, isActive => UpdateButtonColor(_weaponSGButton, isActive));
-        }
-
-        // SR (저격소총)
-        if (_weaponSRButton != null)
-        {
-            var prop = _viewModel.WeaponFilters[(int)eNikkeWeapon.SR];
-            _weaponSRButton.onClick.RemoveAllListeners();
-            _weaponSRButton.onClick.AddListener(() => prop.Value = !prop.Value);
-            Bind(prop, isActive => UpdateButtonColor(_weaponSRButton, isActive));
-        }
-
-        // RL (런처)
-        if (_weaponRLButton != null)
-        {
-            var prop = _viewModel.WeaponFilters[(int)eNikkeWeapon.RL];
-            _weaponRLButton.onClick.RemoveAllListeners();
-            _weaponRLButton.onClick.AddListener(() => prop.Value = !prop.Value);
-            Bind(prop, isActive => UpdateButtonColor(_weaponRLButton, isActive));
-        }
-
-        // MG (기관총)
-        if (_weaponMGButton != null)
-        {
-            var prop = _viewModel.WeaponFilters[(int)eNikkeWeapon.MG];
-            _weaponMGButton.onClick.RemoveAllListeners();
-            _weaponMGButton.onClick.AddListener(() => prop.Value = !prop.Value);
-            Bind(prop, isActive => UpdateButtonColor(_weaponMGButton, isActive));
-        }
-
-        // -------------------------------------------------------------------------
-        // 기업 필터
-        // -------------------------------------------------------------------------
-
-        // 엘리시온
-        if (_manufElysionButton != null)
-        {
-            var prop = _viewModel.ManufacturerFilters[(int)eNikkeManufacturer.Elysion];
-            _manufElysionButton.onClick.RemoveAllListeners();
-            _manufElysionButton.onClick.AddListener(() => prop.Value = !prop.Value);
-            Bind(prop, isActive => UpdateButtonColor(_manufElysionButton, isActive));
-        }
-
-        // 미실리스
-        if (_manufMissilisButton != null)
-        {
-            var prop = _viewModel.ManufacturerFilters[(int)eNikkeManufacturer.Missilis];
-            _manufMissilisButton.onClick.RemoveAllListeners();
-            _manufMissilisButton.onClick.AddListener(() => prop.Value = !prop.Value);
-            Bind(prop, isActive => UpdateButtonColor(_manufMissilisButton, isActive));
-        }
-
-        // 테트라
-        if (_manufTetraButton != null)
-        {
-            var prop = _viewModel.ManufacturerFilters[(int)eNikkeManufacturer.Tetra];
-            _manufTetraButton.onClick.RemoveAllListeners();
-            _manufTetraButton.onClick.AddListener(() => prop.Value = !prop.Value);
-            Bind(prop, isActive => UpdateButtonColor(_manufTetraButton, isActive));
-        }
-
-        // 필그림
-        if (_manufPilgrimButton != null)
-        {
-            var prop = _viewModel.ManufacturerFilters[(int)eNikkeManufacturer.Pilgrim];
-            _manufPilgrimButton.onClick.RemoveAllListeners();
-            _manufPilgrimButton.onClick.AddListener(() => prop.Value = !prop.Value);
-            Bind(prop, isActive => UpdateButtonColor(_manufPilgrimButton, isActive));
-        }
-
-        // 어브노멀
-        if (_manufAbnormalButton != null)
-        {
-            var prop = _viewModel.ManufacturerFilters[(int)eNikkeManufacturer.Abnormal];
-            _manufAbnormalButton.onClick.RemoveAllListeners();
-            _manufAbnormalButton.onClick.AddListener(() => prop.Value = !prop.Value);
-            Bind(prop, isActive => UpdateButtonColor(_manufAbnormalButton, isActive));
+            // Binding
+            Bind(filterArray[index], isActive => UpdateButtonColor(btn, isActive));
         }
     }
 
@@ -301,13 +175,15 @@ public class UI_NikkeCardSortFilter : UI_View, IUIShowHideAnimation
     public async Task CloseAsync()
     {
         await PlayHideAnimationAsync();
-        gameObject.SetActive(false);
+        Managers.UI.Close(this);
     }
-    private void OnClose() => _viewModel?.RequestCloseSortFilter();
+
+    private void OnEscapeAction(InputAction.CallbackContext context) => _viewModel?.RequestCloseSortFilter();
 
     protected override void OnDestroy()
     {
         base.OnDestroy();
+        Managers.Input.UnbindAction("Close", OnEscapeAction, InputActionPhase.Performed);
         _viewModel = null;
     }
 }
