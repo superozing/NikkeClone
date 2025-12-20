@@ -12,8 +12,8 @@ public class UI_NikkeCardScrollView : UI_View
     [SerializeField] private RectTransform _content;
     [SerializeField] private CanvasGroup _buttonGroup; // 연출을 위해
 
-    [SerializeField] private UI_NikkeCardSortFilter _sortFilterView; // 프리팹 바인딩
     [SerializeField] private Button _sortButton; // 필터 뷰 열기 버튼
+    private UI_NikkeCardSortFilter _sortFilterView;
 
     [SerializeField] private Button _sortOrderButton; // 오름차순/내림차순 토글 버튼
     [SerializeField] private TMP_Text _sortTypeText; // 현재 정렬 기준 텍스트 ("전투력", "레벨")
@@ -46,9 +46,6 @@ public class UI_NikkeCardScrollView : UI_View
         _burst1Button.onClick.AddListener(() => _viewModel?.OnClickBurst(1));
         _burst2Button.onClick.AddListener(() => _viewModel?.OnClickBurst(2));
         _burst3Button.onClick.AddListener(() => _viewModel?.OnClickBurst(3));
-
-        // 초기에는 필터 뷰 비활성화
-        _sortFilterView.gameObject.SetActive(false);
     }
 
     public override void SetViewModel(ViewModelBase viewModel)
@@ -62,9 +59,6 @@ public class UI_NikkeCardScrollView : UI_View
 
         _viewModel = viewModel as NikkeCardScrollViewModel;
         base.SetViewModel(viewModel);
-
-        // 자식 뷰인 SortFilterView에도 ViewModel 주입
-        _sortFilterView.SetViewModel(viewModel);
 
         if (_viewModel != null)
         {
@@ -92,7 +86,7 @@ public class UI_NikkeCardScrollView : UI_View
 
         // 2. 뷰 활성/비활성 처리
         if (isOpen)
-            _sortFilterView.gameObject.SetActive(true);
+            _sortFilterView = await Managers.UI.ShowAsync<UI_NikkeCardSortFilter>(ViewModel);
         else
             _ = _sortFilterView.CloseAsync();
     }
