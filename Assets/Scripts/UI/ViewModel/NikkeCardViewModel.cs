@@ -12,6 +12,13 @@ public class NikkeCardViewModel : ViewModelBase
     public int NikkeId => _gameData.id;
     public int BurstLevel => _gameData.burstLevel;
 
+    // 정렬, 필터링을 위한 프로퍼티
+    public eNikkeClass ClassType => _gameData.ClassType;
+    public eNikkeCode CodeType => _gameData.CodeType;
+    public eNikkeWeapon WeaponType => _gameData.WeaponType;
+    public eNikkeManufacturer ManufacturerType => _gameData.ManufacturerType;
+    public eNikkeBurst BurstType => _gameData.BurstType;
+
     // --- View Binding Properties ---
     public ReactiveProperty<string> Name { get; private set; } = new();
     public ReactiveProperty<int> Level { get; private set; } = new();
@@ -82,8 +89,10 @@ public class NikkeCardViewModel : ViewModelBase
     protected override void OnDispose()
     {
         if (_userData != null)
+        {
             _userData.level.OnValueChanged -= OnLevelChanged;
-            _userData.combatPower.OnValueChanged -= OnLevelChanged;
+            _userData.combatPower.OnValueChanged -= OnCombatPowerChanged;
+        }
 
         OnClick = null;
     }
