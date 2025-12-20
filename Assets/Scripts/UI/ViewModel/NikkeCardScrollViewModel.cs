@@ -37,6 +37,9 @@ public class NikkeCardScrollViewModel : ViewModelBase
     // 전체 니케 수 (초기 생성용)
     public int TotalNikkeCount => _allNikkes.Count;
 
+    // 업데이트 증인지 확인 위한 플래그
+    private bool _isBatchUpdating = false;
+
     public NikkeCardScrollViewModel()
     {
         FillFilterArray(ClassFilters);
@@ -79,10 +82,47 @@ public class NikkeCardScrollViewModel : ViewModelBase
     }
 
     /// <summary>
+    /// 탭 이탈 시 호출: 모든 필터 초기화 및 팝업 닫기 요청
+    /// </summary>
+    public void ResetFiltersAndPopup()
+    {
+        _isBatchUpdating = true; // 리스트 갱신 일시 중지
+
+        // 1. 모든 필터 배열 false로 초기화
+        ResetFilterArray(ClassFilters);
+        ResetFilterArray(CodeFilters);
+        ResetFilterArray(WeaponFilters);
+        ResetFilterArray(ManufacturerFilters);
+        ResetFilterArray(BurstFilters);
+
+        // 2. 검색 상태 초기화
+        if (IsSearchActive.Value) IsSearchActive.Value = false;
+
+        // 3. 팝업 닫기 요청 (View에게 알림)
+        OnControlSortFilterView?.Invoke(false);
+
+        _isBatchUpdating = false; // 중지 해제
+
+        // 4. 최종적으로 한 번만 리스트 갱신
+        RefreshList();
+    }
+
+    private void ResetFilterArray(ReactiveProperty<bool>[] filters)
+    {
+        foreach (var filter in filters)
+            if (filter.Value) 
+                filter.Value = false;
+    }
+
+    /// <summary>
     /// 필터/정렬 상태를 기반으로 리스트를 갱신합니다.
     /// </summary>
     private void RefreshList()
     {
+        // 현재 리스트 초기화 중일 경우 예외처리
+        if (_isBatchUpdating) 
+            return;
+
         IEnumerable<NikkeCardViewModel> query = _allNikkes;
 
         // 필터링
