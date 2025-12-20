@@ -32,7 +32,7 @@ public class UI_NikkeCardScrollView : UI_View
     private readonly IUIAnimation _buttonGroupFadeIn = new FadeInUIAnimation(0.2f, Ease.OutQuad);
 
     // 색상 정의
-    private readonly Color _activeColor = new Color(0.2f, 0.2f, 1f);
+    private readonly Color _activeColor = new Color(.2f, .7f, .9f);
     private readonly Color _inactiveColor = new Color(.2f, .2f, .2f);
 
     protected override void Awake()
