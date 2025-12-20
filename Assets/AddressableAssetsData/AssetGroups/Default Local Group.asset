@@ -35,6 +35,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 14642b48b1815a54fbe749741f64d2a4
+    m_Address: DORO
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 17b88067e2035914ea1b0012be9754d9
     m_Address: Icons/Items/icon_credit
     m_ReadOnly: 0
