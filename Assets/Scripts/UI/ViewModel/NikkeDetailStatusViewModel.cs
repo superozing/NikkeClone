@@ -31,19 +31,19 @@ public class NikkeDetailStatusViewModel : ViewModelBase
     public ReactiveProperty<Sprite> ManufacturerIcon { get; private set; } = new();
 
     public NikkeDetailStatusViewModel(int nikkeId)
+        : this(Managers.Data.Get<NikkeGameData>(nikkeId),
+               Managers.Data.UserData.Nikkes.ContainsKey(nikkeId) ? Managers.Data.UserData.Nikkes[nikkeId] : null)
     {
-        // 1. 데이터 참조
-        _gameData = Managers.Data.Get<NikkeGameData>(nikkeId);
+    }
 
-        if (!Managers.Data.UserData.Nikkes.TryGetValue(nikkeId, out _userData))
-        {
-            Debug.LogError($"[NikkeDetailStatusViewModel] 유저 데이터에 해당 니케(ID:{nikkeId})가 없습니다.");
-            return;
-        }
+    public NikkeDetailStatusViewModel(NikkeGameData gameData, UserNikkeData userData)
+    {
+        _gameData = gameData;
+        _userData = userData;
 
-        if (_gameData == null)
+        if (_gameData == null || _userData == null)
         {
-            Debug.LogError($"[NikkeDetailStatusViewModel] 게임 데이터에 해당 니케(ID:{nikkeId})가 없습니다.");
+            Debug.LogError($"[NikkeDetailStatusViewModel] 필수 데이터가 누락되었습니다. GameData: {_gameData != null}, UserData: {_userData != null}");
             return;
         }
 
@@ -51,11 +51,11 @@ public class NikkeDetailStatusViewModel : ViewModelBase
         Name.Value = _gameData.name;
         Squad.Value = _gameData.squad;
 
-        // 3. 동적 데이터 구독 (레벨 변화에 따른 스테이터스 갱신)
+        // 3. 동적 데이터 구독
         _userData.level.OnValueChanged += OnLevelChanged;
-
-        // 초기값 반영
         OnLevelChanged(_userData.level.Value);
+        _userData.combatPower.OnValueChanged += OnCombatPowerChanged;
+        OnCombatPowerChanged(_userData.combatPower.Value);
 
         // 4. 리소스 비동기 로드
         LoadResources();
