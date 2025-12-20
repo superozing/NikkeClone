@@ -118,6 +118,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "UI_NikkeCardSortFilter",
+            "id": "9ae90bf2-4847-44f4-aa15-9a57bae3a6d1",
+            "actions": [
+                {
+                    "name": "Close",
+                    "type": "Button",
+                    "id": "134b74cd-2015-4a7d-9c6d-38a911e6c96d",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "955fd451-678f-4194-b30a-53b215a8bf91",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Close",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []
