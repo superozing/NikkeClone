@@ -95,6 +95,9 @@ public class NikkeCardScrollViewModel : ViewModelBase
         ResetFilterArray(ManufacturerFilters);
         ResetFilterArray(BurstFilters);
 
+        SortType.Value = eNikkeSortType.CombatPower;
+        IsSortAscending.Value = false;
+
         // 2. 검색 상태 초기화
         if (IsSearchActive.Value) IsSearchActive.Value = false;
 
