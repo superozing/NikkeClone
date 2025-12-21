@@ -86,31 +86,31 @@ public class UI_NikkeCardSortFilter : UI_Popup, IUIShowHideAnimation
         Bind(_viewModel.SortType, UpdateSortButtons);
 
         // 클래스
-        BindFilter(_classAttackerButton, eNikkeClass.Attacker, _viewModel.ClassFilters);
-        BindFilter(_classDefenderButton, eNikkeClass.Defender, _viewModel.ClassFilters);
-        BindFilter(_classSupporterButton, eNikkeClass.Supporter, _viewModel.ClassFilters);
+        BindFilter(_classAttackerButton, eNikkeClass.Attacker, _viewModel.ClassFilters, _viewModel.ToggleClassFilter);
+        BindFilter(_classDefenderButton, eNikkeClass.Defender, _viewModel.ClassFilters, _viewModel.ToggleClassFilter);
+        BindFilter(_classSupporterButton, eNikkeClass.Supporter, _viewModel.ClassFilters, _viewModel.ToggleClassFilter);
 
         // 속성코드
-        BindFilter(_codeFireButton, eNikkeCode.Fire, _viewModel.CodeFilters);
-        BindFilter(_codeWaterButton, eNikkeCode.Water, _viewModel.CodeFilters);
-        BindFilter(_codeWindButton, eNikkeCode.Wind, _viewModel.CodeFilters);
-        BindFilter(_codeElectricButton, eNikkeCode.Electric, _viewModel.CodeFilters);
-        BindFilter(_codeIronButton, eNikkeCode.Iron, _viewModel.CodeFilters);
+        BindFilter(_codeFireButton, eNikkeCode.Fire, _viewModel.CodeFilters, _viewModel.ToggleCodeFilter);
+        BindFilter(_codeWaterButton, eNikkeCode.Water, _viewModel.CodeFilters, _viewModel.ToggleCodeFilter);
+        BindFilter(_codeWindButton, eNikkeCode.Wind, _viewModel.CodeFilters, _viewModel.ToggleCodeFilter);
+        BindFilter(_codeElectricButton, eNikkeCode.Electric, _viewModel.CodeFilters, _viewModel.ToggleCodeFilter);
+        BindFilter(_codeIronButton, eNikkeCode.Iron, _viewModel.CodeFilters, _viewModel.ToggleCodeFilter);
 
         // 무기
-        BindFilter(_weaponARButton, eNikkeWeapon.AR, _viewModel.WeaponFilters);
-        BindFilter(_weaponSMGButton, eNikkeWeapon.SMG, _viewModel.WeaponFilters);
-        BindFilter(_weaponSGButton, eNikkeWeapon.SG, _viewModel.WeaponFilters);
-        BindFilter(_weaponSRButton, eNikkeWeapon.SR, _viewModel.WeaponFilters);
-        BindFilter(_weaponRLButton, eNikkeWeapon.RL, _viewModel.WeaponFilters);
-        BindFilter(_weaponMGButton, eNikkeWeapon.MG, _viewModel.WeaponFilters);
+        BindFilter(_weaponARButton, eNikkeWeapon.AR, _viewModel.WeaponFilters, _viewModel.ToggleWeaponFilter);
+        BindFilter(_weaponSMGButton, eNikkeWeapon.SMG, _viewModel.WeaponFilters, _viewModel.ToggleWeaponFilter);
+        BindFilter(_weaponSGButton, eNikkeWeapon.SG, _viewModel.WeaponFilters, _viewModel.ToggleWeaponFilter);
+        BindFilter(_weaponSRButton, eNikkeWeapon.SR, _viewModel.WeaponFilters, _viewModel.ToggleWeaponFilter);
+        BindFilter(_weaponRLButton, eNikkeWeapon.RL, _viewModel.WeaponFilters, _viewModel.ToggleWeaponFilter);
+        BindFilter(_weaponMGButton, eNikkeWeapon.MG, _viewModel.WeaponFilters, _viewModel.ToggleWeaponFilter);
 
         // 기업
-        BindFilter(_manufElysionButton, eNikkeManufacturer.Elysion, _viewModel.ManufacturerFilters);
-        BindFilter(_manufMissilisButton, eNikkeManufacturer.Missilis, _viewModel.ManufacturerFilters);
-        BindFilter(_manufTetraButton, eNikkeManufacturer.Tetra, _viewModel.ManufacturerFilters);
-        BindFilter(_manufPilgrimButton, eNikkeManufacturer.Pilgrim, _viewModel.ManufacturerFilters);
-        BindFilter(_manufAbnormalButton, eNikkeManufacturer.Abnormal, _viewModel.ManufacturerFilters);
+        BindFilter(_manufElysionButton, eNikkeManufacturer.Elysion, _viewModel.ManufacturerFilters, _viewModel.ToggleManufacturerFilter);
+        BindFilter(_manufMissilisButton, eNikkeManufacturer.Missilis, _viewModel.ManufacturerFilters, _viewModel.ToggleManufacturerFilter);
+        BindFilter(_manufTetraButton, eNikkeManufacturer.Tetra, _viewModel.ManufacturerFilters, _viewModel.ToggleManufacturerFilter);
+        BindFilter(_manufPilgrimButton, eNikkeManufacturer.Pilgrim, _viewModel.ManufacturerFilters, _viewModel.ToggleManufacturerFilter);
+        BindFilter(_manufAbnormalButton, eNikkeManufacturer.Abnormal, _viewModel.ManufacturerFilters, _viewModel.ToggleManufacturerFilter);
     }
 
     /// <summary>
@@ -120,7 +120,7 @@ public class UI_NikkeCardSortFilter : UI_Popup, IUIShowHideAnimation
     /// <param name="btn"></param>
     /// <param name="typeValue"></param>
     /// <param name="filterArray"></param>
-    private void BindFilter<T>(Button btn, T typeValue, ReactiveProperty<bool>[] filterArray) where T : Enum
+    private void BindFilter<T>(Button btn, T typeValue, ReactiveProperty<bool>[] filterArray, Action<T> toggleAction) where T : Enum
     {
         if (btn == null) return;
         int index = Convert.ToInt32(typeValue);
@@ -130,7 +130,7 @@ public class UI_NikkeCardSortFilter : UI_Popup, IUIShowHideAnimation
             // Event
             btn.onClick.RemoveAllListeners();
             // 클릭 시 ViewModel의 배열 값을 직접 토글 (ViewModel 설계에 따름)
-            btn.onClick.AddListener(() => filterArray[index].Value = !filterArray[index].Value);
+            btn.onClick.AddListener(() => toggleAction?.Invoke(typeValue));
 
             // Binding
             Bind(filterArray[index], isActive => UpdateButtonColor(btn, isActive));

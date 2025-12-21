@@ -183,6 +183,23 @@ public class NikkeCardScrollViewModel : ViewModelBase
     }
 
     // --- Interaction Methods (View -> ViewModel) ---
+    public void ToggleClassFilter(eNikkeClass type) => ToggleFilter(ClassFilters, type);
+    public void ToggleCodeFilter(eNikkeCode type) => ToggleFilter(CodeFilters, type);
+    public void ToggleWeaponFilter(eNikkeWeapon type) => ToggleFilter(WeaponFilters, type);
+    public void ToggleManufacturerFilter(eNikkeManufacturer type) => ToggleFilter(ManufacturerFilters, type);
+
+    /// <summary>
+    /// 내부적으로 사용하는 제네릭 토글 로직
+    /// </summary>
+    private void ToggleFilter<T>(ReactiveProperty<bool>[] filters, T type) where T : Enum
+    {
+        int index = Convert.ToInt32(type);
+        if (index >= 0 && index < filters.Length)
+        {
+            // ViewModel 내부에서 로직(상태 반전)을 수행합니다.
+            filters[index].Value = !filters[index].Value;
+        }
+    }
 
     public void OnClickSearch()
     {
