@@ -240,6 +240,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 928a4135dfb408c4cbdd93390ade8007
+    m_Address: UI/Popup/UI_NikkeDetailPopup
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 98127fff79c983745b13818b952936a0
     m_Address: "Assets/Textures/Icon/Code/\uD48D\uC555"
     m_ReadOnly: 0
