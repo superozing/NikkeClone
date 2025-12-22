@@ -79,7 +79,10 @@ public class UI_NikkeDetailPopup : UI_Popup, IUIShowHideAnimation
     private void UpdateThemeColor(Color color)
     {
         foreach (var graphic in _colorTargets)
+        {
+            color.a = graphic.color.a;
             graphic.color = color;
+        }
     }
 
     private void OnCloseClick() => _viewModel?.OnClickClose();
