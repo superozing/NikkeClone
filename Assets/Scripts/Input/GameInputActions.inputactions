@@ -146,6 +146,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "UI_NikkeDetailPopup",
+            "id": "bc72aa99-a4ca-45a9-ac84-ab0785328e13",
+            "actions": [
+                {
+                    "name": "Close",
+                    "type": "Button",
+                    "id": "e86125bb-e215-4b45-98fa-1f6a2b50d7ae",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "931fa591-d8f7-483b-a2cb-5aca3b1d30ef",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Close",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []
