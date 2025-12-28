@@ -36,11 +36,20 @@ public class UI_NikkeDetailStatus : UI_View
 
     public override void SetViewModel(ViewModelBase viewModel)
     {
+        // 이전 뷰모델 연결 해제
+        if (_viewModel != null)
+        {
+            _viewModel.OnRequestLevelUpPopup -= ShowLevelUpPopup;
+        }
+
         _viewModel = viewModel as NikkeDetailStatusViewModel;
 
         base.SetViewModel(viewModel);
 
         if (_viewModel == null) return;
+
+        // 이벤트 구독
+        _viewModel.OnRequestLevelUpPopup += ShowLevelUpPopup;
 
         // 텍스트 바인딩
         Bind(_viewModel.LevelText, text => SetText(_levelText, text));
@@ -61,7 +70,18 @@ public class UI_NikkeDetailStatus : UI_View
     }
 
     private void OnLevelUpClick() => _viewModel?.OnClickLevelUp();
-    
+
+    /// <summary>
+    /// 뷰모델의 요청에 따라 레벨업 팝업을 띄웁니다.
+    /// </summary>
+    private async void ShowLevelUpPopup(int nikkeId)
+    {
+        NikkeLevelUpPopupViewModel popupVM = new NikkeLevelUpPopupViewModel();
+        popupVM.SetNikke(nikkeId);
+
+        await Managers.UI.ShowAsync<UI_NikkeLevelUpPopup>(popupVM);
+    }
+
     // --- Helper Methods ---
     private void SetText(TMP_Text target, string text)
     {
@@ -87,6 +107,9 @@ public class UI_NikkeDetailStatus : UI_View
 
         if (_levelUpButton != null)
             _levelUpButton.onClick.RemoveListener(OnLevelUpClick);
+
+        if (_viewModel != null)
+            _viewModel.OnRequestLevelUpPopup -= ShowLevelUpPopup;
 
         _viewModel = null;
     }
