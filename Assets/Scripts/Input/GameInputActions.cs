@@ -260,6 +260,34 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""UI_NikkeLevelUpPopup"",
+            ""id"": ""553d065e-d2b8-492b-ad43-ff2002d67f78"",
+            ""actions"": [
+                {
+                    ""name"": ""Close"",
+                    ""type"": ""Button"",
+                    ""id"": ""bacef153-610e-412b-a25c-03cad1018719"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""d51ec017-95b4-444f-ba1a-5a763a94f373"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Close"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -284,6 +312,9 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
         // UI_NikkeDetailPopup
         m_UI_NikkeDetailPopup = asset.FindActionMap("UI_NikkeDetailPopup", throwIfNotFound: true);
         m_UI_NikkeDetailPopup_Close = m_UI_NikkeDetailPopup.FindAction("Close", throwIfNotFound: true);
+        // UI_NikkeLevelUpPopup
+        m_UI_NikkeLevelUpPopup = asset.FindActionMap("UI_NikkeLevelUpPopup", throwIfNotFound: true);
+        m_UI_NikkeLevelUpPopup_Close = m_UI_NikkeLevelUpPopup.FindAction("Close", throwIfNotFound: true);
     }
 
     ~@GameInputActions()
@@ -295,6 +326,7 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
         UnityEngine.Debug.Assert(!m_UI_MissionPopup.enabled, "This will cause a leak and performance issues, GameInputActions.UI_MissionPopup.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_UI_NikkeCardSortFilter.enabled, "This will cause a leak and performance issues, GameInputActions.UI_NikkeCardSortFilter.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_UI_NikkeDetailPopup.enabled, "This will cause a leak and performance issues, GameInputActions.UI_NikkeDetailPopup.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_UI_NikkeLevelUpPopup.enabled, "This will cause a leak and performance issues, GameInputActions.UI_NikkeLevelUpPopup.Disable() has not been called.");
     }
 
     /// <summary>
@@ -1027,6 +1059,102 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
     /// Provides a new <see cref="UI_NikkeDetailPopupActions" /> instance referencing this action map.
     /// </summary>
     public UI_NikkeDetailPopupActions @UI_NikkeDetailPopup => new UI_NikkeDetailPopupActions(this);
+
+    // UI_NikkeLevelUpPopup
+    private readonly InputActionMap m_UI_NikkeLevelUpPopup;
+    private List<IUI_NikkeLevelUpPopupActions> m_UI_NikkeLevelUpPopupActionsCallbackInterfaces = new List<IUI_NikkeLevelUpPopupActions>();
+    private readonly InputAction m_UI_NikkeLevelUpPopup_Close;
+    /// <summary>
+    /// Provides access to input actions defined in input action map "UI_NikkeLevelUpPopup".
+    /// </summary>
+    public struct UI_NikkeLevelUpPopupActions
+    {
+        private @GameInputActions m_Wrapper;
+
+        /// <summary>
+        /// Construct a new instance of the input action map wrapper class.
+        /// </summary>
+        public UI_NikkeLevelUpPopupActions(@GameInputActions wrapper) { m_Wrapper = wrapper; }
+        /// <summary>
+        /// Provides access to the underlying input action "UI_NikkeLevelUpPopup/Close".
+        /// </summary>
+        public InputAction @Close => m_Wrapper.m_UI_NikkeLevelUpPopup_Close;
+        /// <summary>
+        /// Provides access to the underlying input action map instance.
+        /// </summary>
+        public InputActionMap Get() { return m_Wrapper.m_UI_NikkeLevelUpPopup; }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
+        public void Enable() { Get().Enable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Disable()" />
+        public void Disable() { Get().Disable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.enabled" />
+        public bool enabled => Get().enabled;
+        /// <summary>
+        /// Implicitly converts an <see ref="UI_NikkeLevelUpPopupActions" /> to an <see ref="InputActionMap" /> instance.
+        /// </summary>
+        public static implicit operator InputActionMap(UI_NikkeLevelUpPopupActions set) { return set.Get(); }
+        /// <summary>
+        /// Adds <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <param name="instance">Callback instance.</param>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c> or <paramref name="instance"/> have already been added this method does nothing.
+        /// </remarks>
+        /// <seealso cref="UI_NikkeLevelUpPopupActions" />
+        public void AddCallbacks(IUI_NikkeLevelUpPopupActions instance)
+        {
+            if (instance == null || m_Wrapper.m_UI_NikkeLevelUpPopupActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_UI_NikkeLevelUpPopupActionsCallbackInterfaces.Add(instance);
+            @Close.started += instance.OnClose;
+            @Close.performed += instance.OnClose;
+            @Close.canceled += instance.OnClose;
+        }
+
+        /// <summary>
+        /// Removes <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <remarks>
+        /// Calling this method when <paramref name="instance" /> have not previously been registered has no side-effects.
+        /// </remarks>
+        /// <seealso cref="UI_NikkeLevelUpPopupActions" />
+        private void UnregisterCallbacks(IUI_NikkeLevelUpPopupActions instance)
+        {
+            @Close.started -= instance.OnClose;
+            @Close.performed -= instance.OnClose;
+            @Close.canceled -= instance.OnClose;
+        }
+
+        /// <summary>
+        /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="UI_NikkeLevelUpPopupActions.UnregisterCallbacks(IUI_NikkeLevelUpPopupActions)" />.
+        /// </summary>
+        /// <seealso cref="UI_NikkeLevelUpPopupActions.UnregisterCallbacks(IUI_NikkeLevelUpPopupActions)" />
+        public void RemoveCallbacks(IUI_NikkeLevelUpPopupActions instance)
+        {
+            if (m_Wrapper.m_UI_NikkeLevelUpPopupActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        /// <summary>
+        /// Replaces all existing callback instances and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
+        /// </summary>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
+        /// </remarks>
+        /// <seealso cref="UI_NikkeLevelUpPopupActions.AddCallbacks(IUI_NikkeLevelUpPopupActions)" />
+        /// <seealso cref="UI_NikkeLevelUpPopupActions.RemoveCallbacks(IUI_NikkeLevelUpPopupActions)" />
+        /// <seealso cref="UI_NikkeLevelUpPopupActions.UnregisterCallbacks(IUI_NikkeLevelUpPopupActions)" />
+        public void SetCallbacks(IUI_NikkeLevelUpPopupActions instance)
+        {
+            foreach (var item in m_Wrapper.m_UI_NikkeLevelUpPopupActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_UI_NikkeLevelUpPopupActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    /// <summary>
+    /// Provides a new <see cref="UI_NikkeLevelUpPopupActions" /> instance referencing this action map.
+    /// </summary>
+    public UI_NikkeLevelUpPopupActions @UI_NikkeLevelUpPopup => new UI_NikkeLevelUpPopupActions(this);
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "None" which allows adding and removing callbacks.
     /// </summary>
@@ -1116,6 +1244,21 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
     /// <seealso cref="UI_NikkeDetailPopupActions.AddCallbacks(IUI_NikkeDetailPopupActions)" />
     /// <seealso cref="UI_NikkeDetailPopupActions.RemoveCallbacks(IUI_NikkeDetailPopupActions)" />
     public interface IUI_NikkeDetailPopupActions
+    {
+        /// <summary>
+        /// Method invoked when associated input action "Close" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnClose(InputAction.CallbackContext context);
+    }
+    /// <summary>
+    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI_NikkeLevelUpPopup" which allows adding and removing callbacks.
+    /// </summary>
+    /// <seealso cref="UI_NikkeLevelUpPopupActions.AddCallbacks(IUI_NikkeLevelUpPopupActions)" />
+    /// <seealso cref="UI_NikkeLevelUpPopupActions.RemoveCallbacks(IUI_NikkeLevelUpPopupActions)" />
+    public interface IUI_NikkeLevelUpPopupActions
     {
         /// <summary>
         /// Method invoked when associated input action "Close" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.

@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class NikkeDetailStatusViewModel : ViewModelBase
 {
+    // View에서 UI 생성을 요청하기 위한 이벤트
+    public event Action<int> OnRequestLevelUpPopup;
+
     // 데이터 소스
     private readonly NikkeGameData _gameData;
     private readonly UserNikkeData _userData;
@@ -102,11 +105,14 @@ public class NikkeDetailStatusViewModel : ViewModelBase
 
     /// <summary>
     /// 레벨업 버튼 클릭 시 호출됩니다.
+    /// View에게 팝업 생성을 요청합니다.
     /// </summary>
     public void OnClickLevelUp()
     {
         Debug.Log($"[NikkeDetailStatusViewModel] 레벨업 버튼 클릭 (현재 레벨: {_userData.level.Value})");
-        // 레벨업 팝업 구현 예정
+
+        // 직접 UI를 생성하지 않고 이벤트 발생 (MVVM 준수)
+        OnRequestLevelUpPopup?.Invoke(_gameData.id);
     }
 
     protected override void OnDispose()
@@ -116,5 +122,7 @@ public class NikkeDetailStatusViewModel : ViewModelBase
             _userData.level.OnValueChanged -= OnLevelChanged;
             _userData.combatPower.OnValueChanged -= OnCombatPowerChanged;
         }
+
+        OnRequestLevelUpPopup = null;
     }
 }
