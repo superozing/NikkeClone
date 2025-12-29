@@ -40,9 +40,9 @@ public class SkillSlotViewModel : ViewModelBase
         Name.Value = _skillData.name;
 
         // 1. 스킬 타입 및 쿨타임 처리
-        bool isActive = string.Equals(_skillData.skillTypeName, "Active", StringComparison.OrdinalIgnoreCase);
+        bool isActive = string.Equals(_skillData.skillTypeName, "액티브");
 
-        SkillType.Value = isActive ? "액티브" : "패시브";
+        SkillType.Value = _skillData.skillTypeName;
         IsCooldownVisible.Value = isActive;
 
         if (isActive)
