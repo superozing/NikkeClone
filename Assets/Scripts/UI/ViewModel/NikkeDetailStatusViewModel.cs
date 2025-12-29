@@ -8,6 +8,9 @@ public class NikkeDetailStatusViewModel : ViewModelBase
     // View에서 UI 생성을 요청하기 위한 이벤트
     public event Action<int> OnRequestLevelUpPopup;
 
+    // 스킬 정보 팝업 요청 이벤트
+    public event Action<int> OnRequestSkillInfoPopup;
+
     // 데이터 소스
     private readonly NikkeGameData _gameData;
     private readonly UserNikkeData _userData;
@@ -115,6 +118,15 @@ public class NikkeDetailStatusViewModel : ViewModelBase
         OnRequestLevelUpPopup?.Invoke(_gameData.id);
     }
 
+    /// <summary>
+    /// 스킬 아이콘 클릭 시 호출됩니다.
+    /// </summary>
+    public void OnClickSkill()
+    {
+        Debug.Log("[NikkeDetailStatusViewModel] 스킬 정보 버튼 클릭");
+        OnRequestSkillInfoPopup?.Invoke(_gameData.id);
+    }
+
     protected override void OnDispose()
     {
         if (_userData != null)
@@ -124,5 +136,6 @@ public class NikkeDetailStatusViewModel : ViewModelBase
         }
 
         OnRequestLevelUpPopup = null;
+        OnRequestSkillInfoPopup = null;
     }
 }

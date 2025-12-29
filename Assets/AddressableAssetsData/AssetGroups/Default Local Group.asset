@@ -65,6 +65,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 30ac6530eec34c14d9d414d9e3d455a0
+    m_Address: UI/View/UI_SkillSlot
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 356e33b510d301d4cb87c5bb5ff03e2b
     m_Address: Assets/Textures/Icon/Weapon/SG
     m_ReadOnly: 0
@@ -337,6 +342,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f24757bc84c3ddb4a95612455896917b
     m_Address: Assets/Textures/Nikke/DORO_Face
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f25610b3919a23643bfa15689c44a031
+    m_Address: UI/Popup/UI_SkillInfoPopup
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
