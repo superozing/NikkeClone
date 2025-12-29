@@ -24,6 +24,8 @@ public class UI_NikkeDetailStatus : UI_View
     [SerializeField] private Image _classIcon;    // 클래스
     [SerializeField] private Image _manufacturerIcon; // 기업
 
+    [SerializeField] private Button[] _skillButtons; // 스킬 버튼 3개
+
     private NikkeDetailStatusViewModel _viewModel;
 
     protected override void Awake()
@@ -40,7 +42,12 @@ public class UI_NikkeDetailStatus : UI_View
         if (_viewModel != null)
         {
             _viewModel.OnRequestLevelUpPopup -= ShowLevelUpPopup;
+            _viewModel.OnRequestSkillInfoPopup -= ShowSkillInfoPopup;
         }
+
+        // 버튼 리스너 해제
+        foreach (var btn in _skillButtons)
+            btn.onClick.RemoveListener(OnSkillButtonClick);
 
         _viewModel = viewModel as NikkeDetailStatusViewModel;
 
@@ -50,6 +57,11 @@ public class UI_NikkeDetailStatus : UI_View
 
         // 이벤트 구독
         _viewModel.OnRequestLevelUpPopup += ShowLevelUpPopup;
+        _viewModel.OnRequestSkillInfoPopup += ShowSkillInfoPopup;
+
+        // 버튼 리스너 등록
+        foreach (var btn in _skillButtons)
+            btn.onClick.AddListener(OnSkillButtonClick);
 
         // 텍스트 바인딩
         Bind(_viewModel.LevelText, text => SetText(_levelText, text));
@@ -70,6 +82,7 @@ public class UI_NikkeDetailStatus : UI_View
     }
 
     private void OnLevelUpClick() => _viewModel?.OnClickLevelUp();
+    private void OnSkillButtonClick() => _viewModel?.OnClickSkill();
 
     /// <summary>
     /// 뷰모델의 요청에 따라 레벨업 팝업을 띄웁니다.
@@ -80,6 +93,17 @@ public class UI_NikkeDetailStatus : UI_View
         popupVM.SetNikke(nikkeId);
 
         await Managers.UI.ShowAsync<UI_NikkeLevelUpPopup>(popupVM);
+    }
+
+    /// <summary>
+    /// [추가] 뷰모델의 요청에 따라 스킬 정보 팝업을 띄웁니다.
+    /// </summary>
+    private async void ShowSkillInfoPopup(int nikkeId)
+    {
+        SkillInfoPopupViewModel popupVM = new SkillInfoPopupViewModel();
+        popupVM.SetData(nikkeId);
+
+        await Managers.UI.ShowAsync<UI_SkillInfoPopup>(popupVM);
     }
 
     // --- Helper Methods ---
@@ -108,8 +132,15 @@ public class UI_NikkeDetailStatus : UI_View
         if (_levelUpButton != null)
             _levelUpButton.onClick.RemoveListener(OnLevelUpClick);
 
+        // 버튼 리스너 해제
+        foreach (var btn in _skillButtons)
+            btn.onClick.RemoveListener(OnSkillButtonClick);
+
         if (_viewModel != null)
+        {
             _viewModel.OnRequestLevelUpPopup -= ShowLevelUpPopup;
+            _viewModel.OnRequestSkillInfoPopup -= ShowSkillInfoPopup;
+        }
 
         _viewModel = null;
     }
