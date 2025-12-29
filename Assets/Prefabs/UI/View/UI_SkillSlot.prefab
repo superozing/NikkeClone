@@ -247,8 +247,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 199.0512, y: -55.375}
-  m_SizeDelta: {x: 378.1024, y: 90.75}
+  m_AnchoredPosition: {x: 194.0512, y: -55.375}
+  m_SizeDelta: {x: 368.1024, y: 90.75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &782033252342927453
 CanvasRenderer:
@@ -505,7 +505,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uC561\uD2F0\uBE0C"
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c662a58028fa4a2428ad0e72d0278275, type: 2}
   m_sharedMaterial: {fileID: -13984593830775511, guid: c662a58028fa4a2428ad0e72d0278275, type: 2}
@@ -642,7 +642,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uC561\uD2F0\uBE0C"
+  m_text: "20.0\uCD08"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c662a58028fa4a2428ad0e72d0278275, type: 2}
   m_sharedMaterial: {fileID: -13984593830775511, guid: c662a58028fa4a2428ad0e72d0278275, type: 2}
@@ -914,7 +914,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UI_SkillSlot
   _nameText: {fileID: 9150481954796142220}
   _descText: {fileID: 73020708093690409}
-  _typeText: {fileID: 5238498491477339644}
+  _typeText: {fileID: 85011313164285015}
   _cooldownText: {fileID: 8017285716537195376}
   _skillIconImage: {fileID: 166119268509515366}
   _cooldownGroup: {fileID: 6708966327435346733}
@@ -1120,7 +1120,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.ScrollRect
   m_Content: {fileID: 913264970641088635}
-  m_Horizontal: 1
+  m_Horizontal: 0
   m_Vertical: 1
   m_MovementType: 1
   m_Elasticity: 0.1
@@ -1428,7 +1428,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.VerticalLayoutGroup
   m_Padding:
     m_Left: 10
-    m_Right: 0
+    m_Right: 10
     m_Top: 10
     m_Bottom: 0
   m_ChildAlignment: 0
@@ -1564,8 +1564,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -87.7, y: 96.5}
-  m_SizeDelta: {x: -420, y: -212}
+  m_AnchoredPosition: {x: 58.492, y: 96.5}
+  m_SizeDelta: {x: -138.78, y: -212}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4862256599352470024
 CanvasRenderer:
@@ -1629,7 +1629,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 2
+  m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
