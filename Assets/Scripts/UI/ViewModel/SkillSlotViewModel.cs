@@ -40,7 +40,6 @@ public class SkillSlotViewModel : ViewModelBase
         Name.Value = _skillData.name;
 
         // 1. 스킬 타입 및 쿨타임 처리
-        // 데이터상 "Passive", "Active"로 들어온다고 가정 (NikkeGameData 참조)
         bool isActive = string.Equals(_skillData.skillTypeName, "Active", StringComparison.OrdinalIgnoreCase);
 
         SkillType.Value = isActive ? "액티브" : "패시브";
@@ -53,15 +52,14 @@ public class SkillSlotViewModel : ViewModelBase
         }
 
         // 2. 설명 텍스트 포맷팅
-        // 설명 내의 {0}, {1} ... 을 values 리스트의 maxValue로 치환합니다.
+        // 설명 내의 {0}, {1} ... 을 values 리스트의 value 필드로 치환합니다.
         if (!string.IsNullOrEmpty(_skillData.description))
         {
             try
             {
                 if (_skillData.values != null && _skillData.values.Count > 0)
                 {
-                    // maxValue들만 추출하여 문자열 배열로 변환
-                    string[] valueArgs = _skillData.values.Select(v => v.maxValue).ToArray();
+                    string[] valueArgs = _skillData.values.Select(v => v.value).ToArray();
                     Description.Value = string.Format(_skillData.description, valueArgs);
                 }
                 else
