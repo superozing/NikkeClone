@@ -81,7 +81,7 @@ public class SkillSlotViewModel : ViewModelBase
     {
         if (!string.IsNullOrEmpty(_skillData.skillIconPath))
         {
-            SkillIcon.Value = await Managers.Resource.LoadAsync<Sprite>(_skillData.skillIconPath);
+            SkillIcon.Value = await Managers.Resource.LoadAsync<Sprite>("DORO");// 스킬 아이콘 추가 전 까지 도로롱 사용할 예정이에요. // _skillData.skillIconPath);
         }
     }
 }
