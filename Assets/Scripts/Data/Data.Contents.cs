@@ -128,9 +128,8 @@ public class SkillData
 [Serializable]
 public class SkillValueData
 {
-    public string type; // 문자열 매핑용 타입
-    public string minValue;
-    public string maxValue;
+    // 스킬 레벨을 통일했기에 min, max가 필요없어짐.
+    public string value;
 }
 #endregion
 
