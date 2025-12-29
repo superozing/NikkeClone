@@ -31,31 +31,44 @@
         "skillID": 1001,
         "burstStage": 0,
         "name": "포메이션 F.F",
-        "description": "20회 피격 시 자신에게\n[공격력 21.81%▲] [20초 유지]",
+        "description": "{0}회 피격 시 자신에게\n[공격력 {1}%▲] [{2}초 유지]",
         "skillTypeName": "패시브",
         "cooldown": 0.0,
         "skillIconPath": "Skill/Rapi_S1",
-        "values": []
+        "values": [
+          { "value": "20" },
+          { "value": "21.81" },
+          { "value": "20" }
+        ]
       },
       {
         "skillID": 1002,
         "burstStage": 0,
         "name": "미사일",
-        "description": "공격력이 가장 높은 적 1기에게\n[최종 공격력 528.97% 추가 대미지]\n[도발] [5초 유지]",
+        "description": "공격력이 가장 높은 적 {0}기에게\n[최종 공격력 {1}% 추가 대미지]\n[도발] [{2}초 유지]",
         "skillTypeName": "액티브",
         "cooldown": 20.0,
         "skillIconPath": "Skill/Rapi_S2",
-        "values": []
+        "values": [
+          { "value": "1" },
+          { "value": "528.97" },
+          { "value": "5" }
+        ]
       },
       {
         "skillID": 1003,
         "burstStage": 3,
         "name": "다탄두 미사일",
-        "description": "공격력이 가장 높은 적 1기에게\n[최종 공격력 657.72% 대미지]\n자신에게\n[공격력 60.75% ▲][10초 유지]",
+        "description": "공격력이 가장 높은 적 {0}기에게\n[최종 공격력 {1}% 대미지]\n자신에게\n[공격력 {2}% ▲][{3}초 유지]",
         "skillTypeName": "액티브",
         "cooldown": 40.0,
         "skillIconPath": "Skill/Rapi_Burst",
-        "values": []
+        "values": [
+          { "value": "1" },
+          { "value": "657.72" },
+          { "value": "60.75" },
+          { "value": "10" }
+        ]
       }
     ]
   },
@@ -91,31 +104,44 @@
         "skillID": 1101,
         "burstStage": 0,
         "name": "포메이션 D.H",
-        "description": "40회 피격 시 자신에게\n[방어력 120% ▲] [10초 유지]",
+        "description": "{0}회 피격 시 자신에게\n[방어력 {1}% ▲] [{2}초 유지]",
         "skillTypeName": "패시브",
         "cooldown": 0.0,
         "skillIconPath": "Skill/Anis_S1",
-        "values": []
+        "values": [
+          { "value": "40" },
+          { "value": "120" },
+          { "value": "10" }
+        ]
       },
       {
         "skillID": 1102,
         "burstStage": 0,
         "name": "포메이션 C.H",
-        "description": "자신과 자신을 제외한 공격력이 가장 높은 아군 2기에게\n[방어력 80% ▲] [5초 유지]\n[피격 대미지 균등 분배] [10초 유지]",
+        "description": "자신과 자신을 제외한 공격력이 가장 높은 아군 {0}기에게\n[방어력 {1}% ▲] [{2}초 유지]\n[피격 대미지 균등 분배] [{3}초 유지]",
         "skillTypeName": "액티브",
         "cooldown": 30.0,
         "skillIconPath": "Skill/Anis_S2",
-        "values": []
+        "values": [
+          { "value": "2" },
+          { "value": "80" },
+          { "value": "5" },
+          { "value": "10" }
+        ]
       },
       {
         "skillID": 1103,
         "burstStage": 2,
         "name": "핀 포인트 미사일",
-        "description": "공격 범위 내 적들에게\n[최종 공격력 156.73% 대미지]\n[방어력 32% ▼] [5초 유지]",
+        "description": "공격 범위 내 적들에게\n[최종 공격력 {0}% 대미지]\n[방어력 {1}% ▼] [{2}초 유지]",
         "skillTypeName": "액티브",
         "cooldown": 20.0,
         "skillIconPath": "Skill/Anis_Burst",
-        "values": []
+        "values": [
+          { "value": "156.73" },
+          { "value": "32" },
+          { "value": "5" }
+        ]
       }
     ]
   },
@@ -151,31 +177,43 @@
         "skillID": 1201,
         "burstStage": 0,
         "name": "네온 특제탄",
-        "description": "적 처치 시 공격력이 가장 높은 아군 2기에게\n[크리티컬 확률 3.56% ▲] [5초 유지]",
+        "description": "적 처치 시 공격력이 가장 높은 아군 {0}기에게\n[크리티컬 확률 {1}% ▲] [{2}초 유지]",
         "skillTypeName": "패시브",
         "cooldown": 0.0,
         "skillIconPath": "Skill/Neon_S1",
-        "values": []
+        "values": [
+          { "value": "2" },
+          { "value": "3.56" },
+          { "value": "5" }
+        ]
       },
       {
         "skillID": 1202,
         "burstStage": 0,
         "name": "화력 만세!",
-        "description": "풀 버스트 타임 시작 시 아군 전체에게\n[크리티컬 확률 45.93% ▲] [2발 유지]",
+        "description": "풀 버스트 타임 시작 시 아군 전체에게\n[크리티컬 확률 {0}% ▲] [{1}발 유지]",
         "skillTypeName": "패시브",
         "cooldown": 0.0,
         "skillIconPath": "Skill/Neon_S2",
-        "values": []
+        "values": [
+          { "value": "45.93" },
+          { "value": "2" }
+        ]
       },
       {
         "skillID": 1203,
         "burstStage": 1,
         "name": "오직 화력!",
-        "description": "방어력이 가장 높은 적 1기에게\n[최종 공격력 528.97% 대미지]\n샷건 소지 아군 전체에게\n[최대 장탄수 3발 ▲] [10초 유지]",
+        "description": "방어력이 가장 높은 적 {0}기에게\n[최종 공격력 {1}% 대미지]\n샷건 소지 아군 전체에게\n[최대 장탄수 {2}발 ▲] [{3}초 유지]",
         "skillTypeName": "액티브",
         "cooldown": 20.0,
         "skillIconPath": "Skill/Neon_Burst",
-        "values": []
+        "values": [
+          { "value": "1" },
+          { "value": "528.97" },
+          { "value": "3" },
+          { "value": "10" }
+        ]
       }
     ]
   },
@@ -211,31 +249,45 @@
         "skillID": 1301,
         "burstStage": 0,
         "name": "딸기향 이끌림",
-        "description": "풀 버스트 타임 시작 시 자신에게\n[방어력 25.92% ▲] [10초 유지]\n풀 버스트 타임 지속 시간 중 피격 시 자신에게\n[시전자의 최종 최대 체력 비례 12.96% 회복]",
+        "description": "풀 버스트 타임 시작 시 자신에게\n[방어력 {0}% ▲] [{1}초 유지]\n풀 버스트 타임 지속 시간 중 피격 시 자신에게\n[시전자의 최종 최대 체력 비례 {2}% 회복]",
         "skillTypeName": "패시브",
         "cooldown": 0.0,
         "skillIconPath": "Skill/Diesel_S1",
-        "values": []
+        "values": [
+          { "value": "25.92" },
+          { "value": "10" },
+          { "value": "12.96" }
+        ]
       },
       {
         "skillID": 1302,
         "burstStage": 0,
         "name": "딸기 사탕의 힘",
-        "description": "일반 공격 100회 명중 시 자신에게\n[딸기 사탕: 최대 장탄 수 56.7% ▲] [10중첩] [10초 유지]\n자신이 딸기 사탕 최대 중첩 상태라면 중첩 해제 후 아군 전체에게\n[탄환 충전 86.62%]",
+        "description": "일반 공격 {0}회 명중 시 자신에게\n[딸기 사탕: 최대 장탄 수 {1}% ▲] [{2}중첩] [{3}초 유지]\n자신이 딸기 사탕 최대 중첩 상태라면 중첩 해제 후 아군 전체에게\n[탄환 충전 {4}%]",
         "skillTypeName": "패시브",
         "cooldown": 0.0,
         "skillIconPath": "Skill/Diesel_S2",
-        "values": []
+        "values": [
+          { "value": "100" },
+          { "value": "56.7" },
+          { "value": "10" },
+          { "value": "10" },
+          { "value": "86.62" }
+        ]
       },
       {
         "skillID": 1303,
         "burstStage": 2,
         "name": "스트로베리 쇼크",
-        "description": "공격력이 가장 높은 적 5기에게\n[최종 공격력 299.66% 대미지]\n[도발] [5.06초 유지]",
+        "description": "공격력이 가장 높은 적 {0}기에게\n[최종 공격력 {1}% 대미지]\n[도발] [{2}초 유지]",
         "skillTypeName": "액티브",
         "cooldown": 20.0,
         "skillIconPath": "Skill/Diesel_Burst",
-        "values": []
+        "values": [
+          { "value": "5" },
+          { "value": "299.66" },
+          { "value": "5.06" }
+        ]
       }
     ]
   },
@@ -271,31 +323,46 @@
         "skillID": 1401,
         "burstStage": 0,
         "name": "힘나는 당근",
-        "description": "풀 버스트 타임 시작 시 공격력이 가장 높은 아군 2기에게\n[시전자 기준 차지 속도 11.67% ▲] [10초 유지]\n[차지 대미지 7% ▲] [10초 유지]",
+        "description": "풀 버스트 타임 시작 시 공격력이 가장 높은 아군 {0}기에게\n[시전자 기준 차지 속도 {1}% ▲] [{2}초 유지]\n[차지 대미지 {3}% ▲] [{4}초 유지]",
         "skillTypeName": "패시브",
         "cooldown": 0.0,
         "skillIconPath": "Skill/Alice_S1",
-        "values": []
+        "values": [
+          { "value": "2" },
+          { "value": "11.67" },
+          { "value": "10" },
+          { "value": "7" },
+          { "value": "10" }
+        ]
       },
       {
         "skillID": 1402,
         "burstStage": 0,
         "name": "건강한 당근",
-        "description": "자신의 체력이 80% 이상이라면 자신에게\n[관통 특화] [지속]\n자신의 체력이 80% 미만이라면 자신에게\n[공격 대미지 비례 8.12% 회복] [지속]",
+        "description": "자신의 체력이 {0}% 이상이라면 자신에게\n[관통 특화] [지속]\n자신의 체력이 {1}% 미만이라면 자신에게\n[공격 대미지 비례 {2}% 회복] [지속]",
         "skillTypeName": "패시브",
         "cooldown": 0.0,
         "skillIconPath": "Skill/Alice_S2",
-        "values": []
+        "values": [
+          { "value": "80" },
+          { "value": "80" },
+          { "value": "8.12" }
+        ]
       },
       {
         "skillID": 1403,
         "burstStage": 3,
         "name": "신기하고 이상한 나라",
-        "description": "자신에게\n[차지 속도 80.15% ▲] [10초 유지]\n[공격력 55.12% ▲] [10초 유지]",
+        "description": "자신에게\n[차지 속도 {0}% ▲] [{1}초 유지]\n[공격력 {2}% ▲] [{3}초 유지]",
         "skillTypeName": "액티브",
         "cooldown": 40.0,
         "skillIconPath": "Skill/Alice_Burst",
-        "values": []
+        "values": [
+          { "value": "80.15" },
+          { "value": "10" },
+          { "value": "55.12" },
+          { "value": "10" }
+        ]
       }
     ]
   },
