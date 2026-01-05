@@ -25,9 +25,14 @@ public class NikkeGameData : IDataId
     public int burstLevel;
     public string element;
     public string rarity;
+
+    public string manufacturer;
+    public string squad;
+
     public int hp;
     public int attack;
     public int defense;
+
     public Color color;
 
     /// <summary>
@@ -41,6 +46,52 @@ public class NikkeGameData : IDataId
     public List<SkillData> skills;
 
     public int ID => id;
+
+    // --- Converted Enum Properties ---
+
+    public eNikkeClass ClassType => ParseClass(nikkeClass);
+    public eNikkeCode CodeType => ParseCode(element);
+    public eNikkeManufacturer ManufacturerType => ParseManufacturer(manufacturer);
+    public eNikkeWeapon WeaponType => ParseWeapon(weapon?.weaponClass);
+    public eNikkeBurst BurstType => (eNikkeBurst)Mathf.Clamp(burstLevel, 0, 3);
+
+    // --- Helper Methods for Conversion ---
+
+    private eNikkeClass ParseClass(string value) => value switch
+    {
+        "화력형" => eNikkeClass.Attacker,
+        "방어형" => eNikkeClass.Defender,
+        "지원형" => eNikkeClass.Supporter,
+        _ => eNikkeClass.None
+    };
+
+    private eNikkeCode ParseCode(string value) => value switch
+    {
+        "작열" => eNikkeCode.Fire,
+        "수냉" => eNikkeCode.Water,
+        "풍압" => eNikkeCode.Wind,
+        "전격" => eNikkeCode.Electric,
+        "철갑" => eNikkeCode.Iron,
+        _ => eNikkeCode.None
+    };
+
+    private eNikkeManufacturer ParseManufacturer(string value) => value switch
+    {
+        "엘리시온" => eNikkeManufacturer.Elysion,
+        "미실리스" => eNikkeManufacturer.Missilis,
+        "테트라" => eNikkeManufacturer.Tetra,
+        "필그림" => eNikkeManufacturer.Pilgrim,
+        "어브노멀" => eNikkeManufacturer.Abnormal,
+        _ => eNikkeManufacturer.None
+    };
+
+    private eNikkeWeapon ParseWeapon(string value)
+    {
+        if (string.IsNullOrEmpty(value)) return eNikkeWeapon.None;
+        if (Enum.TryParse(value, true, out eNikkeWeapon result))
+            return result;
+        return eNikkeWeapon.None;
+    }
 }
 
 /// <summary>
@@ -49,6 +100,7 @@ public class NikkeGameData : IDataId
 [Serializable]
 public class WeaponData
 {
+    public string weaponName;
     public string weaponClass;
     public int maxAmmo;
     public float reloadTime;
@@ -76,9 +128,8 @@ public class SkillData
 [Serializable]
 public class SkillValueData
 {
-    public string type; // 문자열 매핑용 타입
-    public string minValue;
-    public string maxValue;
+    // 스킬 레벨을 통일했기에 min, max가 필요없어짐.
+    public string value;
 }
 #endregion
 
@@ -127,18 +178,14 @@ public class UserNikkeData
 {
     public int id; // 캐릭터 고유 번호
     public ReactiveProperty<int> level;
-    public ReactiveProperty<int> skill1Level;
-    public ReactiveProperty<int> skill2Level;
-    public ReactiveProperty<int> skill3Level;
+    public ReactiveProperty<int> combatPower; // 중복 계산 방지를 위한 전투력 저장
 
     public UserNikkeData() { }
     public UserNikkeData(int id, int level = 1)
     {
         this.id = id;
         this.level = new ReactiveProperty<int>(level);
-        this.skill1Level = new ReactiveProperty<int>(1);
-        this.skill2Level = new ReactiveProperty<int>(1);
-        this.skill3Level = new ReactiveProperty<int>(1);
+        this.combatPower = new ReactiveProperty<int>(0);
     }
 }
 

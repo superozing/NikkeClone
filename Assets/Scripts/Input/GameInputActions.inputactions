@@ -1,4 +1,5 @@
 {
+    "version": 1,
     "name": "GameInputActions",
     "maps": [
         {
@@ -109,6 +110,118 @@
                 {
                     "name": "",
                     "id": "4306c2c7-ddfc-4d01-b5e9-c0011e6c9bf1",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Close",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "UI_NikkeCardSortFilter",
+            "id": "9ae90bf2-4847-44f4-aa15-9a57bae3a6d1",
+            "actions": [
+                {
+                    "name": "Close",
+                    "type": "Button",
+                    "id": "134b74cd-2015-4a7d-9c6d-38a911e6c96d",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "955fd451-678f-4194-b30a-53b215a8bf91",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Close",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "UI_NikkeDetailPopup",
+            "id": "bc72aa99-a4ca-45a9-ac84-ab0785328e13",
+            "actions": [
+                {
+                    "name": "Close",
+                    "type": "Button",
+                    "id": "e86125bb-e215-4b45-98fa-1f6a2b50d7ae",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "931fa591-d8f7-483b-a2cb-5aca3b1d30ef",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Close",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "UI_NikkeLevelUpPopup",
+            "id": "553d065e-d2b8-492b-ad43-ff2002d67f78",
+            "actions": [
+                {
+                    "name": "Close",
+                    "type": "Button",
+                    "id": "bacef153-610e-412b-a25c-03cad1018719",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "d51ec017-95b4-444f-ba1a-5a763a94f373",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Close",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "UI_SkillInfoPopup",
+            "id": "a01817b3-e9ab-4f59-afd1-067cddc6a7a5",
+            "actions": [
+                {
+                    "name": "Close",
+                    "type": "Button",
+                    "id": "ba98ebcb-7de3-4998-b872-98bbc1f0185a",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "83ade022-b471-4e1a-bd15-95927dc17418",
                     "path": "<Keyboard>/escape",
                     "interactions": "",
                     "processors": "",

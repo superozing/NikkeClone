@@ -2,73 +2,78 @@
   "Nikkes": {
     "0": {
       "id": 0,
-      "level": 1,
-      "skill1Level": 1,
-      "skill2Level": 1,
-      "skill3Level": 1
+      "level": 200,
+      "combatPower": 0
     },
     "1": {
       "id": 1,
-      "level": 1,
-      "skill1Level": 1,
-      "skill2Level": 1,
-      "skill3Level": 1
+      "level": 160,
+      "combatPower": 0
     },
     "2": {
       "id": 2,
-      "level": 1,
-      "skill1Level": 1,
-      "skill2Level": 1,
-      "skill3Level": 1
+      "level": 160,
+      "combatPower": 0
     },
     "3": {
       "id": 3,
-      "level": 1,
-      "skill1Level": 1,
-      "skill2Level": 1,
-      "skill3Level": 1
+      "level": 200,
+      "combatPower": 0
     },
     "4": {
       "id": 4,
-      "level": 1,
-      "skill1Level": 1,
-      "skill2Level": 1,
-      "skill3Level": 1
+      "level": 240,
+      "combatPower": 0
     },
     "5": {
       "id": 5,
-      "level": 1,
-      "skill1Level": 1,
-      "skill2Level": 1,
-      "skill3Level": 1
+      "level": 80,
+      "combatPower": 0
     },
     "6": {
       "id": 6,
-      "level": 1,
-      "skill1Level": 1,
-      "skill2Level": 1,
-      "skill3Level": 1
+      "level": 120,
+      "combatPower": 0
     },
     "7": {
       "id": 7,
-      "level": 1,
-      "skill1Level": 1,
-      "skill2Level": 1,
-      "skill3Level": 1
+      "level": 10,
+      "combatPower": 0
     },
     "8": {
       "id": 8,
-      "level": 1,
-      "skill1Level": 1,
-      "skill2Level": 1,
-      "skill3Level": 1
+      "level": 140,
+      "combatPower": 0
     },
     "9": {
       "id": 9,
+      "level": 40,
+      "combatPower": 0
+    },
+    "10": {
+      "id": 10,
+      "level": 199,
+      "combatPower": 0
+    },
+    "11": {
+      "id": 11,
       "level": 1,
-      "skill1Level": 1,
-      "skill2Level": 1,
-      "skill3Level": 1
+      "combatPower": 0
+    },
+    "12": {
+      "id": 12,
+      "level": 60,
+      "combatPower": 0
+    },
+    "13": {
+      "id": 13,
+      "level": 150,
+      "combatPower": 0
+    },
+    "14": {
+      "id": 14,
+      "level": 100,
+      "combatPower": 0
     }
   },
   "Items": {

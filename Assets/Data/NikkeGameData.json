@@ -1,751 +1,968 @@
 {
   "0": {
     "id": 0,
-    "name": "알파",
+    "name": "라피",
     "nikkeClass": "화력형",
     "burstLevel": 3,
     "element": "작열",
-    "rarity": "SSR",
-    "hp": 600000,
-    "attack": 25000,
-    "defense": 3500,
+    "rarity": "SR",
+    "manufacturer": "엘리시온",
+    "squad": "카운터스",
+    "hp": 14500,
+    "attack": 650,
+    "defense": 140,
     "color": {
       "r": 1.0,
-      "g": 0.2,
-      "b": 0.2,
+      "g": 0.0,
+      "b": 0.0,
       "a": 1.0
     },
     "weapon": {
+      "weaponName": "밀리터리아",
       "weaponClass": "AR",
       "maxAmmo": 60,
       "reloadTime": 1.0,
-      "controlType": "일반형",
-      "description": "스탠다드 돌격소총",
-      "damagePercent": 15.5
+      "controlType": "기본형",
+      "description": "대상에게\n[공격력 13.65% 대미지]\n[코어 대미지 200%]",
+      "damagePercent": 13.65
     },
     "skills": [
       {
-        "skillID": 101,
-        "burstStage": 1,
-        "name": "알파 스킬 1",
-        "description": "버스트 1 스킬 설명",
-        "skillTypeName": "Active",
-        "cooldown": 20.0,
-        "skillIconPath": "Icons/Skills/Alpha_S1",
+        "skillID": 1001,
+        "burstStage": 0,
+        "name": "포메이션 F.F",
+        "description": "{0}회 피격 시 자신에게\n[공격력 {1}%▲] [{2}초 유지]",
+        "skillTypeName": "패시브",
+        "cooldown": 0.0,
+        "skillIconPath": "Skill/Rapi_S1",
         "values": [
-          {
-            "type": "Damage",
-            "minValue": "150%",
-            "maxValue": "300%"
-          }
+          { "value": "20" },
+          { "value": "21.81" },
+          { "value": "20" }
         ]
       },
       {
-        "skillID": 102,
-        "burstStage": 2,
-        "name": "알파 스킬 2",
-        "description": "버스트 2 스킬 설명",
-        "skillTypeName": "Active",
+        "skillID": 1002,
+        "burstStage": 0,
+        "name": "미사일",
+        "description": "공격력이 가장 높은 적 {0}기에게\n[최종 공격력 {1}% 추가 대미지]\n[도발] [{2}초 유지]",
+        "skillTypeName": "액티브",
         "cooldown": 20.0,
-        "skillIconPath": "Icons/Skills/Alpha_S2",
+        "skillIconPath": "Skill/Rapi_S2",
         "values": [
-          {
-            "type": "AttackBuff",
-            "minValue": "10%",
-            "maxValue": "25%"
-          }
+          { "value": "1" },
+          { "value": "528.97" },
+          { "value": "5" }
         ]
       },
       {
-        "skillID": 103,
+        "skillID": 1003,
         "burstStage": 3,
-        "name": "알파 버스트",
-        "description": "버스트 3 스킬 설명",
-        "skillTypeName": "Active",
+        "name": "다탄두 미사일",
+        "description": "공격력이 가장 높은 적 {0}기에게\n[최종 공격력 {1}% 대미지]\n자신에게\n[공격력 {2}% ▲][{3}초 유지]",
+        "skillTypeName": "액티브",
         "cooldown": 40.0,
-        "skillIconPath": "Icons/Skills/Alpha_S3",
+        "skillIconPath": "Skill/Rapi_Burst",
         "values": [
-          {
-            "type": "FinalDamage",
-            "minValue": "500%",
-            "maxValue": "1200%"
-          }
+          { "value": "1" },
+          { "value": "657.72" },
+          { "value": "60.75" },
+          { "value": "10" }
         ]
       }
     ]
   },
   "1": {
     "id": 1,
-    "name": "베타",
+    "name": "아니스",
     "nikkeClass": "방어형",
-    "burstLevel": 1,
-    "element": "수냉",
-    "rarity": "SSR",
-    "hp": 800000,
-    "attack": 18000,
-    "defense": 5000,
+    "burstLevel": 2,
+    "element": "철갑",
+    "rarity": "SR",
+    "manufacturer": "테트라",
+    "squad": "카운터스",
+    "hp": 18000,
+    "attack": 500,
+    "defense": 200,
     "color": {
-      "r": 0.2,
-      "g": 0.2,
-      "b": 1.0,
+      "r": 1.0,
+      "g": 1.0,
+      "b": 0.0,
       "a": 1.0
     },
     "weapon": {
-      "weaponClass": "SG",
-      "maxAmmo": 9,
-      "reloadTime": 1.5,
-      "controlType": "일반형",
-      "description": "강력한 샷건",
-      "damagePercent": 250.0
+      "weaponName": "리버틴 테일",
+      "weaponClass": "RL",
+      "maxAmmo": 6,
+      "reloadTime": 2.03,
+      "controlType": "차지형",
+      "description": "대상에게\n[공격력 65.02% 대미지]\n차지 시간: 1초\n풀 차지 대미지: 250% 대미지\n[코어 대미지 200%]",
+      "damagePercent": 65.02
     },
     "skills": [
       {
-        "skillID": 201,
-        "burstStage": 1,
-        "name": "베타 스킬 1",
-        "description": "버스트 1 스킬 설명",
-        "skillTypeName": "Active",
-        "cooldown": 20.0,
-        "skillIconPath": "Icons/Skills/Beta_S1",
+        "skillID": 1101,
+        "burstStage": 0,
+        "name": "포메이션 D.H",
+        "description": "{0}회 피격 시 자신에게\n[방어력 {1}% ▲] [{2}초 유지]",
+        "skillTypeName": "패시브",
+        "cooldown": 0.0,
+        "skillIconPath": "Skill/Anis_S1",
         "values": [
-          {
-            "type": "DefenseBuff",
-            "minValue": "20%",
-            "maxValue": "40%"
-          }
+          { "value": "40" },
+          { "value": "120" },
+          { "value": "10" }
         ]
       },
       {
-        "skillID": 202,
+        "skillID": 1102,
+        "burstStage": 0,
+        "name": "포메이션 C.H",
+        "description": "자신과 자신을 제외한 공격력이 가장 높은 아군 {0}기에게\n[방어력 {1}% ▲] [{2}초 유지]\n[피격 대미지 균등 분배] [{3}초 유지]",
+        "skillTypeName": "액티브",
+        "cooldown": 30.0,
+        "skillIconPath": "Skill/Anis_S2",
+        "values": [
+          { "value": "2" },
+          { "value": "80" },
+          { "value": "5" },
+          { "value": "10" }
+        ]
+      },
+      {
+        "skillID": 1103,
         "burstStage": 2,
-        "name": "베타 스킬 2",
-        "description": "버스트 2 스킬 설명",
-        "skillTypeName": "Active",
+        "name": "핀 포인트 미사일",
+        "description": "공격 범위 내 적들에게\n[최종 공격력 {0}% 대미지]\n[방어력 {1}% ▼] [{2}초 유지]",
+        "skillTypeName": "액티브",
         "cooldown": 20.0,
-        "skillIconPath": "Icons/Skills/Beta_S2",
+        "skillIconPath": "Skill/Anis_Burst",
         "values": [
-          {
-            "type": "Taunt",
-            "minValue": "5s",
-            "maxValue": "10s"
-          }
-        ]
-      },
-      {
-        "skillID": 203,
-        "burstStage": 3,
-        "name": "베타 버스트",
-        "description": "버스트 3 스킬 설명",
-        "skillTypeName": "Active",
-        "cooldown": 40.0,
-        "skillIconPath": "Icons/Skills/Beta_S3",
-        "values": [
-          {
-            "type": "Shield",
-            "minValue": "30%",
-            "maxValue": "60%"
-          }
+          { "value": "156.73" },
+          { "value": "32" },
+          { "value": "5" }
         ]
       }
     ]
   },
   "2": {
     "id": 2,
-    "name": "감마",
+    "name": "네온",
     "nikkeClass": "지원형",
-    "burstLevel": 2,
-    "element": "풍압",
-    "rarity": "SSR",
-    "hp": 750000,
-    "attack": 20000,
-    "defense": 4000,
+    "burstLevel": 1,
+    "element": "작열",
+    "rarity": "SR",
+    "manufacturer": "엘리시온",
+    "squad": "카운터스",
+    "hp": 14000,
+    "attack": 550,
+    "defense": 160,
     "color": {
-      "r": 0.2,
-      "g": 1.0,
-      "b": 0.2,
+      "r": 0.0,
+      "g": 0.0,
+      "b": 1.0,
       "a": 1.0
     },
     "weapon": {
-      "weaponClass": "SMG",
-      "maxAmmo": 120,
-      "reloadTime": 1.2,
-      "controlType": "일반형",
-      "description": "빠른 연사 속도의 SMG",
-      "damagePercent": 8.0
+      "weaponName": "올 브레이크",
+      "weaponClass": "SG",
+      "maxAmmo": 9,
+      "reloadTime": 1.82,
+      "controlType": "기본형",
+      "description": "대상에게\n[공격력 224.5% 대미지]\n[코어 대미지 200%]",
+      "damagePercent": 224.5
     },
     "skills": [
       {
-        "skillID": 301,
+        "skillID": 1201,
+        "burstStage": 0,
+        "name": "네온 특제탄",
+        "description": "적 처치 시 공격력이 가장 높은 아군 {0}기에게\n[크리티컬 확률 {1}% ▲] [{2}초 유지]",
+        "skillTypeName": "패시브",
+        "cooldown": 0.0,
+        "skillIconPath": "Skill/Neon_S1",
+        "values": [
+          { "value": "2" },
+          { "value": "3.56" },
+          { "value": "5" }
+        ]
+      },
+      {
+        "skillID": 1202,
+        "burstStage": 0,
+        "name": "화력 만세!",
+        "description": "풀 버스트 타임 시작 시 아군 전체에게\n[크리티컬 확률 {0}% ▲] [{1}발 유지]",
+        "skillTypeName": "패시브",
+        "cooldown": 0.0,
+        "skillIconPath": "Skill/Neon_S2",
+        "values": [
+          { "value": "45.93" },
+          { "value": "2" }
+        ]
+      },
+      {
+        "skillID": 1203,
         "burstStage": 1,
-        "name": "감마 스킬 1",
-        "description": "버스트 1 스킬 설명",
-        "skillTypeName": "Active",
+        "name": "오직 화력!",
+        "description": "방어력이 가장 높은 적 {0}기에게\n[최종 공격력 {1}% 대미지]\n샷건 소지 아군 전체에게\n[최대 장탄수 {2}발 ▲] [{3}초 유지]",
+        "skillTypeName": "액티브",
         "cooldown": 20.0,
-        "skillIconPath": "Icons/Skills/Gamma_S1",
+        "skillIconPath": "Skill/Neon_Burst",
         "values": [
-          {
-            "type": "Heal",
-            "minValue": "15%",
-            "maxValue": "30%"
-          }
-        ]
-      },
-      {
-        "skillID": 302,
-        "burstStage": 2,
-        "name": "감마 스킬 2",
-        "description": "버스트 2 스킬 설명",
-        "skillTypeName": "Active",
-        "cooldown": 20.0,
-        "skillIconPath": "Icons/Skills/Gamma_S2",
-        "values": [
-          {
-            "type": "CooldownReduction",
-            "minValue": "2s",
-            "maxValue": "5s"
-          }
-        ]
-      },
-      {
-        "skillID": 303,
-        "burstStage": 3,
-        "name": "감마 버스트",
-        "description": "버스트 3 스킬 설명",
-        "skillTypeName": "Active",
-        "cooldown": 40.0,
-        "skillIconPath": "Icons/Skills/Gamma_S3",
-        "values": [
-          {
-            "type": "Revive",
-            "minValue": "20%",
-            "maxValue": "50%"
-          }
+          { "value": "1" },
+          { "value": "528.97" },
+          { "value": "3" },
+          { "value": "10" }
         ]
       }
     ]
   },
   "3": {
     "id": 3,
-    "name": "델타",
-    "nikkeClass": "화력형",
-    "burstLevel": 3,
-    "element": "철갑",
-    "rarity": "SR",
-    "hp": 550000,
-    "attack": 28000,
-    "defense": 3000,
+    "name": "디젤",
+    "nikkeClass": "방어형",
+    "burstLevel": 2,
+    "element": "풍압",
+    "rarity": "SSR",
+    "manufacturer": "엘리시온",
+    "squad": "인피니티 레일",
+    "hp": 20000,
+    "attack": 600,
+    "defense": 220,
     "color": {
-      "r": 0.5,
-      "g": 0.5,
-      "b": 0.5,
+      "r": 0.0,
+      "g": 1.0,
+      "b": 0.0,
       "a": 1.0
     },
     "weapon": {
-      "weaponClass": "RL",
-      "maxAmmo": 1,
-      "reloadTime": 2.0,
-      "controlType": "일반형",
-      "description": "로켓 런처",
-      "damagePercent": 70.0
+      "weaponName": "원더링 트랙",
+      "weaponClass": "MG",
+      "maxAmmo": 300,
+      "reloadTime": 2.16,
+      "controlType": "기본형",
+      "description": "대상에게\n[공격력 5.38% 대미지]\n[코어 대미지 200%]",
+      "damagePercent": 5.38
     },
     "skills": [
       {
-        "skillID": 401,
-        "burstStage": 1,
-        "name": "델타 스킬 1",
-        "description": "버스트 1 스킬 설명",
-        "skillTypeName": "Active",
-        "cooldown": 20.0,
-        "skillIconPath": "Icons/Skills/Delta_S1",
+        "skillID": 1301,
+        "burstStage": 0,
+        "name": "딸기향 이끌림",
+        "description": "풀 버스트 타임 시작 시 자신에게\n[방어력 {0}% ▲] [{1}초 유지]\n풀 버스트 타임 지속 시간 중 피격 시 자신에게\n[시전자의 최종 최대 체력 비례 {2}% 회복]",
+        "skillTypeName": "패시브",
+        "cooldown": 0.0,
+        "skillIconPath": "Skill/Diesel_S1",
         "values": [
-          {
-            "type": "Damage",
-            "minValue": "160%",
-            "maxValue": "320%"
-          }
+          { "value": "25.92" },
+          { "value": "10" },
+          { "value": "12.96" }
         ]
       },
       {
-        "skillID": 402,
+        "skillID": 1302,
+        "burstStage": 0,
+        "name": "딸기 사탕의 힘",
+        "description": "일반 공격 {0}회 명중 시 자신에게\n[딸기 사탕: 최대 장탄 수 {1}% ▲] [{2}중첩] [{3}초 유지]\n자신이 딸기 사탕 최대 중첩 상태라면 중첩 해제 후 아군 전체에게\n[탄환 충전 {4}%]",
+        "skillTypeName": "패시브",
+        "cooldown": 0.0,
+        "skillIconPath": "Skill/Diesel_S2",
+        "values": [
+          { "value": "100" },
+          { "value": "56.7" },
+          { "value": "10" },
+          { "value": "10" },
+          { "value": "86.62" }
+        ]
+      },
+      {
+        "skillID": 1303,
         "burstStage": 2,
-        "name": "델타 스킬 2",
-        "description": "버스트 2 스킬 설명",
-        "skillTypeName": "Active",
+        "name": "스트로베리 쇼크",
+        "description": "공격력이 가장 높은 적 {0}기에게\n[최종 공격력 {1}% 대미지]\n[도발] [{2}초 유지]",
+        "skillTypeName": "액티브",
         "cooldown": 20.0,
-        "skillIconPath": "Icons/Skills/Delta_S2",
+        "skillIconPath": "Skill/Diesel_Burst",
         "values": [
-          {
-            "type": "DefenseDebuff",
-            "minValue": "15%",
-            "maxValue": "30%"
-          }
-        ]
-      },
-      {
-        "skillID": 403,
-        "burstStage": 3,
-        "name": "델타 버스트",
-        "description": "버스트 3 스킬 설명",
-        "skillTypeName": "Active",
-        "cooldown": 40.0,
-        "skillIconPath": "Icons/Skills/Delta_S3",
-        "values": [
-          {
-            "type": "AreaDamage",
-            "minValue": "450%",
-            "maxValue": "1000%"
-          }
+          { "value": "5" },
+          { "value": "299.66" },
+          { "value": "5.06" }
         ]
       }
     ]
   },
   "4": {
     "id": 4,
-    "name": "엡실론",
-    "nikkeClass": "방어형",
-    "burstLevel": 1,
+    "name": "앨리스",
+    "nikkeClass": "화력형",
+    "burstLevel": 3,
     "element": "작열",
-    "rarity": "SR",
-    "hp": 900000,
-    "attack": 15000,
-    "defense": 5500,
+    "rarity": "SSR",
+    "manufacturer": "테트라",
+    "squad": "언리미티드",
+    "hp": 16500,
+    "attack": 750,
+    "defense": 150,
     "color": {
       "r": 1.0,
       "g": 0.5,
-      "b": 0.0,
+      "b": 0.5,
       "a": 1.0
     },
     "weapon": {
-      "weaponClass": "MG",
-      "maxAmmo": 300,
-      "reloadTime": 2.5,
-      "controlType": "일반형",
-      "description": "머신건",
-      "damagePercent": 5.0
+      "weaponName": "어메이징 원더랜드",
+      "weaponClass": "SR",
+      "maxAmmo": 6,
+      "reloadTime": 2.0,
+      "controlType": "차지형",
+      "description": "대상에게\n[공격력 69.04% 대미지]\n차지 시간: 1.5초\n풀 차지 대미지: 350% 대미지\n[코어 대미지 200%]",
+      "damagePercent": 69.04
     },
     "skills": [
       {
-        "skillID": 501,
-        "burstStage": 1,
-        "name": "엡실론 스킬 1",
-        "description": "버스트 1 스킬 설명",
-        "skillTypeName": "Active",
-        "cooldown": 20.0,
-        "skillIconPath": "Icons/Skills/Epsilon_S1",
+        "skillID": 1401,
+        "burstStage": 0,
+        "name": "힘나는 당근",
+        "description": "풀 버스트 타임 시작 시 공격력이 가장 높은 아군 {0}기에게\n[시전자 기준 차지 속도 {1}% ▲] [{2}초 유지]\n[차지 대미지 {3}% ▲] [{4}초 유지]",
+        "skillTypeName": "패시브",
+        "cooldown": 0.0,
+        "skillIconPath": "Skill/Alice_S1",
         "values": [
-          {
-            "type": "DamageShare",
-            "minValue": "25%",
-            "maxValue": "50%"
-          }
+          { "value": "2" },
+          { "value": "11.67" },
+          { "value": "10" },
+          { "value": "7" },
+          { "value": "10" }
         ]
       },
       {
-        "skillID": 502,
-        "burstStage": 2,
-        "name": "엡실론 스킬 2",
-        "description": "버스트 2 스킬 설명",
-        "skillTypeName": "Active",
-        "cooldown": 20.0,
-        "skillIconPath": "Icons/Skills/Epsilon_S2",
+        "skillID": 1402,
+        "burstStage": 0,
+        "name": "건강한 당근",
+        "description": "자신의 체력이 {0}% 이상이라면 자신에게\n[관통 특화] [지속]\n자신의 체력이 {1}% 미만이라면 자신에게\n[공격 대미지 비례 {2}% 회복] [지속]",
+        "skillTypeName": "패시브",
+        "cooldown": 0.0,
+        "skillIconPath": "Skill/Alice_S2",
         "values": [
-          {
-            "type": "SelfHeal",
-            "minValue": "10%",
-            "maxValue": "25%"
-          }
+          { "value": "80" },
+          { "value": "80" },
+          { "value": "8.12" }
         ]
       },
       {
-        "skillID": 503,
+        "skillID": 1403,
         "burstStage": 3,
-        "name": "엡실론 버스트",
-        "description": "버스트 3 스킬 설명",
-        "skillTypeName": "Active",
+        "name": "신기하고 이상한 나라",
+        "description": "자신에게\n[차지 속도 {0}% ▲] [{1}초 유지]\n[공격력 {2}% ▲] [{3}초 유지]",
+        "skillTypeName": "액티브",
         "cooldown": 40.0,
-        "skillIconPath": "Icons/Skills/Epsilon_S3",
+        "skillIconPath": "Skill/Alice_Burst",
         "values": [
-          {
-            "type": "Invincible",
-            "minValue": "3s",
-            "maxValue": "5s"
-          }
+          { "value": "80.15" },
+          { "value": "10" },
+          { "value": "55.12" },
+          { "value": "10" }
         ]
       }
     ]
   },
   "5": {
     "id": 5,
-    "name": "제타",
-    "nikkeClass": "지원형",
-    "burstLevel": 2,
-    "element": "수냉",
-    "rarity": "R",
-    "hp": 650000,
-    "attack": 22000,
-    "defense": 3800,
+    "name": "DORO",
+    "nikkeClass": "화력형",
+    "burstLevel": 1,
+    "element": "전격",
+    "rarity": "SSR",
+    "manufacturer": "어브노멀",
+    "squad": "갓데스...?",
+    "hp": 15000,
+    "attack": 700,
+    "defense": 145,
     "color": {
-      "r": 0.5,
+      "r": 0.8,
       "g": 0.8,
-      "b": 1.0,
+      "b": 0.8,
       "a": 1.0
     },
     "weapon": {
-      "weaponClass": "SR",
-      "maxAmmo": 6,
-      "reloadTime": 1.8,
-      "controlType": "일반형",
-      "description": "저격 소총",
-      "damagePercent": 80.0
+      "weaponName": "기관단총",
+      "weaponClass": "SMG",
+      "maxAmmo": 120,
+      "reloadTime": 1.5,
+      "controlType": "기본형",
+      "description": "대상에게\n[공격력 8.5% 대미지]\n[코어 대미지 200%]",
+      "damagePercent": 8.5
     },
     "skills": [
       {
-        "skillID": 601,
+        "skillID": 90001,
+        "burstStage": 0,
+        "name": "이 것은 임시 스킬 1이다",
+        "description": "DORO",
+        "skillTypeName": "패시브",
+        "cooldown": 0.0,
+        "skillIconPath": "Skill/Doro_S1",
+        "values": []
+      },
+      {
+        "skillID": 90002,
+        "burstStage": 0,
+        "name": "이 것은 임시 스킬 2이다",
+        "description": "DORO",
+        "skillTypeName": "패시브",
+        "cooldown": 0.0,
+        "skillIconPath": "Skill/Doro_S2",
+        "values": []
+      },
+      {
+        "skillID": 90003,
         "burstStage": 1,
-        "name": "제타 스킬 1",
-        "description": "버스트 1 스킬 설명",
-        "skillTypeName": "Active",
+        "name": "이 것은 임시 버스트이다",
+        "description": "DORO",
+        "skillTypeName": "액티브",
         "cooldown": 20.0,
-        "skillIconPath": "Icons/Skills/Zeta_S1",
-        "values": [
-          {
-            "type": "CriticalChanceBuff",
-            "minValue": "10%",
-            "maxValue": "25%"
-          }
-        ]
-      },
-      {
-        "skillID": 602,
-        "burstStage": 2,
-        "name": "제타 스킬 2",
-        "description": "버스트 2 스킬 설명",
-        "skillTypeName": "Active",
-        "cooldown": 20.0,
-        "skillIconPath": "Icons/Skills/Zeta_S2",
-        "values": [
-          {
-            "type": "CriticalDamageBuff",
-            "minValue": "20%",
-            "maxValue": "50%"
-          }
-        ]
-      },
-      {
-        "skillID": 603,
-        "burstStage": 3,
-        "name": "제타 버스트",
-        "description": "버스트 3 스킬 설명",
-        "skillTypeName": "Active",
-        "cooldown": 40.0,
-        "skillIconPath": "Icons/Skills/Zeta_S3",
-        "values": [
-          {
-            "type": "WeakPointDamageBuff",
-            "minValue": "50%",
-            "maxValue": "120%"
-          }
-        ]
+        "skillIconPath": "Skill/Doro_Burst",
+        "values": []
       }
     ]
   },
   "6": {
     "id": 6,
-    "name": "에타",
-    "nikkeClass": "화력형",
-    "burstLevel": 3,
-    "element": "풍압",
-    "rarity": "SSR",
-    "hp": 620000,
-    "attack": 26000,
-    "defense": 3300,
+    "name": "DORO",
+    "nikkeClass": "지원형",
+    "burstLevel": 2,
+    "element": "수냉",
+    "rarity": "SR",
+    "manufacturer": "어브노멀",
+    "squad": "갓데스...?",
+    "hp": 13500,
+    "attack": 520,
+    "defense": 155,
     "color": {
-      "r": 0.8,
-      "g": 1.0,
-      "b": 0.5,
+      "r": 0.7,
+      "g": 0.7,
+      "b": 0.9,
       "a": 1.0
     },
     "weapon": {
-      "weaponClass": "AR",
-      "maxAmmo": 60,
-      "reloadTime": 1.0,
-      "controlType": "일반형",
-      "description": "스탠다드 돌격소총",
-      "damagePercent": 15.0
+      "weaponName": "샷건",
+      "weaponClass": "SG",
+      "maxAmmo": 8,
+      "reloadTime": 1.9,
+      "controlType": "기본형",
+      "description": "대상에게\n[공격력 180.0% 대미지]\n[코어 대미지 200%]",
+      "damagePercent": 180.0
     },
     "skills": [
       {
-        "skillID": 701,
-        "burstStage": 1,
-        "name": "에타 스킬 1",
-        "description": "버스트 1 스킬 설명",
-        "skillTypeName": "Active",
-        "cooldown": 20.0,
-        "skillIconPath": "Icons/Skills/Eta_S1",
-        "values": [
-          {
-            "type": "Damage",
-            "minValue": "155%",
-            "maxValue": "310%"
-          }
-        ]
+        "skillID": 90001,
+        "burstStage": 0,
+        "name": "이 것은 임시 스킬 1이다",
+        "description": "DORO",
+        "skillTypeName": "패시브",
+        "cooldown": 0.0,
+        "skillIconPath": "Skill/Doro_S1",
+        "values": []
       },
       {
-        "skillID": 702,
+        "skillID": 90002,
+        "burstStage": 0,
+        "name": "이 것은 임시 스킬 2이다",
+        "description": "DORO",
+        "skillTypeName": "패시브",
+        "cooldown": 0.0,
+        "skillIconPath": "Skill/Doro_S2",
+        "values": []
+      },
+      {
+        "skillID": 90003,
         "burstStage": 2,
-        "name": "에타 스킬 2",
-        "description": "버스트 2 스킬 설명",
-        "skillTypeName": "Active",
+        "name": "이 것은 임시 버스트이다",
+        "description": "DORO",
+        "skillTypeName": "액티브",
         "cooldown": 20.0,
-        "skillIconPath": "Icons/Skills/Eta_S2",
-        "values": [
-          {
-            "type": "AttackSpeedBuff",
-            "minValue": "15%",
-            "maxValue": "30%"
-          }
-        ]
-      },
-      {
-        "skillID": 703,
-        "burstStage": 3,
-        "name": "에타 버스트",
-        "description": "버스트 3 스킬 설명",
-        "skillTypeName": "Active",
-        "cooldown": 40.0,
-        "skillIconPath": "Icons/Skills/Eta_S3",
-        "values": [
-          {
-            "type": "FinalDamage",
-            "minValue": "550%",
-            "maxValue": "1300%"
-          }
-        ]
+        "skillIconPath": "Skill/Doro_Burst",
+        "values": []
       }
     ]
   },
   "7": {
     "id": 7,
-    "name": "세타",
+    "name": "DORO",
     "nikkeClass": "방어형",
-    "burstLevel": 1,
-    "element": "철갑",
-    "rarity": "SR",
-    "hp": 850000,
-    "attack": 17000,
-    "defense": 5200,
+    "burstLevel": 3,
+    "element": "풍압",
+    "rarity": "SSR",
+    "manufacturer": "어브노멀",
+    "squad": "갓데스...?",
+    "hp": 21000,
+    "attack": 580,
+    "defense": 230,
     "color": {
-      "r": 0.9,
+      "r": 0.6,
       "g": 0.9,
-      "b": 0.9,
+      "b": 0.6,
       "a": 1.0
     },
     "weapon": {
-      "weaponClass": "SG",
-      "maxAmmo": 9,
-      "reloadTime": 1.5,
-      "controlType": "일반형",
-      "description": "강력한 샷건",
-      "damagePercent": 240.0
+      "weaponName": "머신건",
+      "weaponClass": "MG",
+      "maxAmmo": 400,
+      "reloadTime": 3.0,
+      "controlType": "기본형",
+      "description": "대상에게\n[공격력 4.5% 대미지]\n[코어 대미지 200%]",
+      "damagePercent": 4.5
     },
     "skills": [
       {
-        "skillID": 801,
-        "burstStage": 1,
-        "name": "세타 스킬 1",
-        "description": "버스트 1 스킬 설명",
-        "skillTypeName": "Active",
-        "cooldown": 20.0,
-        "skillIconPath": "Icons/Skills/Theta_S1",
-        "values": [
-          {
-            "type": "DefenseBuff",
-            "minValue": "22%",
-            "maxValue": "42%"
-          }
-        ]
+        "skillID": 90001,
+        "burstStage": 0,
+        "name": "이 것은 임시 스킬 1이다",
+        "description": "DORO",
+        "skillTypeName": "패시브",
+        "cooldown": 0.0,
+        "skillIconPath": "Skill/Doro_S1",
+        "values": []
       },
       {
-        "skillID": 802,
-        "burstStage": 2,
-        "name": "세타 스킬 2",
-        "description": "버스트 2 스킬 설명",
-        "skillTypeName": "Active",
-        "cooldown": 20.0,
-        "skillIconPath": "Icons/Skills/Theta_S2",
-        "values": [
-          {
-            "type": "Taunt",
-            "minValue": "6s",
-            "maxValue": "11s"
-          }
-        ]
+        "skillID": 90002,
+        "burstStage": 0,
+        "name": "이 것은 임시 스킬 2이다",
+        "description": "DORO",
+        "skillTypeName": "패시브",
+        "cooldown": 0.0,
+        "skillIconPath": "Skill/Doro_S2",
+        "values": []
       },
       {
-        "skillID": 803,
+        "skillID": 90003,
         "burstStage": 3,
-        "name": "세타 버스트",
-        "description": "버스트 3 스킬 설명",
-        "skillTypeName": "Active",
+        "name": "이 것은 임시 버스트이다",
+        "description": "DORO",
+        "skillTypeName": "액티브",
         "cooldown": 40.0,
-        "skillIconPath": "Icons/Skills/Theta_S3",
-        "values": [
-          {
-            "type": "Shield",
-            "minValue": "35%",
-            "maxValue": "65%"
-          }
-        ]
+        "skillIconPath": "Skill/Doro_Burst",
+        "values": []
       }
     ]
   },
   "8": {
     "id": 8,
-    "name": "이오타",
-    "nikkeClass": "지원형",
-    "burstLevel": 2,
-    "element": "작열",
-    "rarity": "SR",
-    "hp": 780000,
-    "attack": 19000,
-    "defense": 4200,
+    "name": "DORO",
+    "nikkeClass": "화력형",
+    "burstLevel": 1,
+    "element": "철갑",
+    "rarity": "SSR",
+    "manufacturer": "어브노멀",
+    "squad": "갓데스...?",
+    "hp": 16000,
+    "attack": 720,
+    "defense": 150,
     "color": {
-      "r": 1.0,
-      "g": 0.8,
-      "b": 0.2,
+      "r": 0.5,
+      "g": 0.5,
+      "b": 0.5,
       "a": 1.0
     },
     "weapon": {
-      "weaponClass": "SMG",
-      "maxAmmo": 120,
-      "reloadTime": 1.2,
-      "controlType": "일반형",
-      "description": "빠른 연사 속도의 SMG",
-      "damagePercent": 7.8
+      "weaponName": "저격소총",
+      "weaponClass": "SR",
+      "maxAmmo": 5,
+      "reloadTime": 2.2,
+      "controlType": "차지형",
+      "description": "대상에게\n[공격력 85.0% 대미지]\n차지 시간: 1.0초\n풀 차지 대미지: 250% 대미지\n[코어 대미지 200%]",
+      "damagePercent": 85.0
     },
     "skills": [
       {
-        "skillID": 901,
+        "skillID": 90001,
+        "burstStage": 0,
+        "name": "이 것은 임시 스킬 1이다",
+        "description": "DORO",
+        "skillTypeName": "패시브",
+        "cooldown": 0.0,
+        "skillIconPath": "Skill/Doro_S1",
+        "values": []
+      },
+      {
+        "skillID": 90002,
+        "burstStage": 0,
+        "name": "이 것은 임시 스킬 2이다",
+        "description": "DORO",
+        "skillTypeName": "패시브",
+        "cooldown": 0.0,
+        "skillIconPath": "Skill/Doro_S2",
+        "values": []
+      },
+      {
+        "skillID": 90003,
         "burstStage": 1,
-        "name": "이오타 스킬 1",
-        "description": "버스트 1 스킬 설명",
-        "skillTypeName": "Active",
+        "name": "이 것은 임시 버스트이다",
+        "description": "DORO",
+        "skillTypeName": "액티브",
         "cooldown": 20.0,
-        "skillIconPath": "Icons/Skills/Iota_S1",
-        "values": [
-          {
-            "type": "Heal",
-            "minValue": "16%",
-            "maxValue": "32%"
-          }
-        ]
-      },
-      {
-        "skillID": 902,
-        "burstStage": 2,
-        "name": "이오타 스킬 2",
-        "description": "버스트 2 스킬 설명",
-        "skillTypeName": "Active",
-        "cooldown": 20.0,
-        "skillIconPath": "Icons/Skills/Iota_S2",
-        "values": [
-          {
-            "type": "CooldownReduction",
-            "minValue": "2.5s",
-            "maxValue": "5.5s"
-          }
-        ]
-      },
-      {
-        "skillID": 903,
-        "burstStage": 3,
-        "name": "이오타 버스트",
-        "description": "버스트 3 스킬 설명",
-        "skillTypeName": "Active",
-        "cooldown": 40.0,
-        "skillIconPath": "Icons/Skills/Iota_S3",
-        "values": [
-          {
-            "type": "Revive",
-            "minValue": "25%",
-            "maxValue": "55%"
-          }
-        ]
+        "skillIconPath": "Skill/Doro_Burst",
+        "values": []
       }
     ]
   },
   "9": {
     "id": 9,
-    "name": "카파",
-    "nikkeClass": "화력형",
-    "burstLevel": 3,
-    "element": "수냉",
-    "rarity": "R",
-    "hp": 500000,
-    "attack": 30000,
-    "defense": 2800,
+    "name": "DORO",
+    "nikkeClass": "지원형",
+    "burstLevel": 2,
+    "element": "작열",
+    "rarity": "SR",
+    "manufacturer": "어브노멀",
+    "squad": "갓데스...?",
+    "hp": 13800,
+    "attack": 540,
+    "defense": 160,
     "color": {
-      "r": 0.2,
-      "g": 0.5,
-      "b": 1.0,
+      "r": 1.0,
+      "g": 0.4,
+      "b": 0.4,
       "a": 1.0
     },
     "weapon": {
+      "weaponName": "런처",
       "weaponClass": "RL",
-      "maxAmmo": 1,
-      "reloadTime": 2.0,
-      "controlType": "일반형",
-      "description": "로켓 런처",
-      "damagePercent": 75.0
+      "maxAmmo": 5,
+      "reloadTime": 2.4,
+      "controlType": "차지형",
+      "description": "대상에게\n[공격력 55.0% 대미지]\n차지 시간: 1.0초\n풀 차지 대미지: 250% 대미지\n[코어 대미지 200%]",
+      "damagePercent": 55.0
     },
     "skills": [
       {
-        "skillID": 1001,
-        "burstStage": 1,
-        "name": "카파 스킬 1",
-        "description": "버스트 1 스킬 설명",
-        "skillTypeName": "Active",
-        "cooldown": 20.0,
-        "skillIconPath": "Icons/Skills/Kappa_S1",
-        "values": [
-          {
-            "type": "Damage",
-            "minValue": "170%",
-            "maxValue": "340%"
-          }
-        ]
+        "skillID": 90001,
+        "burstStage": 0,
+        "name": "이 것은 임시 스킬 1이다",
+        "description": "DORO",
+        "skillTypeName": "패시브",
+        "cooldown": 0.0,
+        "skillIconPath": "Skill/Doro_S1",
+        "values": []
       },
       {
-        "skillID": 1002,
+        "skillID": 90002,
+        "burstStage": 0,
+        "name": "이 것은 임시 스킬 2이다",
+        "description": "DORO",
+        "skillTypeName": "패시브",
+        "cooldown": 0.0,
+        "skillIconPath": "Skill/Doro_S2",
+        "values": []
+      },
+      {
+        "skillID": 90003,
         "burstStage": 2,
-        "name": "카파 스킬 2",
-        "description": "버스트 2 스킬 설명",
-        "skillTypeName": "Active",
+        "name": "이 것은 임시 버스트이다",
+        "description": "DORO",
+        "skillTypeName": "액티브",
         "cooldown": 20.0,
-        "skillIconPath": "Icons/Skills/Kappa_S2",
-        "values": [
-          {
-            "type": "DefenseDebuff",
-            "minValue": "16%",
-            "maxValue": "32%"
-          }
-        ]
+        "skillIconPath": "Skill/Doro_Burst",
+        "values": []
+      }
+    ]
+  },
+  "10": {
+    "id": 10,
+    "name": "DORO",
+    "nikkeClass": "방어형",
+    "burstLevel": 3,
+    "element": "전격",
+    "rarity": "SSR",
+    "manufacturer": "어브노멀",
+    "squad": "갓데스...?",
+    "hp": 19500,
+    "attack": 610,
+    "defense": 215,
+    "color": {
+      "r": 0.9,
+      "g": 0.9,
+      "b": 0.2,
+      "a": 1.0
+    },
+    "weapon": {
+      "weaponName": "소총",
+      "weaponClass": "AR",
+      "maxAmmo": 45,
+      "reloadTime": 1.4,
+      "controlType": "기본형",
+      "description": "대상에게\n[공격력 11.0% 대미지]\n[코어 대미지 200%]",
+      "damagePercent": 11.0
+    },
+    "skills": [
+      {
+        "skillID": 90001,
+        "burstStage": 0,
+        "name": "이 것은 임시 스킬 1이다",
+        "description": "DORO",
+        "skillTypeName": "패시브",
+        "cooldown": 0.0,
+        "skillIconPath": "Skill/Doro_S1",
+        "values": []
       },
       {
-        "skillID": 1003,
+        "skillID": 90002,
+        "burstStage": 0,
+        "name": "이 것은 임시 스킬 2이다",
+        "description": "DORO",
+        "skillTypeName": "패시브",
+        "cooldown": 0.0,
+        "skillIconPath": "Skill/Doro_S2",
+        "values": []
+      },
+      {
+        "skillID": 90003,
         "burstStage": 3,
-        "name": "카파 버스트",
-        "description": "버스트 3 스킬 설명",
-        "skillTypeName": "Active",
+        "name": "이 것은 임시 버스트이다",
+        "description": "DORO",
+        "skillTypeName": "액티브",
         "cooldown": 40.0,
-        "skillIconPath": "Icons/Skills/Kappa_S3",
-        "values": [
-          {
-            "type": "AreaDamage",
-            "minValue": "480%",
-            "maxValue": "1100%"
-          }
-        ]
+        "skillIconPath": "Skill/Doro_Burst",
+        "values": []
+      }
+    ]
+  },
+  "11": {
+    "id": 11,
+    "name": "DORO",
+    "nikkeClass": "화력형",
+    "burstLevel": 1,
+    "element": "수냉",
+    "rarity": "R",
+    "manufacturer": "어브노멀",
+    "squad": "갓데스...?",
+    "hp": 12000,
+    "attack": 450,
+    "defense": 120,
+    "color": {
+      "r": 0.4,
+      "g": 0.4,
+      "b": 0.9,
+      "a": 1.0
+    },
+    "weapon": {
+      "weaponName": "기관단총",
+      "weaponClass": "SMG",
+      "maxAmmo": 80,
+      "reloadTime": 1.2,
+      "controlType": "기본형",
+      "description": "대상에게\n[공격력 6.0% 대미지]\n[코어 대미지 200%]",
+      "damagePercent": 6.0
+    },
+    "skills": [
+      {
+        "skillID": 90001,
+        "burstStage": 0,
+        "name": "이 것은 임시 스킬 1이다",
+        "description": "DORO",
+        "skillTypeName": "패시브",
+        "cooldown": 0.0,
+        "skillIconPath": "Skill/Doro_S1",
+        "values": []
+      },
+      {
+        "skillID": 90002,
+        "burstStage": 0,
+        "name": "이 것은 임시 스킬 2이다",
+        "description": "DORO",
+        "skillTypeName": "패시브",
+        "cooldown": 0.0,
+        "skillIconPath": "Skill/Doro_S2",
+        "values": []
+      },
+      {
+        "skillID": 90003,
+        "burstStage": 1,
+        "name": "이 것은 임시 버스트이다",
+        "description": "DORO",
+        "skillTypeName": "액티브",
+        "cooldown": 20.0,
+        "skillIconPath": "Skill/Doro_Burst",
+        "values": []
+      }
+    ]
+  },
+  "12": {
+    "id": 12,
+    "name": "DORO",
+    "nikkeClass": "지원형",
+    "burstLevel": 2,
+    "element": "풍압",
+    "rarity": "SSR",
+    "manufacturer": "어브노멀",
+    "squad": "갓데스...?",
+    "hp": 14200,
+    "attack": 560,
+    "defense": 170,
+    "color": {
+      "r": 0.5,
+      "g": 0.8,
+      "b": 0.5,
+      "a": 1.0
+    },
+    "weapon": {
+      "weaponName": "샷건",
+      "weaponClass": "SG",
+      "maxAmmo": 10,
+      "reloadTime": 2.0,
+      "controlType": "기본형",
+      "description": "대상에게\n[공격력 200.0% 대미지]\n[코어 대미지 200%]",
+      "damagePercent": 200.0
+    },
+    "skills": [
+      {
+        "skillID": 90001,
+        "burstStage": 0,
+        "name": "이 것은 임시 스킬 1이다",
+        "description": "DORO",
+        "skillTypeName": "패시브",
+        "cooldown": 0.0,
+        "skillIconPath": "Skill/Doro_S1",
+        "values": []
+      },
+      {
+        "skillID": 90002,
+        "burstStage": 0,
+        "name": "이 것은 임시 스킬 2이다",
+        "description": "DORO",
+        "skillTypeName": "패시브",
+        "cooldown": 0.0,
+        "skillIconPath": "Skill/Doro_S2",
+        "values": []
+      },
+      {
+        "skillID": 90003,
+        "burstStage": 2,
+        "name": "이 것은 임시 버스트이다",
+        "description": "DORO",
+        "skillTypeName": "액티브",
+        "cooldown": 20.0,
+        "skillIconPath": "Skill/Doro_Burst",
+        "values": []
+      }
+    ]
+  },
+  "13": {
+    "id": 13,
+    "name": "DORO",
+    "nikkeClass": "방어형",
+    "burstLevel": 3,
+    "element": "철갑",
+    "rarity": "SR",
+    "manufacturer": "어브노멀",
+    "squad": "갓데스...?",
+    "hp": 18500,
+    "attack": 490,
+    "defense": 205,
+    "color": {
+      "r": 0.7,
+      "g": 0.7,
+      "b": 0.7,
+      "a": 1.0
+    },
+    "weapon": {
+      "weaponName": "머신건",
+      "weaponClass": "MG",
+      "maxAmmo": 250,
+      "reloadTime": 2.8,
+      "controlType": "기본형",
+      "description": "대상에게\n[공격력 4.8% 대미지]\n[코어 대미지 200%]",
+      "damagePercent": 4.8
+    },
+    "skills": [
+      {
+        "skillID": 90001,
+        "burstStage": 0,
+        "name": "이 것은 임시 스킬 1이다",
+        "description": "DORO",
+        "skillTypeName": "패시브",
+        "cooldown": 0.0,
+        "skillIconPath": "Skill/Doro_S1",
+        "values": []
+      },
+      {
+        "skillID": 90002,
+        "burstStage": 0,
+        "name": "이 것은 임시 스킬 2이다",
+        "description": "DORO",
+        "skillTypeName": "패시브",
+        "cooldown": 0.0,
+        "skillIconPath": "Skill/Doro_S2",
+        "values": []
+      },
+      {
+        "skillID": 90003,
+        "burstStage": 3,
+        "name": "이 것은 임시 버스트이다",
+        "description": "DORO",
+        "skillTypeName": "액티브",
+        "cooldown": 40.0,
+        "skillIconPath": "Skill/Doro_Burst",
+        "values": []
+      }
+    ]
+  },
+  "14": {
+    "id": 14,
+    "name": "DORO",
+    "nikkeClass": "화력형",
+    "burstLevel": 1,
+    "element": "작열",
+    "rarity": "SSR",
+    "manufacturer": "어브노멀",
+    "squad": "갓데스...?",
+    "hp": 15500,
+    "attack": 710,
+    "defense": 150,
+    "color": {
+      "r": 0.9,
+      "g": 0.3,
+      "b": 0.3,
+      "a": 1.0
+    },
+    "weapon": {
+      "weaponName": "저격소총",
+      "weaponClass": "SR",
+      "maxAmmo": 7,
+      "reloadTime": 1.8,
+      "controlType": "차지형",
+      "description": "대상에게\n[공격력 68.0% 대미지]\n차지 시간: 1.0초\n풀 차지 대미지: 250% 대미지\n[코어 대미지 200%]",
+      "damagePercent": 68.0
+    },
+    "skills": [
+      {
+        "skillID": 90001,
+        "burstStage": 0,
+        "name": "이 것은 임시 스킬 1이다",
+        "description": "DORO",
+        "skillTypeName": "패시브",
+        "cooldown": 0.0,
+        "skillIconPath": "Skill/Doro_S1",
+        "values": []
+      },
+      {
+        "skillID": 90002,
+        "burstStage": 0,
+        "name": "이 것은 임시 스킬 2이다",
+        "description": "DORO",
+        "skillTypeName": "패시브",
+        "cooldown": 0.0,
+        "skillIconPath": "Skill/Doro_S2",
+        "values": []
+      },
+      {
+        "skillID": 90003,
+        "burstStage": 1,
+        "name": "이 것은 임시 버스트이다",
+        "description": "DORO",
+        "skillTypeName": "액티브",
+        "cooldown": 20.0,
+        "skillIconPath": "Skill/Doro_Burst",
+        "values": []
       }
     ]
   }

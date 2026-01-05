@@ -15,8 +15,28 @@ MonoBehaviour:
   m_GroupName: Default Local Group
   m_GUID: 6adaca73f249e3645986912f8bbe7c27
   m_SerializeEntries:
+  - m_GUID: 026dd8b397f2fa8438faeaa43198f863
+    m_Address: "Assets/Textures/Icon/Code/\uCCA0\uAC11"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 032823f54f9eae9478dc74d42ecc57f0
+    m_Address: Assets/Textures/Nikke/DORO_Stand
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 11b0e73c6769e7b4d890800d839fa18a
+    m_Address: Assets/Textures/Icon/Burst/burst_1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 138452f05ddd16b428cc18bb0c6096d0
     m_Address: UserData.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 14642b48b1815a54fbe749741f64d2a4
+    m_Address: DORO
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -35,8 +55,53 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2c242e5c5b55ef24db003061d0a1580f
+    m_Address: "Assets/Textures/Nikke/\uB514\uC824_Shoot"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2eee948abd652524591a6ae74bdd9499
+    m_Address: UI/View/UI_NikkeCard
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 30ac6530eec34c14d9d414d9e3d455a0
+    m_Address: UI/View/UI_SkillSlot
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 356e33b510d301d4cb87c5bb5ff03e2b
+    m_Address: Assets/Textures/Icon/Weapon/SG
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 35ade54db6fd97245b337a0c36852dab
+    m_Address: Assets/Textures/Icon/Weapon/SR
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3755c19efa0021d4fa413e0f84cd61c2
+    m_Address: UI/Popup/UI_NikkeCardSortFilter
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 38a5f6b898c22d24b8498e16bd24289e
+    m_Address: "Assets/Textures/Nikke/\uC568\uB9AC\uC2A4_Face"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3c007bc872aa4604c8d78ab5c047fece
     m_Address: ItemGameData.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3fc3a54b695e41e4fa0ee8fcb9f23010
+    m_Address: "Assets/Textures/Nikke/\uB514\uC824_Face"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4037f8b47ff4e3c43b04cb19ac315223
+    m_Address: "Assets/Textures/Nikke/\uC568\uB9AC\uC2A4_Stand"
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -45,8 +110,48 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 45220de00892da044be3201e912ef946
+    m_Address: "Assets/Textures/Icon/Code/\uC791\uC5F4"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 49780b5c534529f4aa7a2aacff654b76
+    m_Address: "Assets/Textures/Nikke/\uB77C\uD53C_Stand"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4a2ab3e85bbb36c46896d46acc82ecdc
+    m_Address: Assets/Textures/Nikke/DORO_Crop
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4de869b7ff4840e468b4aa65cba26e2b
+    m_Address: Assets/Textures/Icon/Weapon/SMG
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4e887813563ed1b47aaa56dc920d5032
+    m_Address: UI/Popup/UI_NikkeLevelUpPopup
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4f4c6843a71482f4caa973a913436f48
     m_Address: UI/View/UI_TabButtonGroup
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4f79aff057a5cbe4cb2245548cae0af5
+    m_Address: "Assets/Textures/Icon/Code/\uC804\uACA9"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5233127e71fcb0648a36489c9dae13e2
+    m_Address: "Assets/Textures/Nikke/\uB124\uC628_Idle"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 567ad6c9ba084f2438685610511fb06e
+    m_Address: "Assets/Textures/Nikke/\uB124\uC628_Stand"
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -70,8 +175,38 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 66fead0abd1945c4dbfba2ebfc57afaf
+    m_Address: "Assets/Textures/Nikke/\uB514\uC824_Stand"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 683ffcad19981244fb158be5cbe5dbe8
     m_Address: UI/View/UI_NikkeTab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6848c715fd3fb65449052a342cb16ef8
+    m_Address: "Assets/Textures/Nikke/\uB124\uC628_Crop"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6bce9fc711c51cf47a2e0caa79821a92
+    m_Address: Assets/Textures/Icon/Burst/burst_3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6f5a6f2a59c429548b8e0ff150d373eb
+    m_Address: "Assets/Textures/Nikke/\uC544\uB2C8\uC2A4_Idle"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 709f09bdd628d514790d421bec89194a
+    m_Address: Assets/Textures/Icon/Weapon/RL
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7311a8f316678774f8e7473012ecf844
+    m_Address: "Assets/Textures/Nikke/\uB77C\uD53C_Face"
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -80,8 +215,58 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7c04f5e83060544428bba0f87fab4161
+    m_Address: Assets/Textures/Icon/Weapon/AR
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7f9692232b622f94683a7d6c7c818ee5
+    m_Address: "Assets/Textures/Nikke/\uB514\uC824_Crop"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8342a7aab9c151b47b69ea5f61ce16e9
     m_Address: UI/View/UI_LobbyTab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 86999bec54cbff448987920f5c0ebbc5
+    m_Address: "Assets/Textures/Icon/Code/\uC218\uB0C9"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 899d374850d42564eb8f569dab614edf
+    m_Address: "Assets/Textures/Nikke/\uC568\uB9AC\uC2A4_Crop"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 89c6f2dff9ae04441b4f17c86168b151
+    m_Address: "Assets/Textures/Icon/Class/\uC9C0\uC6D0\uD615"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 89e07b06ea2825a488b9dfbcf6225079
+    m_Address: "Assets/Textures/Nikke/\uB514\uC824_Idle"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 928a4135dfb408c4cbdd93390ade8007
+    m_Address: UI/Popup/UI_NikkeDetailPopup
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 98127fff79c983745b13818b952936a0
+    m_Address: "Assets/Textures/Icon/Code/\uD48D\uC555"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9c154fe72685df741be04dc51f56817f
+    m_Address: "Assets/Textures/Icon/Class/\uBC29\uC5B4\uD615"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a212979f6a313104185673ddbb83ff20
+    m_Address: "Assets/Textures/Nikke/\uB77C\uD53C_Idle"
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -95,8 +280,33 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bc86e1376d424294e8d258e661be306a
+    m_Address: "Assets/Textures/Nikke/\uC544\uB2C8\uC2A4_Stand"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c3788e7b1806a664f91898638828653d
     m_Address: UI/View/UI_Icon
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cc29d66e40c965e48a3411db6178c06d
+    m_Address: "Assets/Textures/Nikke/\uC544\uB2C8\uC2A4_Shoot"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cfb0f4dfbb554c54797b8bcdc5dbff3f
+    m_Address: "Assets/Textures/Nikke/\uC544\uB2C8\uC2A4_Face"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d48efe6324d9a2d4ca2e13d23f3e1fa6
+    m_Address: "Assets/Textures/Nikke/\uB124\uC628_Shoot"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d6130b5ca4cb6e346b1c321863ab6266
+    m_Address: "Assets/Textures/Icon/Class/\uD654\uB825\uD615"
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -105,13 +315,68 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d88d8c31494bf904ca26e6a22f7ab9d3
+    m_Address: "Assets/Textures/Nikke/\uC544\uB2C8\uC2A4_Crop"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dc54caf0438e29747a5d0258f440d99b
+    m_Address: "Assets/Textures/Nikke/\uB124\uC628_Face"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e61175f8771ac5042ad55c345138e973
     m_Address: UI/Popup/UI_MissionPopup
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: edcf6cc3b1a1962418a8f04f2dc28d81
+    m_Address: Assets/Textures/Nikke/DORO_Shoot
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ef7375c8b1094b34cb0fd05fd2e48274
+    m_Address: "Assets/Textures/Nikke/\uB77C\uD53C_Shoot"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f24757bc84c3ddb4a95612455896917b
+    m_Address: Assets/Textures/Nikke/DORO_Face
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f25610b3919a23643bfa15689c44a031
+    m_Address: UI/Popup/UI_SkillInfoPopup
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f790e19c9ac46634191be1b1455061c2
+    m_Address: Assets/Textures/Icon/Burst/burst_2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f7cfd2e46a9f22241a0cefe89192346d
     m_Address: UI/View/UI_SquadTab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fbc459a2112c7604e8cb6c16167b72e3
+    m_Address: Assets/Textures/Icon/Weapon/MG
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ff07e10f01a8b014a801fc9448a8b0a3
+    m_Address: "Assets/Textures/Nikke/\uC568\uB9AC\uC2A4_Shoot"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ff448317347419b42808e8e35fea3100
+    m_Address: "Assets/Textures/Nikke/\uC568\uB9AC\uC2A4_Idle"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ffc371974d2160342816754270a679a2
+    m_Address: "Assets/Textures/Nikke/\uB77C\uD53C_Crop"
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

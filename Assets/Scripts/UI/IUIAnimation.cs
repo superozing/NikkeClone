@@ -10,6 +10,7 @@ public interface IUIAnimation
     /// 대상 CanvasGroup에 대해 연출을 비동기적으로 실행합니다.
     /// </summary>
     /// <param name="cg">연출을 적용할 대상 CanvasGroup</param>
+    /// <param name="delay">연출 시작 전 딜레이(초)</param>
     /// <returns>연출 완료를 알리는 Task</returns>
-    Task ExecuteAsync(CanvasGroup cg);
+    Task ExecuteAsync(CanvasGroup cg, float delay = 0f);
 }

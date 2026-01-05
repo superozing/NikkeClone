@@ -18,7 +18,7 @@ public class FadeOutUIAnimation : IUIAnimation
         _ease = ease;
     }
 
-    public async Task ExecuteAsync(CanvasGroup cg)
+    public async Task ExecuteAsync(CanvasGroup cg, float delay = 0f)
     {
         if (cg == null) 
             return;
@@ -28,6 +28,7 @@ public class FadeOutUIAnimation : IUIAnimation
 
         await cg.DOFade(0f, _duration)
                 .SetEase(_ease)
+                .SetDelay(delay)
                 .SetUpdate(true)
                 .AsyncWaitForCompletion();
     }
