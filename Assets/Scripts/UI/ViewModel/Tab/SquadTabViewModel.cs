@@ -18,9 +18,17 @@ public class SquadTabViewModel : ViewModelBase
 
     // --- Data ---
     /// <summary>
-    /// 5개의 슬롯에 해당하는 카드 뷰모델 배열. 빈 슬롯은 null입니다.
+    /// 현재 선택된 스쿼드의 5개 슬롯에 해당하는 카드 뷰모델 배열.
+    /// 빈 슬롯은 null입니다. View는 이 배열을 참조하여 UI를 갱신합니다.
     /// </summary>
-    public NikkeCardViewModel[] SlotViewModels { get; private set; } = new NikkeCardViewModel[5];
+    public NikkeCardViewModel[] SlotViewModels { get; private set; }
+
+    // --- Caching ---
+    /// <summary>
+    /// 스쿼드별(5개) 슬롯별(5개) ViewModel을 캐싱하는 2차원 배열입니다.
+    /// Lazy Caching 방식을 사용하므로 초기에는 null이며, 접근 시 생성됩니다.
+    /// </summary>
+    private NikkeCardViewModel[][] _cachedSquadViewModels = new NikkeCardViewModel[5][];
 
     private readonly Dictionary<int, UserSquadData> _userSquads;
 
@@ -46,64 +54,62 @@ public class SquadTabViewModel : ViewModelBase
 
     private void SelectSquad(int index)
     {
-        // 1. 기존 슬롯의 ViewModel 정리
-        ClearSlots();
+        // 1. 캐시 확인 및 생성 (Lazy Loading)
+        if (_cachedSquadViewModels[index] == null)
+        {
+            CreateSquadViewModelCache(index);
+        }
 
-        // 2. 새 스쿼드 데이터 조회 (ID는 1부터 시작한다고 가정: index + 1)
-        int squadId = index + 1;
+        // 2. 현재 슬롯 뷰모델 교체 (캐시된 배열 참조)
+        SlotViewModels = _cachedSquadViewModels[index];
+
+        // 3. 전투력 계산
         long totalCp = 0;
+        foreach (var vm in SlotViewModels)
+        {
+            if (vm != null)
+                totalCp += vm.CombatPower;
+        }
+        TotalCombatPower.Value = Utils.FormatNumber((int)totalCp);
+
+        // 4. 인덱스 변경 알림 (View 갱신 트리거)
+        // View는 OnSquadIndexChanged에서 SlotViewModels를 읽어가므로 순서가 중요합니다.
+        CurrentSquadIndex.Value = index;
+    }
+
+    /// <summary>
+    /// 해당 인덱스의 스쿼드 데이터를 로드하여 ViewModel 캐시를 생성합니다.
+    /// </summary>
+    private void CreateSquadViewModelCache(int index)
+    {
+        _cachedSquadViewModels[index] = new NikkeCardViewModel[5];
+
+        int squadId = index + 1; // ID는 1부터 시작
 
         if (_userSquads.TryGetValue(squadId, out UserSquadData squadData))
         {
-            // 3. 5개 슬롯을 순회하며 ViewModel 생성
             for (int i = 0; i < 5; i++)
             {
                 int nikkeId = squadData.slot[i];
 
-                // -1은 빈 슬롯을 의미함
-                if (nikkeId != -1)
+                if (nikkeId != -1) // -1은 빈 슬롯
                 {
-                    // 데이터 조회
                     var nikkeGameData = Managers.Data.Get<NikkeGameData>(nikkeId);
                     var userNikkeData = Managers.Data.UserData.Nikkes.ContainsKey(nikkeId) ? Managers.Data.UserData.Nikkes[nikkeId] : null;
 
                     if (nikkeGameData != null && userNikkeData != null)
                     {
                         var vm = new NikkeCardViewModel(userNikkeData, nikkeGameData);
-                        vm.AddRef();
-
-                        // 카드 클릭 이벤트 구독
+                        vm.AddRef(); // 캐시에서 보유하므로 참조 카운트 증가
                         vm.OnClick += OnCardViewModelClicked;
 
-                        SlotViewModels[i] = vm;
-
-                        // 전투력 합산
-                        totalCp += userNikkeData.combatPower.Value;
+                        _cachedSquadViewModels[index][i] = vm;
                     }
                 }
                 else
                 {
-                    SlotViewModels[i] = null;
+                    _cachedSquadViewModels[index][i] = null;
                 }
-            }
-        }
-
-        // 4. 전투력 텍스트 갱신
-        TotalCombatPower.Value = Utils.FormatNumber((int)totalCp);
-
-        // 5. 인덱스 변경 알림 (View 갱신 트리거)
-        CurrentSquadIndex.Value = index;
-    }
-
-    private void ClearSlots()
-    {
-        for (int i = 0; i < SlotViewModels.Length; i++)
-        {
-            if (SlotViewModels[i] != null)
-            {
-                SlotViewModels[i].OnClick -= OnCardViewModelClicked; // 구독 해제
-                SlotViewModels[i].Release();
-                SlotViewModels[i] = null;
             }
         }
     }
@@ -136,18 +142,19 @@ public class SquadTabViewModel : ViewModelBase
     /// </summary>
     private void OnCardViewModelClicked(int nikkeId)
     {
-        Debug.Log($"[SquadTabViewModel] 카드 클릭됨: NikkeID({nikkeId}). UI_SquadDetailPopup 생성해야 해요.");
+        Debug.Log($"[SquadTabViewModel] 카드 클릭됨: NikkeID({nikkeId}). UI_SquadDetailPopup 생성 요청 (로그)");
     }
 
     // --- Helpers ---
 
     private int GetNikkeIdFromCurrentSquad(int slotIndex)
     {
-        int squadId = CurrentSquadIndex.Value + 1;
-        if (_userSquads.TryGetValue(squadId, out UserSquadData data))
+        // 현재 선택된 스쿼드의 데이터에서 ID 조회
+        if (SlotViewModels != null && slotIndex >= 0 && slotIndex < SlotViewModels.Length)
         {
-            if (slotIndex >= 0 && slotIndex < data.slot.Count)
-                return data.slot[slotIndex];
+            var vm = SlotViewModels[slotIndex];
+            if (vm != null)
+                return vm.NikkeId;
         }
         return -1;
     }
@@ -168,6 +175,28 @@ public class SquadTabViewModel : ViewModelBase
 
     protected override void OnDispose()
     {
-        ClearSlots();
+        // 캐싱된 모든 ViewModel 해제
+        if (_cachedSquadViewModels != null)
+        {
+            for (int i = 0; i < _cachedSquadViewModels.Length; i++)
+            {
+                var squadVMs = _cachedSquadViewModels[i];
+                if (squadVMs != null)
+                {
+                    foreach (var vm in squadVMs)
+                    {
+                        if (vm != null)
+                        {
+                            vm.OnClick -= OnCardViewModelClicked;
+                            vm.Release(); // AddRef에 대한 Release
+                        }
+                    }
+                }
+                _cachedSquadViewModels[i] = null;
+            }
+            _cachedSquadViewModels = null;
+        }
+
+        SlotViewModels = null;
     }
 }
