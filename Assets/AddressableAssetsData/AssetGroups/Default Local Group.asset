@@ -35,6 +35,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 14642b48b1815a54fbe749741f64d2a4
+    m_Address: DORO
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 17b88067e2035914ea1b0012be9754d9
     m_Address: Icons/Items/icon_credit
     m_ReadOnly: 0
@@ -57,6 +62,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 2eee948abd652524591a6ae74bdd9499
     m_Address: UI/View/UI_NikkeCard
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 30ac6530eec34c14d9d414d9e3d455a0
+    m_Address: UI/View/UI_SkillSlot
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -117,6 +127,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4de869b7ff4840e468b4aa65cba26e2b
     m_Address: Assets/Textures/Icon/Weapon/SMG
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4e887813563ed1b47aaa56dc920d5032
+    m_Address: UI/Popup/UI_NikkeLevelUpPopup
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -235,6 +250,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 928a4135dfb408c4cbdd93390ade8007
+    m_Address: UI/Popup/UI_NikkeDetailPopup
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 98127fff79c983745b13818b952936a0
     m_Address: "Assets/Textures/Icon/Code/\uD48D\uC555"
     m_ReadOnly: 0
@@ -322,6 +342,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f24757bc84c3ddb4a95612455896917b
     m_Address: Assets/Textures/Nikke/DORO_Face
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f25610b3919a23643bfa15689c44a031
+    m_Address: UI/Popup/UI_SkillInfoPopup
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

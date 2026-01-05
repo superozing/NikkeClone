@@ -53,7 +53,7 @@ public class UI_NikkeCardScrollView : UI_View
         if (_viewModel != null)
         {
             _viewModel.OnListUpdated -= RefreshScroll;
-            _viewModel.OnNikkeClickCallback -= OnNikkeClicked;
+            _viewModel.OnNikkeClickCallback -= OnNikkeClickedAsync;
             _viewModel.OnControlSortFilterView -= OnControlSortFilterView;
         }
 
@@ -63,7 +63,7 @@ public class UI_NikkeCardScrollView : UI_View
         if (_viewModel != null)
         {
             _viewModel.OnListUpdated += RefreshScroll;
-            _viewModel.OnNikkeClickCallback += OnNikkeClicked;
+            _viewModel.OnNikkeClickCallback += OnNikkeClickedAsync;
             _viewModel.OnControlSortFilterView += OnControlSortFilterView;
             
             Bind(_viewModel.IsSearchActive,     isActive => SetButtonColor(_searchButton, isActive));
@@ -79,8 +79,14 @@ public class UI_NikkeCardScrollView : UI_View
         }
     }
 
+    bool _filterViewOpenState = false;
     private async void OnControlSortFilterView(bool isOpen)
     {
+        if (_filterViewOpenState == isOpen)
+            return;
+
+        _filterViewOpenState = isOpen;
+
         // 1. 버튼 색상 갱신 (상태에 맞게)
         SetButtonColor(_sortButton, isOpen);
 
@@ -115,9 +121,16 @@ public class UI_NikkeCardScrollView : UI_View
             img.color = isActive ? _activeColor : _inactiveColor;
     }
 
-    private void OnNikkeClicked(int nikkeId)
+    private async void OnNikkeClickedAsync(int nikkeId)
     {
-        Debug.Log($"[UI_NikkeCardScrollView] 니케 클릭됨: ID {nikkeId}");
+        // 1. 팝업 뷰모델 생성
+        NikkeDetailPopupViewModel popupVM = new NikkeDetailPopupViewModel();
+
+        // 2. 데이터 설정 및 리소스 로드 (완료될 때까지 대기)
+        await popupVM.SetNikkeID(nikkeId);
+        
+        // 3. 팝업 표시
+        await Managers.UI.ShowAsync<UI_NikkeDetailPopup>(popupVM);
     }
 
     /// <summary>
@@ -257,7 +270,7 @@ public class UI_NikkeCardScrollView : UI_View
         if (_viewModel != null)
         {
             _viewModel.OnListUpdated -= RefreshScroll;
-            _viewModel.OnNikkeClickCallback -= OnNikkeClicked;
+            _viewModel.OnNikkeClickCallback -= OnNikkeClickedAsync;
         }
     }
 }
