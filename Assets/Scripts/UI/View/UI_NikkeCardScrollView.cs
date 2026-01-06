@@ -38,10 +38,10 @@ public class UI_NikkeCardScrollView : UI_View
     protected override void Awake()
     {
         base.Awake();
-        
-        _searchButton.onClick.AddListener(_viewModel.OnClickSearch);
-        _sortButton.onClick.AddListener(_viewModel.RequestOpenSortFilter);
-        _sortOrderButton.onClick.AddListener(_viewModel.ToggleSortOrder);
+
+        _searchButton.onClick.AddListener(() => _viewModel?.OnClickSearch());
+        _sortButton.onClick.AddListener(() => _viewModel?.RequestOpenSortFilter());
+        _sortOrderButton.onClick.AddListener(() => _viewModel?.ToggleSortOrder());
 
         _burst1Button.onClick.AddListener(() => _viewModel?.OnClickBurst(1));
         _burst2Button.onClick.AddListener(() => _viewModel?.OnClickBurst(2));
@@ -128,7 +128,7 @@ public class UI_NikkeCardScrollView : UI_View
 
         // 2. 데이터 설정 및 리소스 로드 (완료될 때까지 대기)
         await popupVM.SetNikkeID(nikkeId);
-        
+
         // 3. 팝업 표시
         await Managers.UI.ShowAsync<UI_NikkeDetailPopup>(popupVM);
     }
