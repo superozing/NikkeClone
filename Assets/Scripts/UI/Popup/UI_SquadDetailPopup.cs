@@ -26,7 +26,7 @@ public class UI_SquadDetailPopup : UI_Popup, IUIShowHideAnimation
     [SerializeField] private GameObject[] _emptyImages;
 
     [Header("Scroll Area")]
-    [SerializeField] private UI_SquadDetailNikkeCardScrollView _cardScrollView;
+    [SerializeField] private UI_NikkeCardScrollView _cardScrollView; // 공통된 스크롤 뷰 사용
 
     [Header("Bottom Buttons")]
     [SerializeField] private Button _autoFormationButton;
@@ -137,14 +137,6 @@ public class UI_SquadDetailPopup : UI_Popup, IUIShowHideAnimation
 
     private void OnSquadDataChanged()
     {
-        // 뷰모델 데이터가 변경되었으므로 아이콘들이 갱신된 데이터를 바라보도록 함
-        // 이미 InitIcons에서 SlotViewModels[i]를 바인딩했으므로,
-        // ViewModel 내부의 SetNikke() 호출에 의해 ReactiveProperty가 변하면 자동 갱신됨.
-
-        // 만약 슬롯 위치가 바뀌어서 리바인딩이 필요하다면 여기서 처리.
-        // 현재 구조상 SlotViewModels 배열 자체는 고정이고, 내부 데이터만 바뀌므로 추가 작업 불필요.
-
-        // 다만 드래그 중에 부모가 바뀌었을 수 있으므로 위치 리셋 확인
         ResetIconParents();
     }
 
