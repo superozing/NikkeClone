@@ -140,9 +140,10 @@ public class SquadTabViewModel : ViewModelBase
     /// <summary>
     /// 니케 카드가 클릭되었을 때 호출됩니다.
     /// </summary>
-    private void OnCardViewModelClicked(int nikkeId)
+    private async void OnCardViewModelClicked(int nikkeId)
     {
-        Debug.Log($"[SquadTabViewModel] 카드 클릭됨: NikkeID({nikkeId}). UI_SquadDetailPopup 생성 요청 (로그)");
+        Debug.Log($"[SquadTabViewModel] 카드 클릭됨: NikkeID({nikkeId}). UI_SquadDetailPopup 생성 요청");
+        await Managers.UI.ShowAsync<UI_SquadDetailPopup>(new SquadDetailPopupViewModel());
     }
 
     // --- Helpers ---
