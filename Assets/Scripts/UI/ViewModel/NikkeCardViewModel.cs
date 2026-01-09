@@ -29,6 +29,9 @@ public class NikkeCardViewModel : ViewModelBase
     public ReactiveProperty<Sprite> CodeIcon { get; private set; } = new();
     public ReactiveProperty<Sprite> WeaponIcon { get; private set; } = new();
     public ReactiveProperty<Sprite> BurstIcon { get; private set; } = new();
+
+    // 스쿼드 편성 등에서 선택된 상태인지 표시
+    public ReactiveProperty<bool> IsSelected { get; } = new(false);
     // -------------------------------
 
     // 정렬을 위한 Getter
