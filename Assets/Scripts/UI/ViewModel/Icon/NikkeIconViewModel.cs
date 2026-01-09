@@ -8,10 +8,10 @@ public class NikkeIconViewModel : ViewModelBase
     private NikkeGameData _gameData;
     private UserNikkeData _userData;
 
-    public int NikkeId => _gameData?.id ?? -1;
-    public bool HasData => _gameData != null;
+    public int NikkeId { get; private set; } = -1;
 
     // --- View Binding Properties ---
+    public ReactiveProperty<bool> IsEmpty { get; private set; } = new(true);
     public ReactiveProperty<Sprite> FaceSprite { get; private set; } = new();
     public ReactiveProperty<Sprite> BurstIcon { get; private set; } = new();
     public ReactiveProperty<Sprite> CodeIcon { get; private set; } = new();
@@ -29,7 +29,8 @@ public class NikkeIconViewModel : ViewModelBase
     /// </summary>
     public async Task SetNikke(int nikkeId)
     {
-        if (nikkeId == -1)
+        NikkeId = nikkeId;
+        if (NikkeId == -1)
         {
             ClearData();
             return;
@@ -43,6 +44,8 @@ public class NikkeIconViewModel : ViewModelBase
             ClearData();
             return;
         }
+
+        IsEmpty.Value = false;
 
         // 데이터 바인딩
         if (_userData != null)
@@ -74,6 +77,8 @@ public class NikkeIconViewModel : ViewModelBase
         CodeIcon.Value = null;
         WeaponIcon.Value = null;
         LevelText.Value = "";
+
+        IsEmpty.Value = true;
     }
 
     private void OnLevelChanged(int level)
