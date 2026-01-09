@@ -12,7 +12,6 @@ public class SquadDetailPopupViewModel : ViewModelBase
     // --- State ---
     public ReactiveProperty<int> CurrentSquadIndex { get; private set; } = new(0);
     public ReactiveProperty<string> TotalCombatPower { get; private set; } = new("0");
-    public ReactiveProperty<string> SquadName { get; private set; } = new("스쿼드 1");
 
     // --- Child ViewModels ---
     public NikkeIconViewModel[] SlotViewModels { get; private set; }
@@ -75,7 +74,6 @@ public class SquadDetailPopupViewModel : ViewModelBase
     {
         index = Mathf.Clamp(index, 0, 4);
         CurrentSquadIndex.Value = index;
-        SquadName.Value = $"스쿼드 {index + 1}";
 
         // 스크롤 뷰모델에 현재 편집할 임시 데이터 주입
         int squadId = index + 1;

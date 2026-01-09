@@ -11,10 +11,8 @@ public class UI_SquadDetailPopup : UI_Popup, IUIShowHideAnimation
     public override string ActionMapKey => "UI_SquadDetailPopup";
 
     [Header("Top Area")]
-    [SerializeField] private TMP_Text _squadNameText;
     [SerializeField] private TMP_Text _combatPowerText;
-    [SerializeField] private Button _prevSquadButton;
-    [SerializeField] private Button _nextSquadButton;
+    [SerializeField] private Button[] _squadNumberButtons;
 
     [Header("Slots Area")]
     // 5개의 슬롯 부모 (Grid Layout 등의 자식)
@@ -51,8 +49,15 @@ public class UI_SquadDetailPopup : UI_Popup, IUIShowHideAnimation
         _saveButton.onClick.AddListener(() => _viewModel?.OnClickSave());
         _cancelButton.onClick.AddListener(() => _viewModel?.OnClickClose());
 
-        _prevSquadButton.onClick.AddListener(OnPrevSquad);
-        _nextSquadButton.onClick.AddListener(OnNextSquad);
+        // 스쿼드 선택 버튼 리스너 바인딩
+        if (_squadNumberButtons != null)
+        {
+            for (int i = 0; i < _squadNumberButtons.Length; i++)
+            {
+                int index = i; // 클로저 캡처
+                _squadNumberButtons[i].onClick.AddListener(() => _viewModel?.SelectSquad(index));
+            }
+        }
     }
 
     protected async void OnEnable()
@@ -77,8 +82,10 @@ public class UI_SquadDetailPopup : UI_Popup, IUIShowHideAnimation
         _viewModel.OnSquadDataChanged += OnSquadDataChanged;
 
         // Bind Properties
-        Bind(_viewModel.SquadName, text => _squadNameText.text = text);
         Bind(_viewModel.TotalCombatPower, text => _combatPowerText.text = text);
+
+        // 현재 선택된 인덱스에 따라 버튼 상태 갱신
+        Bind(_viewModel.CurrentSquadIndex, UpdateSquadButtonStates);
 
         // Sub View Binding
         if (_cardScrollView != null)
@@ -88,18 +95,22 @@ public class UI_SquadDetailPopup : UI_Popup, IUIShowHideAnimation
         InitIcons();
     }
 
-    private void OnPrevSquad()
+    /// <summary>
+    /// 현재 선택된 스쿼드 인덱스에 맞춰 버튼의 Interactable 상태를 갱신합니다.
+    /// 선택된 버튼은 비활성화하여 시각적으로 표시합니다.
+    /// </summary>
+    private void UpdateSquadButtonStates(int currentIndex)
     {
-        if (_viewModel == null) return;
-        int current = _viewModel.CurrentSquadIndex.Value;
-        if (current > 0) _viewModel.SelectSquad(current - 1);
-    }
+        if (_squadNumberButtons == null) return;
 
-    private void OnNextSquad()
-    {
-        if (_viewModel == null) return;
-        int current = _viewModel.CurrentSquadIndex.Value;
-        if (current < 4) _viewModel.SelectSquad(current + 1);
+        for (int i = 0; i < _squadNumberButtons.Length; i++)
+        {
+            if (_squadNumberButtons[i] != null)
+            {
+                // 선택된 인덱스면 클릭 불가(선택됨 상태), 아니면 클릭 가능
+                _squadNumberButtons[i].interactable = (i != currentIndex);
+            }
+        }
     }
 
     /// <summary>
@@ -193,8 +204,13 @@ public class UI_SquadDetailPopup : UI_Popup, IUIShowHideAnimation
         _resetButton.onClick.RemoveAllListeners();
         _saveButton.onClick.RemoveAllListeners();
         _cancelButton.onClick.RemoveAllListeners();
-        _prevSquadButton.onClick.RemoveAllListeners();
-        _nextSquadButton.onClick.RemoveAllListeners();
+
+        // x스쿼드 버튼 리스너 해제
+        if (_squadNumberButtons != null)
+        {
+            foreach (var btn in _squadNumberButtons)
+                if (btn != null) btn.onClick.RemoveAllListeners();
+        }
 
         if (_viewModel != null)
         {
