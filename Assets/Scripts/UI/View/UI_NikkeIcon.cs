@@ -14,14 +14,12 @@ public class UI_NikkeIcon : UI_View, IBeginDragHandler, IDragHandler, IEndDragHa
     [SerializeField] private Image _rarityFrameImage; // 등급 프레임 (배경 등)
 
     [Header("Info Group")]
-    [SerializeField] private GameObject _infoGroup;
     [SerializeField] private Image _burstIcon;
     [SerializeField] private Image _codeIcon;
     [SerializeField] private Image _weaponIcon;
     [SerializeField] private TMP_Text _levelText;
 
     private NikkeIconViewModel _viewModel;
-    private CanvasGroup _canvasGroup;
     private RectTransform _rectTransform;
 
     // --- Drag & Drop State ---
@@ -34,7 +32,6 @@ public class UI_NikkeIcon : UI_View, IBeginDragHandler, IDragHandler, IEndDragHa
     protected override void Awake()
     {
         base.Awake();
-        _canvasGroup = gameObject.GetOrAddComponent<CanvasGroup>();
         _rectTransform = GetComponent<RectTransform>();
     }
 
