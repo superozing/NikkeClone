@@ -48,7 +48,7 @@ public class UI_NikkeCardSortFilter : UI_Popup, IUIShowHideAnimation
     private readonly Color _activeColor = new Color(0.2f, 0.7f, 0.9f);
     private readonly Color _inactiveColor = new Color(0.2f, 0.2f, 0.2f);
 
-    private NikkeCardScrollViewModel _viewModel;
+    private INikkeCardScrollViewModel _viewModel;
     private readonly IUIAnimation _fadeIn = new FadeInUIAnimation(0.2f);
     private readonly IUIAnimation _fadeOut = new FadeOutUIAnimation(0.2f);
 
@@ -65,7 +65,7 @@ public class UI_NikkeCardSortFilter : UI_Popup, IUIShowHideAnimation
         // 내부적으로 UnbindAll()이 호출되어 _disposables(ReactiveProperty 구독)가 해제됩니다.
         base.SetViewModel(viewModel);
 
-        _viewModel = viewModel as NikkeCardScrollViewModel;
+        _viewModel = viewModel as INikkeCardScrollViewModel;
 
         if (_viewModel == null) return;
 
