@@ -9,24 +9,29 @@ public class SquadDetailNikkeCardScrollViewModel : NikkeCardScrollViewModelBase
     // 편집 중인 임시 스쿼드 데이터 참조
     private UserSquadData _tempSquadData;
 
+    public event Action OnSquadChanged;
+
     public SquadDetailNikkeCardScrollViewModel() : base()
     {
     }
 
     /// <summary>
     /// 편집할 스쿼드 데이터를 설정합니다.
+    /// 스쿼드가 변경되었으므로 리스트를 재정렬합니다.
     /// </summary>
     /// <param name="squadData">복제된 임시 데이터여야 합니다.</param>
     public void SetSquadData(UserSquadData squadData)
     {
         _tempSquadData = squadData;
-        RefreshSelection();
+        // 스쿼드 교체 시에는 정렬 수행
+        UpdateSelectionState(sort: true);
     }
 
     /// <summary>
-    /// 현재 스쿼드 데이터에 맞춰 카드의 선택 상태를 갱신하고 리스트를 재정렬합니다.
+    /// 현재 스쿼드 데이터에 맞춰 카드의 선택 상태를 갱신합니다.
     /// </summary>
-    public void RefreshSelection()
+    /// <param name="sort">true일 경우 리스트 재정렬을 수행합니다.</param>
+    public void UpdateSelectionState(bool sort)
     {
         if (_tempSquadData == null) return;
 
@@ -38,13 +43,17 @@ public class SquadDetailNikkeCardScrollViewModel : NikkeCardScrollViewModelBase
         }
 
         // 2. 모든 카드 뷰모델의 IsSelected 갱신
+        // IsSelected는 ReactiveProperty이므로 값 변경 시 즉시 View에 반영됨
         foreach (var vm in _allNikkes)
         {
             vm.IsSelected.Value = selectedIds.Contains(vm.NikkeId);
         }
 
-        // 3. 리스트 재정렬 (선택된 항목 위로)
-        RefreshList();
+        // 3. 옵션에 따라 리스트 재정렬 (선택된 항목 위로)
+        if (sort)
+        {
+            RefreshList();
+        }
     }
 
     protected override void OnCardClick(int nikkeId)
@@ -74,19 +83,12 @@ public class SquadDetailNikkeCardScrollViewModel : NikkeCardScrollViewModelBase
             }
         }
 
-        // 데이터 변경 후 선택 상태 및 정렬 갱신
-        RefreshSelection();
+        // 데이터 변경 후 선택 상태만 갱신하고 정렬은 하지 않음
+        UpdateSelectionState(sort: false);
 
         // 상위(PopupViewModel)에게 데이터 변경 알림 (슬롯 UI 갱신 등을 위해)
-        // 여기서는 직접 이벤트를 발생시키기보다, 베이스의 공통 이벤트를 활용하거나
-        // PopupViewModel이 이 VM의 상태를 감지하도록 해야 함.
-        // 설계상 PopupViewModel이 SquadDataChanged 이벤트를 가지고 있으므로,
-        // PopupViewModel에서 ScrollViewModel의 동작 후 갱신을 어떻게 처리할지 연결 고리가 필요함.
-        // -> 간단하게 콜백을 하나 둡니다.
         OnSquadChanged?.Invoke();
     }
-
-    public event Action OnSquadChanged;
 
     /// <summary>
     /// 정렬 로직 오버라이드: 선택된 니케를 최상단으로 올림
