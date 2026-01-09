@@ -231,6 +231,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "UI_SquadDetailPopup",
+            "id": "2f321f2d-1d9b-4257-b5a3-c9cdd7d18980",
+            "actions": [
+                {
+                    "name": "Close",
+                    "type": "Button",
+                    "id": "ecf8c19b-0dc3-480f-880e-e4dace6fb03d",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "654c72e5-7d43-484f-b7d0-45aed2033560",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Close",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []

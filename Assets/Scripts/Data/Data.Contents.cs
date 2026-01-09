@@ -216,6 +216,15 @@ public class UserSquadData
         // 5개의 빈 슬롯으로 초기화
         this.slot = new List<int>(5) { -1, -1, -1, -1, -1 }; // -1을 빈 슬롯으로 가정
     }
+
+    // 편집 취소용 깊복
+    public UserSquadData Clone()
+    {
+        var clone = new UserSquadData(this.id);
+        // 리스트 내부 값 복사
+        clone.slot = new List<int>(this.slot);
+        return clone;
+    }
 }
 
 [Serializable]

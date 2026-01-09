@@ -4,12 +4,12 @@ using UI;
 public class NikkeTabViewModel : ViewModelBase
 {
     // 자식 ViewModel
-    public NikkeCardScrollViewModel ScrollViewModel { get; private set; }
+    public NikkeTabNikkeCardScrollViewModel ScrollViewModel { get; private set; }
 
     public NikkeTabViewModel()
     {
         // 스크롤 뷰모델 생성 및 소유
-        ScrollViewModel = new NikkeCardScrollViewModel();
+        ScrollViewModel = new NikkeTabNikkeCardScrollViewModel();
         ScrollViewModel.AddRef();
     }
 

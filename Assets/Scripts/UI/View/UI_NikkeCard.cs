@@ -24,6 +24,9 @@ public class UI_NikkeCard : UI_View, IUIShowHideAnimation
     [SerializeField] private Image _weaponIcon;
     [SerializeField] private Image _burstIcon;
 
+    [Header("State")]
+    [SerializeField] private GameObject _selectedImage; // 선택 상태 표시 이미지
+
     [Header("Interaction")]
     [SerializeField] private Button _cardButton;
 
@@ -68,6 +71,13 @@ public class UI_NikkeCard : UI_View, IUIShowHideAnimation
         Bind(_viewModel.CodeIcon, SetSprite(_codeIcon));
         Bind(_viewModel.WeaponIcon, SetSprite(_weaponIcon));
         Bind(_viewModel.BurstIcon, SetSprite(_burstIcon));
+
+        // 선택 상태 바인딩
+        Bind(_viewModel.IsSelected, isSelected =>
+        {
+            if (_selectedImage != null)
+                _selectedImage.SetActive(isSelected);
+        });
     }
 
     // --- IUIShowHideAnimation Implementation ---

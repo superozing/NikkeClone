@@ -50,6 +50,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 20e6bb42b1d7f4b47a08d399c1d2d792
+    m_Address: UI/View/UI_NikkeIcon
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 242b251ddaea9f84c92b66547428302f
     m_Address: UI/View/UI_InventoryIcon
     m_ReadOnly: 0
@@ -272,6 +277,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a77d3a024182e324a87f2c782b4ab311
     m_Address: Icons/Items/icon_jewel
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b16a996d46b86864992d860dff9416d5
+    m_Address: UI/Popup/UI_SquadDetailPopup
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
