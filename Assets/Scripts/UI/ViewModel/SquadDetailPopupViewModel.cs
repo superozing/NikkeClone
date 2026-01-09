@@ -16,7 +16,6 @@ public class SquadDetailPopupViewModel : ViewModelBase
     // --- Child ViewModels ---
     public NikkeIconViewModel[] SlotViewModels { get; private set; }
 
-    // 수정됨: SquadDetail 전용 구현체 사용
     public SquadDetailNikkeCardScrollViewModel ScrollViewModel { get; private set; }
 
     // --- Data ---
@@ -39,10 +38,12 @@ public class SquadDetailPopupViewModel : ViewModelBase
         // 3. 스크롤 뷰모델 초기화
         ScrollViewModel = new SquadDetailNikkeCardScrollViewModel();
         ScrollViewModel.AddRef();
-        // 스크롤뷰에서 카드를 클릭하여 스쿼드가 변경되면, 슬롯 UI도 갱신해야 함
         ScrollViewModel.OnSquadChanged += OnScrollSelectionChanged;
 
-        // 4. 초기 스쿼드 선택
+        // 스쿼드 인덱스가 변경될 때만 슬롯을 갱신하도록 이벤트 구독
+        CurrentSquadIndex.OnValueChanged += OnSquadIndexChanged;
+
+        // 4. 초기 스쿼드 설정
         SelectSquad(initialSquadIndex);
     }
 
@@ -73,12 +74,24 @@ public class SquadDetailPopupViewModel : ViewModelBase
     public void SelectSquad(int index)
     {
         index = Mathf.Clamp(index, 0, 4);
-        CurrentSquadIndex.Value = index;
 
+        // OnValueChanged -> RefreshSlots 호출
+        if (CurrentSquadIndex.Value != index)
+            CurrentSquadIndex.Value = index;
+        else
+        {
+            // 초기 실행 시 슬롯 갱신
+            OnSquadIndexChanged(index);
+        }
+    }
+
+    private void OnSquadIndexChanged(int index)
+    {
         // 스크롤 뷰모델에 현재 편집할 임시 데이터 주입
         int squadId = index + 1;
         if (_tempSquads.TryGetValue(squadId, out var tempSquadData))
         {
+            // Requirement 2: 스쿼드 전환 시에는 리스트 재정렬 수행
             ScrollViewModel.SetSquadData(tempSquadData);
         }
 
@@ -87,7 +100,7 @@ public class SquadDetailPopupViewModel : ViewModelBase
 
     private void OnScrollSelectionChanged()
     {
-        // 스크롤뷰 조작으로 데이터가 변했으니 슬롯 UI 갱신
+        // 스크롤뷰 조작(카드 클릭 등)으로 데이터가 변했으니 슬롯 UI 갱신
         RefreshSlots();
     }
 
@@ -136,10 +149,50 @@ public class SquadDetailPopupViewModel : ViewModelBase
         slots[fromIndex] = slots[toIndex];
         slots[toIndex] = temp;
 
+        // 데이터 변경 후 상단 아이콘 갱신 (누락 수정)
         RefreshSlots();
 
-        // 스크롤뷰의 선택 상태도 갱신 (순서는 상관없지만 일관성 유지)
-        ScrollViewModel.RefreshSelection();
+        // 스크롤뷰의 선택 상태 갱신 (Requirement 1: 재정렬 안함)
+        ScrollViewModel.UpdateSelectionState(sort: false);
+    }
+
+    public void RemoveNikkeFromSlot(int slotIndex)
+    {
+        int squadId = CurrentSquadIndex.Value + 1;
+        if (!_tempSquads.TryGetValue(squadId, out var currentSquadData))
+            return;
+
+        if (slotIndex < 0 || slotIndex >= 5) return;
+
+        // 1. 데이터 수정
+        currentSquadData.slot[slotIndex] = -1;
+
+        // 2. 해당 슬롯 ViewModel만 갱신 (전체 RefreshSlots 호출 안함)
+        // 비동기 호출이지만 결과를 기다리지 않고 진행 (Fire and Forget)
+        _ = SlotViewModels[slotIndex].SetNikke(-1);
+
+        // 전체 CP 재계산이 필요하므로 RefreshSlots를 호출하여 CP와 상태를 맞춥니다.
+        RefreshSlots();
+
+        // 3. 스크롤 뷰 선택 상태 갱신 (Requirement 1: 재정렬 안함)
+        ScrollViewModel.UpdateSelectionState(sort: false);
+    }
+
+    public async void ShowNikkeDetail(int slotIndex)
+    {
+        int squadId = CurrentSquadIndex.Value + 1;
+        if (!_tempSquads.TryGetValue(squadId, out var currentSquadData))
+            return;
+
+        if (slotIndex < 0 || slotIndex >= 5) return;
+
+        int nikkeId = currentSquadData.slot[slotIndex];
+        if (nikkeId == -1) return; // 빈 슬롯
+
+        // 상세 팝업 생성 및 표시
+        NikkeDetailPopupViewModel popupVM = new NikkeDetailPopupViewModel();
+        await popupVM.SetNikkeID(nikkeId);
+        await Managers.UI.ShowAsync<UI_NikkeDetailPopup>(popupVM);
     }
 
     public void OnClickAutoFormation()
@@ -184,8 +237,12 @@ public class SquadDetailPopupViewModel : ViewModelBase
         int squadId = CurrentSquadIndex.Value + 1;
         _tempSquads[squadId].slot = newSlots;
 
+        // 아이콘 갱신
         RefreshSlots();
-        ScrollViewModel.RefreshSelection(); // 스크롤뷰 갱신
+
+        // 스크롤뷰 갱신 (Requirement 1: 재정렬 안함)
+        ScrollViewModel.UpdateSelectionState(sort: false);
+
         Debug.Log("[SquadDetail] 자동 편성 완료");
     }
 
@@ -195,8 +252,11 @@ public class SquadDetailPopupViewModel : ViewModelBase
         var slots = _tempSquads[squadId].slot;
         for (int i = 0; i < 5; i++) slots[i] = -1;
 
+        // 아이콘 갱신
         RefreshSlots();
-        ScrollViewModel.RefreshSelection();
+
+        // 스크롤뷰 갱신 (Requirement 1: 재정렬 안함)
+        ScrollViewModel.UpdateSelectionState(sort: false);
     }
 
     public void OnClickSave()
@@ -236,6 +296,9 @@ public class SquadDetailPopupViewModel : ViewModelBase
 
     protected override void OnDispose()
     {
+        if (CurrentSquadIndex != null)
+            CurrentSquadIndex.OnValueChanged -= OnSquadIndexChanged;
+
         if (SlotViewModels != null)
         {
             foreach (var vm in SlotViewModels) vm.Release();
