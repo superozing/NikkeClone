@@ -12,7 +12,8 @@ public class UI_NikkeCardScrollView : UI_View
     [SerializeField] private RectTransform _content;
     [SerializeField] private CanvasGroup _buttonGroup; // 연출을 위해
 
-    [SerializeField] private Button _sortButton; // 필터 뷰 열기 버튼
+    [Header("Sort/Filter UI")]
+    [SerializeField] private Button _sortButton;
     private UI_NikkeCardSortFilter _sortFilterView;
 
     [SerializeField] private Button _sortOrderButton; // 오름차순/내림차순 토글 버튼
@@ -25,7 +26,8 @@ public class UI_NikkeCardScrollView : UI_View
     [SerializeField] private Button _burst2Button;
     [SerializeField] private Button _burst3Button;
 
-    private NikkeCardScrollViewModel _viewModel;
+    // 인터페이스로 변경하여 다형성 지원
+    private INikkeCardScrollViewModel _viewModel;
     private readonly List<UI_NikkeCard> _cardInstances = new();
 
     // 버튼 등장시키기 위한 연출 클래스
@@ -39,13 +41,14 @@ public class UI_NikkeCardScrollView : UI_View
     {
         base.Awake();
 
-        _searchButton.onClick.AddListener(() => _viewModel?.OnClickSearch());
-        _sortButton.onClick.AddListener(() => _viewModel?.RequestOpenSortFilter());
-        _sortOrderButton.onClick.AddListener(() => _viewModel?.ToggleSortOrder());
+        // null 체크를 추가하여 버튼이 없는 View에서도 오류가 나지 않도록 함 (SquadDetail 등에서 재사용 시)
+        if (_searchButton) _searchButton.onClick.AddListener(() => _viewModel?.OnClickSearch());
+        if (_sortButton) _sortButton.onClick.AddListener(() => _viewModel?.RequestOpenSortFilter());
+        if (_sortOrderButton) _sortOrderButton.onClick.AddListener(() => _viewModel?.ToggleSortOrder());
 
-        _burst1Button.onClick.AddListener(() => _viewModel?.OnClickBurst(1));
-        _burst2Button.onClick.AddListener(() => _viewModel?.OnClickBurst(2));
-        _burst3Button.onClick.AddListener(() => _viewModel?.OnClickBurst(3));
+        if (_burst1Button) _burst1Button.onClick.AddListener(() => _viewModel?.OnClickBurst(1));
+        if (_burst2Button) _burst2Button.onClick.AddListener(() => _viewModel?.OnClickBurst(2));
+        if (_burst3Button) _burst3Button.onClick.AddListener(() => _viewModel?.OnClickBurst(3));
     }
 
     public override void SetViewModel(ViewModelBase viewModel)
@@ -53,26 +56,29 @@ public class UI_NikkeCardScrollView : UI_View
         if (_viewModel != null)
         {
             _viewModel.OnListUpdated -= RefreshScroll;
-            _viewModel.OnNikkeClickCallback -= OnNikkeClickedAsync;
+            _viewModel.OnNikkeClickCallback -= OnNikkeClicked;
             _viewModel.OnControlSortFilterView -= OnControlSortFilterView;
         }
 
-        _viewModel = viewModel as NikkeCardScrollViewModel;
+        // 인터페이스로 캐스팅
+        _viewModel = viewModel as INikkeCardScrollViewModel;
+
+        // Base 호출 (ViewModelBase로 업캐스팅해서 넘겨줌)
         base.SetViewModel(viewModel);
 
         if (_viewModel != null)
         {
             _viewModel.OnListUpdated += RefreshScroll;
-            _viewModel.OnNikkeClickCallback += OnNikkeClickedAsync;
+            _viewModel.OnNikkeClickCallback += OnNikkeClicked;
             _viewModel.OnControlSortFilterView += OnControlSortFilterView;
-            
-            Bind(_viewModel.IsSearchActive,     isActive => SetButtonColor(_searchButton, isActive));
-            Bind(_viewModel.SortType,           OnSortTypeChanged);
-            Bind(_viewModel.IsSortAscending,    OnSortOrderChanged);
 
-            Bind(_viewModel.BurstFilters[(int)eNikkeBurst.Burst1], isActive => SetButtonColor(_burst1Button, isActive));
-            Bind(_viewModel.BurstFilters[(int)eNikkeBurst.Burst2], isActive => SetButtonColor(_burst2Button, isActive));
-            Bind(_viewModel.BurstFilters[(int)eNikkeBurst.Burst3], isActive => SetButtonColor(_burst3Button, isActive));
+            if (_searchButton) Bind(_viewModel.IsSearchActive, isActive => SetButtonColor(_searchButton, isActive));
+            Bind(_viewModel.SortType, OnSortTypeChanged);
+            Bind(_viewModel.IsSortAscending, OnSortOrderChanged);
+
+            if (_burst1Button) Bind(_viewModel.BurstFilters[(int)eNikkeBurst.Burst1], isActive => SetButtonColor(_burst1Button, isActive));
+            if (_burst2Button) Bind(_viewModel.BurstFilters[(int)eNikkeBurst.Burst2], isActive => SetButtonColor(_burst2Button, isActive));
+            if (_burst3Button) Bind(_viewModel.BurstFilters[(int)eNikkeBurst.Burst3], isActive => SetButtonColor(_burst3Button, isActive));
 
             // 비동기 초기화 및 갱신 시작
             InitAndRefreshAsync();
@@ -93,12 +99,14 @@ public class UI_NikkeCardScrollView : UI_View
         // 2. 뷰 활성/비활성 처리
         if (isOpen)
             _sortFilterView = await Managers.UI.ShowAsync<UI_NikkeCardSortFilter>(ViewModel);
-        else
+        else if (_sortFilterView != null)
             _ = _sortFilterView.CloseAsync();
     }
 
     private void OnSortTypeChanged(eNikkeSortType type)
     {
+        if (_sortTypeText == null) return;
+
         string text = type switch
         {
             eNikkeSortType.CombatPower => "전투력",
@@ -111,6 +119,7 @@ public class UI_NikkeCardScrollView : UI_View
 
     private void OnSortOrderChanged(bool isAscending)
     {
+        if (_sortArrowImage == null) return;
         float scaleY = isAscending ? 1f : -1f;
         _sortArrowImage.rectTransform.localScale = new Vector3(1f, scaleY, 1f);
     }
@@ -121,16 +130,16 @@ public class UI_NikkeCardScrollView : UI_View
             img.color = isActive ? _activeColor : _inactiveColor;
     }
 
-    private async void OnNikkeClickedAsync(int nikkeId)
+    // 뷰모델에서 전달받은 ID를 그대로 처리 (상세팝업 or 선택로직은 뷰모델이 결정)
+    private void OnNikkeClicked(int nikkeId)
     {
-        // 1. 팝업 뷰모델 생성
-        NikkeDetailPopupViewModel popupVM = new NikkeDetailPopupViewModel();
-
-        // 2. 데이터 설정 및 리소스 로드 (완료될 때까지 대기)
-        await popupVM.SetNikkeID(nikkeId);
-
-        // 3. 팝업 표시
-        await Managers.UI.ShowAsync<UI_NikkeDetailPopup>(popupVM);
+        // 뷰는 단순히 뷰모델의 명령을 수행하는 구조였으나, 
+        // 인터페이스 설계상 OnNikkeClickCallback은 뷰모델 -> 뷰 방향의 이벤트임.
+        // 기존: View Click -> ViewModel Method -> Action Invoke -> View Response
+        // 변경: 
+        // 1. View Card Click -> ViewModel.OnClick -> (ViewModel 내부 로직 수행)
+        // 2. 만약 View에서 추가로 처리할 UI적 연출이 있다면 여기서 처리.
+        // 현재는 ViewModel 내부에서 Popup을 띄우거나 데이터를 수정하므로 View가 할 일은 딱히 없음.
     }
 
     /// <summary>
@@ -167,7 +176,7 @@ public class UI_NikkeCardScrollView : UI_View
 
     private async void RefreshScroll()
     {
-        if (_viewModel.DisplayNikkes == null) return;
+        if (_viewModel?.DisplayNikkes == null) return;
 
         var displayList = _viewModel.DisplayNikkes;
         int displayCount = displayList.Count;
@@ -221,8 +230,8 @@ public class UI_NikkeCardScrollView : UI_View
     /// </summary>
     public void PlayButtonActiveAnimation()
     {
-        float defaultDelay = 0.3f; // 기본 대기시간
-        _buttonGroupFadeIn.ExecuteAsync(_buttonGroup, defaultDelay);
+        if (_buttonGroup != null)
+            _buttonGroupFadeIn.ExecuteAsync(_buttonGroup, 0.3f);
     }
 
     /// <summary>
@@ -270,7 +279,8 @@ public class UI_NikkeCardScrollView : UI_View
         if (_viewModel != null)
         {
             _viewModel.OnListUpdated -= RefreshScroll;
-            _viewModel.OnNikkeClickCallback -= OnNikkeClickedAsync;
+            _viewModel.OnNikkeClickCallback -= OnNikkeClicked;
+            _viewModel.OnControlSortFilterView -= OnControlSortFilterView;
         }
     }
 }
