@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UI;
 using UnityEngine;
 
@@ -143,7 +144,16 @@ public class SquadTabViewModel : ViewModelBase
     private async void OnCardViewModelClicked(int nikkeId)
     {
         Debug.Log($"[SquadTabViewModel] 카드 클릭됨: NikkeID({nikkeId}). UI_SquadDetailPopup 생성 요청");
-        await Managers.UI.ShowAsync<UI_SquadDetailPopup>(new SquadDetailPopupViewModel());
+
+        // 로딩 팝업을 통한 순차 실행 적용
+        Func<Task> loadTask = async () =>
+        {
+            // 스쿼드 디테일 팝업은 별도의 데이터 로드 과정이 생성자에서 처리됨 (가벼운 작업일 수 있으나 통일성 유지)
+            await Managers.UI.ShowAsync<UI_SquadDetailPopup>(new SquadDetailPopupViewModel());
+        };
+
+        var loadingVM = new LoadingPopupViewModel(loadTask);
+        await Managers.UI.ShowDontDestroyAsync<UI_LoadingPopup>(loadingVM);
     }
 
     // --- Helpers ---
