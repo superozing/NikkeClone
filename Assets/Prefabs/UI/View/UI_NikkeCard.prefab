@@ -161,6 +161,7 @@ MonoBehaviour:
   _codeIcon: {fileID: 5220362453061896423}
   _weaponIcon: {fileID: 6187490956252556103}
   _burstIcon: {fileID: 1661078282675959204}
+  _selectedImage: {fileID: 8749607381503315334}
   _cardButton: {fileID: 6021606390044993427}
 --- !u!1 &1042151756066699360
 GameObject:
@@ -848,7 +849,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -1073,7 +1074,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
   m_Color: {r: 0, g: 0.7490196, b: 1, a: 0.29803923}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
