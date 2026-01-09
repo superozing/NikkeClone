@@ -23,6 +23,10 @@ public class UI_SquadDetailPopup : UI_Popup, IUIShowHideAnimation
     // 프리팹 내부에서 슬롯별로 미리 배치된 EmptyImage 참조 (Inspector 연결)
     [SerializeField] private GameObject[] _emptyImages;
 
+    // 아이콘 배열
+    [Header("Icons")]
+    [SerializeField] private UI_NikkeIcon[] _nikkeIcons = new UI_NikkeIcon[5];
+
     [Header("Scroll Area")]
     [SerializeField] private UI_NikkeCardScrollView _cardScrollView; // 공통된 스크롤 뷰 사용
 
@@ -33,7 +37,6 @@ public class UI_SquadDetailPopup : UI_Popup, IUIShowHideAnimation
     [SerializeField] private Button _cancelButton; // 닫기
 
     private SquadDetailPopupViewModel _viewModel;
-    private UI_NikkeIcon[] _spawnedIcons = new UI_NikkeIcon[5];
 
     // 연출
     private readonly IUIAnimation _fadeIn = new FadeInUIAnimation(0.2f);
@@ -114,35 +117,39 @@ public class UI_SquadDetailPopup : UI_Popup, IUIShowHideAnimation
     }
 
     /// <summary>
-    /// 초기 실행 시 슬롯에 아이콘 UI를 생성하고 ViewModel을 연결합니다.
+    /// 인스펙터에 할당된 정적 아이콘 UI를 초기화하고 ViewModel을 연결합니다.
     /// </summary>
-    private async void InitIcons()
+    private void InitIcons()
     {
+        if (_nikkeIcons == null) return;
+
         for (int i = 0; i < 5; i++)
         {
-            if (i >= _slotParents.Length) break;
+            // 배열 범위를 벗어나거나 할당되지 않은 경우 스킵
+            if (i >= _nikkeIcons.Length || _nikkeIcons[i] == null) continue;
 
-            // 이미 생성된 경우 재사용하지 않고 새로 생성 (심플함을 위해)
-            // 실제로는 풀링하거나 재사용하는 것이 좋음.
-            if (_spawnedIcons[i] != null)
+            UI_NikkeIcon icon = _nikkeIcons[i];
+
+            // 1. 기존 이벤트 구독 해제 (중복 방지)
+            icon.OnClearRequest -= OnClearSlot;
+            icon.OnDetailRequest -= OnShowDetail;
+
+            // 2. 초기화 (슬롯 인덱스, 드래그 레이어, 스왑 콜백, 빈 이미지 참조)
+            GameObject emptyImg = (i < _emptyImages.Length) ? _emptyImages[i] : null;
+            icon.Initialize(i, _dragLayer, OnSwapRequest, emptyImg);
+
+            // 3. 새 이벤트 구독
+            icon.OnClearRequest += OnClearSlot;
+            icon.OnDetailRequest += OnShowDetail;
+
+            // 4. 뷰모델 연결
+            if (_viewModel != null && _viewModel.SlotViewModels != null && i < _viewModel.SlotViewModels.Length)
             {
-                Managers.UI.Close(_spawnedIcons[i]);
-                _spawnedIcons[i] = null;
-            }
-
-            // 아이콘 생성
-            UI_NikkeIcon icon = await Managers.UI.ShowAsync<UI_NikkeIcon>(null, _slotParents[i]);
-            if (icon != null)
-            {
-                _spawnedIcons[i] = icon;
-
-                // 초기화 (슬롯 인덱스, 드래그 레이어, 스왑 콜백, 빈 이미지 참조)
-                GameObject emptyImg = (i < _emptyImages.Length) ? _emptyImages[i] : null;
-                icon.Initialize(i, _dragLayer, OnSwapRequest, emptyImg);
-
-                // 뷰모델 연결
                 icon.SetViewModel(_viewModel.SlotViewModels[i]);
             }
+
+            // 프리팹에 미리 배치되므로 SetActive는 기본적으로 처리되어 있다고 가정하나, 확실히 하기 위해 켜줍니다.
+            icon.gameObject.SetActive(true);
         }
     }
 
@@ -153,27 +160,48 @@ public class UI_SquadDetailPopup : UI_Popup, IUIShowHideAnimation
 
     private void ResetIconParents()
     {
+        if (_nikkeIcons == null) return;
+
         for (int i = 0; i < 5; i++)
         {
-            if (_spawnedIcons[i] != null && _slotParents[i] != null)
-            {
-                // 드래그 중이 아니면 원래 부모로 복귀
-                if (_spawnedIcons[i].transform.parent != _slotParents[i])
-                {
-                    _spawnedIcons[i].transform.SetParent(_slotParents[i]);
-                    _spawnedIcons[i].GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+            if (i >= _nikkeIcons.Length || _nikkeIcons[i] == null) continue;
+            if (i >= _slotParents.Length || _slotParents[i] == null) continue;
 
-                    if (i < _emptyImages.Length && _emptyImages[i] != null)
-                        _emptyImages[i].SetActive(false);
-                }
+            UI_NikkeIcon icon = _nikkeIcons[i];
+            Transform targetParent = _slotParents[i];
+
+            // 드래그 중이 아니면 원래 부모로 복귀
+            if (icon.transform.parent != targetParent)
+            {
+                icon.transform.SetParent(targetParent);
+                icon.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+                // 강제 하이라이트 끄기
+                icon.SetHighlight(false);
+
+                if (i < _emptyImages.Length && _emptyImages[i] != null)
+                    _emptyImages[i].SetActive(false);
             }
         }
     }
+
+    // --- Interaction Events Handlers ---
 
     private void OnSwapRequest(int fromIndex, int toIndex)
     {
         _viewModel?.SwapSlot(fromIndex, toIndex);
     }
+
+    private void OnClearSlot(int slotIndex)
+    {
+        _viewModel?.RemoveNikkeFromSlot(slotIndex);
+    }
+
+    private void OnShowDetail(int slotIndex)
+    {
+        _viewModel?.ShowNikkeDetail(slotIndex);
+    }
+
+    // -----------------------------------
 
     private void OnEscapeAction(InputAction.CallbackContext ctx) => _viewModel?.OnClickClose();
 
@@ -212,16 +240,23 @@ public class UI_SquadDetailPopup : UI_Popup, IUIShowHideAnimation
                 if (btn != null) btn.onClick.RemoveAllListeners();
         }
 
+        // 아이콘 이벤트 해제
+        if (_nikkeIcons != null)
+        {
+            foreach (var icon in _nikkeIcons)
+            {
+                if (icon != null)
+                {
+                    icon.OnClearRequest -= OnClearSlot;
+                    icon.OnDetailRequest -= OnShowDetail;
+                }
+            }
+        }
+
         if (_viewModel != null)
         {
             _viewModel.OnCloseRequested -= OnCloseRequested;
             _viewModel.OnSquadDataChanged -= OnSquadDataChanged;
-        }
-
-        // 아이콘 정리
-        foreach (var icon in _spawnedIcons)
-        {
-            if (icon != null) Managers.UI.Close(icon);
         }
     }
 }
