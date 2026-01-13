@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 72544259852895018}
   - component: {fileID: 46859172501865185}
   - component: {fileID: 8688204159974359693}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: ProgressCountText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -103,6 +103,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -147,7 +148,7 @@ GameObject:
   - component: {fileID: 7143251653797416496}
   - component: {fileID: 7198340403583426256}
   - component: {fileID: 3779951605622873861}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Deco
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -239,6 +240,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -283,7 +285,7 @@ GameObject:
   - component: {fileID: 6016348469205136020}
   - component: {fileID: 1702195924071179705}
   - component: {fileID: 4498160807182741920}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -358,7 +360,7 @@ GameObject:
   - component: {fileID: 5269350881717593944}
   - component: {fileID: 5476766648006474025}
   - component: {fileID: 4108554115552397164}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: DescText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -450,6 +452,7 @@ MonoBehaviour:
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -492,7 +495,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6518495838260165234}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Fill Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -532,7 +535,7 @@ GameObject:
   - component: {fileID: 7158653941895821817}
   - component: {fileID: -4856161284107647202}
   - component: {fileID: 352060350335576506}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: UI_MissionSlot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -638,7 +641,7 @@ GameObject:
   - component: {fileID: 4053787876001217275}
   - component: {fileID: 6397594409816943624}
   - component: {fileID: 5652409620501458125}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Deco
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -730,6 +733,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: -1.2
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -774,7 +778,7 @@ GameObject:
   - component: {fileID: 2070391870551802144}
   - component: {fileID: 9204507426741343871}
   - component: {fileID: 5804848536094150348}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -849,7 +853,7 @@ GameObject:
   - component: {fileID: 2556145879054309667}
   - component: {fileID: 1997974180906895751}
   - component: {fileID: 6735377756501959535}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TitleText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -941,6 +945,7 @@ MonoBehaviour:
   m_VerticalAlignment: 1024
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -985,7 +990,7 @@ GameObject:
   - component: {fileID: 3324149443449023129}
   - component: {fileID: 4965147487727697320}
   - component: {fileID: 8707504575771511207}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: RewardBg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1066,7 +1071,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2983117020034844347}
   - component: {fileID: 7341364247520871174}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: MissionProgressBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -132,7 +132,7 @@ GameObject:
   - component: {fileID: 3600859316593003099}
   - component: {fileID: 2944006214773331493}
   - component: {fileID: 1083289309328644806}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: UI_Money
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -177,6 +177,7 @@ SortingGroup:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_SortAtRoot: 0
+  m_Sort3DAs2D: 0
 --- !u!225 &2944006214773331493
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -216,7 +217,7 @@ GameObject:
   - component: {fileID: 2537247850260155299}
   - component: {fileID: 9196169289421660852}
   - component: {fileID: 6709144950794637210}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: JewelText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -308,6 +309,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -352,7 +354,7 @@ GameObject:
   - component: {fileID: 2638338214436871478}
   - component: {fileID: 4533518025375186363}
   - component: {fileID: 1375758372997640970}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: CreditText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -444,6 +446,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -488,7 +491,7 @@ GameObject:
   - component: {fileID: 1357509124603289292}
   - component: {fileID: 4057857145383022029}
   - component: {fileID: 2818566048421561906}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: CreditImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -563,7 +566,7 @@ GameObject:
   - component: {fileID: 2175176546764177021}
   - component: {fileID: 5165126808298924568}
   - component: {fileID: 3815301621841046569}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: JewelImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -758,7 +761,7 @@ GameObject:
   - component: {fileID: 8917410647971795794}
   - component: {fileID: 5326738097253841042}
   - component: {fileID: 3559477051580118905}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: BgImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}

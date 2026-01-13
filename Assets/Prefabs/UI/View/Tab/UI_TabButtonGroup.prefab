@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3600859316593003099}
   - component: {fileID: 2944006214773331493}
   - component: {fileID: 5307004647178586738}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: UI_TabButtonGroup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -55,6 +55,7 @@ SortingGroup:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_SortAtRoot: 0
+  m_Sort3DAs2D: 0
 --- !u!225 &2944006214773331493
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -95,7 +96,7 @@ GameObject:
   - component: {fileID: 7769744297985404233}
   - component: {fileID: 3142927442271099981}
   - component: {fileID: 2389839517250959400}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TabName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -187,6 +188,7 @@ MonoBehaviour:
   m_VerticalAlignment: 1024
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -232,7 +234,7 @@ GameObject:
   - component: {fileID: 5147279897589248996}
   - component: {fileID: 5687794299275212706}
   - component: {fileID: 1939896434681506541}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: LobbyButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -352,7 +354,7 @@ GameObject:
   - component: {fileID: 702267705653202073}
   - component: {fileID: 5161883670307252902}
   - component: {fileID: 1363257024557830410}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TabName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -444,6 +446,7 @@ MonoBehaviour:
   m_VerticalAlignment: 1024
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -488,7 +491,7 @@ GameObject:
   - component: {fileID: 4998365734538237775}
   - component: {fileID: 3828006974404675936}
   - component: {fileID: 7526762784760710193}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TabName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -580,6 +583,7 @@ MonoBehaviour:
   m_VerticalAlignment: 1024
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -625,7 +629,7 @@ GameObject:
   - component: {fileID: 3991666459876202881}
   - component: {fileID: 2135501784025784425}
   - component: {fileID: 8651877862227096705}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: SquadButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -745,7 +749,7 @@ GameObject:
   - component: {fileID: 226833346959708160}
   - component: {fileID: 7804795183444247052}
   - component: {fileID: 624330200179617543}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TabName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -837,6 +841,7 @@ MonoBehaviour:
   m_VerticalAlignment: 1024
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -882,7 +887,7 @@ GameObject:
   - component: {fileID: 5003485400320306007}
   - component: {fileID: 6229295011277181516}
   - component: {fileID: 5045363024888875572}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: NikkeButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1002,7 +1007,7 @@ GameObject:
   - component: {fileID: 7898914827475192993}
   - component: {fileID: 5377230093637764053}
   - component: {fileID: 6917249534281990679}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TabName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1094,6 +1099,7 @@ MonoBehaviour:
   m_VerticalAlignment: 1024
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -1139,7 +1145,7 @@ GameObject:
   - component: {fileID: 7669710614828925908}
   - component: {fileID: 6420180710648126048}
   - component: {fileID: 6029815384580008423}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: RecruitButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1260,7 +1266,7 @@ GameObject:
   - component: {fileID: 6636135520020766476}
   - component: {fileID: 1217527194081875701}
   - component: {fileID: 6770629959225057374}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: InventoryButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3600859316593003099}
   - component: {fileID: 2944006214773331493}
   - component: {fileID: 769228773678720601}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: UI_LoadingPopup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -90,7 +90,7 @@ GameObject:
   - component: {fileID: 3902583268752853899}
   - component: {fileID: 1555389478815028600}
   - component: {fileID: 894200372352859477}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: WipeImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}

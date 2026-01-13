@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3499843532938469670}
   - component: {fileID: 6042004469239368553}
   - component: {fileID: 3995259685820494749}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: RedDotImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -88,7 +88,7 @@ GameObject:
   - component: {fileID: 4058219023749459388}
   - component: {fileID: 7602604662881260417}
   - component: {fileID: 3446720781459860903}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: UI_MissionButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -193,7 +193,7 @@ GameObject:
   - component: {fileID: 1071219712043136554}
   - component: {fileID: 6680422765494169035}
   - component: {fileID: 5433010447530225840}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: MissionText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -285,6 +285,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -330,7 +331,7 @@ GameObject:
   - component: {fileID: 6150254454659500169}
   - component: {fileID: 2162158675396154820}
   - component: {fileID: 6984283495342322918}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: MissionButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}

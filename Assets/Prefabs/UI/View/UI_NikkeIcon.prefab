@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 471977527276933714}
   - component: {fileID: 6383493985997609769}
   - component: {fileID: 5177893586167398808}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: UI_NikkeIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -122,7 +122,7 @@ GameObject:
   - component: {fileID: 2871625159222547628}
   - component: {fileID: 838149853133166798}
   - component: {fileID: 8995027769899815522}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: InfoLayout
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -201,7 +201,7 @@ GameObject:
   - component: {fileID: 350486890635296129}
   - component: {fileID: 8399820123539343352}
   - component: {fileID: 2117473552677270434}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: BurstIconImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -276,7 +276,7 @@ GameObject:
   - component: {fileID: 8092908910767378687}
   - component: {fileID: 1159094559653883376}
   - component: {fileID: 8020376469652019481}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: RarityFrameImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -351,7 +351,7 @@ GameObject:
   - component: {fileID: 4926783767110912030}
   - component: {fileID: 5177334746742915566}
   - component: {fileID: 4691456835083999591}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: HoverImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -427,7 +427,7 @@ GameObject:
   - component: {fileID: 4533518025375186363}
   - component: {fileID: 1375758372997640970}
   - component: {fileID: 1619410356617003967}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: LevelText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -578,7 +578,7 @@ GameObject:
   - component: {fileID: 2288082838644187704}
   - component: {fileID: 947717006957569081}
   - component: {fileID: 5925222672576485892}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: WeaponIconImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -653,7 +653,7 @@ GameObject:
   - component: {fileID: 4720884598652888236}
   - component: {fileID: 1754249326878996620}
   - component: {fileID: 3951611538683561904}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: CodeImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -727,7 +727,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5641029882541863408}
   - component: {fileID: 122008728561775294}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: ContentRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -779,7 +779,7 @@ GameObject:
   - component: {fileID: 3362706970166256341}
   - component: {fileID: 2099681426783722690}
   - component: {fileID: 5102528798782562027}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: leveldecotext
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -930,7 +930,7 @@ GameObject:
   - component: {fileID: 2175176546764177021}
   - component: {fileID: 5165126808298924568}
   - component: {fileID: 3815301621841046569}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: FaceImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1005,7 +1005,7 @@ GameObject:
   - component: {fileID: 8048199764967536754}
   - component: {fileID: 1084029348738934477}
   - component: {fileID: 7633079481762940479}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: EmptyImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}

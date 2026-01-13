@@ -131,7 +131,7 @@ GameObject:
   - component: {fileID: 3228462037800774197}
   - component: {fileID: 4113643055940985915}
   - component: {fileID: 4105861586404185395}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: ItemNameText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -269,7 +269,7 @@ GameObject:
   - component: {fileID: 3600859316593003099}
   - component: {fileID: 2944006214773331493}
   - component: {fileID: 6124054374812504407}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: UI_ItemDetailPopup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -351,7 +351,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2128583745132962167}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: PaddingUI_Icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -390,7 +390,7 @@ GameObject:
   - component: {fileID: 4443346597304321770}
   - component: {fileID: 3741061467244697760}
   - component: {fileID: 688711918358031267}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: DescText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -712,7 +712,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5118906305155436651}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: PaddingOKButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -748,7 +748,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1349110930677489012}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: PaddingQuantityText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -786,7 +786,7 @@ GameObject:
   - component: {fileID: 4420664442359877582}
   - component: {fileID: 762121842555080739}
   - component: {fileID: 5977992095334767692}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: QuantityText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -925,7 +925,7 @@ GameObject:
   - component: {fileID: 8408218755754207338}
   - component: {fileID: 7246473548265922876}
   - component: {fileID: 4845769001330064104}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: BgImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1044,7 +1044,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 582910259520940070}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: PaddingItemNameText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1083,7 +1083,7 @@ GameObject:
   - component: {fileID: 1555389478815028600}
   - component: {fileID: 894200372352859477}
   - component: {fileID: 1336892810026766997}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Blocker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1324,6 +1324,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI_Icon
       objectReference: {fileID: 0}
+    - target: {fileID: 544962131655027270, guid: c3788e7b1806a664f91898638828653d, type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 1375758372997640970, guid: c3788e7b1806a664f91898638828653d, type: 3}
       propertyPath: m_fontSize
       value: 33
@@ -1331,6 +1335,10 @@ PrefabInstance:
     - target: {fileID: 1375758372997640970, guid: c3788e7b1806a664f91898638828653d, type: 3}
       propertyPath: m_fontSizeBase
       value: 33
+      objectReference: {fileID: 0}
+    - target: {fileID: 1902707019057168572, guid: c3788e7b1806a664f91898638828653d, type: 3}
+      propertyPath: m_Layer
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2638338214436871478, guid: c3788e7b1806a664f91898638828653d, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -1423,6 +1431,26 @@ PrefabInstance:
     - target: {fileID: 3559477051580118905, guid: c3788e7b1806a664f91898638828653d, type: 3}
       propertyPath: m_Color.a
       value: 0.5019608
+      objectReference: {fileID: 0}
+    - target: {fileID: 3630877291695137818, guid: c3788e7b1806a664f91898638828653d, type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5150897896519430145, guid: c3788e7b1806a664f91898638828653d, type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8060084346263281955, guid: c3788e7b1806a664f91898638828653d, type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8718941218672499437, guid: c3788e7b1806a664f91898638828653d, type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8843657752457329792, guid: c3788e7b1806a664f91898638828653d, type: 3}
+      propertyPath: m_Layer
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8917410647971795794, guid: c3788e7b1806a664f91898638828653d, type: 3}
       propertyPath: m_SizeDelta.x
