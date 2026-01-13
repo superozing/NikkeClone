@@ -15,14 +15,15 @@ public class UIManager : IManagerBase
     private readonly Stack<UI_Popup> _popupStack = new();
     private Transform _sceneRoot;
     private Transform _dontDestroyRoot;
+    private Camera _uiCamera;
 
     /// <summary>
-    /// UI Popup�� ���������� �ο��� Sorting Order ���Դϴ�.
+    /// UI Popup  ο Sorting Order Դϴ.
     /// </summary>
     private int _sortingOrder = 50;
 
     /// <summary>
-    /// Sorting Group ���� order ����
+    /// Sorting Group  order 
     /// </summary>
     private const int ORDER_STEP = 10;
 
@@ -36,9 +37,12 @@ public class UIManager : IManagerBase
             Object.DontDestroyOnLoad(eventSystemGo);
         }
 
+        // 초기화 시 UI 카메라 확보
+        EnsureUICamera();
+
         SceneManager.sceneLoaded += OnSceneLoaded;
 
-        Debug.Log($"{ManagerType} Manager Init �մϴ�.");
+        Debug.Log($"{ManagerType} Manager Init մϴ.");
     }
 
     public void Update() { }
@@ -48,19 +52,19 @@ public class UIManager : IManagerBase
         _popupStack.Clear();
         _sortingOrder = 10;
         _sceneRoot = null;
-        Debug.Log($"{ManagerType} Manager Clear �մϴ�.");
+        Debug.Log($"{ManagerType} Manager Clear մϴ.");
     }
 
     /// <summary>
-    /// ������ Ÿ���� UI_View�� �񵿱������� �ε��ϰ�, ������ ViewModel�� �����մϴ�.
+    ///  Ÿ UI_View 񵿱 εϰ,  ViewModel մϴ.
     /// </summary>
-    /// <typeparam name="TView">������ UI�� Ÿ���̸�, UI_View�� ����ؾ� �մϴ�.</typeparam>
-    /// <param name="viewModel">UI�� ������ ViewModel �ν��Ͻ��Դϴ�.</param>
-    /// <param name="parent">UI�� ��ġ�� �θ� Transform�Դϴ�. null�� ��� Ÿ�Կ� ���� �ڵ����� Root�� �����˴ϴ�.</param>
-    /// <returns>���� �� �ʱ�ȭ�� �Ϸ�� UI�� �ν��Ͻ��Դϴ�.</returns>
+    /// <typeparam name="TView"> UI Ÿ̸, UI_View ؾ մϴ.</typeparam>
+    /// <param name="viewModel">UI  ViewModel νϽԴϴ.</param>
+    /// <param name="parent">UI ġ θ TransformԴϴ. null  ŸԿ  ڵ Root ˴ϴ.</param>
+    /// <returns>  ʱȭ Ϸ UI νϽԴϴ.</returns>
     public async Task<TView> ShowAsync<TView>(ViewModelBase viewModel, Transform parent = null) where TView : UI_View
     {
-        // �θ� ���õ��� ���� ���, ���� ���� UI ��Ʈ�� ����մϴ�.
+        // θ õ  ,   UI Ʈ մϴ.
         Transform root = parent == null ? GetSceneRoot() : parent;
 
         string prefabName = typeof(TView).Name;
@@ -69,13 +73,13 @@ public class UIManager : IManagerBase
         GameObject go = await Managers.Resource.InstantiateAsync(path, parent: root);
         if (go == null)
         {
-            Debug.LogError($"[UIManager] ������ �ε� ����. path: {path}");
+            Debug.LogError($"[UIManager]  ε . path: {path}");
             return null;
         }
 
         TView view = go.GetOrAddComponent<TView>();
 
-        // parent�� null�� ���� ���ÿ� Push�ϵ��� ������ ��Ȯȭ�մϴ�.
+        // parent null  ÿ Pushϵ  Ȯȭմϴ.
         if (parent == null && view is UI_Popup popup)
         {
             _popupStack.Push(popup);
@@ -85,10 +89,10 @@ public class UIManager : IManagerBase
         var rectTransform = view.GetComponent<RectTransform>();
         rectTransform.localScale = Vector3.one;
 
-        // Sorting Group�� ������ �����մϴ�.
+        // Sorting Group  մϴ.
         SetSortingGroupOrder(go, view is UI_Popup);
 
-        // �Է¹��� ����� �����մϴ�. (���⼭ AddRef)
+        // Է¹  մϴ. (⼭ AddRef)
         view.SetViewModel(viewModel);
 
         view.gameObject.SetActive(true);
@@ -96,15 +100,15 @@ public class UIManager : IManagerBase
     }
 
     /// <summary>
-    /// ������ Ÿ���� UI_View�� �񵿱������� �ε��ϰ� ��ȯ�մϴ�.
-    /// ResourceManagerEx�� ���� Object Pooling�� �ڵ����� Ȱ���մϴ�.
+    ///  Ÿ UI_View 񵿱 εϰ ȯմϴ.
+    /// ResourceManagerEx  Object Pooling ڵ Ȱմϴ.
     /// </summary>
-    /// <typeparam name="T">������ UI�� Ÿ���̸�, UI_View�� ����ؾ� �մϴ�.</typeparam>
-    /// <param name="parent">UI�� ��ġ�� �θ� Transform�Դϴ�. null�� ��� Ÿ�Կ� ���� �ڵ����� Root�� �����˴ϴ�.</param>
-    /// <returns>������ UI�� �ν��Ͻ��Դϴ�.</returns>
+    /// <typeparam name="T"> UI Ÿ̸, UI_View ؾ մϴ.</typeparam>
+    /// <param name="parent">UI ġ θ TransformԴϴ. null  ŸԿ  ڵ Root ˴ϴ.</param>
+    /// <returns> UI νϽԴϴ.</returns>
     public async Task<T> ShowAsync<T>(Transform parent = null) where T : UI_View
     {
-        // �θ� ���õ��� ���� ���, ���� ���� UI ��Ʈ�� ����մϴ�.
+        // θ õ  ,   UI Ʈ մϴ.
         Transform root = parent == null ? GetSceneRoot() : parent;
 
         string prefabName = typeof(T).Name;
@@ -113,13 +117,13 @@ public class UIManager : IManagerBase
         GameObject go = await Managers.Resource.InstantiateAsync(path, parent: root);
         if (go == null)
         {
-            Debug.LogError($"[UIManager] ������ �ε� ����. path: {path}");
+            Debug.LogError($"[UIManager]  ε . path: {path}");
             return null;
         }
 
         T view = go.GetOrAddComponent<T>();
 
-        // parent�� null�� ���� ���ÿ� Push�ϵ��� ������ ��Ȯȭ�մϴ�.
+        // parent null  ÿ Pushϵ  Ȯȭմϴ.
         if (parent == null && view is UI_Popup popup)
         {
             _popupStack.Push(popup);
@@ -129,7 +133,7 @@ public class UIManager : IManagerBase
         var rectTransform = view.GetComponent<RectTransform>();
         rectTransform.localScale = Vector3.one;
 
-        // Sorting Group�� ������ �����մϴ�.
+        // Sorting Group  մϴ.
         SetSortingGroupOrder(go, view is UI_Popup);
 
         view.gameObject.SetActive(true);
@@ -137,12 +141,12 @@ public class UIManager : IManagerBase
     }
 
     /// <summary>
-    /// ���� ��ȯ�Ǿ �ı����� �ʴ� UI_DontDestroyPopup�� �񵿱������� �ε��ϰ� ViewModel�� �����մϴ�.
+    ///  ȯǾ ı ʴ UI_DontDestroyPopup 񵿱 εϰ ViewModel մϴ.
     /// </summary>
-    /// <typeparam name="TView">������ UI�� Ÿ���̸�, UI_DontDestroyPopup�� ����ؾ� �մϴ�.</typeparam>
-    /// <param name="viewModel">UI�� ������ ViewModel �ν��Ͻ��Դϴ�.</param>
-    /// <param name="parent">UI�� ��ġ�� �θ� Transform�Դϴ�. null�� ��� DontDestroyRoot�� �⺻������ ���˴ϴ�.</param>
-    /// <returns>������ UI�� �ν��Ͻ��Դϴ�.</returns>
+    /// <typeparam name="TView"> UI Ÿ̸, UI_DontDestroyPopup ؾ մϴ.</typeparam>
+    /// <param name="viewModel">UI  ViewModel νϽԴϴ.</param>
+    /// <param name="parent">UI ġ θ TransformԴϴ. null  DontDestroyRoot ⺻ ˴ϴ.</param>
+    /// <returns> UI νϽԴϴ.</returns>
     public async Task<TView> ShowDontDestroyAsync<TView>(ViewModelBase viewModel) where TView : UI_DontDestroyPopup
     {
         string prefabName = typeof(TView).Name;
@@ -151,7 +155,7 @@ public class UIManager : IManagerBase
         GameObject go = await Managers.Resource.InstantiateAsync(path, parent: GetDontDestroyRoot());
         if (go == null)
         {
-            Debug.LogError($"[UIManager] ������ �ε� ����. path: {path}");
+            Debug.LogError($"[UIManager]  ε . path: {path}");
             return null;
         }
 
@@ -170,12 +174,12 @@ public class UIManager : IManagerBase
     }
 
     /// <summary>
-    /// ���� ��ȯ�Ǿ �ı����� �ʴ� UI_DontDestroyPopup�� �񵿱������� �ε��ϰ� ��ȯ�մϴ�.
-    /// �� UI�� Popup Stack���� �������� ������, �׻� �ֻ�ܿ� ǥ�õ˴ϴ�.
+    ///  ȯǾ ı ʴ UI_DontDestroyPopup 񵿱 εϰ ȯմϴ.
+    ///  UI Popup Stack  , ׻ ֻܿ ǥõ˴ϴ.
     /// </summary>
-    /// <typeparam name="T">������ UI�� Ÿ���̸�, UI_DontDestroyPopup�� ����ؾ� �մϴ�.</typeparam>
-    /// <param name="parent">UI�� ��ġ�� �θ� Transform�Դϴ�. null�� ��� DontDestroyRoot�� �⺻������ ���˴ϴ�.</param>
-    /// <returns>������ UI�� �ν��Ͻ��Դϴ�.</returns>
+    /// <typeparam name="T"> UI Ÿ̸, UI_DontDestroyPopup ؾ մϴ.</typeparam>
+    /// <param name="parent">UI ġ θ TransformԴϴ. null  DontDestroyRoot ⺻ ˴ϴ.</param>
+    /// <returns> UI νϽԴϴ.</returns>
     public async Task<T> ShowDontDestroyAsync<T>() where T : UI_DontDestroyPopup
     {
         string prefabName = typeof(T).Name;
@@ -184,7 +188,7 @@ public class UIManager : IManagerBase
         GameObject go = await Managers.Resource.InstantiateAsync(path, parent: GetDontDestroyRoot());
         if (go == null)
         {
-            Debug.LogError($"[UIManager] ������ �ε� ����. path: {path}");
+            Debug.LogError($"[UIManager]  ε . path: {path}");
             return null;
         }
 
@@ -202,10 +206,10 @@ public class UIManager : IManagerBase
 
 
     /// <summary>
-    /// ������ UI_View�� �ݰ� Pool�� ��ȯ�մϴ�.
-    /// �˾��� ���, ������ �ֻ�ܿ� ���� ���� ���� �� �ֽ��ϴ�.
+    ///  UI_View ݰ Pool ȯմϴ.
+    /// ˾ ,  ֻܿ     ֽϴ.
     /// </summary>
-    /// <param name="view">���� UI_View �ν��Ͻ��Դϴ�.</param>
+    /// <param name="view"> UI_View νϽԴϴ.</param>
     public void Close(UI_View view)
     {
         if (view == null) return;
@@ -217,13 +221,13 @@ public class UIManager : IManagerBase
                 _popupStack.Pop();
                 _sortingOrder -= ORDER_STEP;
 
-                // ���� ��� Popup�� ActionMapKey ����
+                //   Popup ActionMapKey 
                 if (_popupStack.Count > 0)
                 {
                     var nextPopup = _popupStack.Peek();
                     Managers.Input.SwitchActionMap(nextPopup.ActionMapKey);
                 }
-                // ������ �� ��� �⺻ ����("None")
+                //    ⺻ ("None")
                 else
                 {
                     Managers.Input.SwitchActionMap("None");
@@ -231,15 +235,15 @@ public class UIManager : IManagerBase
             }
         }
 
-        // UI�� Ǯ�� ��ȯ�ϰų� �ı��ϱ� ���� ViewModel���� ������ ���������� �����ϴ�.
-        // ���� ViewModel�� Release() �� �� ���� ī��Ʈ�� �����ϰ�, �ʿ�� OnDispose()�� ȣ��˴ϴ�.
+        // UI Ǯ ȯϰų ıϱ  ViewModel   ϴ.
+        //  ViewModel Release()    īƮ ϰ, ʿ OnDispose() ȣ˴ϴ.
         view.SetViewModel(null);
 
         Managers.Resource.Destroy(view.gameObject);
     }
 
     /// <summary>
-    /// UI GameObject�� SortingGroup ������Ʈ�� �����ϰ� Sorting Order�� �����մϴ�.
+    /// UI GameObject SortingGroup Ʈ ϰ Sorting Order մϴ.
     /// </summary>
     private void SetSortingGroupOrder(GameObject go, bool useSortingOrder)
     {
@@ -251,13 +255,13 @@ public class UIManager : IManagerBase
         }
         else
         {
-            // sortingOrder�� ������� ���� ���(UI_Popup�� ����� ���) sortingOrder�� ������� ����
+            // sortingOrder   (UI_Popup  ) sortingOrder  
             sortingGroup.sortingOrder = 0;
         }
     }
 
     /// <summary>
-    /// ���� ���� UI Root Transform�� ��ȯ�մϴ�. ������ �����մϴ�.
+    ///   UI Root Transform ȯմϴ.  մϴ.
     /// </summary>
     private Transform GetSceneRoot()
     {
@@ -265,14 +269,18 @@ public class UIManager : IManagerBase
         {
             GameObject rootGo = GameObject.Find("@UI_Root_Scene");
 
-            //���� UI ��Ʈ�� ���� ���, Canvas�� �ʼ� ������Ʈ�� �����Ͽ� ���� �����մϴ�.
+            // UI Ʈ  , Canvas ʼ Ʈ Ͽ  մϴ.
             if (rootGo == null)
             {
                 rootGo = new GameObject { name = "@UI_Root_Scene" };
 
                 Canvas canvas = rootGo.AddComponent<Canvas>();
                 canvas.renderMode = RenderMode.ScreenSpaceCamera;
-                canvas.worldCamera = Camera.main; // ���߿� CameraManager���Լ� ���������� �ٲ�߰���??
+                
+                // 전용 UI 카메라 사용
+                EnsureUICamera();
+                canvas.worldCamera = _uiCamera; 
+
                 CanvasScaler scaler = rootGo.AddComponent<CanvasScaler>();
                 scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
                 scaler.referenceResolution = new Vector2(1920, 1080);
@@ -303,7 +311,12 @@ public class UIManager : IManagerBase
         if (dontDestroyGo.GetComponent<Canvas>() == null)
         {
             Canvas canvas = dontDestroyGo.AddComponent<Canvas>();
-            canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+            canvas.renderMode = RenderMode.ScreenSpaceCamera;
+            
+            // 전용 UI 카메라 사용
+            EnsureUICamera();
+            canvas.worldCamera = _uiCamera;
+            
             canvas.sortingOrder = 999999;
 
             CanvasScaler scaler = dontDestroyGo.AddComponent<CanvasScaler>();
@@ -319,7 +332,28 @@ public class UIManager : IManagerBase
     }
 
     /// <summary>
-    /// UI Ÿ�Կ� ���� ������ ��θ� �����մϴ�.
+    /// UI 전용 카메라를 확보합니다.
+    /// </summary>
+    private void EnsureUICamera()
+    {
+        if (_uiCamera != null) return;
+
+        GameObject cameraGo = GameObject.Find("@UI_Camera");
+        if (cameraGo == null)
+        {
+            cameraGo = new GameObject { name = "@UI_Camera" };
+            Object.DontDestroyOnLoad(cameraGo);
+        }
+
+        _uiCamera = cameraGo.GetOrAddComponent<Camera>();
+        _uiCamera.cullingMask = 1 << LayerMask.NameToLayer("UI"); // UI 레이어만 렌더링
+        _uiCamera.clearFlags = CameraClearFlags.Depth;            // 메인 카메라 위에 그리기 위해 DepthOnly
+        _uiCamera.depth = 100;                                    // 메인 카메라(-1)보다 높은 값
+        _uiCamera.orthographic = true;                            // UI용 직교 투영
+    }
+
+    /// <summary>
+    /// UI ŸԿ   θ մϴ.
     /// </summary>
     private string GetPrefabPath<T>(string prefabName) where T : UI_View
     {
@@ -328,12 +362,20 @@ public class UIManager : IManagerBase
     }
 
     /// <summary>
-    /// ���ο� ���� �ε�� �� ȣ��Ǵ� �̺�Ʈ �ڵ鷯�Դϴ�.
+    /// ο  ε  ȣǴ ̺Ʈ ڵ鷯Դϴ.
     /// </summary>
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        Clear();
+        if (Camera.main != null)
+        {
+            // 메인 카메라가 UI 레이어를 렌더링하지 않도록 설정
+            int uiLayerMask = 1 << LayerMask.NameToLayer("UI");
+            Camera.main.cullingMask &= ~uiLayerMask;
+        }
 
-        // ���߿� �� ���� �ʿ��� ������ �ִٸ� �߰��ϸ� ������?
+        // UI 카메라는 항상 존재해야 함
+        EnsureUICamera();
+
+        Clear();
     }
 }
