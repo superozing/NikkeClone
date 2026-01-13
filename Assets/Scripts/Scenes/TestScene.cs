@@ -32,6 +32,7 @@ public class TestScene : MonoBehaviour, IScene
     /// </summary>
     private async void ShowTestUI()
     {
+        await Task.Delay(1000);
         Debug.Log("[TestScene] UI_LoadingPopup 테스트 시작");
         
         var loadingVM = new LoadingPopupViewModel(async () =>
@@ -41,7 +42,7 @@ public class TestScene : MonoBehaviour, IScene
             Debug.Log("[TestScene] 로딩 작업 완료");
         });
         
-        await Managers.UI.ShowAsync<UI_LoadingPopup>(loadingVM);
+        await Managers.UI.ShowDontDestroyAsync<UI_LoadingPopup>(loadingVM);
         Debug.Log("[TestScene] UI_LoadingPopup 테스트 완료");
     }
 
