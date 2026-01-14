@@ -27,23 +27,17 @@ public class TestScene : MonoBehaviour, IScene
     }
     
     /// <summary>
-    /// UI_LoadingPopup 테스트를 위한 메서드.
-    /// 2초 대기 Task를 실행하여 WipeIn/WipeOut 애니메이션을 확인.
+    /// UI_TabGroupPopup 테스트를 위한 메서드.
     /// </summary>
     private async void ShowTestUI()
     {
         await Task.Delay(1000);
-        Debug.Log("[TestScene] UI_LoadingPopup 테스트 시작");
+        Debug.Log("[TestScene] UI_TabGroupPopup 테스트 시작");
         
-        var loadingVM = new LoadingPopupViewModel(async () =>
-        {
-            Debug.Log("[TestScene] 로딩 작업 시작 (2초 대기)");
-            await Task.Delay(2000);
-            Debug.Log("[TestScene] 로딩 작업 완료");
-        });
-        
-        await Managers.UI.ShowDontDestroyAsync<UI_LoadingPopup>(loadingVM);
-        Debug.Log("[TestScene] UI_LoadingPopup 테스트 완료");
+        var tabGroupVM = new TabGroupPopupViewModel();
+        await Managers.UI.ShowAsync<UI_TabGroupPopup>(tabGroupVM);
+
+        Debug.Log("[TestScene] UI_TabGroupPopup 테스트 완료");
     }
 
     void IScene.Clear()
