@@ -7,6 +7,7 @@ using UnityEngine.InputSystem.UI;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.Rendering.Universal;
 
 public class UIManager : IManagerBase
 {
@@ -39,6 +40,13 @@ public class UIManager : IManagerBase
 
         // 초기화 시 UI 카메라 확보
         EnsureUICamera();
+
+        // 초기 진입 시에도 Main Camera가 존재한다면 Stack에 등록합니다.
+        // TestScene처럼 Awake/Start 시점에 이미 로드된 씬을 위해 필요합니다.
+        if (Camera.main != null)
+        {
+            RegisterUICameraToStack(Camera.main);
+        }
 
         SceneManager.sceneLoaded += OnSceneLoaded;
 
@@ -273,6 +281,7 @@ public class UIManager : IManagerBase
             if (rootGo == null)
             {
                 rootGo = new GameObject { name = "@UI_Root_Scene" };
+                rootGo.layer = LayerMask.NameToLayer("UI");
 
                 Canvas canvas = rootGo.AddComponent<Canvas>();
                 canvas.renderMode = RenderMode.ScreenSpaceCamera;
@@ -305,6 +314,7 @@ public class UIManager : IManagerBase
         if (dontDestroyGo == null)
         {
             dontDestroyGo = new GameObject { name = "@UI_Root_DontDestroy" };
+            dontDestroyGo.layer = LayerMask.NameToLayer("UI");
             Object.DontDestroyOnLoad(dontDestroyGo);
         }
 
@@ -345,11 +355,39 @@ public class UIManager : IManagerBase
             Object.DontDestroyOnLoad(cameraGo);
         }
 
+        cameraGo.layer = LayerMask.NameToLayer("UI");
+        // 위치를 명시적으로 설정하여 오동작 방지
+        cameraGo.transform.position = new Vector3(0, 0, -100);
+
         _uiCamera = cameraGo.GetOrAddComponent<Camera>();
         _uiCamera.cullingMask = 1 << LayerMask.NameToLayer("UI"); // UI 레이어만 렌더링
-        _uiCamera.clearFlags = CameraClearFlags.Depth;            // 메인 카메라 위에 그리기 위해 DepthOnly
-        _uiCamera.depth = 100;                                    // 메인 카메라(-1)보다 높은 값
-        _uiCamera.orthographic = true;                            // UI용 직교 투영
+        _uiCamera.clearFlags = CameraClearFlags.Nothing;          // Overlay는 Clear 불필요
+        _uiCamera.orthographic = false;                           // 원근 투영 활성화
+        _uiCamera.fieldOfView = 60f;                              // 표준 FOV
+        
+        // URP Overlay Camera 설정
+        var urpCameraData = _uiCamera.GetUniversalAdditionalCameraData();
+        if (urpCameraData != null)
+        {
+            urpCameraData.renderType = CameraRenderType.Overlay;
+        }
+    }
+
+    /// <summary>
+    /// Main Camera의 URP Camera Stack에 UI Camera를 등록합니다.
+    /// </summary>
+    /// <param name="mainCamera">Base Camera로 사용할 Main Camera</param>
+    private void RegisterUICameraToStack(Camera mainCamera)
+    {
+        if (_uiCamera == null) return;
+
+        var mainCameraData = mainCamera.GetUniversalAdditionalCameraData();
+        if (mainCameraData == null) return;
+        
+        // 이미 등록되어 있으면 중복 등록 방지
+        if (mainCameraData.cameraStack.Contains(_uiCamera)) return;
+        
+        mainCameraData.cameraStack.Add(_uiCamera);
     }
 
     /// <summary>
@@ -371,6 +409,9 @@ public class UIManager : IManagerBase
             // 메인 카메라가 UI 레이어를 렌더링하지 않도록 설정
             int uiLayerMask = 1 << LayerMask.NameToLayer("UI");
             Camera.main.cullingMask &= ~uiLayerMask;
+
+            // URP Camera Stack에 UI Camera 등록
+            RegisterUICameraToStack(Camera.main);
         }
 
         // UI 카메라는 항상 존재해야 함
