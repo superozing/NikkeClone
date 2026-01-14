@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 827246767789312804}
   - component: {fileID: 8814772377338995883}
   - component: {fileID: 1806995819875260106}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: List
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -93,7 +93,7 @@ GameObject:
   - component: {fileID: 4851815698372190930}
   - component: {fileID: 8539684589590221366}
   - component: {fileID: 5465309344128276066}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -181,7 +181,7 @@ GameObject:
   - component: {fileID: 54959065028371063}
   - component: {fileID: 475862950429496291}
   - component: {fileID: 4673840260239945182}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -254,7 +254,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8371243337975822829}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -291,7 +291,7 @@ GameObject:
   - component: {fileID: 5283334455656969032}
   - component: {fileID: 2774769358554698504}
   - component: {fileID: 3943185055008892186}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -383,6 +383,7 @@ MonoBehaviour:
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0

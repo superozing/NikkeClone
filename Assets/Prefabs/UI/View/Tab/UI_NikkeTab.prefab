@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3600859316593003099}
   - component: {fileID: 2944006214773331493}
   - component: {fileID: 8813071721186571089}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: UI_NikkeTab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -56,6 +56,7 @@ SortingGroup:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_SortAtRoot: 0
+  m_Sort3DAs2D: 0
 --- !u!225 &2944006214773331493
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -92,7 +93,7 @@ GameObject:
   - component: {fileID: 1521564348410565767}
   - component: {fileID: 7813487162375930048}
   - component: {fileID: 5363347521667209409}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -167,7 +168,7 @@ GameObject:
   - component: {fileID: 3223068387042732932}
   - component: {fileID: 8386601401326083250}
   - component: {fileID: 3389640060306342082}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -259,6 +260,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -303,7 +305,7 @@ GameObject:
   - component: {fileID: 1943060970628921288}
   - component: {fileID: 7187628886460629356}
   - component: {fileID: 6456780867016365681}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -395,6 +397,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -439,7 +442,7 @@ GameObject:
   - component: {fileID: 386992339734165013}
   - component: {fileID: 4730743089098599523}
   - component: {fileID: 1625098753060948014}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -531,6 +534,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -575,7 +579,7 @@ GameObject:
   - component: {fileID: 7135367535595925114}
   - component: {fileID: 2666927546130098418}
   - component: {fileID: 7518641627494647991}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text (TMP) (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -667,6 +671,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: -5
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -711,7 +716,7 @@ GameObject:
   - component: {fileID: 566784972064334147}
   - component: {fileID: 2995863866285791723}
   - component: {fileID: 2498730184236404338}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GoalImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -786,7 +791,7 @@ GameObject:
   - component: {fileID: 1644042976944252189}
   - component: {fileID: 5323087723468178126}
   - component: {fileID: 8202142667319335526}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -861,7 +866,7 @@ GameObject:
   - component: {fileID: 7523098065617427368}
   - component: {fileID: 3810847767224896072}
   - component: {fileID: 5871913285577423065}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -936,7 +941,7 @@ GameObject:
   - component: {fileID: 7340209813189550256}
   - component: {fileID: 8416660844164009185}
   - component: {fileID: 5462751678540354588}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text (TMP) (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1028,6 +1033,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: -5
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -1072,7 +1078,7 @@ GameObject:
   - component: {fileID: 3902583268752853899}
   - component: {fileID: 1555389478815028600}
   - component: {fileID: 894200372352859477}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: BgImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1147,7 +1153,7 @@ GameObject:
   - component: {fileID: 6881552693840527596}
   - component: {fileID: 7309830370141081670}
   - component: {fileID: 5349283454220839294}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1239,6 +1245,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0

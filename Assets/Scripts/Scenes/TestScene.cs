@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class TestScene : MonoBehaviour, IScene
@@ -11,31 +12,36 @@ public class TestScene : MonoBehaviour, IScene
         "MissionGameData.json",
     };
 
-    UI_TabGroupPopup popup;
-
     void Awake()
     {
         Managers.Scene.SetCurrentScene(this);
-        Debug.Log("Test Scene Awake() �մϴ�.");
+        Debug.Log("Test Scene Awake() 합니다.");
     }
 
     void IScene.Init()
     {
-        Debug.Log("Test Scene Init() �մϴ�.");
+        Debug.Log("Test Scene Init() 합니다.");
         Debug.Log($"persistentDataPath: {Application.persistentDataPath}");
 
         ShowTestUI();
     }
     
+    /// <summary>
+    /// UI_TabGroupPopup 테스트를 위한 메서드.
+    /// </summary>
     private async void ShowTestUI()
     {
-        popup = await Managers.UI.ShowAsync<UI_TabGroupPopup>(new TabGroupPopupViewModel());
+        await Task.Delay(1000);
+        Debug.Log("[TestScene] UI_TabGroupPopup 테스트 시작");
+        
+        var tabGroupVM = new TabGroupPopupViewModel();
+        await Managers.UI.ShowAsync<UI_TabGroupPopup>(tabGroupVM);
+
+        Debug.Log("[TestScene] UI_TabGroupPopup 테스트 완료");
     }
 
     void IScene.Clear()
     {
-        //Debug.Log("Test Scene Clear() �մϴ�.");
-
-        Managers.UI.Close(popup);
+        //Debug.Log("Test Scene Clear() 합니다.");
     }
 }

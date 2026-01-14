@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7378242015850565476}
   - component: {fileID: 331723831376480907}
   - component: {fileID: 7844931875218305193}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TitleBgImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 6542045066823125668}
   - component: {fileID: 2566751616266434167}
   - component: {fileID: 5196681012869839065}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -165,7 +165,7 @@ GameObject:
   - component: {fileID: 3600859316593003099}
   - component: {fileID: 2944006214773331493}
   - component: {fileID: 3787474087687699195}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: UI_MissionPopup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -205,6 +205,7 @@ SortingGroup:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_SortAtRoot: 0
+  m_Sort3DAs2D: 0
 --- !u!225 &2944006214773331493
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -246,7 +247,7 @@ GameObject:
   - component: {fileID: 415906335785699225}
   - component: {fileID: 7635084660791202774}
   - component: {fileID: 5032226685254886190}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: DescText (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -338,6 +339,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -382,7 +384,7 @@ GameObject:
   - component: {fileID: 2696801596863335595}
   - component: {fileID: 7083218402097358209}
   - component: {fileID: 8150890650962400960}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: DescText (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -474,6 +476,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -518,7 +521,7 @@ GameObject:
   - component: {fileID: 723576081006003003}
   - component: {fileID: 3227548859448549783}
   - component: {fileID: 122983223230495553}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Deco
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -610,6 +613,7 @@ MonoBehaviour:
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -654,7 +658,7 @@ GameObject:
   - component: {fileID: 5425473432289241330}
   - component: {fileID: 6660621561200331824}
   - component: {fileID: 2937655015884387518}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: DecoImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -729,7 +733,7 @@ GameObject:
   - component: {fileID: 2519788960108468368}
   - component: {fileID: 1669052306111527894}
   - component: {fileID: 6628489374789025728}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: DecoImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -806,7 +810,7 @@ GameObject:
   - component: {fileID: 5621825717065672512}
   - component: {fileID: 3701491650318053979}
   - component: {fileID: 559223136860751141}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: BgImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -888,7 +892,7 @@ GameObject:
   - component: {fileID: 3902067729746491705}
   - component: {fileID: 1966941931990272668}
   - component: {fileID: 1139700117690115013}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: MissionCompleteBlockerImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -966,7 +970,7 @@ GameObject:
   - component: {fileID: 7572520788501706968}
   - component: {fileID: 441843631721794727}
   - component: {fileID: 1061260367941871789}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: MissionSlotRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1043,7 +1047,7 @@ GameObject:
   - component: {fileID: 7831499081801697458}
   - component: {fileID: 6732711739829831810}
   - component: {fileID: 9152624331449066268}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: DescText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1136,6 +1140,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -1194,7 +1199,7 @@ GameObject:
   - component: {fileID: 7837218655443440450}
   - component: {fileID: 1632901262306856185}
   - component: {fileID: 1874641105395453798}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: DescText (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1286,6 +1291,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: -1.2
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -1450,7 +1456,7 @@ GameObject:
   - component: {fileID: 4946654849501341820}
   - component: {fileID: 4302218898345767394}
   - component: {fileID: 5327476015247069244}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TimeLeftBgImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1529,7 +1535,7 @@ GameObject:
   - component: {fileID: 642661080624217447}
   - component: {fileID: 2248029512069453354}
   - component: {fileID: 7944918074139767886}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Scroll View
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1635,7 +1641,7 @@ GameObject:
   - component: {fileID: 820941788274148069}
   - component: {fileID: 4498001404219337625}
   - component: {fileID: 3920787722629140075}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TimeLeftText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1727,6 +1733,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -1771,7 +1778,7 @@ GameObject:
   - component: {fileID: 5697223976586365890}
   - component: {fileID: 2091171487410861758}
   - component: {fileID: 3210998334666904945}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TitleText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1863,6 +1870,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -1907,7 +1915,7 @@ GameObject:
   - component: {fileID: 8567261563972135621}
   - component: {fileID: 2631664140826235328}
   - component: {fileID: 1447646167850856000}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Deco
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1999,6 +2007,7 @@ MonoBehaviour:
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -2044,7 +2053,7 @@ GameObject:
   - component: {fileID: 4560124051922331187}
   - component: {fileID: 2000717659924675155}
   - component: {fileID: 9087533476342463554}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Viewport
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2133,7 +2142,7 @@ GameObject:
   - component: {fileID: 4333959383627576208}
   - component: {fileID: 6227820263893042610}
   - component: {fileID: 930039991848043343}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: MissionTimeLeftText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2225,6 +2234,7 @@ MonoBehaviour:
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -2270,7 +2280,7 @@ GameObject:
   - component: {fileID: 1555389478815028600}
   - component: {fileID: 894200372352859477}
   - component: {fileID: 1336892810026766997}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Blocker
   m_TagString: Untagged
   m_Icon: {fileID: 0}

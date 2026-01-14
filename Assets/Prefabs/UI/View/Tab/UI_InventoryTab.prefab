@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3600859316593003099}
   - component: {fileID: 2944006214773331493}
   - component: {fileID: 3694392182409504978}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: UI_InventoryTab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -55,6 +55,7 @@ SortingGroup:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_SortAtRoot: 0
+  m_Sort3DAs2D: 0
 --- !u!225 &2944006214773331493
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -95,7 +96,7 @@ GameObject:
   - component: {fileID: 5382093390642205555}
   - component: {fileID: 6980275919529384453}
   - component: {fileID: 8933890657067169151}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -170,7 +171,7 @@ GameObject:
   - component: {fileID: 5968306224780376154}
   - component: {fileID: 7940748750908804250}
   - component: {fileID: 855902038753961168}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: goal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -245,7 +246,7 @@ GameObject:
   - component: {fileID: 3364231230569481750}
   - component: {fileID: 8615389006138977170}
   - component: {fileID: 1086574815493358539}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: bg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -320,7 +321,7 @@ GameObject:
   - component: {fileID: 6864857276315663799}
   - component: {fileID: 8812874071495364980}
   - component: {fileID: 8682008102176197539}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text (TMP) (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -412,6 +413,7 @@ MonoBehaviour:
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -458,7 +460,7 @@ GameObject:
   - component: {fileID: 3101408715827322563}
   - component: {fileID: 4068606403614238303}
   - component: {fileID: 7232781983068016184}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Scroll View
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -577,7 +579,7 @@ GameObject:
   - component: {fileID: 2292668473550192822}
   - component: {fileID: 4380184167450914502}
   - component: {fileID: 1295453902253991180}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Viewport
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -666,7 +668,7 @@ GameObject:
   - component: {fileID: 9205751707463904350}
   - component: {fileID: 8617451568339436106}
   - component: {fileID: 2632323693531581089}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: DescBg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -745,7 +747,7 @@ GameObject:
   - component: {fileID: 8216545530607609476}
   - component: {fileID: 1550596688423692915}
   - component: {fileID: 8841515022136161305}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: ItemBg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -833,7 +835,7 @@ GameObject:
   - component: {fileID: 569661864821428414}
   - component: {fileID: 7470531440265617142}
   - component: {fileID: 1582495481730499617}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text (TMP) (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -926,6 +928,7 @@ MonoBehaviour:
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -970,7 +973,7 @@ GameObject:
   - component: {fileID: 4443298545152613942}
   - component: {fileID: 7249862222238332855}
   - component: {fileID: 7562540543793093832}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1062,6 +1065,7 @@ MonoBehaviour:
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -1106,7 +1110,7 @@ GameObject:
   - component: {fileID: 3902583268752853899}
   - component: {fileID: 1555389478815028600}
   - component: {fileID: 894200372352859477}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Blocker
   m_TagString: Untagged
   m_Icon: {fileID: 0}

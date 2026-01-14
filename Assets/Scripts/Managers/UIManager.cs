@@ -7,6 +7,7 @@ using UnityEngine.InputSystem.UI;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.Rendering.Universal;
 
 public class UIManager : IManagerBase
 {
@@ -15,23 +16,20 @@ public class UIManager : IManagerBase
     private readonly Stack<UI_Popup> _popupStack = new();
     private Transform _sceneRoot;
     private Transform _dontDestroyRoot;
+    private Camera _uiCamera;
 
     /// <summary>
-    /// UI Popup¿¡ ¼øÂ÷ÀûÀ¸·Î ºÎ¿©µÉ Sorting Order °ªÀÔ´Ï´Ù.
+    /// UI Popup  Î¿ Sorting Order Ô´Ï´.
     /// </summary>
     private int _sortingOrder = 50;
 
     /// <summary>
-    /// Sorting Group °£ÀÇ order °£°İ
+    /// Sorting Group  order 
     /// </summary>
     private const int ORDER_STEP = 10;
 
     public void Init()
     {
-        GameObject dontDestroyGo = GameObject.Find("@UI_Root_DontDestroy") ?? new GameObject { name = "@UI_Root_DontDestroy" };
-        Object.DontDestroyOnLoad(dontDestroyGo);
-        _dontDestroyRoot = dontDestroyGo.transform;
-
         if (Object.FindAnyObjectByType<EventSystem>() == null)
         {
             GameObject eventSystemGo = new GameObject { name = "@EventSystem" };
@@ -40,9 +38,19 @@ public class UIManager : IManagerBase
             Object.DontDestroyOnLoad(eventSystemGo);
         }
 
+        // ì´ˆê¸°í™” ì‹œ UI ì¹´ë©”ë¼ í™•ë³´
+        EnsureUICamera();
+
+        // ì´ˆê¸° ì§„ì… ì‹œì—ë„ Main Cameraê°€ ì¡´ì¬í•œë‹¤ë©´ Stackì— ë“±ë¡í•©ë‹ˆë‹¤.
+        // TestSceneì²˜ëŸ¼ Awake/Start ì‹œì ì— ì´ë¯¸ ë¡œë“œëœ ì”¬ì„ ìœ„í•´ í•„ìš”í•©ë‹ˆë‹¤.
+        if (Camera.main != null)
+        {
+            RegisterUICameraToStack(Camera.main);
+        }
+
         SceneManager.sceneLoaded += OnSceneLoaded;
 
-        Debug.Log($"{ManagerType} Manager Init ÇÕ´Ï´Ù.");
+        Debug.Log($"{ManagerType} Manager Init Õ´Ï´.");
     }
 
     public void Update() { }
@@ -52,19 +60,19 @@ public class UIManager : IManagerBase
         _popupStack.Clear();
         _sortingOrder = 10;
         _sceneRoot = null;
-        Debug.Log($"{ManagerType} Manager Clear ÇÕ´Ï´Ù.");
+        Debug.Log($"{ManagerType} Manager Clear Õ´Ï´.");
     }
 
     /// <summary>
-    /// ÁöÁ¤µÈ Å¸ÀÔÀÇ UI_View¸¦ ºñµ¿±âÀûÀ¸·Î ·ÎµåÇÏ°í, Á¦°øµÈ ViewModelÀ» ÁÖÀÔÇÕ´Ï´Ù.
+    ///  Å¸ UI_View ñµ¿± ÎµÏ°,  ViewModel Õ´Ï´.
     /// </summary>
-    /// <typeparam name="TView">»ı¼ºÇÒ UIÀÇ Å¸ÀÔÀÌ¸ç, UI_View¸¦ »ó¼ÓÇØ¾ß ÇÕ´Ï´Ù.</typeparam>
-    /// <param name="viewModel">UI¿¡ ÁÖÀÔÇÒ ViewModel ÀÎ½ºÅÏ½ºÀÔ´Ï´Ù.</param>
-    /// <param name="parent">UI°¡ À§Ä¡ÇÒ ºÎ¸ğ TransformÀÔ´Ï´Ù. nullÀÏ °æ¿ì Å¸ÀÔ¿¡ µû¶ó ÀÚµ¿À¸·Î Root°¡ °áÁ¤µË´Ï´Ù.</param>
-    /// <returns>»ı¼º ¹× ÃÊ±âÈ­°¡ ¿Ï·áµÈ UIÀÇ ÀÎ½ºÅÏ½ºÀÔ´Ï´Ù.</returns>
+    /// <typeparam name="TView"> UI Å¸Ì¸, UI_View Ø¾ Õ´Ï´.</typeparam>
+    /// <param name="viewModel">UI  ViewModel Î½Ï½Ô´Ï´.</param>
+    /// <param name="parent">UI Ä¡ Î¸ TransformÔ´Ï´. null  Å¸Ô¿  Úµ Root Ë´Ï´.</param>
+    /// <returns>  Ê±È­ Ï· UI Î½Ï½Ô´Ï´.</returns>
     public async Task<TView> ShowAsync<TView>(ViewModelBase viewModel, Transform parent = null) where TView : UI_View
     {
-        // ºÎ¸ğ°¡ ¸í½ÃµÇÁö ¾ÊÀº °æ¿ì, ÇöÀç ¾ÀÀÇ UI ·çÆ®¸¦ »ç¿ëÇÕ´Ï´Ù.
+        // Î¸ Ãµ  ,   UI Æ® Õ´Ï´.
         Transform root = parent == null ? GetSceneRoot() : parent;
 
         string prefabName = typeof(TView).Name;
@@ -73,13 +81,13 @@ public class UIManager : IManagerBase
         GameObject go = await Managers.Resource.InstantiateAsync(path, parent: root);
         if (go == null)
         {
-            Debug.LogError($"[UIManager] ÇÁ¸®ÆÕ ·Îµå ½ÇÆĞ. path: {path}");
+            Debug.LogError($"[UIManager]  Îµ . path: {path}");
             return null;
         }
 
         TView view = go.GetOrAddComponent<TView>();
 
-        // parent°¡ nullÀÏ ¶§¸¸ ½ºÅÃ¿¡ PushÇÏµµ·Ï ·ÎÁ÷À» ¸íÈ®È­ÇÕ´Ï´Ù.
+        // parent null  Ã¿ PushÏµ  È®È­Õ´Ï´.
         if (parent == null && view is UI_Popup popup)
         {
             _popupStack.Push(popup);
@@ -89,10 +97,10 @@ public class UIManager : IManagerBase
         var rectTransform = view.GetComponent<RectTransform>();
         rectTransform.localScale = Vector3.one;
 
-        // Sorting GroupÀÇ ¼ø¼­¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+        // Sorting Group  Õ´Ï´.
         SetSortingGroupOrder(go, view is UI_Popup);
 
-        // ÀÔ·Â¹ŞÀº ºä¸ğµ¨À» ¼¼ÆÃÇÕ´Ï´Ù. (¿©±â¼­ AddRef)
+        // Ô·Â¹  Õ´Ï´. (â¼­ AddRef)
         view.SetViewModel(viewModel);
 
         view.gameObject.SetActive(true);
@@ -100,15 +108,15 @@ public class UIManager : IManagerBase
     }
 
     /// <summary>
-    /// ÁöÁ¤µÈ Å¸ÀÔÀÇ UI_View¸¦ ºñµ¿±âÀûÀ¸·Î ·ÎµåÇÏ°í ¹İÈ¯ÇÕ´Ï´Ù.
-    /// ResourceManagerEx¸¦ ÅëÇØ Object PoolingÀ» ÀÚµ¿À¸·Î È°¿ëÇÕ´Ï´Ù.
+    ///  Å¸ UI_View ñµ¿± ÎµÏ° È¯Õ´Ï´.
+    /// ResourceManagerEx  Object Pooling Úµ È°Õ´Ï´.
     /// </summary>
-    /// <typeparam name="T">»ı¼ºÇÒ UIÀÇ Å¸ÀÔÀÌ¸ç, UI_View¸¦ »ó¼ÓÇØ¾ß ÇÕ´Ï´Ù.</typeparam>
-    /// <param name="parent">UI°¡ À§Ä¡ÇÒ ºÎ¸ğ TransformÀÔ´Ï´Ù. nullÀÏ °æ¿ì Å¸ÀÔ¿¡ µû¶ó ÀÚµ¿À¸·Î Root°¡ °áÁ¤µË´Ï´Ù.</param>
-    /// <returns>»ı¼ºµÈ UIÀÇ ÀÎ½ºÅÏ½ºÀÔ´Ï´Ù.</returns>
+    /// <typeparam name="T"> UI Å¸Ì¸, UI_View Ø¾ Õ´Ï´.</typeparam>
+    /// <param name="parent">UI Ä¡ Î¸ TransformÔ´Ï´. null  Å¸Ô¿  Úµ Root Ë´Ï´.</param>
+    /// <returns> UI Î½Ï½Ô´Ï´.</returns>
     public async Task<T> ShowAsync<T>(Transform parent = null) where T : UI_View
     {
-        // ºÎ¸ğ°¡ ¸í½ÃµÇÁö ¾ÊÀº °æ¿ì, ÇöÀç ¾ÀÀÇ UI ·çÆ®¸¦ »ç¿ëÇÕ´Ï´Ù.
+        // Î¸ Ãµ  ,   UI Æ® Õ´Ï´.
         Transform root = parent == null ? GetSceneRoot() : parent;
 
         string prefabName = typeof(T).Name;
@@ -117,13 +125,13 @@ public class UIManager : IManagerBase
         GameObject go = await Managers.Resource.InstantiateAsync(path, parent: root);
         if (go == null)
         {
-            Debug.LogError($"[UIManager] ÇÁ¸®ÆÕ ·Îµå ½ÇÆĞ. path: {path}");
+            Debug.LogError($"[UIManager]  Îµ . path: {path}");
             return null;
         }
 
         T view = go.GetOrAddComponent<T>();
 
-        // parent°¡ nullÀÏ ¶§¸¸ ½ºÅÃ¿¡ PushÇÏµµ·Ï ·ÎÁ÷À» ¸íÈ®È­ÇÕ´Ï´Ù.
+        // parent null  Ã¿ PushÏµ  È®È­Õ´Ï´.
         if (parent == null && view is UI_Popup popup)
         {
             _popupStack.Push(popup);
@@ -133,7 +141,7 @@ public class UIManager : IManagerBase
         var rectTransform = view.GetComponent<RectTransform>();
         rectTransform.localScale = Vector3.one;
 
-        // Sorting GroupÀÇ ¼ø¼­¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+        // Sorting Group  Õ´Ï´.
         SetSortingGroupOrder(go, view is UI_Popup);
 
         view.gameObject.SetActive(true);
@@ -141,21 +149,21 @@ public class UIManager : IManagerBase
     }
 
     /// <summary>
-    /// ¾ÀÀÌ ÀüÈ¯µÇ¾îµµ ÆÄ±«µÇÁö ¾Ê´Â UI_DontDestroyPopupÀ» ºñµ¿±âÀûÀ¸·Î ·ÎµåÇÏ°í ViewModelÀ» ÁÖÀÔÇÕ´Ï´Ù.
+    ///  È¯Ç¾îµµ Ä± Ê´ UI_DontDestroyPopup ñµ¿± ÎµÏ° ViewModel Õ´Ï´.
     /// </summary>
-    /// <typeparam name="TView">»ı¼ºÇÒ UIÀÇ Å¸ÀÔÀÌ¸ç, UI_DontDestroyPopupÀ» »ó¼ÓÇØ¾ß ÇÕ´Ï´Ù.</typeparam>
-    /// <param name="viewModel">UI¿¡ ÁÖÀÔÇÒ ViewModel ÀÎ½ºÅÏ½ºÀÔ´Ï´Ù.</param>
-    /// <param name="parent">UI°¡ À§Ä¡ÇÒ ºÎ¸ğ TransformÀÔ´Ï´Ù. nullÀÏ °æ¿ì DontDestroyRoot°¡ ±âº»°ªÀ¸·Î »ç¿ëµË´Ï´Ù.</param>
-    /// <returns>»ı¼ºµÈ UIÀÇ ÀÎ½ºÅÏ½ºÀÔ´Ï´Ù.</returns>
-    public async Task<TView> ShowDontDestroyAsync<TView>(ViewModelBase viewModel, Transform parent = null) where TView : UI_DontDestroyPopup
+    /// <typeparam name="TView"> UI Å¸Ì¸, UI_DontDestroyPopup Ø¾ Õ´Ï´.</typeparam>
+    /// <param name="viewModel">UI  ViewModel Î½Ï½Ô´Ï´.</param>
+    /// <param name="parent">UI Ä¡ Î¸ TransformÔ´Ï´. null  DontDestroyRoot âº» Ë´Ï´.</param>
+    /// <returns> UI Î½Ï½Ô´Ï´.</returns>
+    public async Task<TView> ShowDontDestroyAsync<TView>(ViewModelBase viewModel) where TView : UI_DontDestroyPopup
     {
         string prefabName = typeof(TView).Name;
         string path = GetPrefabPath<TView>(prefabName);
 
-        GameObject go = await Managers.Resource.InstantiateAsync(path, parent: parent != null ? parent : _dontDestroyRoot);
+        GameObject go = await Managers.Resource.InstantiateAsync(path, parent: GetDontDestroyRoot());
         if (go == null)
         {
-            Debug.LogError($"[UIManager] ÇÁ¸®ÆÕ ·Îµå ½ÇÆĞ. path: {path}");
+            Debug.LogError($"[UIManager]  Îµ . path: {path}");
             return null;
         }
 
@@ -164,10 +172,8 @@ public class UIManager : IManagerBase
         var rectTransform = view.GetComponent<RectTransform>();
         rectTransform.localScale = Vector3.one;
 
-        Canvas canvas = go.GetOrAddComponent<Canvas>();
-        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-        canvas.overrideSorting = true;
-        canvas.sortingOrder = 999999;
+        SortingGroup sortingGroup = go.GetOrAddComponent<SortingGroup>();
+        sortingGroup.sortingOrder = 999999;
 
         view.SetViewModel(viewModel);
 
@@ -176,21 +182,21 @@ public class UIManager : IManagerBase
     }
 
     /// <summary>
-    /// ¾ÀÀÌ ÀüÈ¯µÇ¾îµµ ÆÄ±«µÇÁö ¾Ê´Â UI_DontDestroyPopupÀ» ºñµ¿±âÀûÀ¸·Î ·ÎµåÇÏ°í ¹İÈ¯ÇÕ´Ï´Ù.
-    /// ÀÌ UI´Â Popup StackÀ¸·Î °ü¸®µÇÁö ¾ÊÀ¸¸ç, Ç×»ó ÃÖ»ó´Ü¿¡ Ç¥½ÃµË´Ï´Ù.
+    ///  È¯Ç¾îµµ Ä± Ê´ UI_DontDestroyPopup ñµ¿± ÎµÏ° È¯Õ´Ï´.
+    ///  UI Popup Stack  , ×» Ö»Ü¿ Ç¥ÃµË´Ï´.
     /// </summary>
-    /// <typeparam name="T">»ı¼ºÇÒ UIÀÇ Å¸ÀÔÀÌ¸ç, UI_DontDestroyPopupÀ» »ó¼ÓÇØ¾ß ÇÕ´Ï´Ù.</typeparam>
-    /// <param name="parent">UI°¡ À§Ä¡ÇÒ ºÎ¸ğ TransformÀÔ´Ï´Ù. nullÀÏ °æ¿ì DontDestroyRoot°¡ ±âº»°ªÀ¸·Î »ç¿ëµË´Ï´Ù.</param>
-    /// <returns>»ı¼ºµÈ UIÀÇ ÀÎ½ºÅÏ½ºÀÔ´Ï´Ù.</returns>
-    public async Task<T> ShowDontDestroyAsync<T>(Transform parent = null) where T : UI_DontDestroyPopup
+    /// <typeparam name="T"> UI Å¸Ì¸, UI_DontDestroyPopup Ø¾ Õ´Ï´.</typeparam>
+    /// <param name="parent">UI Ä¡ Î¸ TransformÔ´Ï´. null  DontDestroyRoot âº» Ë´Ï´.</param>
+    /// <returns> UI Î½Ï½Ô´Ï´.</returns>
+    public async Task<T> ShowDontDestroyAsync<T>() where T : UI_DontDestroyPopup
     {
         string prefabName = typeof(T).Name;
         string path = GetPrefabPath<T>(prefabName);
 
-        GameObject go = await Managers.Resource.InstantiateAsync(path, parent: parent != null ? parent : _dontDestroyRoot);
+        GameObject go = await Managers.Resource.InstantiateAsync(path, parent: GetDontDestroyRoot());
         if (go == null)
         {
-            Debug.LogError($"[UIManager] ÇÁ¸®ÆÕ ·Îµå ½ÇÆĞ. path: {path}");
+            Debug.LogError($"[UIManager]  Îµ . path: {path}");
             return null;
         }
 
@@ -199,10 +205,8 @@ public class UIManager : IManagerBase
         var rectTransform = view.GetComponent<RectTransform>();
         rectTransform.localScale = Vector3.one;
 
-        Canvas canvas = go.GetOrAddComponent<Canvas>();
-        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-        canvas.overrideSorting = true;
-        canvas.sortingOrder = 999999;
+        SortingGroup sortingGroup = go.GetOrAddComponent<SortingGroup>();
+        sortingGroup.sortingOrder = 999999;
 
         view.gameObject.SetActive(true);
         return view;
@@ -210,10 +214,10 @@ public class UIManager : IManagerBase
 
 
     /// <summary>
-    /// ÁöÁ¤µÈ UI_View¸¦ ´İ°í Pool¿¡ ¹İÈ¯ÇÕ´Ï´Ù.
-    /// ÆË¾÷ÀÇ °æ¿ì, ½ºÅÃÀÇ ÃÖ»ó´Ü¿¡ ÀÖÀ» ¶§¸¸ ´İÀ» ¼ö ÀÖ½À´Ï´Ù.
+    ///  UI_View İ° Pool È¯Õ´Ï´.
+    /// Ë¾ ,  Ö»Ü¿     Ö½Ï´.
     /// </summary>
-    /// <param name="view">´İÀ» UI_View ÀÎ½ºÅÏ½ºÀÔ´Ï´Ù.</param>
+    /// <param name="view"> UI_View Î½Ï½Ô´Ï´.</param>
     public void Close(UI_View view)
     {
         if (view == null) return;
@@ -225,13 +229,13 @@ public class UIManager : IManagerBase
                 _popupStack.Pop();
                 _sortingOrder -= ORDER_STEP;
 
-                // ½ºÅÃ »ó´Ü PopupÀÇ ActionMapKey ¼¼ÆÃ
+                //   Popup ActionMapKey 
                 if (_popupStack.Count > 0)
                 {
                     var nextPopup = _popupStack.Peek();
                     Managers.Input.SwitchActionMap(nextPopup.ActionMapKey);
                 }
-                // ½ºÅÃÀÌ ºó °æ¿ì ±âº» ¼¼ÆÃ("None")
+                //    âº» ("None")
                 else
                 {
                     Managers.Input.SwitchActionMap("None");
@@ -239,15 +243,15 @@ public class UIManager : IManagerBase
             }
         }
 
-        // UI¸¦ Ç®·Î ¹İÈ¯ÇÏ°Å³ª ÆÄ±«ÇÏ±â Àü¿¡ ViewModel°úÀÇ ¿¬°áÀ» ¸í½ÃÀûÀ¸·Î ²÷½À´Ï´Ù.
-        // ±âÁ¸ ViewModelÀÌ Release() µÉ ¶§ ÂüÁ¶ Ä«¿îÆ®°¡ °¨¼ÒÇÏ°í, ÇÊ¿ä½Ã OnDispose()°¡ È£ÃâµË´Ï´Ù.
+        // UI Ç® È¯Ï°Å³ Ä±Ï±  ViewModel   Ï´.
+        //  ViewModel Release()    Ä«Æ® Ï°, Ê¿ OnDispose() È£Ë´Ï´.
         view.SetViewModel(null);
 
         Managers.Resource.Destroy(view.gameObject);
     }
 
     /// <summary>
-    /// UI GameObject¿¡ SortingGroup ÄÄÆ÷³ÍÆ®¸¦ ¼³Á¤ÇÏ°í Sorting Order¸¦ ÁöÁ¤ÇÕ´Ï´Ù.
+    /// UI GameObject SortingGroup Æ® Ï° Sorting Order Õ´Ï´.
     /// </summary>
     private void SetSortingGroupOrder(GameObject go, bool useSortingOrder)
     {
@@ -259,13 +263,13 @@ public class UIManager : IManagerBase
         }
         else
         {
-            // sortingOrder¸¦ »ç¿ëÇÏÁö ¾ÊÀ» °æ¿ì(UI_PopupÀ» »ó¼ÓÇÒ °æ¿ì) sortingOrder¸¦ »ç¿ëÇÏÁö ¾ÊÀ½
+            // sortingOrder   (UI_Popup  ) sortingOrder  
             sortingGroup.sortingOrder = 0;
         }
     }
 
     /// <summary>
-    /// ÇöÀç ¾ÀÀÇ UI Root TransformÀ» ¹İÈ¯ÇÕ´Ï´Ù. ¾øÀ¸¸é »ı¼ºÇÕ´Ï´Ù.
+    ///   UI Root Transform È¯Õ´Ï´.  Õ´Ï´.
     /// </summary>
     private Transform GetSceneRoot()
     {
@@ -273,14 +277,19 @@ public class UIManager : IManagerBase
         {
             GameObject rootGo = GameObject.Find("@UI_Root_Scene");
 
-            //¾À¿¡ UI ·çÆ®°¡ ¾øÀ» °æ¿ì, Canvas¿Í ÇÊ¼ö ÄÄÆ÷³ÍÆ®¸¦ Æ÷ÇÔÇÏ¿© »õ·Î »ı¼ºÇÕ´Ï´Ù.
+            // UI Æ®  , Canvas Ê¼ Æ® Ï¿  Õ´Ï´.
             if (rootGo == null)
             {
                 rootGo = new GameObject { name = "@UI_Root_Scene" };
+                rootGo.layer = LayerMask.NameToLayer("UI");
 
                 Canvas canvas = rootGo.AddComponent<Canvas>();
                 canvas.renderMode = RenderMode.ScreenSpaceCamera;
-                canvas.worldCamera = Camera.main; // ³ªÁß¿¡ CameraManager¿¡°Ô¼­ °¡Á®¿Àµµ·Ï ¹Ù²ã¾ß°ÚÁÒ??
+                
+                // ì „ìš© UI ì¹´ë©”ë¼ ì‚¬ìš©
+                EnsureUICamera();
+                canvas.worldCamera = _uiCamera; 
+
                 CanvasScaler scaler = rootGo.AddComponent<CanvasScaler>();
                 scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
                 scaler.referenceResolution = new Vector2(1920, 1080);
@@ -294,7 +303,95 @@ public class UIManager : IManagerBase
     }
 
     /// <summary>
-    /// UI Å¸ÀÔ¿¡ µû¶ó ÇÁ¸®ÆÕ °æ·Î¸¦ °áÁ¤ÇÕ´Ï´Ù.
+    /// DontDestroy UI Rootë¥¼ ê°€ì ¸ì˜¤ê±°ë‚˜ ìƒì„±í•©ë‹ˆë‹¤.
+    /// </summary>
+    private Transform GetDontDestroyRoot()
+    {
+        if (_dontDestroyRoot != null) 
+            return _dontDestroyRoot;
+
+        GameObject dontDestroyGo = GameObject.Find("@UI_Root_DontDestroy");
+        if (dontDestroyGo == null)
+        {
+            dontDestroyGo = new GameObject { name = "@UI_Root_DontDestroy" };
+            dontDestroyGo.layer = LayerMask.NameToLayer("UI");
+            Object.DontDestroyOnLoad(dontDestroyGo);
+        }
+
+        if (dontDestroyGo.GetComponent<Canvas>() == null)
+        {
+            Canvas canvas = dontDestroyGo.AddComponent<Canvas>();
+            canvas.renderMode = RenderMode.ScreenSpaceCamera;
+            
+            // ì „ìš© UI ì¹´ë©”ë¼ ì‚¬ìš©
+            EnsureUICamera();
+            canvas.worldCamera = _uiCamera;
+            
+            canvas.sortingOrder = 999999;
+
+            CanvasScaler scaler = dontDestroyGo.AddComponent<CanvasScaler>();
+            scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+            scaler.referenceResolution = new Vector2(1920, 1080);
+            scaler.matchWidthOrHeight = 1.0f;
+
+            dontDestroyGo.AddComponent<GraphicRaycaster>();
+        }
+
+        _dontDestroyRoot = dontDestroyGo.transform;
+        return _dontDestroyRoot;
+    }
+
+    /// <summary>
+    /// UI ì „ìš© ì¹´ë©”ë¼ë¥¼ í™•ë³´í•©ë‹ˆë‹¤.
+    /// </summary>
+    private void EnsureUICamera()
+    {
+        if (_uiCamera != null) return;
+
+        GameObject cameraGo = GameObject.Find("@UI_Camera");
+        if (cameraGo == null)
+        {
+            cameraGo = new GameObject { name = "@UI_Camera" };
+            Object.DontDestroyOnLoad(cameraGo);
+        }
+
+        cameraGo.layer = LayerMask.NameToLayer("UI");
+        // ìœ„ì¹˜ë¥¼ ëª…ì‹œì ìœ¼ë¡œ ì„¤ì •í•˜ì—¬ ì˜¤ë™ì‘ ë°©ì§€
+        cameraGo.transform.position = new Vector3(0, 0, -100);
+
+        _uiCamera = cameraGo.GetOrAddComponent<Camera>();
+        _uiCamera.cullingMask = 1 << LayerMask.NameToLayer("UI"); // UI ë ˆì´ì–´ë§Œ ë Œë”ë§
+        _uiCamera.clearFlags = CameraClearFlags.Nothing;          // OverlayëŠ” Clear ë¶ˆí•„ìš”
+        _uiCamera.orthographic = false;                           // ì›ê·¼ íˆ¬ì˜ í™œì„±í™”
+        _uiCamera.fieldOfView = 60f;                              // í‘œì¤€ FOV
+        
+        // URP Overlay Camera ì„¤ì •
+        var urpCameraData = _uiCamera.GetUniversalAdditionalCameraData();
+        if (urpCameraData != null)
+        {
+            urpCameraData.renderType = CameraRenderType.Overlay;
+        }
+    }
+
+    /// <summary>
+    /// Main Cameraì˜ URP Camera Stackì— UI Cameraë¥¼ ë“±ë¡í•©ë‹ˆë‹¤.
+    /// </summary>
+    /// <param name="mainCamera">Base Cameraë¡œ ì‚¬ìš©í•  Main Camera</param>
+    private void RegisterUICameraToStack(Camera mainCamera)
+    {
+        if (_uiCamera == null) return;
+
+        var mainCameraData = mainCamera.GetUniversalAdditionalCameraData();
+        if (mainCameraData == null) return;
+        
+        // ì´ë¯¸ ë“±ë¡ë˜ì–´ ìˆìœ¼ë©´ ì¤‘ë³µ ë“±ë¡ ë°©ì§€
+        if (mainCameraData.cameraStack.Contains(_uiCamera)) return;
+        
+        mainCameraData.cameraStack.Add(_uiCamera);
+    }
+
+    /// <summary>
+    /// UI Å¸Ô¿   Î¸ Õ´Ï´.
     /// </summary>
     private string GetPrefabPath<T>(string prefabName) where T : UI_View
     {
@@ -303,12 +400,23 @@ public class UIManager : IManagerBase
     }
 
     /// <summary>
-    /// »õ·Î¿î ¾ÀÀÌ ·ÎµåµÉ ¶§ È£ÃâµÇ´Â ÀÌº¥Æ® ÇÚµé·¯ÀÔ´Ï´Ù.
+    /// Î¿  Îµ  È£Ç´ ÌºÆ® Úµé·¯Ô´Ï´.
     /// </summary>
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        Clear();
+        if (Camera.main != null)
+        {
+            // ë©”ì¸ ì¹´ë©”ë¼ê°€ UI ë ˆì´ì–´ë¥¼ ë Œë”ë§í•˜ì§€ ì•Šë„ë¡ ì„¤ì •
+            int uiLayerMask = 1 << LayerMask.NameToLayer("UI");
+            Camera.main.cullingMask &= ~uiLayerMask;
 
-        // ³ªÁß¿¡ ¾À ¸¶´Ù ÇÊ¿äÇÑ µ¿ÀÛÀÌ ÀÖ´Ù¸é Ãß°¡ÇÏ¸é ÁÁ°ÚÁÒ?
+            // URP Camera Stackì— UI Camera ë“±ë¡
+            RegisterUICameraToStack(Camera.main);
+        }
+
+        // UI ì¹´ë©”ë¼ëŠ” í•­ìƒ ì¡´ì¬í•´ì•¼ í•¨
+        EnsureUICamera();
+
+        Clear();
     }
 }

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 912024343670203368}
   - component: {fileID: 6633261174386737830}
   - component: {fileID: 5877998007623809229}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Burst2Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -147,7 +147,7 @@ GameObject:
   - component: {fileID: 4611265870876032811}
   - component: {fileID: 1621764858156011196}
   - component: {fileID: 1610585889160709232}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: LineDeco
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -224,7 +224,7 @@ GameObject:
   - component: {fileID: 781368720476108102}
   - component: {fileID: 1970763349659797575}
   - component: {fileID: 388302019886116110}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: SortOrderButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -357,7 +357,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5517517912093897765}
   - component: {fileID: 3216849785059123073}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: ButtonLayout
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -424,7 +424,7 @@ GameObject:
   - component: {fileID: 6497865598455136862}
   - component: {fileID: 2609125410559646384}
   - component: {fileID: 303911166937871346}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: SortTypeText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -516,6 +516,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -562,7 +563,7 @@ GameObject:
   - component: {fileID: 3135778361787257849}
   - component: {fileID: 8872864653766652599}
   - component: {fileID: 8556404482945698012}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: SearchButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -696,7 +697,7 @@ GameObject:
   - component: {fileID: 3882417223817248144}
   - component: {fileID: 8336880694782976492}
   - component: {fileID: 2058294755035021233}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: DescTextDeco
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -789,6 +790,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -835,7 +837,7 @@ GameObject:
   - component: {fileID: 4094763893478782734}
   - component: {fileID: 7527129862938236480}
   - component: {fileID: 7343531876939967531}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Burst1Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -971,7 +973,7 @@ GameObject:
   - component: {fileID: 5365956224032864928}
   - component: {fileID: 1932482306447547374}
   - component: {fileID: 1679074669348528517}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: FilterButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1106,7 +1108,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1564358855716919391}
   - component: {fileID: 1727204793512174774}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: ButtonGroup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1159,7 +1161,7 @@ GameObject:
   - component: {fileID: 4048163619823191440}
   - component: {fileID: 3487040576343900233}
   - component: {fileID: 1375897506887572604}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Viewport
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1221,7 +1223,7 @@ GameObject:
   - component: {fileID: 7044814788739604524}
   - component: {fileID: 3558423232412434786}
   - component: {fileID: 4395166876646800137}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Burst3Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1355,7 +1357,7 @@ GameObject:
   - component: {fileID: 5681163975931891768}
   - component: {fileID: 2894040024557626223}
   - component: {fileID: 5025477228764737044}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: UI_NikkeCardScrollView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1429,7 +1431,7 @@ GameObject:
   - component: {fileID: 4332350648727618026}
   - component: {fileID: 6987905504650518306}
   - component: {fileID: 3087918556130633874}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Scroll View
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1536,7 +1538,7 @@ GameObject:
   - component: {fileID: 7302867379370619635}
   - component: {fileID: 2045798080923343081}
   - component: {fileID: 8090299135447264668}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: ScrollViewBg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1624,7 +1626,7 @@ GameObject:
   - component: {fileID: 6208736944797985646}
   - component: {fileID: 7333893524526902357}
   - component: {fileID: 4703087418503518214}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
   m_Icon: {fileID: 0}

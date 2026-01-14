@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4572719451346094307}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: NikkeCardAndButton05
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -49,7 +49,7 @@ GameObject:
   - component: {fileID: 8651192775758853827}
   - component: {fileID: 236177240249926830}
   - component: {fileID: 6808845291073527691}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: CombatPointIconImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -140,7 +140,7 @@ GameObject:
   - component: {fileID: 7638762180421349264}
   - component: {fileID: 8491132168606098268}
   - component: {fileID: 5980644237941685919}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -277,7 +277,7 @@ GameObject:
   - component: {fileID: 2867828155102305324}
   - component: {fileID: 1339158280643310791}
   - component: {fileID: 3197462510850219885}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -353,7 +353,7 @@ GameObject:
   - component: {fileID: 3600859316593003099}
   - component: {fileID: 2944006214773331493}
   - component: {fileID: 5490785905770200069}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: UI_SquadTab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -456,7 +456,7 @@ GameObject:
   - component: {fileID: 3948379978537852546}
   - component: {fileID: 63155366726669729}
   - component: {fileID: 2950673171840257453}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: CombatPointBg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -549,7 +549,7 @@ GameObject:
   - component: {fileID: 6393716390568244310}
   - component: {fileID: 8993971950233741046}
   - component: {fileID: 3305917087861973245}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: SkillPopupButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -666,7 +666,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5910542392702752330}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: NikkeCardAndButton03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -706,7 +706,7 @@ GameObject:
   - component: {fileID: 513699543801889154}
   - component: {fileID: 5446376182016282807}
   - component: {fileID: 408868707476344138}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: AutoSettingButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -826,7 +826,7 @@ GameObject:
   - component: {fileID: 5074811345640799243}
   - component: {fileID: 230485631297780094}
   - component: {fileID: 5711762821452940545}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Bg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -901,7 +901,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7580129743326881802}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: NikkeCardAndButton01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -941,7 +941,7 @@ GameObject:
   - component: {fileID: 2435168901609286523}
   - component: {fileID: 6457672028557562358}
   - component: {fileID: 1206660415319309854}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: NikkeDetailButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1060,7 +1060,7 @@ GameObject:
   - component: {fileID: 8371621867595893485}
   - component: {fileID: 6966899104288426520}
   - component: {fileID: 2477714962081668962}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: CombatPointText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1199,7 +1199,7 @@ GameObject:
   - component: {fileID: 3520297737154016360}
   - component: {fileID: 2663901741638647675}
   - component: {fileID: 5095194615278777931}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Footer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1274,7 +1274,7 @@ GameObject:
   - component: {fileID: 7117807954741438110}
   - component: {fileID: 8394282588128558012}
   - component: {fileID: 6916342001208123856}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1410,7 +1410,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5836546845872428019}
   - component: {fileID: 8679770292660154039}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: NikkeCardLayout1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1476,7 +1476,7 @@ GameObject:
   - component: {fileID: 3981389858172620129}
   - component: {fileID: 4340331442184309279}
   - component: {fileID: 7552258241867680102}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Bg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1553,7 +1553,7 @@ GameObject:
   - component: {fileID: 6486743184131950333}
   - component: {fileID: 173521980143459054}
   - component: {fileID: 2705533076399483229}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Bg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1631,7 +1631,7 @@ GameObject:
   - component: {fileID: 6567036869527779838}
   - component: {fileID: 4321937817408336289}
   - component: {fileID: 1654233692632811694}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: SkillPopupButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1750,7 +1750,7 @@ GameObject:
   - component: {fileID: 3717433169788787116}
   - component: {fileID: 7781746742891153853}
   - component: {fileID: 7117970460522964775}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text (TMP) (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1889,7 +1889,7 @@ GameObject:
   - component: {fileID: 2416389794345434199}
   - component: {fileID: 8605780567694548637}
   - component: {fileID: 6657983961941590780}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: SkillPopupButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2009,7 +2009,7 @@ GameObject:
   - component: {fileID: 7444549214675164165}
   - component: {fileID: 3821897804428179526}
   - component: {fileID: 3255033379853374024}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: NikkeDetailButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2128,7 +2128,7 @@ GameObject:
   - component: {fileID: 5439326220271564285}
   - component: {fileID: 1920789354472962870}
   - component: {fileID: 1193661979284147212}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Bg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2209,7 +2209,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4716279984145035841}
   - component: {fileID: 9064818220020697494}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: SquadButtonLayout
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2277,7 +2277,7 @@ GameObject:
   - component: {fileID: 815717767817609729}
   - component: {fileID: 6094778805543863642}
   - component: {fileID: 2475613532602549604}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2414,7 +2414,7 @@ GameObject:
   - component: {fileID: 5570779362830292374}
   - component: {fileID: 7421174034321285220}
   - component: {fileID: 2520077715485823928}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2549,7 +2549,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3182660319029357032}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: NikkeCardAndButton02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2588,7 +2588,7 @@ GameObject:
   - component: {fileID: 9061658711553917309}
   - component: {fileID: 3699126463707692091}
   - component: {fileID: 8532337185960632815}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2726,7 +2726,7 @@ GameObject:
   - component: {fileID: 8355683142486554716}
   - component: {fileID: 9117444022040064905}
   - component: {fileID: 8706855674019517380}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: NikkeDetailButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2846,7 +2846,7 @@ GameObject:
   - component: {fileID: 7816842615316737944}
   - component: {fileID: 638347367072550243}
   - component: {fileID: 7918087012711201316}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: SkillPopupButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2965,7 +2965,7 @@ GameObject:
   - component: {fileID: 3933129974241620098}
   - component: {fileID: 6753754465553903154}
   - component: {fileID: 6323902890037896886}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: BgImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3043,7 +3043,7 @@ GameObject:
   - component: {fileID: 5025278813705199146}
   - component: {fileID: 9190713285710527795}
   - component: {fileID: 6750154637168281841}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3181,7 +3181,7 @@ GameObject:
   - component: {fileID: 5414666202315025736}
   - component: {fileID: 4852465235368089745}
   - component: {fileID: 7085330183151657452}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: SkillPopupButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3300,7 +3300,7 @@ GameObject:
   - component: {fileID: 5373624911792633026}
   - component: {fileID: 20964237776482622}
   - component: {fileID: 2626588741900391459}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3437,7 +3437,7 @@ GameObject:
   - component: {fileID: 3888241597928739539}
   - component: {fileID: 2601870872169090650}
   - component: {fileID: 4901146053070010887}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Bg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3513,7 +3513,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4245871756140639965}
   - component: {fileID: 6258778240825455671}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: NikkeCardLayout2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3579,7 +3579,7 @@ GameObject:
   - component: {fileID: 572470188078679857}
   - component: {fileID: 7954157827115330414}
   - component: {fileID: 1546528410443924789}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: NikkeDetailButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3698,7 +3698,7 @@ GameObject:
   - component: {fileID: 3902583268752853899}
   - component: {fileID: 1555389478815028600}
   - component: {fileID: 894200372352859477}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Blocker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3773,7 +3773,7 @@ GameObject:
   - component: {fileID: 4283152738215614615}
   - component: {fileID: 8501027106492355431}
   - component: {fileID: 5888855917149700097}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Bg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3848,7 +3848,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5554228277450827926}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: NikkeCardAndButton04
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3888,7 +3888,7 @@ GameObject:
   - component: {fileID: 5958005707366506035}
   - component: {fileID: 8592393610249382231}
   - component: {fileID: 7489984871088876101}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: NikkeDetailButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4007,7 +4007,7 @@ GameObject:
   - component: {fileID: 9169375886085519754}
   - component: {fileID: 422224431611651392}
   - component: {fileID: 6042797560077816581}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}

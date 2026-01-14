@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2944006214773331493}
   - component: {fileID: 4366216830116731979}
   - component: {fileID: 5076177986234263493}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: UI_Icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -139,7 +139,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8527492022432112731}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: QuantityRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -177,7 +177,7 @@ GameObject:
   - component: {fileID: 8092908910767378687}
   - component: {fileID: 1159094559653883376}
   - component: {fileID: 8020376469652019481}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: RarityFrameImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -252,7 +252,7 @@ GameObject:
   - component: {fileID: 2638338214436871478}
   - component: {fileID: 4533518025375186363}
   - component: {fileID: 1375758372997640970}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: QuantityText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -389,7 +389,7 @@ GameObject:
   - component: {fileID: 2175176546764177021}
   - component: {fileID: 5165126808298924568}
   - component: {fileID: 3815301621841046569}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: IconImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -464,7 +464,7 @@ GameObject:
   - component: {fileID: 8048199764967536754}
   - component: {fileID: 1084029348738934477}
   - component: {fileID: 7633079481762940479}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: BgImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -539,7 +539,7 @@ GameObject:
   - component: {fileID: 8917410647971795794}
   - component: {fileID: 5326738097253841042}
   - component: {fileID: 3559477051580118905}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: BgShadowImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}

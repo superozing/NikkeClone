@@ -360,6 +360,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f25985bebfa26a342992055f1b3c711e
+    m_Address: UI/Popup/UI_LoadingPopup
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f790e19c9ac46634191be1b1455061c2
     m_Address: Assets/Textures/Icon/Burst/burst_2
     m_ReadOnly: 0
