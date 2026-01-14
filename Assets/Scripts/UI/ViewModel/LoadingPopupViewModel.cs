@@ -24,33 +24,14 @@ public class LoadingPopupViewModel : ViewModelBase
     /// </summary>
     public async void ExecuteProcess()
     {
-        // 1. Wipe In 연출 시작 (화면을 덮음) - 완료될 때까지 대기
-        if (OnWipeInRequested != null)
-            await OnWipeInRequested.Invoke();
+        await OnWipeInRequested.Invoke();
 
-        // [Design Proposal] 등장 연출 후 전환이 어색하지 않도록 0.3초 대기
-        await Task.Delay(300);
+        await _workFunc.Invoke();
+        await Task.Delay(1);
+        
+        await OnWipeOutRequested.Invoke();
 
-        try
-        {
-            // 2. 실제 작업 수행 (데이터 로드 + UI 생성)
-            // 화면이 가려진 뒤에 실행됨
-            if (_workFunc != null)
-                await _workFunc.Invoke();
-        }
-        catch (Exception ex)
-        {
-            Debug.LogError($"[LoadingPopupViewModel] 작업 수행 중 예외 발생: {ex}");
-        }
-        finally
-        {
-            // 3. 작업 성공/실패 여부와 관계없이 Wipe Out 연출 시작 (화면을 걷어냄)
-            if (OnWipeOutRequested != null)
-                await OnWipeOutRequested.Invoke();
-
-            // 4. 모든 과정 종료 후 팝업 닫기
-            OnCloseRequested?.Invoke();
-        }
+        OnCloseRequested?.Invoke();
     }
 
     protected override void OnDispose()
