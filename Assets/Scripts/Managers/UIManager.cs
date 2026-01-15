@@ -19,12 +19,12 @@ public class UIManager : IManagerBase
     private Camera _uiCamera;
 
     /// <summary>
-    /// UI Popup  恝 Sorting Order 都求.
+    /// UI Popup 관리를 위한 Sorting Order 입니다.
     /// </summary>
     private int _sortingOrder = 50;
 
     /// <summary>
-    /// Sorting Group  order 
+    /// Sorting Group 증가용 order 단계
     /// </summary>
     private const int ORDER_STEP = 10;
 
@@ -38,11 +38,11 @@ public class UIManager : IManagerBase
             Object.DontDestroyOnLoad(eventSystemGo);
         }
 
-        // 珥덇린????UI 移대찓???뺣낫
+        // 초기화 시 UI 카메라 확보
         EnsureUICamera();
 
-        // 珥덇린 吏꾩엯 ?쒖뿉??Main Camera媛 議댁옱?쒕떎硫?Stack???깅줉?⑸땲??
-        // TestScene泥섎읆 Awake/Start ?쒖젏???대? 濡쒕뱶???ъ쓣 ?꾪빐 ?꾩슂?⑸땲??
+        // 초기 진입 시점에 Main Camera가 존재한다면 Stack에 등록합니다.
+        // TestScene처럼 Awake/Start 시점에 이미 로드된 경우를 위해 필요합니다.
         if (Camera.main != null)
         {
             RegisterUICameraToStack(Camera.main);
@@ -50,7 +50,7 @@ public class UIManager : IManagerBase
 
         SceneManager.sceneLoaded += OnSceneLoaded;
 
-        Debug.Log($"{ManagerType} Manager Init 爛求.");
+        Debug.Log($"{ManagerType} Manager Init 합니다.");
     }
 
     public void Update() { }
@@ -60,19 +60,19 @@ public class UIManager : IManagerBase
         _popupStack.Clear();
         _sortingOrder = 10;
         _sceneRoot = null;
-        Debug.Log($"{ManagerType} Manager Clear 爛求.");
+        Debug.Log($"{ManagerType} Manager Clear 합니다.");
     }
 
     /// <summary>
-    ///  타 UI_View 宙엽 琯構,  ViewModel 爛求.
+    /// 특정 UI_View 팝업을 생성하고, ViewModel을 설정합니다.
     /// </summary>
-    /// <typeparam name="TView"> UI 타見, UI_View 瞞 爛求.</typeparam>
-    /// <param name="viewModel">UI  ViewModel 館絿都求.</param>
-    /// <param name="parent">UI 치 罐 Transform都求. null  타篤  湄 Root 絳求.</param>
-    /// <returns>  珂화 狗 UI 館絿都求.</returns>
+    /// <typeparam name="TView"> 생성할 UI 타입, UI_View를 상속받아야 합니다.</typeparam>
+    /// <param name="viewModel">UI에 연결할 ViewModel 객체입니다.</param>
+    /// <param name="parent">UI가 배치될 부모 Transform입니다. null이면 기본 Scene별 Root를 사용합니다.</param>
+    /// <returns> 생성/활성화 된 UI 객체입니다.</returns>
     public async Task<TView> ShowAsync<TView>(ViewModelBase viewModel, Transform parent = null) where TView : UI_View
     {
-        // 罐 천  ,   UI 트 爛求.
+        // 부모가 주어지지 않으면, 씬별 UI 루트를 찾습니다.
         Transform root = parent == null ? GetSceneRoot() : parent;
 
         string prefabName = typeof(TView).Name;
@@ -81,13 +81,13 @@ public class UIManager : IManagerBase
         GameObject go = await Managers.Resource.InstantiateAsync(path, parent: root);
         if (go == null)
         {
-            Debug.LogError($"[UIManager]  琯 . path: {path}");
+            Debug.LogError($"[UIManager] 프리팹 로드 실패. path: {path}");
             return null;
         }
 
         TView view = go.GetOrAddComponent<TView>();
 
-        // parent null  첼 Push溝  확화爛求.
+        // parent가 null이면 Popup Stack에 Push하고 ActionMap을 전환합니다.
         if (parent == null && view is UI_Popup popup)
         {
             _popupStack.Push(popup);
@@ -97,10 +97,10 @@ public class UIManager : IManagerBase
         var rectTransform = view.GetComponent<RectTransform>();
         rectTransform.localScale = Vector3.one;
 
-        // Sorting Group  爛求.
+        // Sorting Group 순서를 설정합니다.
         SetSortingGroupOrder(go, view is UI_Popup);
 
-        // 韜쨔  爛求. (茱?AddRef)
+        // 뷰모델을 설정합니다. (내부에서 AddRef)
         view.SetViewModel(viewModel);
 
         view.gameObject.SetActive(true);
@@ -108,15 +108,15 @@ public class UIManager : IManagerBase
     }
 
     /// <summary>
-    ///  타 UI_View 宙엽 琯構 환爛求.
-    /// ResourceManagerEx  Object Pooling 湄 활爛求.
+    /// 특정 UI_View 팝업을 생성하고 반환합니다.
+    /// ResourceManagerEx를 통해 Object Pooling이 자동으로 적용됩니다.
     /// </summary>
-    /// <typeparam name="T"> UI 타見, UI_View 瞞 爛求.</typeparam>
-    /// <param name="parent">UI 치 罐 Transform都求. null  타篤  湄 Root 絳求.</param>
-    /// <returns> UI 館絿都求.</returns>
+    /// <typeparam name="T"> 생성할 UI 타입, UI_View를 상속받아야 합니다.</typeparam>
+    /// <param name="parent">UI가 배치될 부모 Transform입니다. null이면 기본 Scene별 Root를 사용합니다.</param>
+    /// <returns> 생성된 UI 객체입니다.</returns>
     public async Task<T> ShowAsync<T>(Transform parent = null) where T : UI_View
     {
-        // 罐 천  ,   UI 트 爛求.
+        // 부모가 주어지지 않으면, 씬별 UI 루트를 찾습니다.
         Transform root = parent == null ? GetSceneRoot() : parent;
 
         string prefabName = typeof(T).Name;
@@ -125,13 +125,13 @@ public class UIManager : IManagerBase
         GameObject go = await Managers.Resource.InstantiateAsync(path, parent: root);
         if (go == null)
         {
-            Debug.LogError($"[UIManager]  琯 . path: {path}");
+            Debug.LogError($"[UIManager] 프리팹 로드 실패. path: {path}");
             return null;
         }
 
         T view = go.GetOrAddComponent<T>();
 
-        // parent null  첼 Push溝  확화爛求.
+        // parent가 null이면 Popup Stack에 Push하고 ActionMap을 전환합니다.
         if (parent == null && view is UI_Popup popup)
         {
             _popupStack.Push(popup);
@@ -141,7 +141,7 @@ public class UIManager : IManagerBase
         var rectTransform = view.GetComponent<RectTransform>();
         rectTransform.localScale = Vector3.one;
 
-        // Sorting Group  爛求.
+        // Sorting Group 순서를 설정합니다.
         SetSortingGroupOrder(go, view is UI_Popup);
 
         view.gameObject.SetActive(true);
@@ -149,12 +149,12 @@ public class UIManager : IManagerBase
     }
 
     /// <summary>
-    ///  환퓸諍?캇 苛 UI_DontDestroyPopup 宙엽 琯構 ViewModel 爛求.
+    /// 씬이 변경되어도 유지되는 UI_DontDestroyPopup 팝업을 생성하고 ViewModel을 설정합니다.
     /// </summary>
-    /// <typeparam name="TView"> UI 타見, UI_DontDestroyPopup 瞞 爛求.</typeparam>
-    /// <param name="viewModel">UI  ViewModel 館絿都求.</param>
-    /// <param name="parent">UI 치 罐 Transform都求. null  DontDestroyRoot 羞?絳求.</param>
-    /// <returns> UI 館絿都求.</returns>
+    /// <typeparam name="TView"> 생성할 UI 타입, UI_DontDestroyPopup을 상속받아야 합니다.</typeparam>
+    /// <param name="viewModel">UI에 연결할 ViewModel 객체입니다.</param>
+    /// <param name="parent">UI가 배치될 부모 Transform입니다. null이면 DontDestroyRoot를 사용합니다.</param>
+    /// <returns> 생성된 UI 객체입니다.</returns>
     public async Task<TView> ShowDontDestroyAsync<TView>(ViewModelBase viewModel) where TView : UI_DontDestroyPopup
     {
         string prefabName = typeof(TView).Name;
@@ -163,7 +163,7 @@ public class UIManager : IManagerBase
         GameObject go = await Managers.Resource.InstantiateAsync(path, parent: GetDontDestroyRoot());
         if (go == null)
         {
-            Debug.LogError($"[UIManager]  琯 . path: {path}");
+            Debug.LogError($"[UIManager] 프리팹 로드 실패. path: {path}");
             return null;
         }
 
@@ -182,12 +182,12 @@ public class UIManager : IManagerBase
     }
 
     /// <summary>
-    ///  환퓸諍?캇 苛 UI_DontDestroyPopup 宙엽 琯構 환爛求.
-    ///  UI Popup Stack  , 瘤 怜餠 표천絳求.
+    /// 씬이 변경되어도 유지되는 UI_DontDestroyPopup 팝업을 생성하고 반환합니다.
+    /// 일반 UI Popup Stack에 들어가지 않으며, 보통 최상위에 표시됩니다.
     /// </summary>
-    /// <typeparam name="T"> UI 타見, UI_DontDestroyPopup 瞞 爛求.</typeparam>
-    /// <param name="parent">UI 치 罐 Transform都求. null  DontDestroyRoot 羞?絳求.</param>
-    /// <returns> UI 館絿都求.</returns>
+    /// <typeparam name="T"> 생성할 UI 타입, UI_DontDestroyPopup을 상속받아야 합니다.</typeparam>
+    /// <param name="parent">UI가 배치될 부모 Transform입니다. null이면 DontDestroyRoot를 사용합니다.</param>
+    /// <returns> 생성된 UI 객체입니다.</returns>
     public async Task<T> ShowDontDestroyAsync<T>() where T : UI_DontDestroyPopup
     {
         string prefabName = typeof(T).Name;
@@ -196,7 +196,7 @@ public class UIManager : IManagerBase
         GameObject go = await Managers.Resource.InstantiateAsync(path, parent: GetDontDestroyRoot());
         if (go == null)
         {
-            Debug.LogError($"[UIManager]  琯 . path: {path}");
+            Debug.LogError($"[UIManager] 프리팹 로드 실패. path: {path}");
             return null;
         }
 
@@ -214,10 +214,10 @@ public class UIManager : IManagerBase
 
 
     /// <summary>
-    ///  UI_View 腑 Pool 환爛求.
-    /// 鱇 ,  怜餠     笭求.
+    /// UI_View를 닫고 Pool에 반환합니다.
+    /// 팝업인 경우, 스택 관리 및 오더 정리도 수행합니다.
     /// </summary>
-    /// <param name="view"> UI_View 館絿都求.</param>
+    /// <param name="view"> 닫을 UI_View 객체입니다.</param>
     public void Close(UI_View view)
     {
         if (view == null) return;
@@ -229,13 +229,13 @@ public class UIManager : IManagerBase
                 _popupStack.Pop();
                 _sortingOrder -= ORDER_STEP;
 
-                //   Popup ActionMapKey 
+                // 다음 Popup의 ActionMapKey로 전환
                 if (_popupStack.Count > 0)
                 {
                     var nextPopup = _popupStack.Peek();
                     Managers.Input.SwitchActionMap(nextPopup.ActionMapKey);
                 }
-                //    羞?("None")
+                // 팝업이 없으면 None("None")
                 else
                 {
                     Managers.Input.SwitchActionMap("None");
@@ -243,15 +243,15 @@ public class UIManager : IManagerBase
             }
         }
 
-        // UI 풀 환構킬 캇歐  ViewModel   求.
-        //  ViewModel Release()    카트 構, 却 OnDispose() 호絳求.
+        // UI를 풀에 반환하거나 파괴하기 전에 ViewModel 연결을 끊습니다.
+        // 기존 ViewModel의 Release()를 호출하여 참조 카운트를 감소시키고, 필요 시 OnDispose()를 호출합니다.
         view.SetViewModel(null);
 
         Managers.Resource.Destroy(view.gameObject);
     }
 
     /// <summary>
-    /// UI GameObject SortingGroup 트 構 Sorting Order 爛求.
+    /// UI GameObject에 SortingGroup을 세팅하고 Sorting Order를 지정합니다.
     /// </summary>
     private void SetSortingGroupOrder(GameObject go, bool useSortingOrder)
     {
@@ -263,13 +263,13 @@ public class UIManager : IManagerBase
         }
         else
         {
-            // sortingOrder   (UI_Popup  ) sortingOrder  
+            // sortingOrder 미사용 (UI_Popup 아님) 시 sortingOrder 0
             sortingGroup.sortingOrder = 0;
         }
     }
 
     /// <summary>
-    ///   UI Root Transform 환爛求.  爛求.
+    /// 현재 씬의 UI Root Transform을 반환합니다. 없으면 생성합니다.
     /// </summary>
     private Transform GetSceneRoot()
     {
@@ -277,7 +277,7 @@ public class UIManager : IManagerBase
         {
             GameObject rootGo = GameObject.Find("@UI_Root_Scene");
 
-            // UI 트  , Canvas 迦 트 臼  爛求.
+            // UI 루트 생성 시, Canvas와 필수 컴포넌트를 부착합니다.
             if (rootGo == null)
             {
                 rootGo = new GameObject { name = "@UI_Root_Scene" };
@@ -285,10 +285,10 @@ public class UIManager : IManagerBase
 
                 Canvas canvas = rootGo.AddComponent<Canvas>();
                 canvas.renderMode = RenderMode.ScreenSpaceCamera;
-                
-                // ?꾩슜 UI 移대찓???ъ슜
+
+                // 전용 UI 카메라 사용
                 EnsureUICamera();
-                canvas.worldCamera = _uiCamera; 
+                canvas.worldCamera = _uiCamera;
 
                 CanvasScaler scaler = rootGo.AddComponent<CanvasScaler>();
                 scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
@@ -303,11 +303,11 @@ public class UIManager : IManagerBase
     }
 
     /// <summary>
-    /// DontDestroy UI Root瑜?媛?몄삤嫄곕굹 ?앹꽦?⑸땲??
+    /// DontDestroy UI Root를 가져오거나 생성합니다.
     /// </summary>
     private Transform GetDontDestroyRoot()
     {
-        if (_dontDestroyRoot != null) 
+        if (_dontDestroyRoot != null)
             return _dontDestroyRoot;
 
         GameObject dontDestroyGo = GameObject.Find("@UI_Root_DontDestroy");
@@ -322,11 +322,11 @@ public class UIManager : IManagerBase
         {
             Canvas canvas = dontDestroyGo.AddComponent<Canvas>();
             canvas.renderMode = RenderMode.ScreenSpaceCamera;
-            
-            // ?꾩슜 UI 移대찓???ъ슜
+
+            // 전용 UI 카메라 사용
             EnsureUICamera();
             canvas.worldCamera = _uiCamera;
-            
+
             canvas.sortingOrder = 999999;
 
             CanvasScaler scaler = dontDestroyGo.AddComponent<CanvasScaler>();
@@ -342,7 +342,7 @@ public class UIManager : IManagerBase
     }
 
     /// <summary>
-    /// UI ?꾩슜 移대찓?쇰? ?뺣낫?⑸땲??
+    /// UI 전용 카메라를 확보합니다.
     /// </summary>
     private void EnsureUICamera()
     {
@@ -356,16 +356,16 @@ public class UIManager : IManagerBase
         }
 
         cameraGo.layer = LayerMask.NameToLayer("UI");
-        // ?꾩튂瑜?紐낆떆?곸쑝濡??ㅼ젙?섏뿬 ?ㅻ룞??諛⑹?
+        // 위치를 명시적으로 설정하여 오동작 방지
         cameraGo.transform.position = new Vector3(0, 0, -100);
 
         _uiCamera = cameraGo.GetOrAddComponent<Camera>();
-        _uiCamera.cullingMask = 1 << LayerMask.NameToLayer("UI"); // UI ?덉씠?대쭔 ?뚮뜑留?
-        _uiCamera.clearFlags = CameraClearFlags.Nothing;          // Overlay??Clear 遺덊븘??
-        _uiCamera.orthographic = false;                           // ?먭렐 ?ъ쁺 ?쒖꽦??
-        _uiCamera.fieldOfView = 60f;                              // ?쒖? FOV
-        
-        // URP Overlay Camera ?ㅼ젙
+        _uiCamera.cullingMask = 1 << LayerMask.NameToLayer("UI"); // UI 레이어만 렌더링
+        _uiCamera.clearFlags = CameraClearFlags.Nothing;          // Overlay이므로 Clear 불필요
+        _uiCamera.orthographic = false;                           // 원근 투영 활성화 (Perspective)
+        _uiCamera.fieldOfView = 60f;                              // 수직 FOV
+
+        // URP Overlay Camera 설정
         var urpCameraData = _uiCamera.GetUniversalAdditionalCameraData();
         if (urpCameraData != null)
         {
@@ -374,24 +374,24 @@ public class UIManager : IManagerBase
     }
 
     /// <summary>
-    /// Main Camera??URP Camera Stack??UI Camera瑜??깅줉?⑸땲??
+    /// Main Camera의 URP Camera Stack에 UI Camera를 등록합니다.
     /// </summary>
-    /// <param name="mainCamera">Base Camera濡??ъ슜??Main Camera</param>
+    /// <param name="mainCamera">Base Camera로 사용될 Main Camera</param>
     private void RegisterUICameraToStack(Camera mainCamera)
     {
         if (_uiCamera == null) return;
 
         var mainCameraData = mainCamera.GetUniversalAdditionalCameraData();
         if (mainCameraData == null) return;
-        
-        // ?대? ?깅줉?섏뼱 ?덉쑝硫?以묐났 ?깅줉 諛⑹?
+
+        // 이미 등록되어 있다면 중복 등록 방지
         if (mainCameraData.cameraStack.Contains(_uiCamera)) return;
-        
+
         mainCameraData.cameraStack.Add(_uiCamera);
     }
 
     /// <summary>
-    /// UI 타篤   罐 爛求.
+    /// UI 타입에 따른 프리팹 경로를 반환합니다.
     /// </summary>
     private string GetPrefabPath<T>(string prefabName) where T : UI_View
     {
@@ -400,21 +400,21 @@ public class UIManager : IManagerBase
     }
 
     /// <summary>
-    /// 恝  琯  호풔 遣트 湄冗?니?
+    /// 씬이 로드될 때 호출되어 카메라 스택을 재설정합니다.
     /// </summary>
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         if (Camera.main != null)
         {
-            // 硫붿씤 移대찓?쇨? UI ?덉씠?대? ?뚮뜑留곹븯吏 ?딅룄濡??ㅼ젙
+            // 메인 카메라가 UI 레이어를 렌더링하지 않도록 설정
             int uiLayerMask = 1 << LayerMask.NameToLayer("UI");
             Camera.main.cullingMask &= ~uiLayerMask;
 
-            // URP Camera Stack??UI Camera ?깅줉
+            // URP Camera Stack에 UI Camera 등록
             RegisterUICameraToStack(Camera.main);
         }
 
-        // UI 移대찓?쇰뒗 ??긽 議댁옱?댁빞 ??
+        // UI 카메라는 항상 존재해야 함
         EnsureUICamera();
 
         Clear();

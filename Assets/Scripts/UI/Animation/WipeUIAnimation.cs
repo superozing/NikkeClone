@@ -12,12 +12,12 @@ public class WipeUIAnimation : IUIAnimation
     private readonly int _propertyId;
 
     /// <summary>
-    /// WipeUIAnimation 占쏙옙占쏙옙占쏙옙
+    /// WipeUIAnimation 생성자
     /// </summary>
-    /// <param name="material">占쏙옙占쏙옙占쏙옙 Material 占싸쏙옙占싹쏙옙</param>
-    /// <param name="startValue">占쏙옙占쏙옙 Cutoff 占쏙옙</param>
-    /// <param name="endValue">占쏙옙표 Cutoff 占쏙옙</param>
-    /// <param name="duration">占쏙옙占쏙옙 占시곤옙</param>
+    /// <param name="material">조작할 Material 인스턴스</param>
+    /// <param name="startValue">시작 Cutoff 값</param>
+    /// <param name="endValue">목표 Cutoff 값</param>
+    /// <param name="duration">진행 시간</param>
     /// <param name="ease">Ease Function</param>
     public WipeUIAnimation(Material material, float startValue, float endValue, float duration = 0.5f, Ease ease = Ease.InOutQuad)
     {
@@ -31,27 +31,27 @@ public class WipeUIAnimation : IUIAnimation
 
     public async Task ExecuteAsync(CanvasGroup cg, float delay = 0f)
     {
-        // CanvasGroup占쏙옙 占쏙옙占싶뤄옙占쏙옙 占쏙옙占쏙옙 占쎈도占쏙옙 占쏙옙占쏙옙構킬占? 占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙占쌌니댐옙.
+        // CanvasGroup이 있다면 잠시 입력을 차단하거나 상호작용을 비활성화합니다.
         if (cg != null)
             cg.interactable = false;
 
         if (_targetMaterial == null)
             return;
 
-        // 1. 占쏙옙占쏙옙 占쏙옙 占쏙옙占쏙옙 (占쏙옙占?占쏙옙占쏙옙)
+        // 1. 시작 값 설정 (즉시 반영)
         _targetMaterial.SetFloat(_propertyId, _startValue);
 
-        // 2. 占쏙옙占쏙옙占쏙옙 占쏙옙占?
+        // 2. 딜레이 대기
         if (delay > 0f)
             await Task.Delay((int)(delay * 1000));
 
-        // 3. 트占쏙옙占쏙옙 占쏙옙占쏙옙
+        // 3. 트윈 실행
         await _targetMaterial.DOFloat(_endValue, _propertyId, _duration)
             .SetEase(_ease)
-            .SetUpdate(true) // TimeScale 占쏙옙占쏙옙 (占싸듸옙 占쏙옙 占쏙옙占쏙옙 占쏙옙占쏙옙)
+            .SetUpdate(true) // TimeScale 무시 (로딩 중 멈춤 방지)
             .AsyncWaitForCompletion();
 
-        // 占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙 占쏙옙 占쏙옙占싶뤄옙占쏙옙 占쏙옙占쏙옙占쏙옙 占쏙옙황占쏙옙 占쏙옙占쏙옙 占쌕몌옙占실뤄옙(占쏙옙占쏙옙 占쏙옙占쏙옙) 占쏙옙占썩선 처占쏙옙占쏙옙占쏙옙 占십거놂옙
-        // 占십울옙占싹다몌옙 cg.interactable = true; 占쏙옙 호占쏙옙占쏙옙 占쏙옙 占쌍쏙옙占싹댐옙.
+        // 끝난 후 CanvasGroup 인터랙션을 복구할지 말지는 호출자(또는 뷰)에서 처리하거나
+        // 필요하다면 cg.interactable = true; 를 호출할 수 있습니다.
     }
 }
