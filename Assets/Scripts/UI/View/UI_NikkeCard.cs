@@ -27,6 +27,10 @@ public class UI_NikkeCard : UI_View, IUIShowHideAnimation
     [Header("State")]
     [SerializeField] private GameObject _selectedImage; // 선택 상태 표시 이미지
 
+    [Header("Empty State")]
+    [SerializeField] private GameObject _contentRoot;
+    [SerializeField] private GameObject _emptyImage;
+
     [Header("Interaction")]
     [SerializeField] private Button _cardButton;
 
@@ -58,7 +62,16 @@ public class UI_NikkeCard : UI_View, IUIShowHideAnimation
         base.SetViewModel(viewModel);
 
         _viewModel = viewModel as NikkeCardViewModel;
-        if (_viewModel == null) return;
+
+        // --- 빈 상태 처리 ---
+        if (_viewModel == null)
+        {
+            SetEmptyState(true);
+            return;
+        }
+
+        SetEmptyState(false);
+        // --- 빈 상태 처리 끝 ---
 
         // 2. 데이터 바인딩
         Bind(_viewModel.Level, lv => _levelText.text = $"Lv.{lv}");
@@ -78,6 +91,17 @@ public class UI_NikkeCard : UI_View, IUIShowHideAnimation
             if (_selectedImage != null)
                 _selectedImage.SetActive(isSelected);
         });
+    }
+
+    /// <summary>
+    /// 빈 슬롯 상태의 UI 표시를 설정합니다.
+    /// </summary>
+    private void SetEmptyState(bool isEmpty)
+    {
+        if (_contentRoot != null)
+            _contentRoot.SetActive(!isEmpty);
+        if (_emptyImage != null)
+            _emptyImage.SetActive(isEmpty);
     }
 
     // --- IUIShowHideAnimation Implementation ---
