@@ -225,6 +225,20 @@ public class UserSquadData
         clone.slot = new List<int>(this.slot);
         return clone;
     }
+
+    /// <summary>
+    /// 슬롯 데이터가 변경되었을 때 발생하는 이벤트입니다.
+    /// </summary>
+    [field: NonSerialized]
+    public event Action OnSlotChanged;
+
+    /// <summary>
+    /// 슬롯 변경을 알립니다. slot 리스트 수정 후 반드시 호출해야 합니다.
+    /// </summary>
+    public void NotifySlotChanged()
+    {
+        OnSlotChanged?.Invoke();
+    }
 }
 
 [Serializable]
