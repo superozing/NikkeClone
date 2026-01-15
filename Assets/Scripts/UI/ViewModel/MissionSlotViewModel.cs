@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using UI;
 using UnityEngine;
 
@@ -10,11 +10,11 @@ public class MissionSlotViewModel : ViewModelBase
     private readonly MissionGameData _gameData;
     private RewardItemIconViewModel _rewardIconViewModel;
 
-    // º¯ÇÏÁö ¾Ê´Â µ¥ÀÌÅÍ´Â ÀÏ¹İ ÇÁ·ÎÆÛÆ¼
+    // ë³€í•˜ì§€ ì•ŠëŠ” ë°ì´í„°ëŠ” ì¼ë°˜ í”„ë¡œí¼í‹°
     public string Title { get; private set; }
     public string Description { get; private set; }
 
-    // º¯ÇÏ´Â µ¥ÀÌÅÍ´Â ReactiveProperty
+    // ë³€í•˜ëŠ” ë°ì´í„°ëŠ” ReactiveProperty
     public ReactiveProperty<float> Progress { get; private set; } = new(0f);
     public ReactiveProperty<string> ProgressText { get; private set; } = new("");
     public ReactiveProperty<eMissionState> MissionState { get; private set; } = new(eMissionState.InProgress);
@@ -23,43 +23,43 @@ public class MissionSlotViewModel : ViewModelBase
 
     public MissionSlotViewModel(int missionID)
     {
-        // 1. DataManager ÂüÁ¶
+        // 1. DataManager ì°¸ì¡°
         _gameData = Managers.Data.Get<MissionGameData>(missionID);
         if (!Managers.Data.UserData.Missions.TryGetValue(missionID, out _userData))
         {
-            Debug.LogError($"[MissionSlotViewModel] ID({missionID})¿¡ ÇØ´çÇÏ´Â UserMissionData¸¦ Ã£À» ¼ö ¾ø½À´Ï´Ù.");
+            Debug.LogError($"[MissionSlotViewModel] ID({missionID})ì— í•´ë‹¹í•˜ëŠ” UserMissionDataë¥¼ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
             return;
         }
         if (_gameData == null)
         {
-            Debug.LogError($"[MissionSlotViewModel] ID({missionID})¿¡ ÇØ´çÇÏ´Â MissionGameData¸¦ Ã£À» ¼ö ¾ø½À´Ï´Ù.");
+            Debug.LogError($"[MissionSlotViewModel] ID({missionID})ì— í•´ë‹¹í•˜ëŠ” MissionGameDataë¥¼ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
             return;
         }
 
-        // 2. View¿¡ ¹ÙÀÎµùÇÒ ÇÁ·ÎÆÛÆ¼ÀÇ ÃÊ±â°ª ¼³Á¤
+        // 2. Viewì— ë°”ì¸ë”©í•  í”„ë¡œí¼í‹°ì˜ ì´ˆê¸°ê°’ ì„¤ì •
         Title = _gameData.title;
         Description = _gameData.description;
 
-        // 3. º¸»ó ¾ÆÀÌÄÜ ºä¸ğµ¨ »ı¼º
-        // ÀÚ½Å¿¡°Ô ¼¼ÆÃµÈ ¹Ì¼ÇÀ» ¾ÆÀÌÅÛ ¾ÆÀÌÄÜ¿¡ Àü´ŞÇØ¿ä.
+        // 3. ë³´ìƒ ì•„ì´ì½˜ ë·°ëª¨ë¸ ìƒì„±
+        // ìì‹ ì—ê²Œ ì„¸íŒ…ëœ ë¯¸ì…˜ì„ ì•„ì´í…œ ì•„ì´ì½˜ì— ì „ë‹¬í•´ìš”.
         _rewardIconViewModel = new RewardItemIconViewModel(_gameData, _userData);
         _rewardIconViewModel.AddRef();
         _rewardIconViewModel.OnRequestRewardPopup += OnChildRequestRewardPopup;
 
-        // 4. µ¥ÀÌÅÍ º¯°æ °¨Áö
+        // 4. ë°ì´í„° ë³€ê²½ ê°ì§€
         _userData.currentCount.OnValueChanged += OnDataChanged;
         _userData.state.OnValueChanged += OnMissionStateChanged;
 
-        // 5. ÃÊ±â °ª ¼¼ÆÃ
+        // 5. ì´ˆê¸° ê°’ ì„¸íŒ…
         OnDataChanged(_userData.currentCount.Value);
         OnMissionStateChanged(_userData.state.Value);
     }
 
     /// <summary>
-    /// RewardItemIconViewModelÀÇ RewardPopup »ı¼º ¿äÃ»ÀÔ´Ï´Ù.
+    /// RewardItemIconViewModelì˜ RewardPopup ìƒì„± ìš”ì²­ì…ë‹ˆë‹¤.
     /// </summary>
-    /// <param name="itemID">È¹µæÇÑ ¾ÆÀÌÅÛ ID</param>
-    /// <param name="count">È¹µæÇÑ ¾ÆÀÌÅÛ °³¼ö</param>
+    /// <param name="itemID">íšë“í•œ ì•„ì´í…œ ID</param>
+    /// <param name="count">íšë“í•œ ì•„ì´í…œ ê°œìˆ˜</param>
     private void OnChildRequestRewardPopup(int itemID, int count) => OnRequestRewardPopup?.Invoke(itemID, count);
 
     private void OnMissionStateChanged(eMissionState state)
@@ -84,7 +84,7 @@ public class MissionSlotViewModel : ViewModelBase
         if (_rewardIconViewModel != null)
         {
             _rewardIconViewModel.OnRequestRewardPopup -= OnChildRequestRewardPopup;
-            _rewardIconViewModel.Release(); // ¼ÒÀ¯±Ç ÇØÁ¦
+            _rewardIconViewModel.Release(); // ì†Œìœ ê¶Œ í•´ì œ
             _rewardIconViewModel = null;
         }
 

@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -6,7 +6,7 @@ using UnityEngine;
 public class TimeSystem : IDisposable
 {
     /// <summary>
-    /// ÀÏÀÏ ÃÊ±âÈ­±îÁö ³²Àº ½Ã°£
+    /// ì¼ì¼ ì´ˆê¸°í™”ê¹Œì§€ ë‚¨ì€ ì‹œê°„
     /// </summary>
     public ReactiveProperty<TimeSpan> RemainingTime { get; private set; }
 
@@ -27,23 +27,23 @@ public class TimeSystem : IDisposable
             {
                 RemainingTime.Value = DateTime.Today.AddDays(1) - DateTime.Now;
                 
-                // 1ÃÊ ´ë±â
+                // 1ì´ˆ ëŒ€ê¸°
                 await Task.Delay(1000, ct); 
             }
         }
         catch (TaskCanceledException)
         {
-            Debug.Log("[TimeSystem] Å¸ÀÌ¸Ó°¡ Á¤»óÀûÀ¸·Î ÁßÁöµÇ¾ú½À´Ï´Ù.");
+            Debug.Log("[TimeSystem] íƒ€ì´ë¨¸ê°€ ì •ìƒì ìœ¼ë¡œ ì¤‘ì§€ë˜ì—ˆìŠµë‹ˆë‹¤.");
         }
         catch (Exception ex)
         {
-            Debug.LogError($"[TimeSystem] Å¸ÀÌ¸Ó ½ÇÇà Áß ¿À·ù ¹ß»ı: {ex.Message}");
+            Debug.LogError($"[TimeSystem] íƒ€ì´ë¨¸ ì‹¤í–‰ ì¤‘ ì˜¤ë¥˜ ë°œìƒ: {ex.Message}");
         }
     }
 
     public void Dispose()
     {
-        // RunTimerAsync Áß´Ü
+        // RunTimerAsync ì¤‘ë‹¨
         _timerCts?.Cancel();
         _timerCts?.Dispose();
         _timerCts = null;

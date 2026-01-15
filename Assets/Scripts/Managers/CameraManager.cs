@@ -1,11 +1,11 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CameraManager : IManagerBase
 {
     public eManagerType ManagerType { get; } = eManagerType.Camera;
     public void Init()
     {
-        Debug.Log($"{ManagerType} Manager Init �մϴ�.");
+        Debug.Log($"{ManagerType} Manager Init 합니다.");
     }
 
     public void Update()
@@ -14,6 +14,6 @@ public class CameraManager : IManagerBase
 
     public void Clear()
     {
-        Debug.Log($"{ManagerType} Manager Clear �մϴ�.");
+        Debug.Log($"{ManagerType} Manager Clear 합니다.");
     }
 }

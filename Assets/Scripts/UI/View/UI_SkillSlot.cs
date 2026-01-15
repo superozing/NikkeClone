@@ -1,4 +1,4 @@
-using TMPro;
+ï»¿using TMPro;
 using UI;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,14 +8,14 @@ public class UI_SkillSlot : UI_View
     [Header("Texts")]
     [SerializeField] private TMP_Text _nameText;
     [SerializeField] private TMP_Text _descText;
-    [SerializeField] private TMP_Text _typeText;     // ÆÐ½Ãºê/¾×Æ¼ºê
-    [SerializeField] private TMP_Text _cooldownText; // ÄðÅ¸ÀÓ ½Ã°£
+    [SerializeField] private TMP_Text _typeText;     // íŒ¨ì‹œë¸Œ/ì•¡í‹°ë¸Œ
+    [SerializeField] private TMP_Text _cooldownText; // ì¿¨íƒ€ìž„ ì‹œê°„
 
     [Header("Images")]
     [SerializeField] private Image _skillIconImage;
 
     [Header("Layout Groups")]
-    [SerializeField] private GameObject _cooldownGroup; // ÄðÅ¸ÀÓ ¾ÆÀÌÄÜ + ÅØ½ºÆ® ±×·ì
+    [SerializeField] private GameObject _cooldownGroup; // ì¿¨íƒ€ìž„ ì•„ì´ì½˜ + í…ìŠ¤íŠ¸ ê·¸ë£¹
 
     private SkillSlotViewModel _viewModel;
 
@@ -27,16 +27,16 @@ public class UI_SkillSlot : UI_View
 
         if (_viewModel == null) return;
 
-        // ÅØ½ºÆ® ¹ÙÀÎµù
+        // í…ìŠ¤íŠ¸ ë°”ì¸ë”©
         Bind(_viewModel.Name, text => SetText(_nameText, text));
         Bind(_viewModel.Description, text => SetText(_descText, text));
         Bind(_viewModel.SkillType, text => SetText(_typeText, text));
         Bind(_viewModel.CooldownText, text => SetText(_cooldownText, text));
 
-        // ÀÌ¹ÌÁö ¹ÙÀÎµù
+        // ì´ë¯¸ì§€ ë°”ì¸ë”©
         Bind(_viewModel.SkillIcon, SetSprite);
 
-        // È°¼º/ºñÈ°¼º ¹ÙÀÎµù
+        // í™œì„±/ë¹„í™œì„± ë°”ì¸ë”©
         Bind(_viewModel.IsCooldownVisible, visible =>
         {
             if (_cooldownGroup != null)

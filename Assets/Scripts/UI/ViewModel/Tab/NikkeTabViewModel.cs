@@ -1,14 +1,14 @@
-using System;
+ï»¿using System;
 using UI;
 
 public class NikkeTabViewModel : ViewModelBase
 {
-    // ÀÚ½Ä ViewModel
+    // ìì‹ ViewModel
     public NikkeTabNikkeCardScrollViewModel ScrollViewModel { get; private set; }
 
     public NikkeTabViewModel()
     {
-        // ½ºÅ©·Ñ ºä¸ğµ¨ »ı¼º ¹× ¼ÒÀ¯
+        // ìŠ¤í¬ë¡¤ ë·°ëª¨ë¸ ìƒì„± ë° ì†Œìœ 
         ScrollViewModel = new NikkeTabNikkeCardScrollViewModel();
         ScrollViewModel.AddRef();
     }

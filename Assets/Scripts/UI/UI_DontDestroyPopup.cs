@@ -1,8 +1,8 @@
-using UI;
+ï»¿using UI;
 using UnityEngine;
 
 /// <summary>
-/// ¾À ÀüÈ¯ ½Ã ÆÄ±«µÇÁö ¾Ê´Â popup ui ¸¦ À§ÇØ¼­ ¸¸µé¾ú¾î¿ä.
+/// ì”¬ ì „í™˜ ì‹œ íŒŒê´´ë˜ì§€ ì•ŠëŠ” popup ui ë¥¼ ìœ„í•´ì„œ ë§Œë“¤ì—ˆì–´ìš”.
 /// </summary>
 public abstract class UI_DontDestroyPopup : UI_Popup
 {

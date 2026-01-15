@@ -1,10 +1,10 @@
-using System;
+ï»¿using System;
 using UI;
 
 public class LobbyTabViewModel : ViewModelBase
 {
-    public event Action OnRequestUnusedButton; // »ç¿ëÇÏÁö ¾Ê´Â ¹öÆ°
-    public event Action OnRequestCampaignButton; // Ä·ÆäÀÎ ¹öÆ°
+    public event Action OnRequestUnusedButton; // ì‚¬ìš©í•˜ì§€ ì•ŠëŠ” ë²„íŠ¼
+    public event Action OnRequestCampaignButton; // ìº í˜ì¸ ë²„íŠ¼
 
     public MissionButtonViewModel MissionButtonViewModel { get; private set; }
 
@@ -15,7 +15,7 @@ public class LobbyTabViewModel : ViewModelBase
     }
 
     /// <summary>
-    /// »ç¿ëÇÏÁö ¾Ê´Â ¹öÆ° Å¬¸¯ ÀÌº¥Æ®
+    /// ì‚¬ìš©í•˜ì§€ ì•ŠëŠ” ë²„íŠ¼ í´ë¦­ ì´ë²¤íŠ¸
     /// </summary>
     public void OnUnusedButtonClicked()
     {
@@ -23,7 +23,7 @@ public class LobbyTabViewModel : ViewModelBase
     }
 
     /// <summary>
-    /// Ä·ÆäÀÎ ¹öÆ° Å¬¸¯ ÀÌº¥Æ®
+    /// ìº í˜ì¸ ë²„íŠ¼ í´ë¦­ ì´ë²¤íŠ¸
     /// </summary>
     public void OnCampaignButtonClicked()
     {

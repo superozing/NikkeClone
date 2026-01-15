@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -15,33 +15,33 @@ public class TestScene : MonoBehaviour, IScene
     void Awake()
     {
         Managers.Scene.SetCurrentScene(this);
-        Debug.Log("Test Scene Awake() 합니다.");
+        Debug.Log("Test Scene Awake() ?⑸땲??");
     }
 
     void IScene.Init()
     {
-        Debug.Log("Test Scene Init() 합니다.");
+        Debug.Log("Test Scene Init() ?⑸땲??");
         Debug.Log($"persistentDataPath: {Application.persistentDataPath}");
 
         ShowTestUI();
     }
     
     /// <summary>
-    /// UI_TabGroupPopup 테스트를 위한 메서드.
+    /// UI_TabGroupPopup ?뚯뒪?몃? ?꾪븳 硫붿꽌??
     /// </summary>
     private async void ShowTestUI()
     {
         await Task.Delay(1000);
-        Debug.Log("[TestScene] UI_TabGroupPopup 테스트 시작");
+        Debug.Log("[TestScene] UI_TabGroupPopup ?뚯뒪???쒖옉");
         
         var tabGroupVM = new TabGroupPopupViewModel();
         await Managers.UI.ShowAsync<UI_TabGroupPopup>(tabGroupVM);
 
-        Debug.Log("[TestScene] UI_TabGroupPopup 테스트 완료");
+        Debug.Log("[TestScene] UI_TabGroupPopup ?뚯뒪???꾨즺");
     }
 
     void IScene.Clear()
     {
-        //Debug.Log("Test Scene Clear() 합니다.");
+        //Debug.Log("Test Scene Clear() ?⑸땲??");
     }
 }

@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class GameSystemManager : IManagerBase
 {
@@ -14,11 +14,11 @@ public class GameSystemManager : IManagerBase
         TimeSystem = new TimeSystem();
         TimeSystem.Init();
 
-        Debug.Log($"{ManagerType} Manager Init ÇÕ´Ï´Ù.");
+        Debug.Log($"{ManagerType} Manager Init í•©ë‹ˆë‹¤.");
     }
 
     /// <summary>
-    /// ¾À µ¥ÀÌÅÍ ·Îµå°¡ ¿Ï·áµÇ¾úÀ» ¶§ SceneManagerEx¿¡ ÀÇÇØ È£ÃâµË´Ï´Ù.
+    /// ì”¬ ë°ì´í„° ë¡œë“œê°€ ì™„ë£Œë˜ì—ˆì„ ë•Œ SceneManagerExì— ì˜í•´ í˜¸ì¶œë©ë‹ˆë‹¤.
     /// </summary>
     public void OnDataLoaded()
     {
@@ -33,7 +33,7 @@ public class GameSystemManager : IManagerBase
         MissionSystem?.Dispose();
         TimeSystem?.Dispose();
 
-        Debug.Log($"{ManagerType} Manager Clear ÇÕ´Ï´Ù.");
+        Debug.Log($"{ManagerType} Manager Clear í•©ë‹ˆë‹¤.");
     }
 
 

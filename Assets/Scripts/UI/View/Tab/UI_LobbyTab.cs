@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using UI;
 using UnityEngine;
 using UnityEngine.UI;
@@ -48,41 +48,41 @@ public class UI_LobbyTab : UI_TabBase
 
         if (_viewModel == null && viewModel != null)
         {
-            Debug.LogError("[UI_LobbyTab] Àß¸øµÈ ViewModel Å¸ÀÔÀÌ ÁÖÀÔµÇ¾ú½À´Ï´Ù.");
+            Debug.LogError("[UI_LobbyTab] ì˜ëª»ëœ ViewModel íƒ€ì…ì´ ì£¼ì…ë˜ì—ˆìŠµë‹ˆë‹¤.");
             return;
         }
 
-        base.SetViewModel(viewModel); // ºÎ¸ğ È£Ãâ (±âÁ¸ ¹ÙÀÎµù ÇØÁ¦ µî)
+        base.SetViewModel(viewModel); // ë¶€ëª¨ í˜¸ì¶œ (ê¸°ì¡´ ë°”ì¸ë”© í•´ì œ ë“±)
 
         if (_viewModel != null)
         {
-            // UI_MissionButton ºä¸ğµ¨ ÁÖÀÔ
+            // UI_MissionButton ë·°ëª¨ë¸ ì£¼ì…
             if (_missionButton != null)
                 _missionButton.SetViewModel(_viewModel.MissionButtonViewModel);
 
-            // ºä¸ğµ¨ ÀÌº¥Æ® ±¸µ¶
+            // ë·°ëª¨ë¸ ì´ë²¤íŠ¸ êµ¬ë…
             _viewModel.OnRequestUnusedButton += ShowUnusedLog;
             _viewModel.OnRequestCampaignButton += LoadCampaignScene;
         }
     }
 
 
-    // --- ViewModel È£ÃâÀ» À§ÇÑ ·¡ÆÛ ---
+    // --- ViewModel í˜¸ì¶œì„ ìœ„í•œ ë˜í¼ ---
 
     private void OnUnusedButtonClick() => _viewModel?.OnUnusedButtonClicked();
     private void OnCampaignButtonClick() => _viewModel?.OnCampaignButtonClicked();
 
-    // --- ViewModel ÀÌº¥Æ® ÇÚµé·¯ ---
+    // --- ViewModel ì´ë²¤íŠ¸ í•¸ë“¤ëŸ¬ ---
 
     private void ShowUnusedLog()
     {
-        Debug.Log("¹Ì±¸Çö ±â´ÉÀÔ´Ï´Ù.");
+        Debug.Log("ë¯¸êµ¬í˜„ ê¸°ëŠ¥ì…ë‹ˆë‹¤.");
     }
 
     private void LoadCampaignScene()
     {
-        // ¾À »ı¸íÁÖ±â ¹®Á¦ ÇØ°á ÈÄ Ãß°¡ÇÏ±â.
-        Debug.Log("Ä·ÆäÀÎ ¾ÀÀ» ¿±´Ï´Ù.");
+        // ì”¬ ìƒëª…ì£¼ê¸° ë¬¸ì œ í•´ê²° í›„ ì¶”ê°€í•˜ê¸°.
+        Debug.Log("ìº í˜ì¸ ì”¬ì„ ì—½ë‹ˆë‹¤.");
     }
 
     protected override void OnDestroy()
@@ -104,7 +104,7 @@ public class UI_LobbyTab : UI_TabBase
             _viewModel.OnRequestCampaignButton -= LoadCampaignScene;
         }
 
-        // ºä¸ğµ¨ ÇØÁ¦ (Base¿¡¼­ Release È£ÃâµÇÁö¸¸ ¸í½ÃÀûÀ¸·Î null Ã³¸®)
+        // ë·°ëª¨ë¸ í•´ì œ (Baseì—ì„œ Release í˜¸ì¶œë˜ì§€ë§Œ ëª…ì‹œì ìœ¼ë¡œ null ì²˜ë¦¬)
         _viewModel = null;
     }
 }

@@ -1,4 +1,4 @@
-
+﻿
 public enum eItemType
 {
     Jewel,

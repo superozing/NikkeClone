@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using TMPro;
 using UI;
 using UnityEngine;
@@ -24,7 +24,7 @@ public class UI_MissionSlot : UI_View
         _viewModel = viewModel as MissionSlotViewModel;
         if (_viewModel == null && viewModel != null)
         {
-            Debug.LogError($"[UI_MissionSlot] Àß¸øµÈ ViewModel Å¸ÀÔÀÌ ÁÖÀÔµÇ¾ú½À´Ï´Ù.");
+            Debug.LogError($"[UI_MissionSlot] ì˜ëª»ëœ ViewModel íƒ€ì…ì´ ì£¼ì…ë˜ì—ˆìŠµë‹ˆë‹¤.");
             return;
         }
 
@@ -32,17 +32,17 @@ public class UI_MissionSlot : UI_View
 
         if (_viewModel != null)
         {
-            // Á¤Àû ÇÁ·ÎÆÛÆ¼´Â ÀÌº¥Æ® ¹ÙÀÎµùÀ» ÇÏÁö ¾Ê¾Æ¿ä.
+            // ì •ì  í”„ë¡œí¼í‹°ëŠ” ì´ë²¤íŠ¸ ë°”ì¸ë”©ì„ í•˜ì§€ ì•Šì•„ìš”.
             _titleText.text = _viewModel.Title;
             _descText.text = _viewModel.Description;
 
-            // ÀÚ½Ä ºä¸ğµ¨ ¿¬°á
+            // ìì‹ ë·°ëª¨ë¸ ì—°ê²°
             if (_rewardIcon != null)
                 _rewardIcon.SetViewModel(_viewModel.RewardIconViewModel);
 
             _viewModel.OnRequestRewardPopup += ShowRewardPopup;
 
-            // ReactiveProperty ¹ÙÀÎµù
+            // ReactiveProperty ë°”ì¸ë”©
             Bind(_viewModel.ProgressText, text => _progressText.text = text);
             Bind(_viewModel.Progress, value => { if (_progressBar != null) _progressBar.value = value; });
             Bind(_viewModel.MissionState, UpdateStateVisuals);
@@ -62,7 +62,7 @@ public class UI_MissionSlot : UI_View
 
     private async void ShowRewardPopup(int itemID, int count)
     {
-        Debug.Log($"[UI_MissionSlot] ÆË¾÷ »ı¼º ¿äÃ»: ItemID({itemID}), Count({count})");
+        Debug.Log($"[UI_MissionSlot] íŒì—… ìƒì„± ìš”ì²­: ItemID({itemID}), Count({count})");
     }
 
     protected override void OnDestroy()

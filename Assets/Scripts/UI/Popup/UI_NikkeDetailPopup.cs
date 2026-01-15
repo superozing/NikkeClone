@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -18,7 +18,7 @@ public class UI_NikkeDetailPopup : UI_Popup, IUIShowHideAnimation
 
     private NikkeDetailPopupViewModel _viewModel;
 
-    // ¿¬Ãâ °´Ã¼
+    // ì—°ì¶œ ê°ì²´
     private readonly IUIAnimation _fadeIn = new FadeInUIAnimation(0.3f);
     private readonly IUIAnimation _fadeOut = new FadeOutUIAnimation(0.2f);
 
@@ -29,7 +29,7 @@ public class UI_NikkeDetailPopup : UI_Popup, IUIShowHideAnimation
         if (_backButton != null)
             _backButton.onClick.AddListener(OnCloseClick);
 
-        // ESC Å° ¹ÙÀÎµù
+        // ESC í‚¤ ë°”ì¸ë”©
         Managers.Input.BindAction("Close", OnEscapeAction, InputActionPhase.Performed);
     }
 
@@ -54,16 +54,16 @@ public class UI_NikkeDetailPopup : UI_Popup, IUIShowHideAnimation
 
         _viewModel.OnCloseRequested += OnCloseRequested;
 
-        // 1. ÇÏÀ§ ºä¸ğµ¨ ¹ÙÀÎµù (Money)
-        // MoneyViewModelÀº ÇÑ¹ø »ı¼ºµÇ°í À¯ÁöµÇ¹Ç·Î ¹Ù·Î ÁÖÀÔ
+        // 1. í•˜ìœ„ ë·°ëª¨ë¸ ë°”ì¸ë”© (Money)
+        // MoneyViewModelì€ í•œë²ˆ ìƒì„±ë˜ê³  ìœ ì§€ë˜ë¯€ë¡œ ë°”ë¡œ ì£¼ì…
         if (_moneyView != null)
             _moneyView.SetViewModel(_viewModel.MoneyViewModel);
 
-        // 2. µ¿Àû ÇÏÀ§ ºä¸ğµ¨ ¹ÙÀÎµù (Status)
-        // StatusViewModelÀÌ ±³Ã¼µÉ ¶§¸¶´Ù ÇÏÀ§ View¿¡ ÁÖÀÔ
+        // 2. ë™ì  í•˜ìœ„ ë·°ëª¨ë¸ ë°”ì¸ë”© (Status)
+        // StatusViewModelì´ êµì²´ë  ë•Œë§ˆë‹¤ í•˜ìœ„ Viewì— ì£¼ì…
         Bind(_viewModel.StatusViewModel, OnStatusViewModelChanged);
 
-        // 3. ÀÌ¹ÌÁö ¹× »ö»ó ¹ÙÀÎµù
+        // 3. ì´ë¯¸ì§€ ë° ìƒ‰ìƒ ë°”ì¸ë”©
         Bind(_viewModel.NikkeStandingImage, UpdateStandingImage);
         Bind(_viewModel.ThemeColor, UpdateThemeColor);
     }
