@@ -32,13 +32,62 @@ public class SquadTabViewModel : ViewModelBase
     private NikkeCardViewModel[][] _cachedSquadViewModels = new NikkeCardViewModel[5][];
 
     private readonly Dictionary<int, UserSquadData> _userSquads;
+    private Dictionary<int, Action> _squadEventHandlers = new();
 
     public SquadTabViewModel()
     {
         // ?좎? ?ㅼ옘???곗씠??李몄“
         _userSquads = Managers.Data.UserData.Squads;
 
-        // 湲곕낯?곸쑝濡?0踰?泥?踰덉㎏) ?ㅼ옘?쒕? ?좏깮?⑸땲??
+        // 2. 각 스쿼드의 변경 이벤트 구독
+        foreach (var kvp in _userSquads)
+        {
+            int squadId = kvp.Key;
+
+            Action handler = () =>
+            {
+                int index = squadId - 1;
+                if (index < 0 || index >= 5) return;
+
+                // 1. 기존 캐시된 ViewModel들 정리
+                if (_cachedSquadViewModels[index] != null)
+                {
+                    foreach (var vm in _cachedSquadViewModels[index])
+                    {
+                        if (vm != null)
+                        {
+                            vm.OnClick -= OnCardViewModelClicked;
+                            vm.Release();
+                        }
+                    }
+                    _cachedSquadViewModels[index] = null;
+                }
+
+                // 2. 현재 선택된 스쿼드라면 즉시 재생성 및 UI 갱신
+                if (CurrentSquadIndex.Value == index)
+                {
+                    CreateSquadViewModelCache(index);
+                    SlotViewModels = _cachedSquadViewModels[index];
+
+                    // 전투력 계산
+                    long totalCp = 0;
+                    foreach (var vm in SlotViewModels)
+                    {
+                        if (vm != null)
+                            totalCp += vm.CombatPower;
+                    }
+                    TotalCombatPower.Value = Utils.FormatNumber((int)totalCp);
+
+                    // View 강제 갱신 알림
+                    CurrentSquadIndex.ForceNotify();
+                }
+            };
+
+            kvp.Value.OnSlotChanged += handler;
+            _squadEventHandlers[squadId] = handler;
+        }
+
+        // 기본적으로 0번(첫 번째) 스쿼드를 선택합니다.
         SelectSquad(0);
     }
 
@@ -148,8 +197,8 @@ public class SquadTabViewModel : ViewModelBase
         // 濡쒕뵫 ?앹뾽???듯븳 ?쒖감 ?ㅽ뻾 ?곸슜
         Func<Task> loadTask = async () =>
         {
-            // ?ㅼ옘???뷀뀒???앹뾽? 蹂꾨룄???곗씠??濡쒕뱶 怨쇱젙???앹꽦?먯뿉??泥섎━??(媛踰쇱슫 ?묒뾽?????덉쑝???듭씪???좎?)
-            await Managers.UI.ShowAsync<UI_SquadDetailPopup>(new SquadDetailPopupViewModel());
+            // 스쿼드 디테일 팝업은 별도의 데이터 로드 과정없이 생성자에서 처리됨 (가벼운 작업이라 볼 수 있으면 통일성 유지)
+            await Managers.UI.ShowAsync<UI_SquadDetailPopup>(new SquadDetailPopupViewModel(CurrentSquadIndex.Value));
         };
 
         var loadingVM = new LoadingPopupViewModel(loadTask);
@@ -192,7 +241,20 @@ public class SquadTabViewModel : ViewModelBase
 
     protected override void OnDispose()
     {
-        // 罹먯떛??紐⑤뱺 ViewModel ?댁젣
+        // 스쿼드 이벤트 구독 해제
+        if (_userSquads != null)
+        {
+            foreach (var kvp in _squadEventHandlers)
+            {
+                if (_userSquads.TryGetValue(kvp.Key, out var squadData))
+                {
+                    squadData.OnSlotChanged -= kvp.Value;
+                }
+            }
+            _squadEventHandlers.Clear();
+        }
+
+        // 캐시된 모든 ViewModel 해제
         if (_cachedSquadViewModels != null)
         {
             for (int i = 0; i < _cachedSquadViewModels.Length; i++)
