@@ -34,5 +34,10 @@ public class ReactiveProperty<T>
         _value = value;
     }
 
+    public void ForceNotify()
+    {
+        OnValueChanged?.Invoke(_value);
+    }
+
     public override string ToString() => _value?.ToString() ?? "null";
 }
