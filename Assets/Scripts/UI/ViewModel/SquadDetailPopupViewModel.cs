@@ -279,6 +279,8 @@ public class SquadDetailPopupViewModel : ViewModelBase
             {
                 // 由ъ뒪???댁슜 蹂듭궗
                 userSquad.slot = new List<int>(tempData.slot);
+                // 변경 알림 발생
+                userSquad.NotifySlotChanged();
             }
             else
             {
