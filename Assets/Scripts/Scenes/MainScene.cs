@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class MainScene : MonoBehaviour, IScene
@@ -9,16 +9,16 @@ public class MainScene : MonoBehaviour, IScene
     void Awake()
     {
         Managers.Scene.SetCurrentScene(this);
-        Debug.Log("Main Scene Awake() �մϴ�.");
+        Debug.Log("Main Scene Awake() 합니다.");
     }
     void IScene.Init()
     {
-        Debug.Log("Main Scene Init() �մϴ�.");
+        Debug.Log("Main Scene Init() 합니다.");
     }
 
     void IScene.Clear()
     {
-        Debug.Log("Main Scene Clear() �մϴ�.");
+        Debug.Log("Main Scene Clear() 합니다.");
     }
 
 }

@@ -1,11 +1,11 @@
-using System;
+ï»¿using System;
 using UI;
 
 public class PopupTestViewModel : ViewModelBase
 {
     public event Action OnEscapeKeyDown;
 
-    public ReactiveProperty<string> Title { get; private set; } = new("Å×½ºÆ® ÆË¾÷");
+    public ReactiveProperty<string> Title { get; private set; } = new("í…ŒìŠ¤íŠ¸ íŒì—…");
     public int ClickCount = 0;
 
     public void OnEscape()
@@ -16,7 +16,7 @@ public class PopupTestViewModel : ViewModelBase
     public void OnConfirm()
     {
         ClickCount++;
-        Title.Value = $"È®ÀÎ ¹öÆ°ÀÌ {ClickCount}¹ø Å¬¸¯µÇ¾ú½À´Ï´Ù.";
+        Title.Value = $"í™•ì¸ ë²„íŠ¼ì´ {ClickCount}ë²ˆ í´ë¦­ë˜ì—ˆìŠµë‹ˆë‹¤.";
 
         if (ClickCount >= 10)
         {

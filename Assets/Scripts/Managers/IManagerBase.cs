@@ -1,4 +1,4 @@
-
+﻿
 interface IManagerBase
 {
     public void Init();

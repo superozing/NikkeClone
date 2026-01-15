@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,7 +8,7 @@ using UnityEngine;
 public class SquadDetailPopupViewModel : ViewModelBase
 {
     public event Action OnCloseRequested;
-    public event Action OnSquadDataChanged; // 슬롯 UI 갱신용
+    public event Action OnSquadDataChanged; // ?щ’ UI 媛깆떊??
 
     // --- State ---
     public ReactiveProperty<int> CurrentSquadIndex { get; private set; } = new(0);
@@ -20,15 +20,15 @@ public class SquadDetailPopupViewModel : ViewModelBase
     public SquadDetailNikkeCardScrollViewModel ScrollViewModel { get; private set; }
 
     // --- Data ---
-    // 편집 중인 임시 데이터 (스쿼드 ID별)
+    // ?몄쭛 以묒씤 ?꾩떆 ?곗씠??(?ㅼ옘??ID蹂?
     private Dictionary<int, UserSquadData> _tempSquads = new();
 
     public SquadDetailPopupViewModel(int initialSquadIndex = 0)
     {
-        // 1. 임시 데이터 생성 (Deep Copy)
+        // 1. ?꾩떆 ?곗씠???앹꽦 (Deep Copy)
         CloneSquadData();
 
-        // 2. 슬롯 뷰모델 초기화
+        // 2. ?щ’ 酉곕え??珥덇린??
         SlotViewModels = new NikkeIconViewModel[5];
         for (int i = 0; i < 5; i++)
         {
@@ -36,37 +36,37 @@ public class SquadDetailPopupViewModel : ViewModelBase
             SlotViewModels[i].AddRef();
         }
 
-        // 3. 스크롤 뷰모델 초기화
+        // 3. ?ㅽ겕濡?酉곕え??珥덇린??
         ScrollViewModel = new SquadDetailNikkeCardScrollViewModel();
         ScrollViewModel.AddRef();
         ScrollViewModel.OnSquadChanged += OnScrollSelectionChanged;
 
-        // 스쿼드 인덱스가 변경될 때만 슬롯을 갱신하도록 이벤트 구독
+        // ?ㅼ옘???몃뜳?ㅺ? 蹂寃쎈맆 ?뚮쭔 ?щ’??媛깆떊?섎룄濡??대깽??援щ룆
         CurrentSquadIndex.OnValueChanged += OnSquadIndexChanged;
 
-        // 4. 초기 스쿼드 설정
+        // 4. 珥덇린 ?ㅼ옘???ㅼ젙
         SelectSquad(initialSquadIndex);
     }
 
     /// <summary>
-    /// DataManager의 유저 스쿼드 데이터를 복제하여 임시 저장소에 보관합니다.
+    /// DataManager???좎? ?ㅼ옘???곗씠?곕? 蹂듭젣?섏뿬 ?꾩떆 ??μ냼??蹂닿??⑸땲??
     /// </summary>
     private void CloneSquadData()
     {
         _tempSquads.Clear();
         var userSquads = Managers.Data.UserData.Squads;
 
-        // 1~5번 스쿼드 순회
+        // 1~5踰??ㅼ옘???쒗쉶
         for (int i = 1; i <= 5; i++)
         {
             if (userSquads.TryGetValue(i, out var originalData))
             {
-                // UserSquadData의 Clone 메서드 사용
+                // UserSquadData??Clone 硫붿꽌???ъ슜
                 _tempSquads.Add(i, originalData.Clone());
             }
             else
             {
-                // 없으면 빈 스쿼드 생성
+                // ?놁쑝硫?鍮??ㅼ옘???앹꽦
                 _tempSquads.Add(i, new UserSquadData(i));
             }
         }
@@ -76,23 +76,23 @@ public class SquadDetailPopupViewModel : ViewModelBase
     {
         index = Mathf.Clamp(index, 0, 4);
 
-        // OnValueChanged -> RefreshSlots 호출
+        // OnValueChanged -> RefreshSlots ?몄텧
         if (CurrentSquadIndex.Value != index)
             CurrentSquadIndex.Value = index;
         else
         {
-            // 초기 실행 시 슬롯 갱신
+            // 珥덇린 ?ㅽ뻾 ???щ’ 媛깆떊
             OnSquadIndexChanged(index);
         }
     }
 
     private void OnSquadIndexChanged(int index)
     {
-        // 스크롤 뷰모델에 현재 편집할 임시 데이터 주입
+        // ?ㅽ겕濡?酉곕え?몄뿉 ?꾩옱 ?몄쭛???꾩떆 ?곗씠??二쇱엯
         int squadId = index + 1;
         if (_tempSquads.TryGetValue(squadId, out var tempSquadData))
         {
-            // Requirement 2: 스쿼드 전환 시에는 리스트 재정렬 수행
+            // Requirement 2: ?ㅼ옘???꾪솚 ?쒖뿉??由ъ뒪???ъ젙???섑뻾
             ScrollViewModel.SetSquadData(tempSquadData);
         }
 
@@ -101,12 +101,12 @@ public class SquadDetailPopupViewModel : ViewModelBase
 
     private void OnScrollSelectionChanged()
     {
-        // 스크롤뷰 조작(카드 클릭 등)으로 데이터가 변했으니 슬롯 UI 갱신
+        // ?ㅽ겕濡ㅻ럭 議곗옉(移대뱶 ?대┃ ???쇰줈 ?곗씠?곌? 蹂?덉쑝???щ’ UI 媛깆떊
         RefreshSlots();
     }
 
     /// <summary>
-    /// 현재 선택된 스쿼드 데이터로 슬롯 아이콘들을 갱신합니다.
+    /// ?꾩옱 ?좏깮???ㅼ옘???곗씠?곕줈 ?щ’ ?꾩씠肄섎뱾??媛깆떊?⑸땲??
     /// </summary>
     private async void RefreshSlots()
     {
@@ -122,7 +122,7 @@ public class SquadDetailPopupViewModel : ViewModelBase
             int nikkeId = currentSlots[i];
             await SlotViewModels[i].SetNikke(nikkeId);
 
-            // 전투력 합산
+            // ?꾪닾???⑹궛
             if (nikkeId != -1 && Managers.Data.UserData.Nikkes.TryGetValue(nikkeId, out var userNikke))
             {
                 totalCp += userNikke.combatPower.Value;
@@ -131,12 +131,12 @@ public class SquadDetailPopupViewModel : ViewModelBase
 
         TotalCombatPower.Value = Utils.FormatNumber((int)totalCp);
 
-        // 뷰 갱신 알림
+        // 酉?媛깆떊 ?뚮┝
         OnSquadDataChanged?.Invoke();
     }
 
     /// <summary>
-    /// 드래그 앤 드롭으로 슬롯 간 위치를 교환하거나 이동합니다.
+    /// ?쒕옒洹????쒕∼?쇰줈 ?щ’ 媛??꾩튂瑜?援먰솚?섍굅???대룞?⑸땲??
     /// </summary>
     public void SwapSlot(int fromIndex, int toIndex)
     {
@@ -150,10 +150,10 @@ public class SquadDetailPopupViewModel : ViewModelBase
         slots[fromIndex] = slots[toIndex];
         slots[toIndex] = temp;
 
-        // 데이터 변경 후 상단 아이콘 갱신 (누락 수정)
+        // ?곗씠??蹂寃????곷떒 ?꾩씠肄?媛깆떊 (?꾨씫 ?섏젙)
         RefreshSlots();
 
-        // 스크롤뷰의 선택 상태 갱신 (Requirement 1: 재정렬 안함)
+        // ?ㅽ겕濡ㅻ럭???좏깮 ?곹깭 媛깆떊 (Requirement 1: ?ъ젙???덊븿)
         ScrollViewModel.UpdateSelectionState(sort: false);
     }
 
@@ -165,17 +165,17 @@ public class SquadDetailPopupViewModel : ViewModelBase
 
         if (slotIndex < 0 || slotIndex >= 5) return;
 
-        // 1. 데이터 수정
+        // 1. ?곗씠???섏젙
         currentSquadData.slot[slotIndex] = -1;
 
-        // 2. 해당 슬롯 ViewModel만 갱신 (전체 RefreshSlots 호출 안함)
-        // 비동기 호출이지만 결과를 기다리지 않고 진행 (Fire and Forget)
+        // 2. ?대떦 ?щ’ ViewModel留?媛깆떊 (?꾩껜 RefreshSlots ?몄텧 ?덊븿)
+        // 鍮꾨룞湲??몄텧?댁?留?寃곌낵瑜?湲곕떎由ъ? ?딄퀬 吏꾪뻾 (Fire and Forget)
         _ = SlotViewModels[slotIndex].SetNikke(-1);
 
-        // 전체 CP 재계산이 필요하므로 RefreshSlots를 호출하여 CP와 상태를 맞춥니다.
+        // ?꾩껜 CP ?ш퀎?곗씠 ?꾩슂?섎?濡?RefreshSlots瑜??몄텧?섏뿬 CP? ?곹깭瑜?留욎땅?덈떎.
         RefreshSlots();
 
-        // 3. 스크롤 뷰 선택 상태 갱신 (Requirement 1: 재정렬 안함)
+        // 3. ?ㅽ겕濡?酉??좏깮 ?곹깭 媛깆떊 (Requirement 1: ?ъ젙???덊븿)
         ScrollViewModel.UpdateSelectionState(sort: false);
     }
 
@@ -188,7 +188,7 @@ public class SquadDetailPopupViewModel : ViewModelBase
         if (slotIndex < 0 || slotIndex >= 5) return;
 
         int nikkeId = currentSquadData.slot[slotIndex];
-        if (nikkeId == -1) return; // 빈 슬롯
+        if (nikkeId == -1) return; // 鍮??щ’
 
         Func<Task> loadTask = async () =>
         {
@@ -203,7 +203,7 @@ public class SquadDetailPopupViewModel : ViewModelBase
 
     public void OnClickAutoFormation()
     {
-        // 자동 편성 로직 (기존과 유사하나 임시 데이터 사용)
+        // ?먮룞 ?몄꽦 濡쒖쭅 (湲곗〈怨??좎궗?섎굹 ?꾩떆 ?곗씠???ъ슜)
         var userNikkes = Managers.Data.UserData.Nikkes.Values.ToList();
         var gameDataTable = Managers.Data.GetTable<NikkeGameData>();
 
@@ -243,13 +243,13 @@ public class SquadDetailPopupViewModel : ViewModelBase
         int squadId = CurrentSquadIndex.Value + 1;
         _tempSquads[squadId].slot = newSlots;
 
-        // 아이콘 갱신
+        // ?꾩씠肄?媛깆떊
         RefreshSlots();
 
-        // 스크롤뷰 갱신 (Requirement 1: 재정렬 안함)
+        // ?ㅽ겕濡ㅻ럭 媛깆떊 (Requirement 1: ?ъ젙???덊븿)
         ScrollViewModel.UpdateSelectionState(sort: false);
 
-        Debug.Log("[SquadDetail] 자동 편성 완료");
+        Debug.Log("[SquadDetail] ?먮룞 ?몄꽦 ?꾨즺");
     }
 
     public void OnClickReset()
@@ -258,16 +258,16 @@ public class SquadDetailPopupViewModel : ViewModelBase
         var slots = _tempSquads[squadId].slot;
         for (int i = 0; i < 5; i++) slots[i] = -1;
 
-        // 아이콘 갱신
+        // ?꾩씠肄?媛깆떊
         RefreshSlots();
 
-        // 스크롤뷰 갱신 (Requirement 1: 재정렬 안함)
+        // ?ㅽ겕濡ㅻ럭 媛깆떊 (Requirement 1: ?ъ젙???덊븿)
         ScrollViewModel.UpdateSelectionState(sort: false);
     }
 
     public void OnClickSave()
     {
-        // 1. 임시 데이터를 실제 UserData에 반영 (Overwrite)
+        // 1. ?꾩떆 ?곗씠?곕? ?ㅼ젣 UserData??諛섏쁺 (Overwrite)
         var realSquads = Managers.Data.UserData.Squads;
 
         foreach (var kvp in _tempSquads)
@@ -277,26 +277,26 @@ public class SquadDetailPopupViewModel : ViewModelBase
 
             if (realSquads.TryGetValue(id, out var userSquad))
             {
-                // 리스트 내용 복사
+                // 由ъ뒪???댁슜 蹂듭궗
                 userSquad.slot = new List<int>(tempData.slot);
             }
             else
             {
-                // 없으면 새로 생성하여 추가
+                // ?놁쑝硫??덈줈 ?앹꽦?섏뿬 異붽?
                 realSquads.Add(id, tempData.Clone());
             }
         }
 
-        // 2. 로컬 저장
+        // 2. 濡쒖뺄 ???
         Managers.Data.SaveUserData();
 
-        Debug.Log("[SquadDetail] 스쿼드 변경사항 저장 완료.");
+        Debug.Log("[SquadDetail] ?ㅼ옘??蹂寃쎌궗??????꾨즺.");
         OnCloseRequested?.Invoke();
     }
 
     public void OnClickClose()
     {
-        // 저장하지 않고 닫음 (임시 데이터 파기됨)
+        // ??ν븯吏 ?딄퀬 ?レ쓬 (?꾩떆 ?곗씠???뚭린??
         OnCloseRequested?.Invoke();
     }
 

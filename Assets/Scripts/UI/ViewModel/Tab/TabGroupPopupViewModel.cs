@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using UI;
 
 public class TabGroupPopupViewModel : ViewModelBase
@@ -6,18 +6,18 @@ public class TabGroupPopupViewModel : ViewModelBase
     public ReactiveProperty<eTabType> CurrentTabType { get; private set; } = new(eTabType.Lobby);
 
     /// <summary>
-    /// ÅÇ UIÀÇ ºä¸ğµ¨ ¹è¿­. eTabType enum ¼ø¼­¿Í ÀÏÄ¡ÇØ¾ß ÇÕ´Ï´Ù.
+    /// íƒ­ UIì˜ ë·°ëª¨ë¸ ë°°ì—´. eTabType enum ìˆœì„œì™€ ì¼ì¹˜í•´ì•¼ í•©ë‹ˆë‹¤.
     /// </summary>
     public ViewModelBase[] TabViewModels { get; private set; }
 
     /// <summary>
-    /// »ó´Ü ÀçÈ­ UIÀÇ ºä¸ğµ¨ÀÔ´Ï´Ù.
+    /// ìƒë‹¨ ì¬í™” UIì˜ ë·°ëª¨ë¸ì…ë‹ˆë‹¤.
     /// </summary>
     public MoneyViewModel MoneyViewModel { get; private set; }
 
     public TabGroupPopupViewModel()
     {
-        // 1. ÀÚ½Ä ÅÇ UIÀÇ ºä¸ğµ¨ »ı¼º
+        // 1. ìì‹ íƒ­ UIì˜ ë·°ëª¨ë¸ ìƒì„±
         TabViewModels = new ViewModelBase[(int)eTabType.End];
         TabViewModels[(int)eTabType.Lobby] = new LobbyTabViewModel();
         TabViewModels[(int)eTabType.Squad] = new SquadTabViewModel();
@@ -28,15 +28,15 @@ public class TabGroupPopupViewModel : ViewModelBase
         foreach (var vm in TabViewModels)
             vm?.AddRef();
 
-        // 2. ÀçÈ­ UI ºä¸ğµ¨ »ı¼º
+        // 2. ì¬í™” UI ë·°ëª¨ë¸ ìƒì„±
         MoneyViewModel = new MoneyViewModel();
         MoneyViewModel.AddRef();
     }
 
     /// <summary>
-    /// View(UI_TabGroupPopup)¿¡¼­ ÅÇ ¹öÆ° Å¬¸¯ ½Ã È£ÃâµË´Ï´Ù.
+    /// View(UI_TabGroupPopup)ì—ì„œ íƒ­ ë²„íŠ¼ í´ë¦­ ì‹œ í˜¸ì¶œë©ë‹ˆë‹¤.
     /// </summary>
-    /// <param name="tabType">»õ·Î ¼±ÅÃµÈ ÅÇÀÇ Å¸ÀÔÀÔ´Ï´Ù.</param>
+    /// <param name="tabType">ìƒˆë¡œ ì„ íƒëœ íƒ­ì˜ íƒ€ì…ì…ë‹ˆë‹¤.</param>
     public void OnTabButtonClicked(eTabType tabType)
     {
         if (CurrentTabType.Value == tabType)
@@ -47,7 +47,7 @@ public class TabGroupPopupViewModel : ViewModelBase
 
     protected override void OnDispose()
     {
-        // ÀÚ½Ä ÅÇ ºä¸ğµ¨ Á¤¸®
+        // ìì‹ íƒ­ ë·°ëª¨ë¸ ì •ë¦¬
         if (TabViewModels != null)
         {
             foreach (var vm in TabViewModels)
@@ -55,7 +55,7 @@ public class TabGroupPopupViewModel : ViewModelBase
             TabViewModels = null;
         }
 
-        // ÀçÈ­ ºä¸ğµ¨ Á¤¸®
+        // ì¬í™” ë·°ëª¨ë¸ ì •ë¦¬
         if (MoneyViewModel != null)
         {
             MoneyViewModel.Release();

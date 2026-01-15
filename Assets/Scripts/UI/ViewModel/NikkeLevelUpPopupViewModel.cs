@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using UI;
 using UnityEngine;
 
@@ -14,7 +14,7 @@ public class NikkeLevelUpPopupViewModel : ViewModelBase
     private const int INC_HP = 675;
     private const int INC_ATK = 30;
     private const int INC_DEF = 3;
-    private const int COST_PER_LEVEL_MULTIPLIER = 1000; // ·¹º§ * 1000
+    private const int COST_PER_LEVEL_MULTIPLIER = 1000; // ë ˆë²¨ * 1000
     private const int MAX_LEVEL_LIMIT = 200;
 
     // --- View Binding Properties ---
@@ -25,8 +25,8 @@ public class NikkeLevelUpPopupViewModel : ViewModelBase
     public ReactiveProperty<string> TargetLevelStr { get; private set; } = new("");
 
     // 2. Stat Texts (Value & Increase)
-    // Value: ÇöÀç ÀüÃ¼ ¼öÄ¡ (_gameData.hp µî º£ÀÌ½º Æ÷ÇÔ)
-    // Inc: ¸ñÇ¥ ·¹º§ ´Ş¼º ½Ã Áõ°¡ÇÏ´Â ¼öÄ¡
+    // Value: í˜„ì¬ ì „ì²´ ìˆ˜ì¹˜ (_gameData.hp ë“± ë² ì´ìŠ¤ í¬í•¨)
+    // Inc: ëª©í‘œ ë ˆë²¨ ë‹¬ì„± ì‹œ ì¦ê°€í•˜ëŠ” ìˆ˜ì¹˜
     public ReactiveProperty<string> StatHpValue { get; private set; } = new("");
     public ReactiveProperty<string> StatHpInc { get; private set; } = new("");
 
@@ -41,11 +41,11 @@ public class NikkeLevelUpPopupViewModel : ViewModelBase
     public ReactiveProperty<bool> IsPlusActive { get; private set; } = new(true);
     public ReactiveProperty<bool> IsLevelUpInteractable { get; private set; } = new(true);
 
-    // 4. Material Info (View¿¡¼­ »ç¿ë)
+    // 4. Material Info (Viewì—ì„œ ì‚¬ìš©)
     public int RequiredCredit { get; private set; }
     public bool HasEnoughCredit { get; private set; }
 
-    // ³»ºÎ »óÅÂ
+    // ë‚´ë¶€ ìƒíƒœ
     private int _currentLevel;
     private int _targetLevel;
 
@@ -61,7 +61,7 @@ public class NikkeLevelUpPopupViewModel : ViewModelBase
             _userData = userNikke;
         }
 
-        // Å©·¹µ÷ µ¥ÀÌÅÍ ÂüÁ¶
+        // í¬ë ˆë”§ ë°ì´í„° ì°¸ì¡°
         if (!Managers.Data.UserData.Items.TryGetValue((int)eItemType.Credit, out _creditData))
         {
             _creditData = new UserItemData((int)eItemType.Credit, 0);
@@ -69,12 +69,12 @@ public class NikkeLevelUpPopupViewModel : ViewModelBase
 
         if (_gameData == null || _userData == null)
         {
-            Debug.LogError($"[NikkeLevelUpPopupViewModel] µ¥ÀÌÅÍ ·Îµå ½ÇÆĞ. ID: {nikkeId}");
+            Debug.LogError($"[NikkeLevelUpPopupViewModel] ë°ì´í„° ë¡œë“œ ì‹¤íŒ¨. ID: {nikkeId}");
             return;
         }
 
         _currentLevel = _userData.level.Value;
-        SetTargetLevel(_currentLevel + 1); // ±âº» 1¾÷ »óÅÂ·Î ÁøÀÔ
+        SetTargetLevel(_currentLevel + 1); // ê¸°ë³¸ 1ì—… ìƒíƒœë¡œ ì§„ì…
     }
 
     private void SetTargetLevel(int newTarget)
@@ -96,17 +96,17 @@ public class NikkeLevelUpPopupViewModel : ViewModelBase
         IsPlusActive.Value = _targetLevel < MAX_LEVEL_LIMIT;
 
         // 3. Stats Calculation 
-        // ÇöÀç ÀüÃ¼ HP = Base(_gameData.hp) + (CurrentLevel - 1) * INC
+        // í˜„ì¬ ì „ì²´ HP = Base(_gameData.hp) + (CurrentLevel - 1) * INC
         int curHp = _gameData.hp + (_currentLevel - 1) * INC_HP;
         int curAtk = _gameData.attack + (_currentLevel - 1) * INC_ATK;
         int curDef = _gameData.defense + (_currentLevel - 1) * INC_DEF;
 
-        // ¸ñÇ¥ ÀüÃ¼ HP
+        // ëª©í‘œ ì „ì²´ HP
         int nextHpTotal = _gameData.hp + (_targetLevel - 1) * INC_HP;
         int nextAtkTotal = _gameData.attack + (_targetLevel - 1) * INC_ATK;
         int nextDefTotal = _gameData.defense + (_targetLevel - 1) * INC_DEF;
 
-        // UI ¹İ¿µ (Value´Â ÇöÀç ¼öÄ¡, Inc´Â Áõ°¡·®)
+        // UI ë°˜ì˜ (ValueëŠ” í˜„ì¬ ìˆ˜ì¹˜, IncëŠ” ì¦ê°€ëŸ‰)
         StatHpValue.Value = curHp.ToString();
         StatHpInc.Value = $"+{nextHpTotal - curHp}";
 
@@ -117,10 +117,10 @@ public class NikkeLevelUpPopupViewModel : ViewModelBase
         StatDefInc.Value = $"+{nextDefTotal - curDef}";
 
         // 4. Material Cost Calculation (Cumulative)
-        // °¢ ·¹º§ ´ç ÇÊ¿äÇÑ ÀçÈ­ = ÇØ´ç ·¹º§ * 1000
-        // ¿¹: Lv 1 -> Lv 3 : (Lv 1->2 ºñ¿ë) + (Lv 2->3 ºñ¿ë)
-        // ºñ¿ë °ø½Ä: µµ´ŞÇÏ·Á´Â ·¹º§ÀÌ LÀÏ ¶§ ºñ¿ëÀÌ (L-1)*1000 ÀÎÁö, L*1000 ÀÎÁö?
-        // ¿äÃ» »çÇ× "·¹º§ * 1000"À» "ÇöÀç ·¹º§ * 1000" ºñ¿ëÀ¸·Î ÇØ¼®ÇÏ¿© (Lv 1->2 °¥ ¶§ 1000 ¼Ò¸ğ) °è»êÇÕ´Ï´Ù.
+        // ê° ë ˆë²¨ ë‹¹ í•„ìš”í•œ ì¬í™” = í•´ë‹¹ ë ˆë²¨ * 1000
+        // ì˜ˆ: Lv 1 -> Lv 3 : (Lv 1->2 ë¹„ìš©) + (Lv 2->3 ë¹„ìš©)
+        // ë¹„ìš© ê³µì‹: ë„ë‹¬í•˜ë ¤ëŠ” ë ˆë²¨ì´ Lì¼ ë•Œ ë¹„ìš©ì´ (L-1)*1000 ì¸ì§€, L*1000 ì¸ì§€?
+        // ìš”ì²­ ì‚¬í•­ "ë ˆë²¨ * 1000"ì„ "í˜„ì¬ ë ˆë²¨ * 1000" ë¹„ìš©ìœ¼ë¡œ í•´ì„í•˜ì—¬ (Lv 1->2 ê°ˆ ë•Œ 1000 ì†Œëª¨) ê³„ì‚°í•©ë‹ˆë‹¤.
 
         long count = _targetLevel - _currentLevel;
         long levelSum = count * (_currentLevel + (_targetLevel - 1)) / 2;
@@ -129,7 +129,7 @@ public class NikkeLevelUpPopupViewModel : ViewModelBase
         RequiredCredit = (int)totalCost;
         HasEnoughCredit = _creditData.count.Value >= RequiredCredit;
 
-        // ÀçÈ­ ºÎÁ· ½Ã ·¹º§¾÷ ¹öÆ° ºñÈ°¼ºÈ­
+        // ì¬í™” ë¶€ì¡± ì‹œ ë ˆë²¨ì—… ë²„íŠ¼ ë¹„í™œì„±í™”
         IsLevelUpInteractable.Value = HasEnoughCredit;
     }
 
@@ -142,10 +142,10 @@ public class NikkeLevelUpPopupViewModel : ViewModelBase
 
     public void OnClickInventory()
     {
-        // ÀÎº¥Åä¸® ¹öÆ° Å¬¸¯ ½Ã ·Î±×¸¸ ¶ç¿ò
-        Debug.Log("[NikkeLevelUpPopupViewModel] ÀÎº¥Åä¸® ¹öÆ° Å¬¸¯µÊ (±¸Çö ¿¹Á¤)");
+        // ì¸ë²¤í† ë¦¬ ë²„íŠ¼ í´ë¦­ ì‹œ ë¡œê·¸ë§Œ ë„ì›€
+        Debug.Log("[NikkeLevelUpPopupViewModel] ì¸ë²¤í† ë¦¬ ë²„íŠ¼ í´ë¦­ë¨ (êµ¬í˜„ ì˜ˆì •)");
         /*
-        // ÃßÈÄ ±¸Çö:
+        // ì¶”í›„ êµ¬í˜„:
         Managers.UI.ShowAsync<UI_InventoryPopup>();
         */
     }
@@ -156,38 +156,38 @@ public class NikkeLevelUpPopupViewModel : ViewModelBase
 
         if (!HasEnoughCredit)
         {
-            // ºñÈ°¼ºÈ­ µÇ¾î ÀÖ¾î ´­¸®Áö ¾Ê°ÚÁö¸¸ ¿¹¿Ü Ã³¸®
-            Debug.LogWarning($"[NikkeLevelUpPopupViewModel] Å©·¹µ÷ ºÎÁ·. º¸À¯: {_creditData.count.Value}, ÇÊ¿ä: {RequiredCredit}");
+            // ë¹„í™œì„±í™” ë˜ì–´ ìˆì–´ ëˆŒë¦¬ì§€ ì•Šê² ì§€ë§Œ ì˜ˆì™¸ ì²˜ë¦¬
+            Debug.LogWarning($"[NikkeLevelUpPopupViewModel] í¬ë ˆë”§ ë¶€ì¡±. ë³´ìœ : {_creditData.count.Value}, í•„ìš”: {RequiredCredit}");
             return;
         }
 
-        // 1. ÀçÈ­ Â÷°¨
+        // 1. ì¬í™” ì°¨ê°
         _creditData.count.Value -= RequiredCredit;
 
         int prevLevel = _userData.level.Value;
 
-        // 2. ·¹º§ Àû¿ë
+        // 2. ë ˆë²¨ ì ìš©
         _userData.level.Value = _targetLevel;
 
-        // 3. ÀüÅõ·Â °è»ê ¹× Ä³½Ì
-        // ÃÖÁ¾ ½ºÅÈ
+        // 3. ì „íˆ¬ë ¥ ê³„ì‚° ë° ìºì‹±
+        // ìµœì¢… ìŠ¤íƒ¯
         int finalHp = _gameData.hp + (_targetLevel - 1) * INC_HP;
         int finalAtk = _gameData.attack + (_targetLevel - 1) * INC_ATK;
         int finalDef = _gameData.defense + (_targetLevel - 1) * INC_DEF;
 
-        // ÀÓÀÇ °ø½Ä: (HP*0.5 + Atk*2.5 + Def*1.2) * Level * 0.001
+        // ì„ì˜ ê³µì‹: (HP*0.5 + Atk*2.5 + Def*1.2) * Level * 0.001
         float score = (finalHp * 0.5f) + (finalAtk * 2.5f) + (finalDef * 1.2f);
         int newCp = Mathf.FloorToInt(score * _targetLevel * 0.001f);
         if (newCp < 100) newCp = 100;
 
         _userData.combatPower.Value = newCp;
 
-        Debug.Log($"[NikkeLevelUpPopupViewModel] ·¹º§¾÷ ¿Ï·á! Lv.{prevLevel} -> Lv.{_targetLevel}. ÀüÅõ·Â: {newCp}");
+        Debug.Log($"[NikkeLevelUpPopupViewModel] ë ˆë²¨ì—… ì™„ë£Œ! Lv.{prevLevel} -> Lv.{_targetLevel}. ì „íˆ¬ë ¥: {newCp}");
 
-        // 4. ¹Ì¼Ç ½Ã½ºÅÛ ÅëÁö
+        // 4. ë¯¸ì…˜ ì‹œìŠ¤í…œ í†µì§€
         Managers.GameSystem.MissionSystem.ReportStageClear();
 
-        // 5. ´İ±â
+        // 5. ë‹«ê¸°
         OnCloseRequested?.Invoke();
     }
 

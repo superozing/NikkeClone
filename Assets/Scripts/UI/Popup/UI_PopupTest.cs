@@ -1,4 +1,4 @@
-using TMPro;
+ï»¿using TMPro;
 using UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -42,7 +42,7 @@ public class UI_PopupTest : UI_Popup
 
     void OnClose()
     {
-        Debug.Log("UI_PopupTest ¸¦ ´Ý½À´Ï´Ù.");
+        Debug.Log("UI_PopupTest ë¥¼ ë‹«ìŠµë‹ˆë‹¤.");
         Managers.UI.Close(this);
     }
 }

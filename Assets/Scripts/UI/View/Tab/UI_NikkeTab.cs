@@ -1,4 +1,4 @@
-using UI;
+ï»¿using UI;
 using UnityEngine;
 
 public class UI_NikkeTab : UI_TabBase
@@ -23,7 +23,7 @@ public class UI_NikkeTab : UI_TabBase
     {
         base.OnTabSelected();
 
-        // ÅÇ È°¼ºÈ­ ½Ã ¿¬Ãâ È£Ãâ
+        // íƒ­ í™œì„±í™” ì‹œ ì—°ì¶œ í˜¸ì¶œ
         if (_scrollView != null)
             _scrollView.PlayActiveAnimation();
     }

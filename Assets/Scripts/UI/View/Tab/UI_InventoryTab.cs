@@ -1,4 +1,4 @@
-using DG.Tweening;
+ï»¿using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -25,11 +25,11 @@ public class UI_InventoryTab : UI_TabBase
         base.Awake();
         _iconTemplate.SetActive(false);
 
-        // UI ¿¬Ãâ °´Ã¼ »ı¼º
+        // UI ì—°ì¶œ ê°ì²´ ìƒì„±
         _bgExpandAnim = new HorizontalExpandUIAnimation(0.3f, Ease.OutQuart);
         _contentSlideAnim = new VerticalSlideFadeUIAnimation(0.3f, 100f, Ease.OutQuart);
 
-        _itemBg.localScale = new Vector3(0f, 1f, 1f); // xÃà Ä¿Áö¸ç È®Àå½ÃÅ°±â À§ÇØ 0À¸·Î ¼³Á¤
+        _itemBg.localScale = new Vector3(0f, 1f, 1f); // xì¶• ì»¤ì§€ë©° í™•ì¥ì‹œí‚¤ê¸° ìœ„í•´ 0ìœ¼ë¡œ ì„¤ì •
 
         _originScrollPos = _scrollCanvasGroup.GetComponent<RectTransform>().anchoredPosition;
 
@@ -39,7 +39,7 @@ public class UI_InventoryTab : UI_TabBase
 
     public override void SetViewModel(ViewModelBase viewModel)
     {
-        // 1. ±âÁ¸ ±¸µ¶ ÇØÁ¦
+        // 1. ê¸°ì¡´ êµ¬ë… í•´ì œ
         if (_viewModel != null)
         {
             _viewModel.OnRequestItemDetail -= ShowItemDetailPopup;
@@ -51,11 +51,11 @@ public class UI_InventoryTab : UI_TabBase
 
         if (_viewModel != null)
         {
-            // 2. »õ ÀÌº¥Æ® ±¸µ¶
+            // 2. ìƒˆ ì´ë²¤íŠ¸ êµ¬ë…
             _viewModel.OnRequestItemDetail += ShowItemDetailPopup;
             _viewModel.OnInventoryUpdated += RefreshList;
 
-            // ÀÌ¹Ì µ¥ÀÌÅÍ ·Îµå°¡ ³¡³­ °æ¿ì¸¦ Ã¼Å©ÇÏ±â À§ÇØ È£Ãâ
+            // ì´ë¯¸ ë°ì´í„° ë¡œë“œê°€ ëë‚œ ê²½ìš°ë¥¼ ì²´í¬í•˜ê¸° ìœ„í•´ í˜¸ì¶œ
             if (_viewModel.ItemViewModels.Count > 0)
                 RefreshList();
         }
@@ -89,10 +89,10 @@ public class UI_InventoryTab : UI_TabBase
         _itemBg.localScale = new Vector3(0f, 1f, 1f);
         _scrollCanvasGroup.alpha = 0f;
 
-        // 1. ¹è°æ È®Àå
+        // 1. ë°°ê²½ í™•ì¥
         await _bgExpandAnim.ExecuteAsync(_bgCanvasGroup);
 
-        // 2. ÄÜÅÙÃ÷ µîÀå
+        // 2. ì½˜í…ì¸  ë“±ì¥
         await _contentSlideAnim.ExecuteAsync(_scrollCanvasGroup);
     }
 
@@ -101,7 +101,7 @@ public class UI_InventoryTab : UI_TabBase
         if (_iconTemplate == null || _contentTransform == null) 
             return;
 
-        // ±âÁ¸ ¾ÆÀÌÄÜ Á¦°Å
+        // ê¸°ì¡´ ì•„ì´ì½˜ ì œê±°
         foreach (var icon in _spawnedIcons)
             Managers.Resource.Destroy(icon.gameObject);
 

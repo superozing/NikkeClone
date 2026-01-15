@@ -1,31 +1,31 @@
-using System.Threading.Tasks;
+ï»¿using System.Threading.Tasks;
 using UI;
 using UnityEngine;
 
-public class ItemIconViewModel : IconViewModel // »ó¼Ó º¯°æ
+public class ItemIconViewModel : IconViewModel // ìƒì† ë³€ê²½
 {
     private ItemGameData _gameData;
     private UserItemData _userData;
 
     public override ReactiveProperty<Sprite> MainIconSprite { get; } = new();
 
-    // --- »ç¿ëÇÏÁö ¾ÊÀ» ½ºÇÁ¶óÀÌÆ® --- 
+    // --- ì‚¬ìš©í•˜ì§€ ì•Šì„ ìŠ¤í”„ë¼ì´íŠ¸ --- 
     public override ReactiveProperty<Sprite> RarityFrameSprite { get; } = new();
     // ------------------------------
 
     public override ReactiveProperty<string> QuantityText { get; } = new();
 
     /// <summary>
-    /// ViewModel¿¡ »õ·Î¿î ¾ÆÀÌÅÛ Å¸ÀÔÀ» ¼³Á¤ÇÕ´Ï´Ù.
+    /// ViewModelì— ìƒˆë¡œìš´ ì•„ì´í…œ íƒ€ì…ì„ ì„¤ì •í•©ë‹ˆë‹¤.
     /// </summary>
     /// <param name="itemType"></param>
     public async Task SetItem(eItemType itemType)
     {
-        // 1. ±âÁ¸ µ¥ÀÌÅÍ ±¸µ¶ ÇØÁ¦
+        // 1. ê¸°ì¡´ ë°ì´í„° êµ¬ë… í•´ì œ
         if (_userData != null)
             _userData.count.OnValueChanged -= OnValueChanged;
 
-        // 2. ¾ÆÀÌÅÛ °ÔÀÓ µ¥ÀÌÅÍ¿Í ¾ÆÀÌÅÛ À¯Àú µ¥ÀÌÅÍ ¼¼ÆÃ
+        // 2. ì•„ì´í…œ ê²Œì„ ë°ì´í„°ì™€ ì•„ì´í…œ ìœ ì € ë°ì´í„° ì„¸íŒ…
         int itemID = (int)itemType;
         _gameData = Managers.Data.Get<ItemGameData>(itemID);
         if (!Managers.Data.UserData.Items.TryGetValue(itemID, out _userData))
@@ -33,7 +33,7 @@ public class ItemIconViewModel : IconViewModel // »ó¼Ó º¯°æ
         else
         {
             _userData.count.OnValueChanged += OnValueChanged;
-            // ÃÊ±â°ª ¼³Á¤
+            // ì´ˆê¸°ê°’ ì„¤ì •
             OnValueChanged(_userData.count.Value);
         }
 
@@ -42,7 +42,7 @@ public class ItemIconViewModel : IconViewModel // »ó¼Ó º¯°æ
             QuantityText.Value = "X 0";
         }
 
-        // 3. ¸®¼Ò½º ºñµ¿±â ·Îµå
+        // 3. ë¦¬ì†ŒìŠ¤ ë¹„ë™ê¸° ë¡œë“œ
         if (_gameData != null)
             MainIconSprite.Value = await Managers.Resource.LoadAsync<Sprite>(_gameData.iconPath);
     }
@@ -52,7 +52,7 @@ public class ItemIconViewModel : IconViewModel // »ó¼Ó º¯°æ
         QuantityText.Value = "X " + Utils.FormatNumber(count);
     }
 
-    // ¾ÆÀÌÅÛ ÆË¾÷¿¡¼­ ¾ÆÀÌÄÜÀÇ ¹öÆ° ÀÔ·Â µ¿ÀÛÀº ¾ø´Ù.
+    // ì•„ì´í…œ íŒì—…ì—ì„œ ì•„ì´ì½˜ì˜ ë²„íŠ¼ ì…ë ¥ ë™ì‘ì€ ì—†ë‹¤.
     public override void OnClickButton() { }
 
     protected override void OnDispose()

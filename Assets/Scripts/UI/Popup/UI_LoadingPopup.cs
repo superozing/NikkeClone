@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,7 +6,7 @@ using DG.Tweening;
 
 public class UI_LoadingPopup : UI_DontDestroyPopup, IUIShowHideAnimation
 {
-    // 로딩 팝업 입력 액션은 기본 None 처리 (Esc로 닫기 불가)
+    // 濡쒕뵫 ?앹뾽 ?낅젰 ?≪뀡? 湲곕낯 None 泥섎━ (Esc濡??リ린 遺덇?)
     public override string ActionMapKey => "None";
 
     [Header("Components")]
@@ -19,7 +19,7 @@ public class UI_LoadingPopup : UI_DontDestroyPopup, IUIShowHideAnimation
     private LoadingPopupViewModel _viewModel;
     private Material _wipeMaterial;
 
-    // 연출 객체
+    // ?곗텧 媛앹껜
     private IUIAnimation _wipeInAnim;
     private IUIAnimation _wipeOutAnim;
 
@@ -29,29 +29,29 @@ public class UI_LoadingPopup : UI_DontDestroyPopup, IUIShowHideAnimation
 
         if (_wipeImage != null)
         {
-            // 런타임에 Material 인스턴싱하여 원래 자산 변경 방지
+            // ?고??꾩뿉 Material ?몄뒪?댁떛?섏뿬 ?먮옒 ?먯궛 蹂寃?諛⑹?
             _wipeMaterial = new Material(_wipeImage.material);
             _wipeImage.material = _wipeMaterial;
 
-            // IUIAnimation 객체 생성
-            // Wipe In: 0 -> 1 (화면 덮기 / 닫힘) => Show Animation
+            // IUIAnimation 媛앹껜 ?앹꽦
+            // Wipe In: 0 -> 1 (?붾㈃ ??린 / ?ロ옒) => Show Animation
             _wipeInAnim = new WipeUIAnimation(_wipeMaterial, 0f, 1f, _wipeDuration, _wipeEase);
 
-            // Wipe Out: 1 -> 0 (화면 열기 / 열림) => Hide Animation
+            // Wipe Out: 1 -> 0 (?붾㈃ ?닿린 / ?대┝) => Hide Animation
             _wipeOutAnim = new WipeUIAnimation(_wipeMaterial, 1f, 0f, _wipeDuration, _wipeEase);
         }
     }
 
     void OnEnable()
     {
-        // 초기 상태 설정 (Cutoff 0 -> 투명/열림)
+        // 珥덇린 ?곹깭 ?ㅼ젙 (Cutoff 0 -> ?щ챸/?대┝)
         if (_wipeMaterial != null)
         {
             _wipeMaterial.SetFloat(Shader.PropertyToID("_CutOff"), 0f);
         }
 
-        // ViewModel이 할당된 경우에만 프로세스 시작
-        // 풀링 재사용 시에도 OnEnable()은 항상 호출됩니다.
+        // ViewModel???좊떦??寃쎌슦?먮쭔 ?꾨줈?몄뒪 ?쒖옉
+        // ?留??ъ궗???쒖뿉??OnEnable()? ??긽 ?몄텧?⑸땲??
         if (_viewModel != null)
         {
             _viewModel.ExecuteProcess();
@@ -60,7 +60,7 @@ public class UI_LoadingPopup : UI_DontDestroyPopup, IUIShowHideAnimation
 
     public override void SetViewModel(ViewModelBase viewModel)
     {
-        // 구독 해제 루틴
+        // 援щ룆 ?댁젣 猷⑦떞
         if (_viewModel != null)
         {
             _viewModel.OnWipeInRequested -= OnWipeInRequested;
@@ -72,15 +72,15 @@ public class UI_LoadingPopup : UI_DontDestroyPopup, IUIShowHideAnimation
 
         base.SetViewModel(viewModel);
 
-        // 새 구독 등록
+        // ??援щ룆 ?깅줉
         if (_viewModel != null)
         {
             _viewModel.OnWipeInRequested += OnWipeInRequested;
             _viewModel.OnWipeOutRequested += OnWipeOutRequested;
             _viewModel.OnCloseRequested += CloseSelf;
 
-            // 만약 이미 활성화된 상태라면(Active Prefab 등)
-            // OnEnable이 ViewModel 설정 전에 실행되었을 수 있으므로 여기서 프로세스를 시작합니다.
+            // 留뚯빟 ?대? ?쒖꽦?붾맂 ?곹깭?쇰㈃(Active Prefab ??
+            // OnEnable??ViewModel ?ㅼ젙 ?꾩뿉 ?ㅽ뻾?섏뿀?????덉쑝誘濡??ш린???꾨줈?몄뒪瑜??쒖옉?⑸땲??
             if (gameObject.activeInHierarchy)
             {
                 _viewModel.ExecuteProcess();
@@ -104,7 +104,7 @@ public class UI_LoadingPopup : UI_DontDestroyPopup, IUIShowHideAnimation
 
     // --- Event Handlers (ViewModel -> View) ---
 
-    // Func<Task> 델리게이트 매칭을 위해 래퍼 사용
+    // Func<Task> ?몃━寃뚯씠??留ㅼ묶???꾪빐 ?섑띁 ?ъ슜
     private Task OnWipeInRequested() => PlayShowAnimationAsync();
     private Task OnWipeOutRequested() => PlayHideAnimationAsync();
 
@@ -117,7 +117,7 @@ public class UI_LoadingPopup : UI_DontDestroyPopup, IUIShowHideAnimation
     {
         base.OnDestroy();
 
-        // 생성한 Material 인스턴스 파괴 (메모리 누수 방지)
+        // ?앹꽦??Material ?몄뒪?댁뒪 ?뚭눼 (硫붾え由??꾩닔 諛⑹?)
         if (_wipeMaterial != null)
         {
             Destroy(_wipeMaterial);

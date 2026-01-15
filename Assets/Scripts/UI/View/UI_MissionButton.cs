@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using TMPro;
 using UI;
 using UnityEngine;
@@ -13,9 +13,9 @@ public class UI_MissionButton : UI_View
     private MissionButtonViewModel _viewModel;
 
     /// <summary>
-    /// ÀÌ View¿Í »óÈ£ÀÛ¿ëÇÒ ViewModelÀ» ¼³Á¤(ÁÖÀÔ)ÇÏ°í µ¥ÀÌÅÍ ¹ÙÀÎµùÀ» ½ÃÀÛÇÕ´Ï´Ù.
+    /// ì´ Viewì™€ ìƒí˜¸ì‘ìš©í•  ViewModelì„ ì„¤ì •(ì£¼ì…)í•˜ê³  ë°ì´í„° ë°”ì¸ë”©ì„ ì‹œì‘í•©ë‹ˆë‹¤.
     /// </summary>
-    /// <param name="viewModel">ÁÖÀÔÇÒ ViewModelÀÔ´Ï´Ù. (¹İµå½Ã MissionButtonViewModelÀÌ¾î¾ß ÇÔ)</param>
+    /// <param name="viewModel">ì£¼ì…í•  ViewModelì…ë‹ˆë‹¤. (ë°˜ë“œì‹œ MissionButtonViewModelì´ì–´ì•¼ í•¨)</param>
     public override void SetViewModel(ViewModelBase viewModel)
     {
         if (_viewModel != null)
@@ -27,13 +27,13 @@ public class UI_MissionButton : UI_View
 
         if (_viewModel == null && viewModel != null)
         {
-            Debug.LogError($"[UI_MissionButton] Àß¸øµÈ ViewModel Å¸ÀÔÀÌ ÁÖÀÔµÇ¾ú½À´Ï´Ù.");
+            Debug.LogError($"[UI_MissionButton] ì˜ëª»ëœ ViewModel íƒ€ì…ì´ ì£¼ì…ë˜ì—ˆìŠµë‹ˆë‹¤.");
             return;
         }
 
         if (_viewModel != null)
         {
-            // ReactiveProperty ¹ÙÀÎµù
+            // ReactiveProperty ë°”ì¸ë”©
             Bind(_viewModel.MissionDesc, text => _missionDescText.text = text);
             Bind(_viewModel.IsRedDotActive, active => { if (_redDot) _redDot.SetActive(active); });
 
@@ -45,7 +45,7 @@ public class UI_MissionButton : UI_View
     }
 
     /// <summary>
-    /// MissionPopupÀ» ¿­¾î¿ä.
+    /// MissionPopupì„ ì—´ì–´ìš”.
     /// </summary>
     private async void ShowMissionPopup()
     {
