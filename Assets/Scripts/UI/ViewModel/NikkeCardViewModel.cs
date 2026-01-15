@@ -24,6 +24,9 @@ public class NikkeCardViewModel : ViewModelBase
     public ReactiveProperty<int> Level { get; private set; } = new();
     public ReactiveProperty<string> CombatPowerText { get; private set; } = new();
 
+    // 빈 상태 표시를 위한 프로퍼티
+    public ReactiveProperty<bool> IsEmpty { get; } = new(false);
+
     public ReactiveProperty<Sprite> FaceImage { get; private set; } = new();
     public ReactiveProperty<Sprite> ClassIcon { get; private set; } = new();
     public ReactiveProperty<Sprite> CodeIcon { get; private set; } = new();
