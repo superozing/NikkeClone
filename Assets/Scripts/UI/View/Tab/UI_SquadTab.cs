@@ -104,7 +104,7 @@ public class UI_SquadTab : UI_TabBase
             if (i < _cardSlots.Length && _cardSlots[i] != null)
             {
                 _cardSlots[i].SetViewModel(vm);
-                _cardSlots[i].gameObject.SetActive(hasNikke);
+                _cardSlots[i].gameObject.SetActive(true);
             }
 
             // 스킬 버튼 활성/비활성
