@@ -1,0 +1,44 @@
+{
+    "4001": {
+        "id": 4001,
+        "name": "일반형 랩쳐",
+        "grade": 1,
+        "elementCode": 0,
+        "skills": [
+            {
+                "name": "기본 공격",
+                "iconPath": "Icons/Rapture/skill_basic",
+                "description": "단일 대상에게 공격력의 100%만큼 피해를 입힙니다."
+            }
+        ],
+        "status": {
+            "hp": 10000,
+            "attack": 500,
+            "defense": 100
+        }
+    },
+    "4002": {
+        "id": 4002,
+        "name": "공중형 랩쳐",
+        "grade": 1,
+        "elementCode": 1,
+        "skills": [],
+        "status": {
+            "hp": 8000,
+            "attack": 600,
+            "defense": 80
+        }
+    },
+    "4003": {
+        "id": 4003,
+        "name": "보스 랩쳐",
+        "grade": 2,
+        "elementCode": 2,
+        "skills": [],
+        "status": {
+            "hp": 50000,
+            "attack": 1500,
+            "defense": 300
+        }
+    }
+}

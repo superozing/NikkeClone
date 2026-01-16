@@ -1,0 +1,20 @@
+{
+    "2001": {
+        "id": 2001,
+        "phaseIds": [
+            3001,
+            3002,
+            3003
+        ],
+        "phaseProgressWeights": [
+            0.3,
+            0.3,
+            0.4
+        ],
+        "appearingRaptureIds": [
+            4001,
+            4002,
+            4003
+        ]
+    }
+}
