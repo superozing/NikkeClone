@@ -65,6 +65,18 @@ public class DataManager : IManagerBase
                 case "MissionGameData.json":
                     loadingTasks.Add(LoadJsonAsync<MissionGameData>(fileName));
                     break;
+                case "StageGameData.json":
+                    loadingTasks.Add(LoadJsonAsync<StageGameData>(fileName));
+                    break;
+                case "StageBattleGameData.json":
+                    loadingTasks.Add(LoadJsonAsync<StageBattleGameData>(fileName));
+                    break;
+                case "PhaseGameData.json":
+                    loadingTasks.Add(LoadJsonAsync<PhaseGameData>(fileName));
+                    break;
+                case "RaptureGameData.json":
+                    loadingTasks.Add(LoadJsonAsync<RaptureGameData>(fileName));
+                    break;
 
                 // 새로운 GameData를 추가할 경우 여기에 case 구문을 추가
 
