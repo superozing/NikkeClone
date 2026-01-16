@@ -171,6 +171,7 @@ public class UserDataModel
     public Dictionary<int, UserItemData> Items { get; set; } = new Dictionary<int, UserItemData>();
     public Dictionary<int, UserSquadData> Squads { get; set; } = new Dictionary<int, UserSquadData>();
     public Dictionary<int, UserMissionData> Missions { get; set; } = new Dictionary<int, UserMissionData>();
+    public UserChapterData Chapter { get; set; } = new UserChapterData();
 }
 
 [Serializable]
@@ -257,7 +258,84 @@ public class UserMissionData
     }
 }
 
+#region UserChapterData
+
+[Serializable]
+public class UserChapterData
+{
+    public int currentChapterId;                // 현재 진행 중인 챕터 ID
+    public HashSet<int> clearedStageIds;        // 클리어된 스테이지 ID 집합
+    public int? pendingDeadAnimationStageId;    // Dead 연출 대기 스테이지 ID (nullable)
+
+    /// <summary>
+    /// 스테이지 클리어 상태 변경 시 발생하는 이벤트입니다.
+    /// </summary>
+    [field: NonSerialized]
+    public event Action<int> OnStageCleared;
+
+    public UserChapterData()
+    {
+        clearedStageIds = new HashSet<int>();
+    }
+
+    /// <summary>
+    /// 특정 스테이지가 클리어되었는지 확인합니다.
+    /// </summary>
+    public bool IsStageCleared(int stageId) => clearedStageIds.Contains(stageId);
+
+    /// <summary>
+    /// 스테이지를 클리어 처리하고, Dead 연출 버퍼에 저장합니다.
+    /// </summary>
+    public void MarkStageCleared(int stageId)
+    {
+        if (clearedStageIds.Add(stageId))
+        {
+            pendingDeadAnimationStageId = stageId;
+            OnStageCleared?.Invoke(stageId);
+        }
+    }
+
+    /// <summary>
+    /// Dead 연출 버퍼를 비웁니다. Campaign Scene에서 연출 재생 후 호출.
+    /// </summary>
+    public void ClearPendingDeadAnimation()
+    {
+        pendingDeadAnimationStageId = null;
+    }
+
+    /// <summary>
+    /// 특정 보스 스테이지 클리어 시 챕터 해금 연출을 위한 리스너 바인딩용.
+    /// </summary>
+    public void SubscribeToBossStageCleared(int bossStageId, Action onBossCleared)
+    {
+        OnStageCleared += (clearedId) =>
+        {
+            if (clearedId == bossStageId)
+                onBossCleared?.Invoke();
+        };
+    }
+}
+
+#endregion
+
 // ======================= Campaign Game Data =======================
+
+#region Chapter Game Data
+
+[Serializable]
+public class ChapterGameData : IDataId
+{
+    public int id;
+    public int order;               // 정렬용 순서 (1, 2, 3...)
+    public string chapterNumber;    // "1 CHAPTER", "2 CHAPTER"
+    public string chapterName;      // "추락", "전진"
+    public int[] stageIds;          // 포함된 스테이지 ID 배열
+    public int bossStageId;         // 보스 스테이지 ID (챕터 해금 트리거)
+
+    public int ID => id;
+}
+
+#endregion
 
 #region Shared Data Structures
 
