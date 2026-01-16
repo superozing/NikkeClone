@@ -171,6 +171,7 @@ public class UserDataModel
     public Dictionary<int, UserItemData> Items { get; set; } = new Dictionary<int, UserItemData>();
     public Dictionary<int, UserSquadData> Squads { get; set; } = new Dictionary<int, UserSquadData>();
     public Dictionary<int, UserMissionData> Missions { get; set; } = new Dictionary<int, UserMissionData>();
+    public UserChapterData Chapter { get; set; } = new UserChapterData();
 }
 
 [Serializable]
@@ -256,3 +257,209 @@ public class UserMissionData
         this.currentCount = new ReactiveProperty<int>(0);
     }
 }
+
+#region UserChapterData
+
+[Serializable]
+public class UserChapterData
+{
+    public int currentChapterId;                // 현재 진행 중인 챕터 ID
+    public HashSet<int> clearedStageIds;        // 클리어된 스테이지 ID 집합
+    public int? pendingDeadAnimationStageId;    // Dead 연출 대기 스테이지 ID (nullable)
+
+    /// <summary>
+    /// 스테이지 클리어 상태 변경 시 발생하는 이벤트입니다.
+    /// </summary>
+    [field: NonSerialized]
+    public event Action<int> OnStageCleared;
+
+    public UserChapterData()
+    {
+        clearedStageIds = new HashSet<int>();
+    }
+
+    /// <summary>
+    /// 특정 스테이지가 클리어되었는지 확인합니다.
+    /// </summary>
+    public bool IsStageCleared(int stageId) => clearedStageIds.Contains(stageId);
+
+    /// <summary>
+    /// 스테이지를 클리어 처리하고, Dead 연출 버퍼에 저장합니다.
+    /// </summary>
+    public void MarkStageCleared(int stageId)
+    {
+        if (clearedStageIds.Add(stageId))
+        {
+            pendingDeadAnimationStageId = stageId;
+            OnStageCleared?.Invoke(stageId);
+        }
+    }
+
+    /// <summary>
+    /// Dead 연출 버퍼를 비웁니다. Campaign Scene에서 연출 재생 후 호출.
+    /// </summary>
+    public void ClearPendingDeadAnimation()
+    {
+        pendingDeadAnimationStageId = null;
+    }
+
+    /// <summary>
+    /// 특정 보스 스테이지 클리어 시 챕터 해금 연출을 위한 리스너 바인딩용.
+    /// </summary>
+    public void SubscribeToBossStageCleared(int bossStageId, Action onBossCleared)
+    {
+        OnStageCleared += (clearedId) =>
+        {
+            if (clearedId == bossStageId)
+                onBossCleared?.Invoke();
+        };
+    }
+}
+
+#endregion
+
+// ======================= Campaign Game Data =======================
+
+#region Chapter Game Data
+
+[Serializable]
+public class ChapterGameData : IDataId
+{
+    public int id;
+    public int order;               // 정렬용 순서 (1, 2, 3...)
+    public string chapterNumber;    // "1 CHAPTER", "2 CHAPTER"
+    public string chapterName;      // "추락", "전진"
+    public int[] stageIds;          // 포함된 스테이지 ID 배열
+    public int bossStageId;         // 보스 스테이지 ID (챕터 해금 트리거)
+
+    public int ID => id;
+}
+
+#endregion
+
+#region Shared Data Structures
+
+/// <summary>
+/// Nikke와 Rapture 공용 스테이터스 구조체입니다.
+/// </summary>
+[Serializable]
+public class StatusData
+{
+    public long hp;
+    public long attack;
+    public long defense;
+}
+
+#endregion
+
+#region Stage Game Data
+
+[Serializable]
+public class StageGameData : IDataId
+{
+    public int id;
+    public string name;
+    public eStageType stageType;
+    public int weaknessCode;            // 약점코드 (eNikkeCode 대응)
+
+    public RangeRatioData adequateRange; // 적정 사거리 비율
+    public int referenceCombatPower;     // 기준 전투력
+
+    public List<RewardData> rewards;     // 보상 정보
+    public int stageBattleDataId;        // StageBattleGameData 참조 ID
+
+    public int ID => id;
+}
+
+[Serializable]
+public class RangeRatioData
+{
+    public int near;  // 0~100
+    public int mid;   // 0~100
+    public int far;   // 0~100
+    // 합계 = 100
+}
+
+[Serializable]
+public class RewardData
+{
+    public int itemId;
+    public int count;
+}
+
+#endregion
+
+#region Stage Battle Game Data
+
+[Serializable]
+public class StageBattleGameData : IDataId
+{
+    public int id;
+    public int[] phaseIds;                  // 페이즈 ID 배열 (순서대로)
+    public float[] phaseProgressWeights;    // 각 페이즈 완료 시 진행률 가중치 (합계 1.0)
+    public int[] appearingRaptureIds;       // 등장하는 모든 랩쳐 ID (캐싱용, 후순위)
+
+    public int ID => id;
+
+    /// <summary>
+    /// 페이즈 수를 반환합니다.
+    /// </summary>
+    public int PhaseCount => phaseIds?.Length ?? 0;
+}
+
+#endregion
+
+#region Phase Game Data
+
+[Serializable]
+public class PhaseGameData : IDataId
+{
+    public int id;
+    public bool isTargetPhase;              // 타겟이 등장하는 페이즈 여부
+    public int[] appearingRaptureIds;       // 이 페이즈에 등장하는 랩쳐 ID 목록 (캐싱용)
+    public List<PhaseSpawnEntry> spawns;    // 스폰 엔트리 목록
+
+    public int ID => id;
+
+    /// <summary>
+    /// 등장 랩쳐 수를 반환합니다.
+    /// </summary>
+    public int SpawnCount => spawns?.Count ?? 0;
+}
+
+[Serializable]
+public class PhaseSpawnEntry
+{
+    public int raptureId;               // 등장할 랩쳐 ID
+    public float spawnDelaySec;         // 페이즈 시작 N초 후 스폰
+    public string spawnerId;            // "{Distance}_{Air/Ground}_{1~3}" 형식
+    public eAppearPosition appearPosition; // 등장 방향
+}
+
+#endregion
+
+#region Rapture Game Data
+
+[Serializable]
+public class RaptureGameData : IDataId
+{
+    public int id;
+    public string name;
+    public int grade;                       // 랩쳐 등급
+    public int elementCode;                 // 속성코드 (eNikkeCode 대응)
+
+    public List<RaptureSkillData> skills;   // 스킬 목록
+    public StatusData status;               // 기본 스테이터스
+
+    public int ID => id;
+}
+
+[Serializable]
+public class RaptureSkillData
+{
+    public string name;
+    public string iconPath;     // Addressable Key 또는 Resources 경로
+    public string description;
+}
+
+#endregion

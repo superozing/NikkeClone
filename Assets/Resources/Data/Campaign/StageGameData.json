@@ -1,0 +1,25 @@
+{
+    "1001": {
+        "id": 1001,
+        "name": "1-1 첫 번째 전투",
+        "stageType": 0,
+        "weaknessCode": 1,
+        "adequateRange": {
+            "near": 40,
+            "mid": 40,
+            "far": 20
+        },
+        "referenceCombatPower": 5000,
+        "rewards": [
+            {
+                "itemId": 101,
+                "count": 100
+            },
+            {
+                "itemId": 102,
+                "count": 5
+            }
+        ],
+        "stageBattleDataId": 2001
+    }
+}

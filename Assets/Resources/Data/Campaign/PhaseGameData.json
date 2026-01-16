@@ -1,0 +1,38 @@
+{
+    "3001": {
+        "id": 3001,
+        "isTargetPhase": false,
+        "appearingRaptureIds": [
+            4001,
+            4002
+        ],
+        "spawns": [
+            {
+                "raptureId": 4001,
+                "spawnDelaySec": 0.0,
+                "spawnerId": "Near_Ground_1",
+                "appearPosition": 1
+            },
+            {
+                "raptureId": 4002,
+                "spawnDelaySec": 2.5,
+                "spawnerId": "Mid_Air_2",
+                "appearPosition": 0
+            }
+        ]
+    },
+    "3002": {
+        "id": 3002,
+        "isTargetPhase": false,
+        "appearingRaptureIds": [],
+        "spawns": []
+    },
+    "3003": {
+        "id": 3003,
+        "isTargetPhase": true,
+        "appearingRaptureIds": [
+            4003
+        ],
+        "spawns": []
+    }
+}
