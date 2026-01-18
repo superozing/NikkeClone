@@ -60,6 +60,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2639e0bb0865c3c48b99f3ccedc70470
+    m_Address: RaptureGameData.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 2c242e5c5b55ef24db003061d0a1580f
     m_Address: "Assets/Textures/Nikke/\uB514\uC824_Shoot"
     m_ReadOnly: 0
@@ -200,6 +205,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6eed1318690d6474e99017399fb5193a
+    m_Address: ChapterGameData.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6f5a6f2a59c429548b8e0ff150d373eb
     m_Address: "Assets/Textures/Nikke/\uC544\uB2C8\uC2A4_Idle"
     m_ReadOnly: 0
@@ -280,8 +290,18 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a87de12bae92b954180caf05cf6342e5
+    m_Address: PhaseGameData.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b16a996d46b86864992d860dff9416d5
     m_Address: UI/Popup/UI_SquadDetailPopup
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b42ed962ec333d04d8b65d8d1869943f
+    m_Address: StageBattleGameData.json
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -372,6 +392,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f7cfd2e46a9f22241a0cefe89192346d
     m_Address: UI/View/UI_SquadTab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fa0d7222ceb0ee1498d2a6d63c2be5cf
+    m_Address: StageGameData.json
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
