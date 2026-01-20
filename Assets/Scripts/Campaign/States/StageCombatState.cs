@@ -12,15 +12,12 @@ public class StageCombatState : IState<CampaignStage>
     /// </summary>
     public void Enter(CampaignStage owner)
     {
+        // TODO: 전투 상태 애니메이션 실행
+
+        // CameraController를 통해 Combat 카메라 활성화 (Priority 100)
+        owner.CameraController.ActivateCombatCamera();
+
         Debug.Log($"[StageCombatState] Enter - 스테이지 {owner.StageId} 전투 상태 진입");
-
-        // TODO:
-        // 1. 전투 상태 애니메이션 실행
-        // 2. 시선벡터를 CampaignStage 방향으로 전환
-        // 3. 시네머신 카메라를 자신으로 설정
-
-        // CameraManager를 통한 카메라 전환
-        // Managers.Camera.SwitchTo("StageEngage", owner.transform);
     }
 
     /// <summary>
@@ -36,10 +33,11 @@ public class StageCombatState : IState<CampaignStage>
     /// </summary>
     public void Exit(CampaignStage owner)
     {
-        // TODO:
-        // 1. 전투 상태 애니메이션 종료
-        // 2. 시선벡터를 기존 방향으로 변경
-        // 3. 시네머신 카메라를 스쿼드로 설정(여기서 해주는 게 좋지 않아보여요. 스쿼드가 설정하도록 해야 할 듯)
+        // TODO: 전투 상태 애니메이션 종료
+
+        // CameraController를 통해 Combat 카메라 비활성화 (Priority 10)
+        // Squad 카메라가 다시 최고 Priority가 됨
+        owner.CameraController.DeactivateCombatCamera();
 
         Debug.Log($"[StageCombatState] Exit - 스테이지 {owner.StageId} 전투 상태 종료");
     }

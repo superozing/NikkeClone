@@ -4,9 +4,6 @@
 /// 스테이지 사망 상태입니다.
 /// 사망 애니메이션을 재생하고 오브젝트를 비활성화합니다.
 /// </summary>
-/// <remarks>
-/// Implements Section 4.3: StageDeadState (CampaignUnit_Design.md)
-/// </remarks>
 public class StageDeadState : IState<CampaignStage>
 {
     /// <summary>
@@ -15,13 +12,13 @@ public class StageDeadState : IState<CampaignStage>
     /// </summary>
     public void Enter(CampaignStage owner)
     {
-        Debug.Log($"[StageDeadState] Enter - 스테이지 {owner.StageId} 사망 상태 진입");
-
         // TODO:
         // 1. 사망 애니메이션 재생 후 비활성화
 
         // 임시로 즉시 비활성화
         owner.gameObject.SetActive(false);
+
+        Debug.Log($"[StageDeadState] Enter - 스테이지 {owner.StageId} 사망 상태 진입");
     }
 
     /// <summary>

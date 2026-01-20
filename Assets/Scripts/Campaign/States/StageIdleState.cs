@@ -4,9 +4,6 @@
 /// 스테이지 대기 상태입니다.
 /// 기본 상태로 스쿼드와의 충돌을 대기합니다.
 /// </summary>
-/// <remarks>
-/// Implements Section 4.1: StageIdleState (CampaignUnit_Design.md)
-/// </remarks>
 public class StageIdleState : IState<CampaignStage>
 {
     /// <summary>
@@ -14,10 +11,10 @@ public class StageIdleState : IState<CampaignStage>
     /// </summary>
     public void Enter(CampaignStage owner)
     {
-        Debug.Log($"[StageIdleState] Enter - 스테이지 {owner.StageId} 대기 상태 진입");
-
         // TODO:
         // 1. idle 애니메이션 재생
+
+        Debug.Log($"[StageIdleState] Enter - 스테이지 {owner.StageId} 대기 상태 진입");
     }
 
     /// <summary>

@@ -1,12 +1,9 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 /// <summary>
 /// 스쿼드 이동 상태입니다.
 /// NavMeshAgent를 통해 목적지로 이동하고, 도착 시 Idle 상태로 전환합니다.
 /// </summary>
-/// <remarks>
-/// Implements Section 3.2: SquadMoveState (CampaignUnit_Design.md)
-/// </remarks>
 public class SquadMoveState : IState<CampaignSquad>
 {
     private readonly Vector3 _destination;

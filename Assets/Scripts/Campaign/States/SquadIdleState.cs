@@ -1,12 +1,9 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 /// <summary>
 /// 스쿼드 대기 상태입니다.
 /// 정지 상태로 유지하며 사용자 입력(맵 클릭)을 대기합니다.
 /// </summary>
-/// <remarks>
-/// Implements Section 3.1: SquadIdleState (CampaignUnit_Design.md)
-/// </remarks>
 public class SquadIdleState : IState<CampaignSquad>
 {
     /// <summary>
