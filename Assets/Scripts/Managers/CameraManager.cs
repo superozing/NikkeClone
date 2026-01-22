@@ -2,22 +2,39 @@
 using Unity.Cinemachine;
 using UnityEngine;
 
+/// <summary>
+/// Cinemachine 카메라를 Layer(Priority) 기반으로 등록 및 관리합니다.
+/// Activate/Deactivate 방식으로 카메라 전환을 제어합니다.
+/// </summary>
 public class CameraManager : IManagerBase
 {
     public eManagerType ManagerType { get; } = eManagerType.Camera;
+
+    #region Internal Data Structure
+
+    /// <summary>
+    /// 등록된 카메라의 상태를 관리하는 내부 클래스입니다.
+    /// </summary>
+    private class CameraEntry
+    {
+        public CinemachineCamera Camera;
+        public int RegisteredPriority;
+        public bool IsActive;
+    }
+
+    #endregion
 
     // _brain 캐싱
     private CinemachineBrain _brain;
 
     // _cameras Dictionary
-    private Dictionary<string, CinemachineCamera> _cameras = new Dictionary<string, CinemachineCamera>();
+    private Dictionary<string, CameraEntry> _cameras = new Dictionary<string, CameraEntry>();
 
-    // _currentCameraKey
+    // _currentCameraKey (Activate된 카메라들 중 가장 높은 Priority의 카메라)
     private string _currentCameraKey;
 
-    // Priority 기반 전환
-    private const int PRIORITY_DEFAULT = 10;
-    private const int PRIORITY_ACTIVE = 100;
+    // Impulse Source
+    private CinemachineImpulseSource _impulseSource;
 
     public void Init()
     {
@@ -56,14 +73,16 @@ public class CameraManager : IManagerBase
         }
     }
 
-    #region Section 4.1: 카메라 등록/해제
+    #region 카메라 등록/해제
 
     /// <summary>
     /// Virtual Camera를 CameraManager에 등록합니다.
+    /// 등록 시 우선순위를 지정하며, 카메라는 비활성 상태(Priority=0)로 등록됩니다.
     /// </summary>
     /// <param name="key">고유 식별 키</param>
     /// <param name="camera">등록할 CinemachineCamera</param>
-    public void RegisterCamera(string key, CinemachineCamera camera)
+    /// <param name="priority">카메라 활성화 시 적용될 우선순위</param>
+    public void RegisterCamera(string key, CinemachineCamera camera, int priority)
     {
         if (string.IsNullOrEmpty(key))
         {
@@ -82,9 +101,14 @@ public class CameraManager : IManagerBase
             Debug.LogWarning($"[CameraManager] RegisterCamera: key={key}가 이미 등록되어 있습니다. 덮어씁니다.");
         }
 
-        _cameras[key] = camera;
-        camera.Priority = PRIORITY_DEFAULT;
-        Debug.Log($"[CameraManager] Camera 등록: {key}");
+        _cameras[key] = new CameraEntry
+        {
+            Camera = camera,
+            RegisteredPriority = priority,
+            IsActive = false
+        };
+        camera.Priority = 0; // 비활성 상태로 등록
+        Debug.Log($"[CameraManager] Camera 등록: {key} (Priority={priority})");
     }
 
     /// <summary>
@@ -116,28 +140,24 @@ public class CameraManager : IManagerBase
 
     #endregion
 
-    #region 카메라 전환
+    #region 카메라 활성화/비활성화
 
     /// <summary>
-    /// 지정된 카메라로 부드럽게 전환합니다.
+    /// 카메라를 활성화합니다. 등록된 우선순위가 적용됩니다.
     /// </summary>
-    /// <param name="key">전환할 카메라의 키</param>
+    /// <param name="key">활성화할 카메라의 키</param>
     /// <param name="blendTime">전환 시간 (초). null이면 Brain 기본값 사용</param>
-    public void SwitchTo(string key, float? blendTime = null)
+    public void Activate(string key, float? blendTime = null)
     {
-        if (!TryGetCamera(key, out CinemachineCamera targetCamera))
+        if (!_cameras.TryGetValue(key, out var entry))
         {
-            Debug.Log($"[CameraManager] 등록되지 않은 키: {key}");
+            Debug.LogWarning($"[CameraManager] Activate: key={key}가 등록되어 있지 않습니다.");
             return;
         }
 
-        // 이전 카메라 Priority 낮추기
-        if (!string.IsNullOrEmpty(_currentCameraKey) && _cameras.TryGetValue(_currentCameraKey, out CinemachineCamera previousCamera))
-        {
-            previousCamera.Priority = PRIORITY_DEFAULT;
-        }
+        entry.IsActive = true;
+        entry.Camera.Priority = entry.RegisteredPriority;
 
-        // Blend 시간 설정 (blendTime이 지정된 경우)
         if (blendTime.HasValue && _brain != null)
         {
             _brain.DefaultBlend = new CinemachineBlendDefinition(
@@ -146,55 +166,25 @@ public class CameraManager : IManagerBase
             );
         }
 
-        // 새 카메라 Priority 높이기
-        targetCamera.Priority = PRIORITY_ACTIVE;
-        _currentCameraKey = key;
-
-        Debug.Log($"[CameraManager] SwitchTo: {key}, BlendTime={blendTime?.ToString() ?? "default"}");
+        Debug.Log($"[CameraManager] Activate: {key} (Priority={entry.RegisteredPriority})");
     }
 
     /// <summary>
-    /// 지정된 카메라로 즉시 전환합니다 (Cut).
+    /// 카메라를 비활성화합니다. Priority가 0으로 설정됩니다.
     /// </summary>
-    /// <param name="key">전환할 카메라의 키</param>
-    public void SwitchToImmediate(string key)
+    /// <param name="key">비활성화할 카메라의 키</param>
+    public void Deactivate(string key)
     {
-        if (!TryGetCamera(key, out CinemachineCamera targetCamera))
+        if (!_cameras.TryGetValue(key, out var entry))
         {
-            Debug.Log($"[CameraManager] 등록되지 않은 키: {key}");
+            Debug.LogWarning($"[CameraManager] Deactivate: key={key}가 등록되어 있지 않습니다.");
             return;
         }
 
-        // 이전 카메라 Priority 낮추기
-        if (!string.IsNullOrEmpty(_currentCameraKey) && _cameras.TryGetValue(_currentCameraKey, out CinemachineCamera previousCamera))
-        {
-            previousCamera.Priority = PRIORITY_DEFAULT;
-        }
+        entry.IsActive = false;
+        entry.Camera.Priority = 0;
 
-        // Cut 전환을 위해 Brain의 기본 Blend를 Cut으로 임시 변경
-        CinemachineBlendDefinition originalBlend = default;
-        if (_brain != null)
-        {
-            originalBlend = _brain.DefaultBlend;
-            _brain.DefaultBlend = new CinemachineBlendDefinition(
-                CinemachineBlendDefinition.Styles.Cut,
-                0f
-            );
-        }
-
-        // 새 카메라 Priority 높이기
-        targetCamera.Priority = PRIORITY_ACTIVE;
-        _currentCameraKey = key;
-
-        // 원래 Blend 설정 복원 (다음 프레임에 적용되도록)
-        if (_brain != null)
-        {
-            // Note: 즉시 복원하면 Cut이 적용되기 전에 원래 설정이 복원될 수 있음
-            // 실제 운용 시에는 코루틴 또는 다음 프레임 콜백으로 복원 권장
-            _brain.DefaultBlend = originalBlend;
-        }
-
-        Debug.Log($"[CameraManager] SwitchToImmediate: {key}");
+        Debug.Log($"[CameraManager] Deactivate: {key}");
     }
 
     #endregion
@@ -238,9 +228,6 @@ public class CameraManager : IManagerBase
     #endregion
 
     #region Camera Shake (Impulse)
-
-    // 기본 Impulse Source (런타임에 등록)
-    private CinemachineImpulseSource _impulseSource;
 
     /// <summary>
     /// 기본 Impulse Source를 설정합니다.
@@ -309,12 +296,14 @@ public class CameraManager : IManagerBase
             return false;
         }
 
-        if (!_cameras.TryGetValue(key, out camera))
+        if (!_cameras.TryGetValue(key, out var entry))
         {
             Debug.LogWarning($"[CameraManager] TryGetCamera: key={key}가 등록되어 있지 않습니다.");
+            camera = null;
             return false;
         }
 
+        camera = entry.Camera;
         return true;
     }
 
