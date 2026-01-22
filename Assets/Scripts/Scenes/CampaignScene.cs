@@ -7,12 +7,13 @@ public class CampaignScene : MonoBehaviour, IScene
     public List<string> RequiredDataFiles => new()
     {
         "ChapterGameData.json",
-        "StageGameData.json"
+        "StageGameData.json",
+        "MissionGameData.json",
     };
 
     [Header("챕터 정보")]
     [SerializeField] private int _chapterId;
-    [SerializeField] private GameObject[] _stageObjects; // TODO: 게임 오브젝트 대신, 스테이지 컨트롤러? 같은 스크립트를 받아오도록 수정해야 함.
+    [SerializeField] private CampaignStage[] _stageObjects;
 
     private void Awake()
     {
@@ -40,12 +41,13 @@ public class CampaignScene : MonoBehaviour, IScene
         }
 
         // =========================================================
-        // 클리어 여부에 따른 챕터 오브젝트 활성화 조절
+        // 스테이지 ID 할당 및 클리어 여부에 따른 오브젝트 활성화 조절
         for (int i = 0; i < _stageObjects.Length; i++)
         {
+            _stageObjects[i].SetStageId(curChapter.stageIds[i]);
             bool isCleared = userData.IsStageCleared(curChapter.stageIds[i]);
 
-            _stageObjects[i].SetActive(!isCleared);
+            _stageObjects[i].gameObject.SetActive(!isCleared);
         }
 
         Debug.Log($"[CampaignScene] CampaignScene Init() 완료");

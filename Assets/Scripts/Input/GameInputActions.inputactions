@@ -5,8 +5,58 @@
         {
             "name": "None",
             "id": "78bffde1-a878-4219-8dee-9fb794d707d1",
-            "actions": [],
-            "bindings": []
+            "actions": [
+                {
+                    "name": "Click",
+                    "type": "Button",
+                    "id": "2813810f-cec9-46d8-b7e7-80d85def37cf",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "d3c2b42c-0b48-4ea0-80e4-f490150be26b",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Click",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Campaign",
+            "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+            "actions": [
+                {
+                    "name": "Click",
+                    "type": "Button",
+                    "id": "11111111-2222-3333-4444-555555555555",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "66666666-7777-8888-9999-000000000000",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Click",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         },
         {
             "name": "UI_PopupTest",
