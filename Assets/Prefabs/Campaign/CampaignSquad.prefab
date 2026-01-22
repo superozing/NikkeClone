@@ -13,9 +13,10 @@ GameObject:
   - component: {fileID: 5855296470891552981}
   - component: {fileID: 1471230383327210679}
   - component: {fileID: 1973752102512136178}
-  m_Layer: 0
+  - component: {fileID: 3291908918887491377}
+  m_Layer: 8
   m_Name: CampaignSquad
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -29,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 376019884675027517}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 70.11, y: 2, z: 58.86}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -98,6 +99,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CampaignSquad
   _agent: {fileID: 93234269912796278}
+  _cameraController: {fileID: 3291908918887491377}
 --- !u!114 &1973752102512136178
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -116,6 +118,19 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   _navMeshSampleDistance: 1
+--- !u!114 &3291908918887491377
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 376019884675027517}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd987d999ddf6bf49bc34adb72b72bac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CampaignSquadCameraController
+  _cam: {fileID: 0}
 --- !u!1 &4820518598583955510
 GameObject:
   m_ObjectHideFlags: 0
@@ -128,7 +143,7 @@ GameObject:
   - component: {fileID: 980834427553176882}
   - component: {fileID: 2113868181598902629}
   - component: {fileID: 4304409573574910395}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: SquadUnit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
