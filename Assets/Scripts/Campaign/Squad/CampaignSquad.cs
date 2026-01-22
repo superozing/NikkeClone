@@ -5,6 +5,13 @@ public class CampaignSquad : MonoBehaviour
 {
     [Header("Components")]
     [SerializeField] private NavMeshAgent _agent;
+    [SerializeField] private CampaignSquadCameraController _cameraController;
+
+    /// <summary>
+    /// Squad의 카메라 컨트롤러를 반환합니다.
+    /// State 클래스에서 카메라 제어에 사용합니다.
+    /// </summary>
+    public CampaignSquadCameraController CameraController => _cameraController;
 
     private StateMachine<CampaignSquad> _stateMachine;
     private CampaignStage _currentTargetStage;
