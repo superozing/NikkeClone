@@ -1,6 +1,7 @@
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using UI;
+using UnityEngine;
 
 /// <summary>
 /// 스테이지 정보 팝업 ViewModel입니다.
