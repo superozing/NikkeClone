@@ -10,6 +10,21 @@ public class NikkeIconViewModel : ViewModelBase
 
     public int NikkeId { get; private set; } = -1;
 
+    /// <summary>
+    /// 니케의 코드(속성) 타입입니다. Empty 상태일 경우 None을 반환합니다.
+    /// </summary>
+    public eNikkeCode CodeType => _gameData?.CodeType ?? eNikkeCode.None;
+
+    /// <summary>
+    /// 니케의 무기 타입입니다. Empty 상태일 경우 None을 반환합니다.
+    /// </summary>
+    public eNikkeWeapon WeaponType => _gameData?.WeaponType ?? eNikkeWeapon.None;
+
+    /// <summary>
+    /// 니케 슬롯이 비어있는지 여부입니다. (GameData가 없으면 비어있음)
+    /// </summary>
+    public bool IsSlotEmpty => _gameData == null;
+
     // --- View Binding Properties ---
     public ReactiveProperty<bool> IsEmpty { get; private set; } = new(true);
     public ReactiveProperty<Sprite> FaceSprite { get; private set; } = new();

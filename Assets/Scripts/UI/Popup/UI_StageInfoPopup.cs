@@ -31,8 +31,10 @@ public class UI_StageInfoPopup : UI_Popup, IUIShowHideAnimation
     [SerializeField] private Button _btnBattleMethod;      // TODO: 전투방식 팝업
     [SerializeField] private Button _btnBattleFieldInfo;   // TODO: 전장정보 팝업
 
-    // --- Sub-UI Placeholders (분리 구현 예정) ---
-    [Header("Sub-UI Slots")]
+    // --- Sub UI ---
+    [Header("Sub UI")]
+    [SerializeField] private UI_StageWeakCodeInfo _weakCodeInfo;
+    [SerializeField] private UI_StageRangeInfo _rangeInfo;
     [SerializeField] private Transform _battleFieldInfoSlot;
     [SerializeField] private Transform _enemyInfoSlot;
     [SerializeField] private Transform _rewardInfoSlot;
@@ -93,6 +95,10 @@ public class UI_StageInfoPopup : UI_Popup, IUIShowHideAnimation
             _nikkeIcons[i].SetViewModel(_viewModel.NikkeIcons[i]);
             _nikkeIcons[i].gameObject.SetActive(true);
         }
+
+        // 5. Sub-UI ViewModel 연결
+        _weakCodeInfo?.SetViewModel(_viewModel.WeakCodeInfo);
+        _rangeInfo?.SetViewModel(_viewModel.RangeInfo);
     }
 
     // --- 버튼 클릭 핸들러 ---

@@ -1,6 +1,7 @@
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using UI;
+using UnityEngine;
 
 /// <summary>
 /// 스테이지 정보 팝업 ViewModel입니다.
@@ -35,9 +36,13 @@ public class StageInfoPopupViewModel : ViewModelBase
 
     private int _squadId;
 
+    // --- Sub-UI ViewModels ---
+    public StageWeakCodeInfoViewModel WeakCodeInfo { get; private set; }
+    public StageRangeInfoViewModel RangeInfo { get; private set; }
+
     /// <summary>
     /// StageInfoPopupViewModel 생성자입니다.
-    /// NikkeIconViewModel 5개를 미리 생성하고 참조를 유지합니다.
+    /// NikkeIconViewModel 5개와 Sub-UI ViewModel들을 미리 생성하고 참조를 유지합니다.
     /// </summary>
     public StageInfoPopupViewModel()
     {
@@ -47,6 +52,12 @@ public class StageInfoPopupViewModel : ViewModelBase
             NikkeIcons[i] = new NikkeIconViewModel();
             NikkeIcons[i].AddRef(); // 부모 ViewModel이 자식을 소유
         }
+
+        // Sub-UI ViewModel 초기화
+        WeakCodeInfo = new StageWeakCodeInfoViewModel();
+        WeakCodeInfo.AddRef();
+        RangeInfo = new StageRangeInfoViewModel();
+        RangeInfo.AddRef();
     }
 
     /// <summary>
@@ -89,6 +100,10 @@ public class StageInfoPopupViewModel : ViewModelBase
                 await NikkeIcons[i].SetNikke(-1);
             }
         }
+
+        // Sub-UI 데이터 설정
+        WeakCodeInfo.SetData(stageData.weaknessCode, NikkeIcons);
+        RangeInfo.SetData(NikkeIcons);
     }
 
     /// <summary>
@@ -141,5 +156,9 @@ public class StageInfoPopupViewModel : ViewModelBase
                 icon?.Release();
             }
         }
+
+        // Sub-UI ViewModel 해제
+        WeakCodeInfo?.Release();
+        RangeInfo?.Release();
     }
 }
