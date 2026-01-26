@@ -39,6 +39,7 @@ public class StageInfoPopupViewModel : ViewModelBase
     // --- Sub-UI ViewModels ---
     public StageWeakCodeInfoViewModel WeakCodeInfo { get; private set; }
     public StageRangeInfoViewModel RangeInfo { get; private set; }
+    public StageRewardInfoViewModel RewardInfo { get; private set; }
 
     /// <summary>
     /// StageInfoPopupViewModel 생성자입니다.
@@ -47,7 +48,7 @@ public class StageInfoPopupViewModel : ViewModelBase
     public StageInfoPopupViewModel()
     {
         NikkeIcons = new NikkeIconViewModel[5];
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 5; ++i)
         {
             NikkeIcons[i] = new NikkeIconViewModel();
             NikkeIcons[i].AddRef(); // 부모 ViewModel이 자식을 소유
@@ -58,6 +59,8 @@ public class StageInfoPopupViewModel : ViewModelBase
         WeakCodeInfo.AddRef();
         RangeInfo = new StageRangeInfoViewModel();
         RangeInfo.AddRef();
+        RewardInfo = new StageRewardInfoViewModel();
+        RewardInfo.AddRef();
     }
 
     /// <summary>
@@ -85,7 +88,7 @@ public class StageInfoPopupViewModel : ViewModelBase
         // 2. UserSquadData 조회 및 NikkeIcon 초기화
         if (Managers.Data.UserData.Squads.TryGetValue(squadId, out var squadData))
         {
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 5; ++i)
             {
                 int nikkeId = (squadData.slot != null && i < squadData.slot.Count) ? squadData.slot[i] : -1;
                 await NikkeIcons[i].SetNikke(nikkeId);
@@ -95,7 +98,7 @@ public class StageInfoPopupViewModel : ViewModelBase
         {
             Debug.LogWarning($"[StageInfoPopupViewModel] UserSquadData not found for id: {squadId}");
             // 빈 슬롯으로 초기화
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 5; ++i)
             {
                 await NikkeIcons[i].SetNikke(-1);
             }
@@ -104,6 +107,7 @@ public class StageInfoPopupViewModel : ViewModelBase
         // Sub-UI 데이터 설정
         WeakCodeInfo.SetData(stageData.weaknessCode, NikkeIcons);
         RangeInfo.SetData(NikkeIcons);
+        RewardInfo.SetData(stageData.rewards);
     }
 
     /// <summary>
@@ -160,5 +164,6 @@ public class StageInfoPopupViewModel : ViewModelBase
         // Sub-UI ViewModel 해제
         WeakCodeInfo?.Release();
         RangeInfo?.Release();
+        RewardInfo?.Release();
     }
 }
