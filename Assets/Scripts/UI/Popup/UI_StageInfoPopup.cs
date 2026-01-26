@@ -35,9 +35,9 @@ public class UI_StageInfoPopup : UI_Popup, IUIShowHideAnimation
     [Header("Sub UI")]
     [SerializeField] private UI_StageWeakCodeInfo _weakCodeInfo;
     [SerializeField] private UI_StageRangeInfo _rangeInfo;
+    [SerializeField] private UI_StageRewardInfo _rewardInfo;
     [SerializeField] private Transform _battleFieldInfoSlot;
     [SerializeField] private Transform _enemyInfoSlot;
-    [SerializeField] private Transform _rewardInfoSlot;
 
     private StageInfoPopupViewModel _viewModel;
 
@@ -90,7 +90,7 @@ public class UI_StageInfoPopup : UI_Popup, IUIShowHideAnimation
         Bind(_viewModel.ReferenceCombatPower, power => _txtReferenceCombatPower.text = power.ToString("N0"));
 
         // 4. NikkeIcon 초기화 및 ViewModel 연결
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 5; ++i)
         {
             _nikkeIcons[i].SetViewModel(_viewModel.NikkeIcons[i]);
             _nikkeIcons[i].gameObject.SetActive(true);
@@ -99,6 +99,7 @@ public class UI_StageInfoPopup : UI_Popup, IUIShowHideAnimation
         // 5. Sub-UI ViewModel 연결
         _weakCodeInfo?.SetViewModel(_viewModel.WeakCodeInfo);
         _rangeInfo?.SetViewModel(_viewModel.RangeInfo);
+        _rewardInfo?.SetViewModel(_viewModel.RewardInfo);
     }
 
     // --- 버튼 클릭 핸들러 ---
