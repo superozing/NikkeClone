@@ -14,6 +14,8 @@ public class StageInfoPopupViewModel : ViewModelBase
     public ReactiveProperty<string> StageName { get; private set; } = new("");
     public ReactiveProperty<string> StageTypeName { get; private set; } = new("");
     public ReactiveProperty<int> ReferenceCombatPower { get; private set; } = new(0);
+    public ReactiveProperty<int> CurrentSquadIndex { get; private set; } = new(0);
+    public ReactiveProperty<int> CurrentCombatPower { get; private set; } = new(0);
 
     // --- 스쿼드 니케 아이콘 ViewModel (5개 고정) ---
     public NikkeIconViewModel[] NikkeIcons { get; private set; }
@@ -85,29 +87,54 @@ public class StageInfoPopupViewModel : ViewModelBase
         StageTypeName.Value = GetStageTypeName(stageData.stageType);
         ReferenceCombatPower.Value = stageData.referenceCombatPower;
 
-        // 2. UserSquadData 조회 및 NikkeIcon 초기화
-        if (Managers.Data.UserData.Squads.TryGetValue(squadId, out var squadData))
+        // 2. 초기 스쿼드 선택 (index = squadId - 1)
+        await SelectSquad(squadId - 1);
+
+        // Sub-UI 데이터 설정 -> SelectSquad 내부에서 갱신하므로 초기화 시에는 자동 갱신됨 (RewardInfo 제외)
+        RewardInfo.SetData(stageData.rewards);
+    }
+
+    /// <summary>
+    /// 스쿼드를 선택하고 UI를 갱신합니다.
+    /// </summary>
+    /// <param name="index">선택할 스쿼드 인덱스 (0~4)</param>
+    public async Task SelectSquad(int index)
+    {
+        index = Mathf.Clamp(index, 0, 4);
+        CurrentSquadIndex.Value = index;
+
+        int targetSquadId = index + 1;
+        long totalCp = 0;
+
+        if (Managers.Data.UserData.Squads.TryGetValue(targetSquadId, out var squadData))
         {
             for (int i = 0; i < 5; ++i)
             {
                 int nikkeId = (squadData.slot != null && i < squadData.slot.Count) ? squadData.slot[i] : -1;
                 await NikkeIcons[i].SetNikke(nikkeId);
+
+                // 전투력 합산
+                if (nikkeId != -1 && Managers.Data.UserData.Nikkes.TryGetValue(nikkeId, out var userNikke))
+                {
+                    totalCp += userNikke.combatPower.Value;
+                }
             }
         }
         else
         {
-            Debug.LogWarning($"[StageInfoPopupViewModel] UserSquadData not found for id: {squadId}");
-            // 빈 슬롯으로 초기화
+            Debug.LogWarning($"[StageInfoPopupViewModel] UserSquadData not found for id: {targetSquadId}");
             for (int i = 0; i < 5; ++i)
             {
                 await NikkeIcons[i].SetNikke(-1);
             }
         }
 
-        // Sub-UI 데이터 설정
-        WeakCodeInfo.SetData(stageData.weaknessCode, NikkeIcons);
-        RangeInfo.SetData(NikkeIcons);
-        RewardInfo.SetData(stageData.rewards);
+        CurrentCombatPower.Value = (int)totalCp;
+
+        // Sub-UI 갱신
+        WeakCodeInfo?.SetData(Managers.Data.Get<StageGameData>(StageId).weaknessCode, NikkeIcons);
+        RangeInfo?.SetData(NikkeIcons);
+        // Reward는 변경 없음
     }
 
     /// <summary>

@@ -20,24 +20,23 @@ public class UI_StageInfoPopup : UI_Popup, IUIShowHideAnimation
 
     // --- 스쿼드 정보 ---
     [Header("Squad Info")]
-    [SerializeField] private Button _btnSquad;
+    [SerializeField] private Button[] _squadNumberButtons; // 5개 스쿼드 선택 버튼
     [SerializeField] private UI_NikkeIcon[] _nikkeIcons;  // 5개 고정
-    [SerializeField] private TMP_Text _txtReferenceCombatPower;
+    [SerializeField] private TMP_Text _txtCurrentCombatPower;  // 현재 스쿼드 전투력
+    [SerializeField] private TMP_Text _txtReferenceCombatPower; // 스테이지 기준 전투력
 
     // --- 버튼 ---
     [Header("Buttons")]
     [SerializeField] private Button _btnClose;
-    [SerializeField] private Button _btnBattle;
-    [SerializeField] private Button _btnBattleMethod;      // TODO: 전투방식 팝업
-    [SerializeField] private Button _btnBattleFieldInfo;   // TODO: 전장정보 팝업
+    [SerializeField] private Button _btnCombat;
+    [SerializeField] private Button _btnStageType;         // TODO: 스테이지 타입 팝업
+    [SerializeField] private Button _btnStageWaveInfo;     // TODO: 스테이지 웨이브 정보 팝업
 
     // --- Sub UI ---
     [Header("Sub UI")]
     [SerializeField] private UI_StageWeakCodeInfo _weakCodeInfo;
     [SerializeField] private UI_StageRangeInfo _rangeInfo;
     [SerializeField] private UI_StageRewardInfo _rewardInfo;
-    [SerializeField] private Transform _battleFieldInfoSlot;
-    [SerializeField] private Transform _enemyInfoSlot;
 
     private StageInfoPopupViewModel _viewModel;
 
@@ -50,14 +49,21 @@ public class UI_StageInfoPopup : UI_Popup, IUIShowHideAnimation
         base.Awake();
         Managers.Input.BindAction("Close", OnEscapeAction, InputActionPhase.Performed);
 
-        // 버튼 리스너 등록
-        _btnSquad?.onClick.AddListener(OnSquadButtonClicked);
-        _btnBattle?.onClick.AddListener(OnBattleClicked);
-        _btnClose?.onClick.AddListener(OnCloseClicked);
+        // 스쿼드 선택 버튼 리스너
+        if (_squadNumberButtons != null)
+        {
+            for (int i = 0; i < _squadNumberButtons.Length; i++)
+            {
+                int index = i;
+                _squadNumberButtons[i]?.onClick.AddListener(() => _viewModel?.SelectSquad(index));
+            }
+        }
 
-        // TODO 버튼들 (미구현)
-        _btnBattleMethod?.onClick.AddListener(() => { /* TODO: 전투방식 팝업 */ });
-        _btnBattleFieldInfo?.onClick.AddListener(() => { /* TODO: 전장정보 팝업 */ });
+        _btnCombat?.onClick.AddListener(() => _viewModel?.RequestBattle());
+        _btnClose?.onClick.AddListener(() => _viewModel?.RequestClose());
+
+        _btnStageType?.onClick.AddListener(() => { /* TODO: 스테이지 타입 팝업 */ });
+        _btnStageWaveInfo?.onClick.AddListener(() => { /* TODO: 웨이브 정보 팝업 */ });
     }
 
     protected async void OnEnable()
@@ -89,11 +95,20 @@ public class UI_StageInfoPopup : UI_Popup, IUIShowHideAnimation
         Bind(_viewModel.StageTypeName, text => _txtStageType.text = text);
         Bind(_viewModel.ReferenceCombatPower, power => _txtReferenceCombatPower.text = power.ToString("N0"));
 
+        // 추가 바인딩
+        Bind(_viewModel.CurrentCombatPower, power => _txtCurrentCombatPower.text = power.ToString("N0"));
+        Bind(_viewModel.CurrentSquadIndex, UpdateSquadButtonStates);
+
         // 4. NikkeIcon 초기화 및 ViewModel 연결
         for (int i = 0; i < 5; ++i)
         {
             _nikkeIcons[i].SetViewModel(_viewModel.NikkeIcons[i]);
             _nikkeIcons[i].gameObject.SetActive(true);
+
+            // 스쿼드 편집 요청 이벤트 바인딩
+            int slotIndex = i;
+            _nikkeIcons[i].OnDetailRequest -= OnNikkeDetailRequest;
+            _nikkeIcons[i].OnDetailRequest += OnNikkeDetailRequest;
         }
 
         // 5. Sub-UI ViewModel 연결
@@ -102,31 +117,22 @@ public class UI_StageInfoPopup : UI_Popup, IUIShowHideAnimation
         _rewardInfo?.SetViewModel(_viewModel.RewardInfo);
     }
 
-    // --- 버튼 클릭 핸들러 ---
+    private void UpdateSquadButtonStates(int currentIndex)
+    {
+        if (_squadNumberButtons == null) return;
+        for (int i = 0; i < _squadNumberButtons.Length; i++)
+        {
+            if (_squadNumberButtons[i] != null)
+                _squadNumberButtons[i].interactable = (i != currentIndex);
+        }
+    }
 
-    /// <summary>
-    /// 스쿼드 버튼 클릭 시 UI_SquadDetailPopup을 엽니다.
-    /// </summary>
-    private void OnSquadButtonClicked()
+    private void OnNikkeDetailRequest(int slotIndex)
     {
         _viewModel?.RequestSquadEdit();
     }
 
-    /// <summary>
-    /// 전투 버튼 클릭 시 전투 시작을 요청합니다.
-    /// </summary>
-    private void OnBattleClicked()
-    {
-        _viewModel?.RequestBattle();
-    }
 
-    /// <summary>
-    /// 닫기 버튼 클릭 시 팝업을 닫습니다.
-    /// </summary>
-    private void OnCloseClicked()
-    {
-        _viewModel?.RequestClose();
-    }
 
     private void OnEscapeAction(InputAction.CallbackContext ctx) => _viewModel?.RequestClose();
 
@@ -155,11 +161,22 @@ public class UI_StageInfoPopup : UI_Popup, IUIShowHideAnimation
         Managers.Input.UnbindAction("Close", OnEscapeAction, InputActionPhase.Performed);
 
         // 버튼 리스너 해제
-        _btnSquad?.onClick.RemoveAllListeners();
-        _btnBattle?.onClick.RemoveAllListeners();
+        if (_squadNumberButtons != null)
+        {
+            foreach (var btn in _squadNumberButtons)
+                btn?.onClick.RemoveAllListeners();
+        }
+        _btnCombat?.onClick.RemoveAllListeners();
         _btnClose?.onClick.RemoveAllListeners();
-        _btnBattleMethod?.onClick.RemoveAllListeners();
-        _btnBattleFieldInfo?.onClick.RemoveAllListeners();
+        _btnStageType?.onClick.RemoveAllListeners();
+        _btnStageWaveInfo?.onClick.RemoveAllListeners();
+
+        // NikkeIcon 이벤트 해제
+        if (_nikkeIcons != null)
+        {
+            foreach (var icon in _nikkeIcons)
+                if (icon != null) icon.OnDetailRequest -= OnNikkeDetailRequest;
+        }
 
         // 이벤트 구독 해제
         if (_viewModel != null)
