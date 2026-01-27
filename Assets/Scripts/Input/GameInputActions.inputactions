@@ -309,6 +309,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "UI_StageInfoPopup",
+            "id": "0fbca916-9bd8-4703-bce8-2b60e63c83db",
+            "actions": [
+                {
+                    "name": "Close",
+                    "type": "Button",
+                    "id": "ba56ef83-4dcb-48c4-8a1b-49325fc885b6",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "22de189a-d262-4f61-a817-4d83e96fbb59",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Close",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []
