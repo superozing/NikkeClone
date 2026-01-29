@@ -17,6 +17,9 @@ public class StageCombatState : IState<CampaignStage>
         // CameraController를 통해 Combat 카메라 활성화 (Priority 100)
         owner.CameraController.ActivateCombatCamera();
 
+        // CampaignScene에 전투 진입 알림 (UI 연출 시작)
+        ((CampaignScene)Managers.Scene.CurrentScene).OnStageEnterCombat(owner.StageId);
+
         Debug.Log($"[StageCombatState] Enter - 스테이지 {owner.StageId} 전투 상태 진입");
     }
 
