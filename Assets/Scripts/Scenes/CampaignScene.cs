@@ -22,6 +22,9 @@ public class CampaignScene : MonoBehaviour, IScene
     [SerializeField] private int _chapterId;
     [SerializeField] private CampaignStage[] _stageObjects;
 
+    // ViewModel 캐시
+    private StageInfoPopupViewModel _stageInfoPopupViewModel;
+
     /// <summary>
     /// 스테이지 전투 상태 진입 시 호출됩니다.
     /// HUD 퇴장 연출 후 StageInfoPopup을 표시합니다.
@@ -35,18 +38,19 @@ public class CampaignScene : MonoBehaviour, IScene
         // if (_campaignHUD != null)
         //     await _campaignHUD.PlayExitAnimationAsync();
 
-        // 2. ViewModel 생성 및 초기화
-        var viewModel = new StageInfoPopupViewModel();
+        // 2. 캐싱된 ViewModel 재사용 및 데이터 갱신
+        if (_stageInfoPopupViewModel == null)
+        {
+            Debug.LogError("[CampaignScene] StageInfoPopupViewModel이 초기화되지 않았습니다!");
+            return;
+        }
 
         // TODO: 현재 유저의 스쿼드 ID를 가져오는 로직 필요 (임시로 1 사용)
         int currentSquadId = 1;
-        await viewModel.Initialize(stageId, currentSquadId);
+        await _stageInfoPopupViewModel.Initialize(stageId, currentSquadId);
 
-        // 3. 이벤트 구독 (다시 닫힐 때를 위함)
-        viewModel.OnCloseRequested += OnStageInfoPopupClosed;
-
-        // 4. 팝업 표시
-        await Managers.UI.ShowAsync<UI_StageInfoPopup>(viewModel);
+        // 3. 팝업 표시 (동일한 ViewModel 인스턴스 재사용)
+        await Managers.UI.ShowAsync<UI_StageInfoPopup>(_stageInfoPopupViewModel);
     }
 
     /// <summary>
@@ -84,6 +88,13 @@ public class CampaignScene : MonoBehaviour, IScene
     {
         Debug.Log($"CampaignScene Init() - ChapterId: {_chapterId}");
 
+        // ViewModel 생성 및 명시적 참조 카운트 증가
+        _stageInfoPopupViewModel = new StageInfoPopupViewModel();
+        _stageInfoPopupViewModel.AddRef(); // CampaignScene이 소유 (RefCount = 1)
+
+        // 이벤트 구독 (한 번만)
+        _stageInfoPopupViewModel.OnCloseRequested += OnStageInfoPopupClosed;
+
         // 챕터 데이터 조회
         ChapterGameData curChapter = Managers.Data.Get<ChapterGameData>(_chapterId);
         UserChapterData userData = Managers.Data.UserData.Chapter;
@@ -115,5 +126,13 @@ public class CampaignScene : MonoBehaviour, IScene
     void IScene.Clear()
     {
         Debug.Log($"CampaignScene Clear() - ChapterId: {_chapterId}");
+
+        // 이벤트 구독 해제 및 ViewModel Release
+        if (_stageInfoPopupViewModel != null)
+        {
+            _stageInfoPopupViewModel.OnCloseRequested -= OnStageInfoPopupClosed;
+            _stageInfoPopupViewModel.Release(); // RefCount = 0 → OnDispose() 호출됨
+            _stageInfoPopupViewModel = null;
+        }
     }
 }

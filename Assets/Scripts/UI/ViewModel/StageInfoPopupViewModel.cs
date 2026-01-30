@@ -17,8 +17,18 @@ public class StageInfoPopupViewModel : ViewModelBase
     public ReactiveProperty<int> CurrentSquadIndex { get; private set; } = new(0);
     public ReactiveProperty<int> CurrentCombatPower { get; private set; } = new(0);
 
-    // --- 스쿼드 니케 아이콘 ViewModel (5개 고정) ---
-    public NikkeIconViewModel[] NikkeIcons { get; private set; }
+    // --- 스쿼드 니케 아이콘 ViewModel (5개 스쿼드 × 5개 슬롯 = 25개) ---
+    /// <summary>
+    /// 5개 스쿼드 × 5개 슬롯 = 25개의 NikkeIconViewModel을 미리 생성하여 보관합니다.
+    /// Index: [squadIndex][slotIndex] (squadIndex: 0~4, slotIndex: 0~4)
+    /// </summary>
+    public NikkeIconViewModel[][] AllSquadNikkeIcons { get; private set; }
+
+    /// <summary>
+    /// 현재 선택된 스쿼드의 NikkeIconViewModel 배열을 가리키는 프로퍼티입니다.
+    /// UI_StageInfoPopup이 이 배열을 바인딩합니다.
+    /// </summary>
+    public NikkeIconViewModel[] CurrentSquadNikkeIcons => AllSquadNikkeIcons[CurrentSquadIndex.Value];
 
     // --- 이벤트 ---
     /// <summary>
@@ -37,6 +47,7 @@ public class StageInfoPopupViewModel : ViewModelBase
     public event Action OnCloseRequested;
 
     private int _squadId;
+    private bool _isSquadsLoaded = false; // 스쿼드 데이터 로드 완료 플래그
 
     // --- Sub-UI ViewModels ---
     public StageWeakCodeInfoViewModel WeakCodeInfo { get; private set; }
@@ -45,15 +56,20 @@ public class StageInfoPopupViewModel : ViewModelBase
 
     /// <summary>
     /// StageInfoPopupViewModel 생성자입니다.
-    /// NikkeIconViewModel 5개와 Sub-UI ViewModel들을 미리 생성하고 참조를 유지합니다.
+    /// NikkeIconViewModel 25개와 Sub-UI ViewModel들을 미리 생성하고 참조를 유지합니다.
     /// </summary>
     public StageInfoPopupViewModel()
     {
-        NikkeIcons = new NikkeIconViewModel[5];
-        for (int i = 0; i < 5; ++i)
+        // 5개 스쿼드 × 5개 슬롯 = 25개 ViewModel 생성
+        AllSquadNikkeIcons = new NikkeIconViewModel[5][];
+        for (int squadIdx = 0; squadIdx < 5; ++squadIdx)
         {
-            NikkeIcons[i] = new NikkeIconViewModel();
-            NikkeIcons[i].AddRef(); // 부모 ViewModel이 자식을 소유
+            AllSquadNikkeIcons[squadIdx] = new NikkeIconViewModel[5];
+            for (int slotIdx = 0; slotIdx < 5; ++slotIdx)
+            {
+                AllSquadNikkeIcons[squadIdx][slotIdx] = new NikkeIconViewModel();
+                AllSquadNikkeIcons[squadIdx][slotIdx].AddRef(); // 부모 ViewModel이 자식을 소유
+            }
         }
 
         // Sub-UI ViewModel 초기화
@@ -87,22 +103,80 @@ public class StageInfoPopupViewModel : ViewModelBase
         StageTypeName.Value = GetStageTypeName(stageData.stageType);
         ReferenceCombatPower.Value = stageData.referenceCombatPower;
 
-        // 2. 초기 스쿼드 선택 (index = squadId - 1)
-        await SelectSquad(squadId - 1);
+        // 2. 스쿼드 데이터 로드 (최초 1회만)
+        if (!_isSquadsLoaded)
+        {
+            await LoadAllSquadsAsync();
+            _isSquadsLoaded = true;
+        }
 
-        // Sub-UI 데이터 설정 -> SelectSquad 내부에서 갱신하므로 초기화 시에는 자동 갱신됨 (RewardInfo 제외)
+        // 3. 초기 스쿼드 선택 (index = squadId - 1)
+        // SelectSquad는 더이상 async가 아님 (데이터가 이미 로드되어 있으므로)
+        SelectSquad(squadId - 1);
+
+        // 4. Sub-UI 데이터 설정 -> SelectSquad 내부에서 갱신하므로 초기화 시에는 자동 갱신됨 (RewardInfo 제외)
         RewardInfo.SetData(stageData.rewards);
     }
 
     /// <summary>
+    /// 5개 스쿼드의 모든 Nikke 데이터를 미리 로드합니다.
+    /// </summary>
+    private async Task LoadAllSquadsAsync()
+    {
+        for (int squadIdx = 0; squadIdx < 5; ++squadIdx)
+        {
+            int targetSquadId = squadIdx + 1;
+
+            if (Managers.Data.UserData.Squads.TryGetValue(targetSquadId, out var squadData))
+            {
+                // 각 슬롯 병렬 로드 (더 빠름)
+                var loadTasks = new Task[5];
+                for (int slotIdx = 0; slotIdx < 5; ++slotIdx)
+                {
+                    int nikkeId = (squadData.slot != null && slotIdx < squadData.slot.Count)
+                        ? squadData.slot[slotIdx]
+                        : -1;
+
+                    loadTasks[slotIdx] = AllSquadNikkeIcons[squadIdx][slotIdx].SetNikke(nikkeId);
+                }
+
+                await Task.WhenAll(loadTasks);
+            }
+            else
+            {
+                Debug.LogWarning($"[StageInfoPopupViewModel] UserSquadData not found for id: {targetSquadId}");
+
+                // 빈 슬롯으로 초기화
+                for (int slotIdx = 0; slotIdx < 5; ++slotIdx)
+                {
+                    await AllSquadNikkeIcons[squadIdx][slotIdx].SetNikke(-1);
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// 스쿼드 데이터를 강제로 다시 로드합니다.
+    /// 유저가 스쿼드를 편집한 후 호출합니다.
+    /// </summary>
+    public async Task RefreshSquads()
+    {
+        await LoadAllSquadsAsync();
+        // 현재 선택된 스쿼드 UI 갱신
+        SelectSquad(CurrentSquadIndex.Value);
+    }
+
+    /// <summary>
     /// 스쿼드를 선택하고 UI를 갱신합니다.
+    /// 데이터가 미리 로드되어 있으므로 동기적으로 처리됩니다.
     /// </summary>
     /// <param name="index">선택할 스쿼드 인덱스 (0~4)</param>
-    public async Task SelectSquad(int index)
+    public void SelectSquad(int index)
     {
         index = Mathf.Clamp(index, 0, 4);
         CurrentSquadIndex.Value = index;
 
+        // 전투력 계산
         int targetSquadId = index + 1;
         long totalCp = 0;
 
@@ -111,7 +185,6 @@ public class StageInfoPopupViewModel : ViewModelBase
             for (int i = 0; i < 5; ++i)
             {
                 int nikkeId = (squadData.slot != null && i < squadData.slot.Count) ? squadData.slot[i] : -1;
-                await NikkeIcons[i].SetNikke(nikkeId);
 
                 // 전투력 합산
                 if (nikkeId != -1 && Managers.Data.UserData.Nikkes.TryGetValue(nikkeId, out var userNikke))
@@ -120,20 +193,12 @@ public class StageInfoPopupViewModel : ViewModelBase
                 }
             }
         }
-        else
-        {
-            Debug.LogWarning($"[StageInfoPopupViewModel] UserSquadData not found for id: {targetSquadId}");
-            for (int i = 0; i < 5; ++i)
-            {
-                await NikkeIcons[i].SetNikke(-1);
-            }
-        }
 
         CurrentCombatPower.Value = (int)totalCp;
 
-        // Sub-UI 갱신
-        WeakCodeInfo?.SetData(Managers.Data.Get<StageGameData>(StageId).weaknessCode, NikkeIcons);
-        RangeInfo?.SetData(NikkeIcons);
+        // Sub-UI 갱신 (현재 선택된 스쿼드 기준)
+        WeakCodeInfo?.SetData(Managers.Data.Get<StageGameData>(StageId).weaknessCode, CurrentSquadNikkeIcons);
+        RangeInfo?.SetData(CurrentSquadNikkeIcons);
         // Reward는 변경 없음
     }
 
@@ -180,11 +245,14 @@ public class StageInfoPopupViewModel : ViewModelBase
     /// </summary>
     protected override void OnDispose()
     {
-        if (NikkeIcons != null)
+        if (AllSquadNikkeIcons != null)
         {
-            foreach (var icon in NikkeIcons)
+            for (int squadIdx = 0; squadIdx < 5; ++squadIdx)
             {
-                icon?.Release();
+                for (int slotIdx = 0; slotIdx < 5; ++slotIdx)
+                {
+                    AllSquadNikkeIcons[squadIdx][slotIdx]?.Release();
+                }
             }
         }
 

@@ -97,24 +97,47 @@ public class UI_StageInfoPopup : UI_Popup, IUIShowHideAnimation
 
         // 추가 바인딩
         Bind(_viewModel.CurrentCombatPower, power => _txtCurrentCombatPower.text = power.ToString("N0"));
-        Bind(_viewModel.CurrentSquadIndex, UpdateSquadButtonStates);
 
-        // 4. NikkeIcon 초기화 및 ViewModel 연결
-        for (int i = 0; i < 5; ++i)
-        {
-            _nikkeIcons[i].SetViewModel(_viewModel.NikkeIcons[i]);
-            _nikkeIcons[i].gameObject.SetActive(true);
+        // 스쿼드 선택 시 UI 갱신 (Bind 시 즉시 호출되어 초기 아이콘 설정됨)
+        Bind(_viewModel.CurrentSquadIndex, OnSquadChanged);
 
-            // 스쿼드 편집 요청 이벤트 바인딩
-            int slotIndex = i;
-            _nikkeIcons[i].OnDetailRequest -= OnNikkeDetailRequest;
-            _nikkeIcons[i].OnDetailRequest += OnNikkeDetailRequest;
-        }
-
-        // 5. Sub-UI ViewModel 연결
+        // 4. Sub-UI ViewModel 연결
         _weakCodeInfo?.SetViewModel(_viewModel.WeakCodeInfo);
         _rangeInfo?.SetViewModel(_viewModel.RangeInfo);
         _rewardInfo?.SetViewModel(_viewModel.RewardInfo);
+    }
+
+    private void OnSquadChanged(int newSquadIndex)
+    {
+        UpdateSquadButtonStates(newSquadIndex);
+        BindCurrentSquadIcons();
+    }
+
+    /// <summary>
+    /// 현재 선택된 스쿼드의 NikkeIcon ViewModels를 UI_NikkeIcon에 바인딩합니다.
+    /// </summary>
+    private void BindCurrentSquadIcons()
+    {
+        var currentIcons = _viewModel.CurrentSquadNikkeIcons;
+
+        for (int i = 0; i < 5; ++i)
+        {
+            // DisplayMode로 초기화 (drag 비활성화)
+            _nikkeIcons[i].Initialize(
+                slotIndex: i,
+                dragLayer: null,
+                onSwap: null,
+                emptyImage: null,
+                interactionMode: eNikkeIconInteractionMode.DisplayMode
+            );
+
+            _nikkeIcons[i].SetViewModel(currentIcons[i]);
+            _nikkeIcons[i].gameObject.SetActive(true);
+
+            // 이벤트 바인딩 (중복 방지)
+            _nikkeIcons[i].OnDetailRequest -= OnNikkeDetailRequest;
+            _nikkeIcons[i].OnDetailRequest += OnNikkeDetailRequest;
+        }
     }
 
     private void UpdateSquadButtonStates(int currentIndex)
