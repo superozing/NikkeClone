@@ -6,6 +6,19 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+public enum eNikkeIconInteractionMode
+{
+    /// <summary>
+    /// 드래그 앤 드롭, 클릭, 길게 누르기
+    /// </summary>
+    EditMode,
+
+    /// <summary>
+    /// 클릭, 길게 누르기
+    /// </summary>
+    DisplayMode
+}
+
 public class UI_NikkeIcon : UI_View, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler, IPointerDownHandler, IPointerUpHandler, IPointerEnterHandler, IPointerExitHandler
 {
     [Header("Components")]
@@ -41,6 +54,8 @@ public class UI_NikkeIcon : UI_View, IBeginDragHandler, IDragHandler, IEndDragHa
     private Coroutine _longPressCoroutine;
     private const float LONG_PRESS_DURATION = 0.5f;
 
+    private eNikkeIconInteractionMode _interactionMode = eNikkeIconInteractionMode.EditMode;
+
     protected override void Awake()
     {
         base.Awake();
@@ -50,12 +65,18 @@ public class UI_NikkeIcon : UI_View, IBeginDragHandler, IDragHandler, IEndDragHa
     /// <summary>
     /// 외부(Popup)에서 초기 설정 값을 주입합니다.
     /// </summary>
-    public void Initialize(int slotIndex, RectTransform dragLayer, Action<int, int> onSwap, GameObject emptyImage)
+    public void Initialize(
+        int slotIndex,
+        RectTransform dragLayer,
+        Action<int, int> onSwap,
+        GameObject emptyImage,
+        eNikkeIconInteractionMode interactionMode = eNikkeIconInteractionMode.EditMode)
     {
         _slotIndex = slotIndex;
         _dragLayer = dragLayer;
         _onSwapRequest = onSwap;
         _emptyImageRef = emptyImage;
+        _interactionMode = interactionMode;
     }
 
     public override void SetViewModel(ViewModelBase viewModel)
@@ -113,10 +134,17 @@ public class UI_NikkeIcon : UI_View, IBeginDragHandler, IDragHandler, IEndDragHa
         _isPointerDown = false;
         if (_longPressCoroutine != null) StopCoroutine(_longPressCoroutine);
 
-        // 드래그도 안했고, 롱프레스도 아니었다면 -> 클릭 (Clear)
+        // 드래그도 안했고, 롱프레스도 아니었다면 -> 클릭
         if (!_isDragging && !_isLongPressTriggered)
         {
-            OnClearRequest?.Invoke(_slotIndex);
+            if (_interactionMode == eNikkeIconInteractionMode.EditMode)
+            {
+                OnClearRequest?.Invoke(_slotIndex);
+            }
+            else // DisplayMode
+            {
+                OnDetailRequest?.Invoke(_slotIndex);
+            }
         }
     }
 
@@ -137,6 +165,8 @@ public class UI_NikkeIcon : UI_View, IBeginDragHandler, IDragHandler, IEndDragHa
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        if (_interactionMode != eNikkeIconInteractionMode.EditMode) return;
+
         // 데이터가 없으면 드래그 불가
         if (_viewModel == null || _viewModel.IsEmpty.Value) return;
 
@@ -163,6 +193,7 @@ public class UI_NikkeIcon : UI_View, IBeginDragHandler, IDragHandler, IEndDragHa
 
     public void OnDrag(PointerEventData eventData)
     {
+        if (_interactionMode != eNikkeIconInteractionMode.EditMode) return;
         if (!_isDragging) return;
 
         RectTransform plane = _dragLayer != null ? _dragLayer : (transform.parent as RectTransform);
@@ -174,6 +205,7 @@ public class UI_NikkeIcon : UI_View, IBeginDragHandler, IDragHandler, IEndDragHa
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        if (_interactionMode != eNikkeIconInteractionMode.EditMode) return;
         if (!_isDragging) return;
 
         _isDragging = false;
@@ -206,6 +238,8 @@ public class UI_NikkeIcon : UI_View, IBeginDragHandler, IDragHandler, IEndDragHa
     /// </summary>
     public void OnDrop(PointerEventData eventData)
     {
+        if (_interactionMode != eNikkeIconInteractionMode.EditMode) return;
+
         var droppedIcon = eventData.pointerDrag?.GetComponent<UI_NikkeIcon>();
         if (droppedIcon != null && droppedIcon != this)
         {
@@ -222,6 +256,8 @@ public class UI_NikkeIcon : UI_View, IBeginDragHandler, IDragHandler, IEndDragHa
     /// </summary>
     public void OnPointerEnter(PointerEventData eventData)
     {
+        if (_interactionMode != eNikkeIconInteractionMode.EditMode) return;
+
         // 드래그 중인 대상이 UI_NikkeIcon이어야 함
         if (eventData.dragging && eventData.pointerDrag != null)
         {
@@ -238,6 +274,8 @@ public class UI_NikkeIcon : UI_View, IBeginDragHandler, IDragHandler, IEndDragHa
     /// </summary>
     public void OnPointerExit(PointerEventData eventData)
     {
+        if (_interactionMode != eNikkeIconInteractionMode.EditMode) return;
+
         // 드래그 중일 때만 반응
         if (eventData.dragging)
         {
