@@ -5,7 +5,7 @@
     "description": "니케 1회 레벨업",
     "missionType": "NikkeLevelUp",
     "targetCount": 1,
-    "rewardItemID": 0,
+    "rewardItemID": 1,
     "rewardItemCount": 100
   },
   "1": {
@@ -14,7 +14,7 @@
     "description": "니케 3회 레벨업",
     "missionType": "NikkeLevelUp",
     "targetCount": 3,
-    "rewardItemID": 0,
+    "rewardItemID": 1,
     "rewardItemCount": 300
   },
   "2": {
@@ -23,7 +23,7 @@
     "description": "니케 5회 레벨업",
     "missionType": "NikkeLevelUp",
     "targetCount": 5,
-    "rewardItemID": 0,
+    "rewardItemID": 1,
     "rewardItemCount": 500
   },
   "3": {
@@ -32,7 +32,7 @@
     "description": "스테이지 1회 클리어",
     "missionType": "StageClear",
     "targetCount": 1,
-    "rewardItemID": 1,
+    "rewardItemID": 2,
     "rewardItemCount": 1000
   },
   "4": {
@@ -41,7 +41,7 @@
     "description": "스테이지 2회 클리어",
     "missionType": "StageClear",
     "targetCount": 2,
-    "rewardItemID": 1,
+    "rewardItemID": 2,
     "rewardItemCount": 1500
   },
   "5": {
@@ -50,7 +50,7 @@
     "description": "스테이지 3회 클리어",
     "missionType": "StageClear",
     "targetCount": 3,
-    "rewardItemID": 1,
+    "rewardItemID": 2,
     "rewardItemCount": 2000
   }
 }
