@@ -46,6 +46,11 @@ public class StageInfoPopupViewModel : ViewModelBase
     /// </summary>
     public event Action OnCloseRequested;
 
+    /// <summary>
+    /// 니케 상세 정보 팝업 요청 이벤트입니다. NikkeId를 인자로 전달합니다.
+    /// </summary>
+    public event Action<int> OnNikkeDetailRequested;
+
     private int _squadId;
     private bool _isSquadsLoaded = false; // 스쿼드 데이터 로드 완료 플래그
 
@@ -67,8 +72,15 @@ public class StageInfoPopupViewModel : ViewModelBase
             AllSquadNikkeIcons[squadIdx] = new NikkeIconViewModel[5];
             for (int slotIdx = 0; slotIdx < 5; ++slotIdx)
             {
-                AllSquadNikkeIcons[squadIdx][slotIdx] = new NikkeIconViewModel();
-                AllSquadNikkeIcons[squadIdx][slotIdx].AddRef(); // 부모 ViewModel이 자식을 소유
+                var iconVM = new DisplayNikkeIconViewModel();
+                AllSquadNikkeIcons[squadIdx][slotIdx] = iconVM;
+                iconVM.AddRef(); // 부모 ViewModel이 자식을 소유
+
+                // Event Subscription
+                // 람다 내부에서 캡쳐하는 변수는 루프 변수 복사본 사용
+                int capturedSlotIdx = slotIdx;
+                iconVM.OnEditRequest += RequestSquadEdit;
+                iconVM.OnDetailRequest += () => RequestNikkeDetail(capturedSlotIdx);
             }
         }
 
@@ -238,6 +250,20 @@ public class StageInfoPopupViewModel : ViewModelBase
     public void RequestClose()
     {
         OnCloseRequested?.Invoke();
+    }
+
+    /// <summary>
+    /// 니케 상세 정보 요청 처리입니다.
+    /// </summary>
+    public void RequestNikkeDetail(int slotIndex)
+    {
+        if (slotIndex < 0 || slotIndex >= 5) return;
+
+        var iconVM = CurrentSquadNikkeIcons[slotIndex];
+        if (iconVM != null && !iconVM.IsSlotEmpty && iconVM.NikkeId != -1)
+        {
+            OnNikkeDetailRequested?.Invoke(iconVM.NikkeId);
+        }
     }
 
     /// <summary>

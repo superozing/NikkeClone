@@ -122,21 +122,15 @@ public class UI_StageInfoPopup : UI_Popup, IUIShowHideAnimation
 
         for (int i = 0; i < 5; ++i)
         {
-            // DisplayMode로 초기화 (drag 비활성화)
+            // DisplayMode로 초기화 (drag 비활성화는 ViewModel이 담당)
             _nikkeIcons[i].Initialize(
                 slotIndex: i,
                 dragLayer: null,
-                onSwap: null,
-                emptyImage: null,
-                interactionMode: eNikkeIconInteractionMode.DisplayMode
+                emptyImage: null
             );
 
             _nikkeIcons[i].SetViewModel(currentIcons[i]);
             _nikkeIcons[i].gameObject.SetActive(true);
-
-            // 이벤트 바인딩 (중복 방지)
-            _nikkeIcons[i].OnDetailRequest -= OnNikkeDetailRequest;
-            _nikkeIcons[i].OnDetailRequest += OnNikkeDetailRequest;
         }
     }
 
@@ -149,13 +143,6 @@ public class UI_StageInfoPopup : UI_Popup, IUIShowHideAnimation
                 _squadNumberButtons[i].interactable = (i != currentIndex);
         }
     }
-
-    private void OnNikkeDetailRequest(int slotIndex)
-    {
-        _viewModel?.RequestSquadEdit();
-    }
-
-
 
     private void OnEscapeAction(InputAction.CallbackContext ctx) => _viewModel?.RequestClose();
 
@@ -177,7 +164,6 @@ public class UI_StageInfoPopup : UI_Popup, IUIShowHideAnimation
         await _fadeOut.ExecuteAsync(_canvasGroup, delay);
     }
 
-
     protected override void OnDestroy()
     {
         base.OnDestroy();
@@ -193,13 +179,6 @@ public class UI_StageInfoPopup : UI_Popup, IUIShowHideAnimation
         _btnClose?.onClick.RemoveAllListeners();
         _btnStageType?.onClick.RemoveAllListeners();
         _btnStageWaveInfo?.onClick.RemoveAllListeners();
-
-        // NikkeIcon 이벤트 해제
-        if (_nikkeIcons != null)
-        {
-            foreach (var icon in _nikkeIcons)
-                if (icon != null) icon.OnDetailRequest -= OnNikkeDetailRequest;
-        }
 
         // 이벤트 구독 해제
         if (_viewModel != null)

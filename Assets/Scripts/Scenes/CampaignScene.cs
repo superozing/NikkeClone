@@ -24,6 +24,7 @@ public class CampaignScene : MonoBehaviour, IScene
 
     // ViewModel 캐시
     private StageInfoPopupViewModel _stageInfoPopupViewModel;
+    private SquadDetailPopupViewModel _squadDetailPopupViewModel;
 
     /// <summary>
     /// 스테이지 전투 상태 진입 시 호출됩니다.
@@ -78,6 +79,47 @@ public class CampaignScene : MonoBehaviour, IScene
         }
     }
 
+    /// <summary>
+    /// 스쿼드 편집(디테일) 팝업 요청 처리
+    /// </summary>
+    private void OnSquadEditRequested()
+    {
+        // 기존 팝업 정리
+        CloseSquadDetailPopup();
+
+        // 현재 선택된 스쿼드 인덱스를 넘겨주며 생성
+        int currentSquadIdx = (_stageInfoPopupViewModel != null) ? _stageInfoPopupViewModel.CurrentSquadIndex.Value : 0;
+
+        _squadDetailPopupViewModel = new SquadDetailPopupViewModel(currentSquadIdx);
+        _squadDetailPopupViewModel.AddRef();
+
+        _squadDetailPopupViewModel.OnCloseRequested += OnSquadDetailPopupClosed;
+
+        Managers.UI.ShowAsync<UI_SquadDetailPopup>(_squadDetailPopupViewModel);
+    }
+
+    private async void OnSquadDetailPopupClosed()
+    {
+        // 팝업 닫기
+        CloseSquadDetailPopup();
+
+        // 스쿼드 변경사항이 있을 수 있으므로 StageInfoPopup 갱신
+        if (_stageInfoPopupViewModel != null)
+        {
+            await _stageInfoPopupViewModel.RefreshSquads();
+        }
+    }
+
+    private void CloseSquadDetailPopup()
+    {
+        if (_squadDetailPopupViewModel != null)
+        {
+            _squadDetailPopupViewModel.OnCloseRequested -= OnSquadDetailPopupClosed;
+            _squadDetailPopupViewModel.Release();
+            _squadDetailPopupViewModel = null;
+        }
+    }
+
     private void Awake()
     {
         Managers.Scene.SetCurrentScene(this);
@@ -94,6 +136,7 @@ public class CampaignScene : MonoBehaviour, IScene
 
         // 이벤트 구독 (한 번만)
         _stageInfoPopupViewModel.OnCloseRequested += OnStageInfoPopupClosed;
+        _stageInfoPopupViewModel.OnSquadEditRequested += OnSquadEditRequested;
 
         // 챕터 데이터 조회
         ChapterGameData curChapter = Managers.Data.Get<ChapterGameData>(_chapterId);
@@ -131,8 +174,12 @@ public class CampaignScene : MonoBehaviour, IScene
         if (_stageInfoPopupViewModel != null)
         {
             _stageInfoPopupViewModel.OnCloseRequested -= OnStageInfoPopupClosed;
+            _stageInfoPopupViewModel.OnSquadEditRequested -= OnSquadEditRequested;
             _stageInfoPopupViewModel.Release(); // RefCount = 0 → OnDispose() 호출됨
             _stageInfoPopupViewModel = null;
         }
+
+        // SquadDetailPopup 정리
+        CloseSquadDetailPopup();
     }
 }
