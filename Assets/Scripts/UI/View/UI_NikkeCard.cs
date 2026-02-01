@@ -6,7 +6,7 @@ using UI;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UI_NikkeCard : UI_View, IUIShowHideAnimation
+public class UI_NikkeCard : UI_View, IUIShowHideable
 {
     [Header("Texts")]
     [SerializeField] private TMP_Text _levelText;
@@ -38,16 +38,19 @@ public class UI_NikkeCard : UI_View, IUIShowHideAnimation
 
     private MarqueeUIAnimation _marqueeAnim;
 
-    private readonly IUIAnimation _showAnim = new VerticalSlideFadeUIAnimation(0.3f, -50f, Ease.OutQuad);
+    private IUIAnimation _showAnim;
 
     protected override void Awake()
     {
         base.Awake();
         _cardButton.onClick.AddListener(OnClicked);
 
+        // CanvasGroup은 base.Awake()에서 초기화되므로 여기서 생성
+        _showAnim = new VerticalSlideFadeUIAnimation(_canvasGroup, 0.3f, -50f, Ease.OutQuad);
+
         // 애니메이션 전략 초기화 (속도 30, 딜레이 1.5초)
         if (_nameMaskRect != null)
-            _marqueeAnim = new MarqueeUIAnimation(_nameMaskRect, 30f, 1.5f);
+            _marqueeAnim = new MarqueeUIAnimation(_canvasGroup, _nameMaskRect, 30f, 1.5f);
 
         _nameTextCanvasGroup = _nameTextRect.gameObject.GetOrAddComponent<CanvasGroup>();
     }
@@ -104,12 +107,13 @@ public class UI_NikkeCard : UI_View, IUIShowHideAnimation
             _emptyImage.SetActive(isEmpty);
     }
 
-    // --- IUIShowHideAnimation Implementation ---
+    // --- IUIShowHideable Implementation ---
 
     public async Task PlayShowAnimationAsync(float delay = 0)
     {
+        if (delay > 0) await Task.Delay(TimeSpan.FromSeconds(delay));
         if (_showAnim != null && _canvasGroup != null)
-            await _showAnim.ExecuteAsync(_canvasGroup, delay);
+            await _showAnim.ExecuteAsync();
     }
 
     public Task PlayHideAnimationAsync(float delay = 0)
@@ -141,7 +145,7 @@ public class UI_NikkeCard : UI_View, IUIShowHideAnimation
         LayoutRebuilder.ForceRebuildLayoutImmediate(_nameTextRect);
 
         // 애니메이션 실행
-        _marqueeAnim?.ExecuteAsync(_nameTextCanvasGroup);
+        _marqueeAnim?.ExecuteAsync();
     }
 
     private void OnClicked()
