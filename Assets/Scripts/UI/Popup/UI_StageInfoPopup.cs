@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using TMPro;
 using UI;
@@ -9,7 +10,7 @@ using UnityEngine.UI;
 /// 스테이지 정보 팝업 View입니다.
 /// 캠페인 씬에서 스쿼드가 스테이지와 충돌했을 때 표시됩니다.
 /// </summary>
-public class UI_StageInfoPopup : UI_Popup, IUIShowHideAnimation
+public class UI_StageInfoPopup : UI_Popup, IUIShowHideable
 {
     public override string ActionMapKey => "UI_StageInfoPopup";
 
@@ -41,12 +42,14 @@ public class UI_StageInfoPopup : UI_Popup, IUIShowHideAnimation
     private StageInfoPopupViewModel _viewModel;
 
     // --- 연출 ---
-    private readonly IUIAnimation _fadeIn = new FadeInUIAnimation(0.2f);
-    private readonly IUIAnimation _fadeOut = new FadeOutUIAnimation(0.2f);
+    private IUIAnimation _showAnim;
+    private IUIAnimation _hideAnim;
 
     protected override void Awake()
     {
         base.Awake();
+        _showAnim = new FadeUIAnimation(_canvasGroup, 0f, 1f, 0.2f);
+        _hideAnim = new FadeUIAnimation(_canvasGroup, 1f, 0f, 0.2f);
         Managers.Input.BindAction("Close", OnEscapeAction, InputActionPhase.Performed);
 
         // 스쿼드 선택 버튼 리스너
@@ -151,17 +154,20 @@ public class UI_StageInfoPopup : UI_Popup, IUIShowHideAnimation
         await PlayHideAnimationAsync();
         Managers.UI.Close(this);
     }
-
-    // --- IUIShowHideAnimation 구현 ---
+    // --- IUIShowHideable 구현 ---
 
     public async Task PlayShowAnimationAsync(float delay = 0)
     {
-        await _fadeIn.ExecuteAsync(_canvasGroup, delay);
+        if (delay > 0) await Task.Delay(TimeSpan.FromSeconds(delay));
+        if (_showAnim != null)
+            await _showAnim.ExecuteAsync();
     }
 
     public async Task PlayHideAnimationAsync(float delay = 0)
     {
-        await _fadeOut.ExecuteAsync(_canvasGroup, delay);
+        if (delay > 0) await Task.Delay(TimeSpan.FromSeconds(delay));
+        if (_hideAnim != null)
+            await _hideAnim.ExecuteAsync();
     }
 
     protected override void OnDestroy()

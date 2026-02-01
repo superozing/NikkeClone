@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using UI;
 
-public class UI_SkillInfoPopup : UI_Popup, IUIShowHideAnimation
+public class UI_SkillInfoPopup : UI_Popup, IUIShowHideable
 {
     // GameInputActions에 해당 맵이 추가되어야 함
     public override string ActionMapKey => "UI_SkillInfoPopup";
@@ -20,12 +20,14 @@ public class UI_SkillInfoPopup : UI_Popup, IUIShowHideAnimation
     private SkillInfoPopupViewModel _viewModel;
 
     // 연출 객체
-    private readonly IUIAnimation _fadeIn = new FadeInUIAnimation(0.2f);
-    private readonly IUIAnimation _fadeOut = new FadeOutUIAnimation(0.2f);
+    private IUIAnimation _showAnim;
+    private IUIAnimation _hideAnim;
 
     protected override void Awake()
     {
         base.Awake();
+        _showAnim = new FadeUIAnimation(_canvasGroup, 0f, 1f, 0.2f);
+        _hideAnim = new FadeUIAnimation(_canvasGroup, 1f, 0f, 0.2f);
 
         // Input Action 바인딩 (ESC 키로 닫기)
         Managers.Input.BindAction("Close", OnEscapeAction, InputActionPhase.Performed);
@@ -35,7 +37,6 @@ public class UI_SkillInfoPopup : UI_Popup, IUIShowHideAnimation
         if (_blocker != null)
             _blocker.onClick.AddListener(OnCloseClick);
     }
-
     protected async void OnEnable()
     {
         await PlayShowAnimationAsync();
@@ -95,19 +96,20 @@ public class UI_SkillInfoPopup : UI_Popup, IUIShowHideAnimation
         await PlayHideAnimationAsync();
         Managers.UI.Close(this);
     }
-
-    // --- IUIShowHideAnimation 구현 ---
+    // --- IUIShowHideable 구현 ---
 
     public async Task PlayShowAnimationAsync(float delay = 0f)
     {
-        if (_fadeIn != null && _canvasGroup != null)
-            await _fadeIn.ExecuteAsync(_canvasGroup, delay);
+        if (delay > 0) await Task.Delay(TimeSpan.FromSeconds(delay));
+        if (_showAnim != null)
+            await _showAnim.ExecuteAsync();
     }
 
     public async Task PlayHideAnimationAsync(float delay = 0f)
     {
-        if (_fadeOut != null && _canvasGroup != null)
-            await _fadeOut.ExecuteAsync(_canvasGroup, delay);
+        if (delay > 0) await Task.Delay(TimeSpan.FromSeconds(delay));
+        if (_hideAnim != null)
+            await _hideAnim.ExecuteAsync();
     }
 
     protected override void OnDestroy()

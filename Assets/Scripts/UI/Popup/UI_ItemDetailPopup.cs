@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 using System;
 using System.Threading.Tasks;
 
-public class UI_ItemDetailPopup : UI_Popup, IUIShowHideAnimation
+public class UI_ItemDetailPopup : UI_Popup, IUIShowHideable
 {
     public override string ActionMapKey => "UI_ItemDetailPopup";
 
@@ -26,12 +26,14 @@ public class UI_ItemDetailPopup : UI_Popup, IUIShowHideAnimation
 
     private ItemDetailPopupViewModel _viewModel;
 
-    private readonly IUIAnimation _fadeIn = new FadeInUIAnimation(0.2f);
-    private readonly IUIAnimation _fadeOut = new FadeOutUIAnimation(0.2f);
+    private IUIAnimation _showAnim;
+    private IUIAnimation _hideAnim;
 
     protected override void Awake()
     {
         base.Awake();
+        _showAnim = new FadeUIAnimation(_canvasGroup, 0f, 1f, 0.2f);
+        _hideAnim = new FadeUIAnimation(_canvasGroup, 1f, 0f, 0.2f);
 
         // 1. Input Action 바인딩 (ESC 키로 닫기)
         Managers.Input.BindAction("Close", OnEscapeAction, InputActionPhase.Performed);
@@ -48,18 +50,20 @@ public class UI_ItemDetailPopup : UI_Popup, IUIShowHideAnimation
         await PlayShowAnimationAsync();
     }
 
-    // --- IUIShowHideAnimation 구현 ---
+    // --- IUIShowHideable 구현 ---
 
     public async Task PlayShowAnimationAsync(float delay = 0f)
     {
-        if (_fadeIn != null && _canvasGroup != null)
-            await _fadeIn.ExecuteAsync(_canvasGroup, delay);
+        if (delay > 0) await Task.Delay(TimeSpan.FromSeconds(delay));
+        if (_showAnim != null)
+            await _showAnim.ExecuteAsync();
     }
 
     public async Task PlayHideAnimationAsync(float delay = 0f)
     {
-        if (_fadeOut != null && _canvasGroup != null)
-            await _fadeOut.ExecuteAsync(_canvasGroup, delay);
+        if (delay > 0) await Task.Delay(TimeSpan.FromSeconds(delay));
+        if (_hideAnim != null)
+            await _hideAnim.ExecuteAsync();
     }
 
     // --------------------------------

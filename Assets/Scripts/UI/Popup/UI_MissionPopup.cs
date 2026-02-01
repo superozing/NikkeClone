@@ -7,7 +7,7 @@ using System;
 using System.Threading.Tasks;
 using DG.Tweening;
 
-public class UI_MissionPopup : UI_Popup, IUIShowHideAnimation
+public class UI_MissionPopup : UI_Popup, IUIShowHideable
 {
     public override string ActionMapKey => "UI_MissionPopup";
 
@@ -24,8 +24,8 @@ public class UI_MissionPopup : UI_Popup, IUIShowHideAnimation
     private MissionPopupViewModel _viewModel;
 
     // 내부 연출 객체
-    private IUIAnimation _fadeInAnimation = new FadeInUIAnimation(0.3f, Ease.OutQuad);
-    private IUIAnimation _fadeOutAnimation = new FadeOutUIAnimation(0.2f, Ease.InQuad);
+    private IUIAnimation _showAnim;
+    private IUIAnimation _hideAnim;
 
     protected override void Awake()
     {
@@ -39,8 +39,8 @@ public class UI_MissionPopup : UI_Popup, IUIShowHideAnimation
         _exitButton.onClick.AddListener(OnCloseClick);
 
         // 연출 전략 수립
-        _fadeInAnimation  = new FadeInUIAnimation(0.3f, Ease.OutQuad);
-        _fadeOutAnimation = new FadeOutUIAnimation(0.2f, Ease.InQuad);
+        _showAnim = new FadeUIAnimation(_canvasGroup, 0f, 1f, 0.3f, Ease.OutQuad);
+        _hideAnim = new FadeUIAnimation(_canvasGroup, 1f, 0f, 0.3f, Ease.OutQuad);
     }
 
     protected async void OnEnable()
@@ -50,15 +50,17 @@ public class UI_MissionPopup : UI_Popup, IUIShowHideAnimation
 
     public async Task PlayShowAnimationAsync(float delay = 0f)
     {
+        if (delay > 0) await Task.Delay(TimeSpan.FromSeconds(delay));
         // CanvasGroup은 부모(UI_View)의 protected 멤버 사용
-        if (_fadeInAnimation != null && _canvasGroup != null)
-            await _fadeInAnimation.ExecuteAsync(_canvasGroup, delay);
+        if (_showAnim != null)
+            await _showAnim.ExecuteAsync();
     }
 
     public async Task PlayHideAnimationAsync(float delay = 0f)
     {
-        if (_fadeOutAnimation != null && _canvasGroup != null)
-            await _fadeOutAnimation.ExecuteAsync(_canvasGroup, delay);
+        if (delay > 0) await Task.Delay(TimeSpan.FromSeconds(delay));
+        if (_hideAnim != null)
+            await _hideAnim.ExecuteAsync();
     }
 
     private void OnEscapeAction(InputAction.CallbackContext _) => OnCloseClick();

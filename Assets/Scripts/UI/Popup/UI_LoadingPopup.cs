@@ -3,8 +3,9 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using UI;
 
-public class UI_LoadingPopup : UI_DontDestroyPopup, IUIShowHideAnimation
+public class UI_LoadingPopup : UI_DontDestroyPopup, IUIShowHideable
 {
     // 로딩 팝업 입력 액션은 기본 None 처리 (Esc로 닫기 불가)
     public override string ActionMapKey => "None";
@@ -35,10 +36,10 @@ public class UI_LoadingPopup : UI_DontDestroyPopup, IUIShowHideAnimation
 
             // IUIAnimation 객체 생성
             // Wipe In: 0 -> 1 (화면 열기 / 나타남) => Show Animation
-            _wipeInAnim = new WipeUIAnimation(_wipeMaterial, 0f, 1f, _wipeDuration, _wipeEase);
+            _wipeInAnim = new WipeUIAnimation(_wipeMaterial, 0f, 1f, _wipeDuration, _wipeEase, _canvasGroup);
 
             // Wipe Out: 1 -> 0 (화면 닫기 / 사라짐) => Hide Animation
-            _wipeOutAnim = new WipeUIAnimation(_wipeMaterial, 1f, 0f, _wipeDuration, _wipeEase);
+            _wipeOutAnim = new WipeUIAnimation(_wipeMaterial, 1f, 0f, _wipeDuration, _wipeEase, _canvasGroup);
         }
     }
 
@@ -88,18 +89,20 @@ public class UI_LoadingPopup : UI_DontDestroyPopup, IUIShowHideAnimation
         }
     }
 
-    // --- IUIShowHideAnimation Implementation ---
+    // --- IUIShowHideable Implementation ---
 
     public async Task PlayShowAnimationAsync(float delay = 0f)
     {
+        if (delay > 0) await Task.Delay(TimeSpan.FromSeconds(delay));
         if (_wipeInAnim != null)
-            await _wipeInAnim.ExecuteAsync(_canvasGroup, delay);
+            await _wipeInAnim.ExecuteAsync();
     }
 
     public async Task PlayHideAnimationAsync(float delay = 0f)
     {
+        if (delay > 0) await Task.Delay(TimeSpan.FromSeconds(delay));
         if (_wipeOutAnim != null)
-            await _wipeOutAnim.ExecuteAsync(_canvasGroup, delay);
+            await _wipeOutAnim.ExecuteAsync();
     }
 
     // --- Event Handlers (ViewModel -> View) ---

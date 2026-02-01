@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using UI;
 
-public class UI_NikkeDetailPopup : UI_Popup, IUIShowHideAnimation
+public class UI_NikkeDetailPopup : UI_Popup, IUIShowHideable
 {
     public override string ActionMapKey => "UI_NikkeDetailPopup";
 
@@ -19,12 +21,18 @@ public class UI_NikkeDetailPopup : UI_Popup, IUIShowHideAnimation
     private NikkeDetailPopupViewModel _viewModel;
 
     // 연출 객체
-    private readonly IUIAnimation _fadeIn = new FadeInUIAnimation(0.3f);
-    private readonly IUIAnimation _fadeOut = new FadeOutUIAnimation(0.2f);
+    private IUIAnimation _showAnim;
+    private IUIAnimation _hideAnim;
 
     protected override void Awake()
     {
         base.Awake();
+
+        // Show: Alpha 0 -> 1
+        _showAnim = new FadeUIAnimation(_canvasGroup, 0f, 1f, 0.3f);
+
+        // Hide: Alpha 1 -> 0
+        _hideAnim = new FadeUIAnimation(_canvasGroup, 1f, 0f, 0.3f);
 
         if (_backButton != null)
             _backButton.onClick.AddListener(OnCloseClick);
@@ -32,7 +40,6 @@ public class UI_NikkeDetailPopup : UI_Popup, IUIShowHideAnimation
         // ESC 키 바인딩
         Managers.Input.BindAction("Close", OnEscapeAction, InputActionPhase.Performed);
     }
-
     protected async void OnEnable()
     {
         await PlayShowAnimationAsync();
@@ -93,19 +100,20 @@ public class UI_NikkeDetailPopup : UI_Popup, IUIShowHideAnimation
         await PlayHideAnimationAsync();
         Managers.UI.Close(this);
     }
-
-    // --- IUIShowHideAnimation Implementation ---
+    // --- IUIShowHideable Implementation ---
 
     public async Task PlayShowAnimationAsync(float delay = 0f)
     {
-        if (_fadeIn != null && _canvasGroup != null)
-            await _fadeIn.ExecuteAsync(_canvasGroup, delay);
+        if (delay > 0) await Task.Delay(TimeSpan.FromSeconds(delay));
+        if (_showAnim != null)
+            await _showAnim.ExecuteAsync();
     }
 
     public async Task PlayHideAnimationAsync(float delay = 0f)
     {
-        if (_fadeOut != null && _canvasGroup != null)
-            await _fadeOut.ExecuteAsync(_canvasGroup, delay);
+        if (delay > 0) await Task.Delay(TimeSpan.FromSeconds(delay));
+        if (_hideAnim != null)
+            await _hideAnim.ExecuteAsync();
     }
 
     protected override void OnDestroy()
@@ -120,10 +128,10 @@ public class UI_NikkeDetailPopup : UI_Popup, IUIShowHideAnimation
         if (_viewModel != null)
             _viewModel.OnCloseRequested -= OnCloseRequested;
 
-        if (_moneyView != null) 
+        if (_moneyView != null)
             _moneyView.SetViewModel(null);
 
-        if (_detailStatusView != null) 
+        if (_detailStatusView != null)
             _detailStatusView.SetViewModel(null);
 
         _viewModel = null;
