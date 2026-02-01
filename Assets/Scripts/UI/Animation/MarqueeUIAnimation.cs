@@ -12,19 +12,22 @@ public class MarqueeUIAnimation : IUIAnimation
     private readonly float _delay;
     private Tween _currentTween;
 
-    public MarqueeUIAnimation(RectTransform maskRect, float speed = 30f, float defaultDelay = 1.5f)
+    private readonly CanvasGroup _cg;
+
+    public MarqueeUIAnimation(CanvasGroup cg, RectTransform maskRect, float speed = 30f, float defaultDelay = 1.5f)
     {
+        _cg = cg;
         _maskRect = maskRect;
         _speed = speed;
         _delay = defaultDelay;
     }
 
-    public Task ExecuteAsync(CanvasGroup cg, float delay = 0f)
+    public Task ExecuteAsync()
     {
-        if (cg == null || _maskRect == null)
+        if (_cg == null || _maskRect == null)
             return Task.CompletedTask;
 
-        RectTransform targetRect = cg.GetComponent<RectTransform>();
+        RectTransform targetRect = _cg.GetComponent<RectTransform>();
         if (targetRect == null)
             return Task.CompletedTask;
 
@@ -46,10 +49,10 @@ public class MarqueeUIAnimation : IUIAnimation
             seq.SetUpdate(true);
             seq.SetLink(targetRect.gameObject); // 오브젝트 파괴 시 트윈 자동 제거
 
-            // 3. 딜레이 적용 (기본 대기 시간 + 추가 딜레이)
-            float totalDelay = _delay + delay;
-            if (totalDelay > 0f)
-                seq.AppendInterval(totalDelay);
+            // 3. 딜레이 적용 (기본 대기 시간만 적용)
+            // 외부 delay는 View에서 Task.Delay로 처리됨
+            if (_delay > 0f)
+                seq.AppendInterval(_delay);
 
             // 4. 딜레이가 끝난 직후, 위치를 (0,0)으로 강제 재설정
             // 대기 시간 동안 LayoutGroup이 위치를 변경했을 가능성을 차단합니다.

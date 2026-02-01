@@ -9,6 +9,7 @@ public class WipeUIAnimation : IUIAnimation
     private readonly float _endValue;
     private readonly float _duration;
     private readonly Ease _ease;
+    private readonly CanvasGroup _cg;
     private readonly int _propertyId;
 
     /// <summary>
@@ -19,21 +20,23 @@ public class WipeUIAnimation : IUIAnimation
     /// <param name="endValue">목표 Cutoff 값</param>
     /// <param name="duration">진행 시간</param>
     /// <param name="ease">Ease Function</param>
-    public WipeUIAnimation(Material material, float startValue, float endValue, float duration = 0.5f, Ease ease = Ease.InOutQuad)
+    /// <param name="cg">Optional CanvasGroup for interaction control</param>
+    public WipeUIAnimation(Material material, float startValue, float endValue, float duration = 0.5f, Ease ease = Ease.InOutQuad, CanvasGroup cg = null)
     {
         _targetMaterial = material;
         _startValue = startValue;
         _endValue = endValue;
         _duration = duration;
         _ease = ease;
+        _cg = cg;
         _propertyId = Shader.PropertyToID("_CutOff");
     }
 
-    public async Task ExecuteAsync(CanvasGroup cg, float delay = 0f)
+    public async Task ExecuteAsync()
     {
         // CanvasGroup이 있다면 잠시 입력을 차단하거나 상호작용을 비활성화합니다.
-        if (cg != null)
-            cg.interactable = false;
+        if (_cg != null)
+            _cg.interactable = false;
 
         if (_targetMaterial == null)
             return;
@@ -41,11 +44,7 @@ public class WipeUIAnimation : IUIAnimation
         // 1. 시작 값 설정 (즉시 반영)
         _targetMaterial.SetFloat(_propertyId, _startValue);
 
-        // 2. 딜레이 대기
-        if (delay > 0f)
-            await Task.Delay((int)(delay * 1000));
-
-        // 3. 트윈 실행
+        // 2. 트윈 실행
         await _targetMaterial.DOFloat(_endValue, _propertyId, _duration)
             .SetEase(_ease)
             .SetUpdate(true) // TimeScale 무시 (로딩 중 멈춤 방지)
