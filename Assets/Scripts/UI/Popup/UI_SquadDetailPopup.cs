@@ -130,17 +130,10 @@ public class UI_SquadDetailPopup : UI_Popup, IUIShowHideAnimation
 
             UI_NikkeIcon icon = _nikkeIcons[i];
 
-            // 1. 기존 이벤트 구독 해제 (중복 방지)
-            icon.OnClearRequest -= OnClearSlot;
-            icon.OnDetailRequest -= OnShowDetail;
-
-            // 2. 초기화 (슬롯 인덱스, 드래그 레이어, 스왑 콜백, 빈 이미지 참조)
+            // 1. 초기화 (슬롯 인덱스, 드래그 레이어, 빈 이미지 참조)
             GameObject emptyImg = (i < _emptyImages.Length) ? _emptyImages[i] : null;
-            icon.Initialize(i, _dragLayer, OnSwapRequest, emptyImg);
+            icon.Initialize(i, _dragLayer, emptyImg);
 
-            // 3. 새 이벤트 구독
-            icon.OnClearRequest += OnClearSlot;
-            icon.OnDetailRequest += OnShowDetail;
 
             // 4. 뷰모델 연결
             if (_viewModel != null && _viewModel.SlotViewModels != null && i < _viewModel.SlotViewModels.Length)
@@ -186,20 +179,11 @@ public class UI_SquadDetailPopup : UI_Popup, IUIShowHideAnimation
 
     // --- Interaction Events Handlers ---
 
-    private void OnSwapRequest(int fromIndex, int toIndex)
-    {
-        _viewModel?.SwapSlot(fromIndex, toIndex);
-    }
+    // --- Interaction Events Handlers ---
+    // Logic moved to ViewModel.
 
-    private void OnClearSlot(int slotIndex)
-    {
-        _viewModel?.RemoveNikkeFromSlot(slotIndex);
-    }
+    // -----------------------------------
 
-    private void OnShowDetail(int slotIndex)
-    {
-        _viewModel?.ShowNikkeDetail(slotIndex);
-    }
 
     // -----------------------------------
 
@@ -240,18 +224,8 @@ public class UI_SquadDetailPopup : UI_Popup, IUIShowHideAnimation
                 if (btn != null) btn.onClick.RemoveAllListeners();
         }
 
-        // 아이콘 이벤트 해제
-        if (_nikkeIcons != null)
-        {
-            foreach (var icon in _nikkeIcons)
-            {
-                if (icon != null)
-                {
-                    icon.OnClearRequest -= OnClearSlot;
-                    icon.OnDetailRequest -= OnShowDetail;
-                }
-            }
-        }
+        // 아이콘 이벤트 해제 (ViewModel이 처리하므로 불필요)
+
 
         if (_viewModel != null)
         {

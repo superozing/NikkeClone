@@ -6,9 +6,12 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+// Enum removed
+
+
 public class UI_NikkeIcon : UI_View, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler, IPointerDownHandler, IPointerUpHandler, IPointerEnterHandler, IPointerExitHandler
 {
-    [Header("Components")]
+    // --- Components ---
     [SerializeField] private GameObject _contentRoot; // 데이터 있을 때 표시할 루트
     [SerializeField] private Image _faceImage;
     [SerializeField] private Image _highlightImage; // 호버 또는 드래그 시 강조
@@ -24,15 +27,16 @@ public class UI_NikkeIcon : UI_View, IBeginDragHandler, IDragHandler, IEndDragHa
     private RectTransform _rectTransform;
 
     // --- Drag & Drop State ---
+    // --- Drag & Drop State ---
     private int _slotIndex;
+    public int SlotIndex => _slotIndex;
+
     private RectTransform _dragLayer;
     private Transform _originalParent;
     private GameObject _emptyImageRef; // 내 슬롯의 Empty Image
-    private Action<int, int> _onSwapRequest;
 
-    // --- Interaction Events ---
-    public event Action<int> OnClearRequest;  // 클릭 시 (데이터 삭제)
-    public event Action<int> OnDetailRequest; // 롱프레스 시 (상세 정보)
+    // --- Interaction Events (Removed) ---
+    // Actions are moved to ViewModel
 
     // --- Interaction State ---
     private bool _isPointerDown = false;
@@ -40,6 +44,7 @@ public class UI_NikkeIcon : UI_View, IBeginDragHandler, IDragHandler, IEndDragHa
     private bool _isLongPressTriggered = false;
     private Coroutine _longPressCoroutine;
     private const float LONG_PRESS_DURATION = 0.5f;
+
 
     protected override void Awake()
     {
@@ -50,13 +55,19 @@ public class UI_NikkeIcon : UI_View, IBeginDragHandler, IDragHandler, IEndDragHa
     /// <summary>
     /// 외부(Popup)에서 초기 설정 값을 주입합니다.
     /// </summary>
-    public void Initialize(int slotIndex, RectTransform dragLayer, Action<int, int> onSwap, GameObject emptyImage)
+    /// <summary>
+    /// 외부(Popup)에서 초기 설정 값을 주입합니다.
+    /// </summary>
+    public void Initialize(
+        int slotIndex,
+        RectTransform dragLayer,
+        GameObject emptyImage)
     {
         _slotIndex = slotIndex;
         _dragLayer = dragLayer;
-        _onSwapRequest = onSwap;
         _emptyImageRef = emptyImage;
     }
+
 
     public override void SetViewModel(ViewModelBase viewModel)
     {
@@ -113,11 +124,13 @@ public class UI_NikkeIcon : UI_View, IBeginDragHandler, IDragHandler, IEndDragHa
         _isPointerDown = false;
         if (_longPressCoroutine != null) StopCoroutine(_longPressCoroutine);
 
-        // 드래그도 안했고, 롱프레스도 아니었다면 -> 클릭 (Clear)
+        // 드래그도 안했고, 롱프레스도 아니었다면 -> 클릭
         if (!_isDragging && !_isLongPressTriggered)
         {
-            OnClearRequest?.Invoke(_slotIndex);
+            // 단순 클릭 시 처리 (ViewModel에 위임)
+            _viewModel?.OnClick();
         }
+
     }
 
     private IEnumerator CheckLongPress()
@@ -128,8 +141,11 @@ public class UI_NikkeIcon : UI_View, IBeginDragHandler, IDragHandler, IEndDragHa
         if (_isPointerDown && !_isDragging)
         {
             _isLongPressTriggered = true;
-            Debug.Log($"[UI_NikkeIcon] Slot {_slotIndex} Long Press Triggered -> Detail Popup Request");
-            OnDetailRequest?.Invoke(_slotIndex);
+            Debug.Log($"[UI_NikkeIcon] Slot {_slotIndex} Long Press Triggered -> ViewModel HandleLongPress");
+
+            // 롱프레스 시 처리 (ViewModel에 위임)
+            _viewModel?.OnLongPress();
+
         }
     }
 
@@ -137,8 +153,9 @@ public class UI_NikkeIcon : UI_View, IBeginDragHandler, IDragHandler, IEndDragHa
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        // 데이터가 없으면 드래그 불가
-        if (_viewModel == null || _viewModel.IsEmpty.Value) return;
+        // 데이터가 없거나 드래그 불가능하면 리턴
+        if (_viewModel == null || _viewModel.IsEmpty.Value || !_viewModel.IsDraggable) return;
+
 
         // 롱프레스 취소 처리
         _isDragging = true;
@@ -163,6 +180,8 @@ public class UI_NikkeIcon : UI_View, IBeginDragHandler, IDragHandler, IEndDragHa
 
     public void OnDrag(PointerEventData eventData)
     {
+        // IsDraggable 체크는 OnBeginDrag에서 수행됨. _isDragging flag가 false면 실행 안됨.
+
         if (!_isDragging) return;
 
         RectTransform plane = _dragLayer != null ? _dragLayer : (transform.parent as RectTransform);
@@ -174,6 +193,7 @@ public class UI_NikkeIcon : UI_View, IBeginDragHandler, IDragHandler, IEndDragHa
 
     public void OnEndDrag(PointerEventData eventData)
     {
+
         if (!_isDragging) return;
 
         _isDragging = false;
@@ -210,12 +230,13 @@ public class UI_NikkeIcon : UI_View, IBeginDragHandler, IDragHandler, IEndDragHa
         if (droppedIcon != null && droppedIcon != this)
         {
             Debug.Log($"Slot {droppedIcon._slotIndex} dropped on Slot {this._slotIndex}");
-            _onSwapRequest?.Invoke(droppedIcon._slotIndex, this._slotIndex);
+            _viewModel?.OnDrop(droppedIcon.SlotIndex);
 
             // 드롭 받은 즉시 하이라이트 끄기
             SetHighlight(false);
         }
     }
+
 
     /// <summary>
     /// 드래그 중인 포인터가 내 영역에 들어왔을 때 (하이라이트 켜기)
@@ -240,6 +261,7 @@ public class UI_NikkeIcon : UI_View, IBeginDragHandler, IDragHandler, IEndDragHa
     {
         // 드래그 중일 때만 반응
         if (eventData.dragging)
+
         {
             SetHighlight(false);
         }

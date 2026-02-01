@@ -20,7 +20,7 @@
     "4002": {
         "id": 4002,
         "name": "공중형 랩쳐",
-        "grade": 1,
+        "grade": 2,
         "elementCode": 1,
         "skills": [],
         "status": {
@@ -32,7 +32,7 @@
     "4003": {
         "id": 4003,
         "name": "보스 랩쳐",
-        "grade": 2,
+        "grade": 3,
         "elementCode": 2,
         "skills": [],
         "status": {

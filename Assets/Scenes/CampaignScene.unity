@@ -974,8 +974,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1759803213}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.072295256, y: 0.85757065, z: -0.49352264, w: -0.125624}
-  m_LocalPosition: {x: 75.11, y: 32, z: 75.56}
+  m_LocalRotation: {x: 0.3525567, y: -0.30244246, z: 0.12155695, w: 0.87718654}
+  m_LocalPosition: {x: 88.11, y: 30, z: 35.86}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1259,7 +1259,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9557fc3954a81d74295ebc769e60c1a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CampaignScene
-  _chapterId: 100
+  _chapterId: 1
   _stageObjects:
   - {fileID: 1959593713}
   - {fileID: 1669903106}

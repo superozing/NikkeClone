@@ -32,8 +32,14 @@ public class SquadDetailPopupViewModel : ViewModelBase
         SlotViewModels = new NikkeIconViewModel[5];
         for (int i = 0; i < 5; i++)
         {
-            SlotViewModels[i] = new NikkeIconViewModel();
-            SlotViewModels[i].AddRef();
+            var editVM = new EditNikkeIconViewModel();
+            SlotViewModels[i] = editVM;
+            editVM.AddRef();
+
+            int captureIndex = i;
+            editVM.OnClearRequest += () => RemoveNikkeFromSlot(captureIndex);
+            editVM.OnDetailRequest += () => ShowNikkeDetail(captureIndex);
+            editVM.OnSwapRequest += (fromIndex) => SwapSlot(fromIndex, captureIndex);
         }
 
         // 3. 스크롤 뷰모델 초기화

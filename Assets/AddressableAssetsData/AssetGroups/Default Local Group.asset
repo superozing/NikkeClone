@@ -135,6 +135,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4b78c4e6eeb69194595ec21da65dde07
+    m_Address: UI/View/UI_StageRangeInfo
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4de869b7ff4840e468b4aa65cba26e2b
     m_Address: Assets/Textures/Icon/Weapon/SMG
     m_ReadOnly: 0
@@ -230,6 +235,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 775a43ea99dec1244ba7b503abc3badb
+    m_Address: UI/View/UI_StageRewardInfo
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7c04f5e83060544428bba0f87fab4161
     m_Address: Assets/Textures/Icon/Weapon/AR
     m_ReadOnly: 0
@@ -262,6 +272,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 89e07b06ea2825a488b9dfbcf6225079
     m_Address: "Assets/Textures/Nikke/\uB514\uC824_Idle"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8d29262418cda11429cf7ec31e1a21b8
+    m_Address: UI/Popup/UI_StageInfoPopup
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -382,6 +397,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f25985bebfa26a342992055f1b3c711e
     m_Address: UI/Popup/UI_LoadingPopup
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f697e276bf5c6fc43949b33e15e1f23b
+    m_Address: UI/View/UI_StageWeakCodeInfo
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

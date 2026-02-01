@@ -10,6 +10,21 @@ public class NikkeIconViewModel : ViewModelBase
 
     public int NikkeId { get; private set; } = -1;
 
+    /// <summary>
+    /// 니케의 코드(속성) 타입입니다. Empty 상태일 경우 None을 반환합니다.
+    /// </summary>
+    public eNikkeCode CodeType => _gameData?.CodeType ?? eNikkeCode.None;
+
+    /// <summary>
+    /// 니케의 무기 타입입니다. Empty 상태일 경우 None을 반환합니다.
+    /// </summary>
+    public eNikkeWeapon WeaponType => _gameData?.WeaponType ?? eNikkeWeapon.None;
+
+    /// <summary>
+    /// 니케 슬롯이 비어있는지 여부입니다. (GameData가 없으면 비어있음)
+    /// </summary>
+    public bool IsSlotEmpty => _gameData == null;
+
     // --- View Binding Properties ---
     public ReactiveProperty<bool> IsEmpty { get; private set; } = new(true);
     public ReactiveProperty<Sprite> FaceSprite { get; private set; } = new();
@@ -19,9 +34,33 @@ public class NikkeIconViewModel : ViewModelBase
     public ReactiveProperty<Color> RarityColor { get; private set; } = new(Color.white);
     public ReactiveProperty<string> LevelText { get; private set; } = new("");
 
+    // --- Interaction Properties (Virtual) ---
+    /// <summary>
+    /// 드래그 가능 여부를 결정합니다. 기본값은 false입니다.
+    /// </summary>
+    public virtual bool IsDraggable => false;
+
     public NikkeIconViewModel()
     {
     }
+
+    // --- Interaction Methods (Virtual) ---
+
+    /// <summary>
+    /// 클릭 시 호출되는 메서드입니다.
+    /// </summary>
+    public virtual void OnClick() { }
+
+    /// <summary>
+    /// 롱프레스 시 호출되는 메서드입니다.
+    /// </summary>
+    public virtual void OnLongPress() { }
+
+    /// <summary>
+    /// 다른 아이콘이 이 아이콘 위에 드롭되었을 때 호출됩니다.
+    /// </summary>
+    /// <param name="fromSlotIndex">드롭된 아이콘의 원래 슬롯 인덱스</param>
+    public virtual void OnDrop(int fromSlotIndex) { }
 
     /// <summary>
     /// 니케 데이터를 설정하고 리소스를 로드합니다.
