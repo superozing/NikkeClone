@@ -11,11 +11,11 @@ public class UIAnimationComposite : IUIAnimation
         _animations = animations;
     }
 
-    public async Task ExecuteAsync()
+    public async Task ExecuteAsync(float delay = 0f)
     {
         if (_animations == null) return;
 
-        var tasks = _animations.Select(a => a.ExecuteAsync());
+        var tasks = _animations.Select(a => a.ExecuteAsync(delay));
         await Task.WhenAll(tasks);
     }
 }

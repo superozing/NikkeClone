@@ -32,7 +32,7 @@ public class WipeUIAnimation : IUIAnimation
         _propertyId = Shader.PropertyToID("_CutOff");
     }
 
-    public async Task ExecuteAsync()
+    public async Task ExecuteAsync(float delay = 0f)
     {
         // CanvasGroup이 있다면 잠시 입력을 차단하거나 상호작용을 비활성화합니다.
         if (_cg != null)
@@ -44,7 +44,11 @@ public class WipeUIAnimation : IUIAnimation
         // 1. 시작 값 설정 (즉시 반영)
         _targetMaterial.SetFloat(_propertyId, _startValue);
 
-        // 2. 트윈 실행
+        // 2. 딜레이 대기
+        if (delay > 0)
+            await Task.Delay(System.TimeSpan.FromSeconds(delay));
+
+        // 3. 트윈 실행
         await _targetMaterial.DOFloat(_endValue, _propertyId, _duration)
             .SetEase(_ease)
             .SetUpdate(true) // TimeScale 무시 (로딩 중 멈춤 방지)

@@ -19,11 +19,21 @@ public class UIAnimationSlide : IUIAnimation
         _ease = ease;
     }
 
-    public async Task ExecuteAsync()
+    public async Task ExecuteAsync(float delay = 0f)
     {
         if (_target == null) return;
 
+        // 1. 초기화
         _target.anchoredPosition = _from;
-        await _target.DOAnchorPos(_to, _duration).SetEase(_ease).AsyncWaitForCompletion();
+
+        // 2. 딜레이
+        if (delay > 0)
+            await Task.Delay(System.TimeSpan.FromSeconds(delay));
+
+        // 3. 실행
+        await _target.DOAnchorPos(_to, _duration)
+            .SetEase(_ease)
+            .SetUpdate(true)
+            .AsyncWaitForCompletion();
     }
 }

@@ -22,20 +22,24 @@ public class MarqueeUIAnimation : IUIAnimation
         _delay = defaultDelay;
     }
 
-    public Task ExecuteAsync()
+    public async Task ExecuteAsync(float startDelay = 0f)
     {
         if (_cg == null || _maskRect == null)
-            return Task.CompletedTask;
+            return;
 
         RectTransform targetRect = _cg.GetComponent<RectTransform>();
         if (targetRect == null)
-            return Task.CompletedTask;
+            return;
 
         // 기존 애니메이션 정리 및 위치 초기화
         Kill();
 
         // 1. 초기 위치 설정 (즉시 적용)
         targetRect.anchoredPosition = Vector2.zero;
+
+        // 2. 시작 딜레이 적용
+        if (startDelay > 0)
+            await Task.Delay(System.TimeSpan.FromSeconds(startDelay));
 
         // 텍스트(내용물)가 마스크(창문)보다 넓으면 스크롤 연출 시작
         if (targetRect.rect.width > _maskRect.rect.width)
@@ -44,7 +48,7 @@ public class MarqueeUIAnimation : IUIAnimation
             float moveDistance = targetRect.rect.width - _maskRect.rect.width + 20f;
             float duration = moveDistance / _speed;
 
-            // 2. 시퀀스 구성
+            // 3. 시퀀스 구성
             Sequence seq = DOTween.Sequence();
             seq.SetUpdate(true);
             seq.SetLink(targetRect.gameObject); // 오브젝트 파괴 시 트윈 자동 제거
@@ -63,14 +67,14 @@ public class MarqueeUIAnimation : IUIAnimation
 
             // 5. 무한 루프 애니메이션 연결
             seq.Append(targetRect.DOAnchorPosX(-moveDistance, duration)
-                .SetEase(Ease.Linear)
-                .SetLoops(-1, LoopType.Yoyo));
+                .SetEase(Ease.Linear));
+
+            seq.SetLoops(-1, LoopType.Yoyo);
 
             _currentTween = seq;
         }
 
         // 무한 루프 애니메이션이므로 완료를 기다리지 않고 즉시 반환
-        return Task.CompletedTask;
     }
 
     /// <summary>

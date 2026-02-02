@@ -19,7 +19,7 @@ public class HorizontalExpandUIAnimation : IUIAnimation
         _ease = ease;
     }
 
-    public async Task ExecuteAsync()
+    public async Task ExecuteAsync(float delay = 0f)
     {
         if (_cg == null) return;
 
@@ -30,8 +30,12 @@ public class HorizontalExpandUIAnimation : IUIAnimation
         // 1. 초기 상태: X축 스케일 0
         rt.localScale = new Vector3(0f, 1f, 1f);
 
-        // 2. 연출 실행
-        // 외부 delay는 View에서 처리됨
+        // 2. 딜레이 대기
+        if (delay > 0)
+            await Task.Delay(System.TimeSpan.FromSeconds(delay));
+
+        // 3. 연출 실행
+        // 외부 delay는 View에서 처리됨 -> 이제 내부에서 처리됨
         await rt.DOScaleX(1f, _duration)
                 .SetEase(_ease)
                 .SetUpdate(true)

@@ -20,7 +20,7 @@ public class VerticalSlideFadeUIAnimation : IUIAnimation
         _ease = ease;
     }
 
-    public async Task ExecuteAsync()
+    public async Task ExecuteAsync(float delay = 0f)
     {
         if (_cg == null) return;
 
@@ -30,25 +30,29 @@ public class VerticalSlideFadeUIAnimation : IUIAnimation
         // 호출 시점의 위치를 최종 목적지로 가정합니다.
         Vector2 targetPos = rt.anchoredPosition;
 
-        // 1. 초기 상태 설정
+        // 1. 초기 상태 설정 (즉시 적용)
         _cg.alpha = 0f;
         _cg.interactable = false;
 
-        // 2. 시퀀스 구성
+        // 2. 딜레이 대기
+        if (delay > 0)
+            await Task.Delay(System.TimeSpan.FromSeconds(delay));
+
+        // 3. 시퀀스 구성
         Sequence seq = DOTween.Sequence();
         seq.SetUpdate(true);
 
-        // 3. 애니메이션 시작 전 위치 오프셋 적용
+        // 4. 애니메이션 시작 전 위치 오프셋 적용
         seq.AppendCallback(() =>
         {
             rt.anchoredPosition = targetPos + new Vector2(0, -_offsetY);
         });
 
-        // 4. 애니메이션 정의 (Fade In + Move To Target)
+        // 5. 애니메이션 정의 (Fade In + Move To Target)
         seq.Append(_cg.DOFade(1f, _duration).SetEase(Ease.OutQuad));
         seq.Join(rt.DOAnchorPos(targetPos, _duration).SetEase(_ease));
 
-        // 5. 실행 및 대기
+        // 6. 실행 및 대기
         await seq.Play().AsyncWaitForCompletion();
 
         _cg.interactable = true;
