@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using System.Threading.Tasks;
+using UI;
 
 public class CampaignScene : MonoBehaviour, IScene
 {
@@ -15,7 +16,7 @@ public class CampaignScene : MonoBehaviour, IScene
     };
 
     [Header("UI")]
-    // [SerializeField] private UI_CampaignHUD _campaignHUD;
+    [SerializeField] private UI_CampaignHUD _campaignHUD;
     private int _currentCombatStageId = -1;
 
     [Header("챕터 정보")]
@@ -25,6 +26,7 @@ public class CampaignScene : MonoBehaviour, IScene
     // ViewModel 캐시
     private StageInfoPopupViewModel _stageInfoPopupViewModel;
     private SquadDetailPopupViewModel _squadDetailPopupViewModel;
+    private CampaignHUDViewModel _campaignHUDViewModel;
 
     /// <summary>
     /// 스테이지 전투 상태 진입 시 호출됩니다.
@@ -36,8 +38,8 @@ public class CampaignScene : MonoBehaviour, IScene
         _currentCombatStageId = stageId;
 
         // 1. HUD 퇴장
-        // if (_campaignHUD != null)
-        //     await _campaignHUD.PlayExitAnimationAsync();
+        if (_campaignHUD != null)
+            await _campaignHUD.PlayHideAnimationAsync();
 
         // 2. 캐싱된 ViewModel 재사용 및 데이터 갱신
         if (_stageInfoPopupViewModel == null)
@@ -61,8 +63,8 @@ public class CampaignScene : MonoBehaviour, IScene
     public async void OnStageInfoPopupClosed()
     {
         // 1. HUD 등장
-        // if (_campaignHUD != null)
-        //     await _campaignHUD.PlayEnterAnimationAsync();
+        if (_campaignHUD != null)
+            await _campaignHUD.PlayShowAnimationAsync();
 
         // 2. 전투 상태 탈출
         if (_currentCombatStageId != -1 && _stageObjects != null)
@@ -120,6 +122,12 @@ public class CampaignScene : MonoBehaviour, IScene
         }
     }
 
+    private void OnBackButtonClicked()
+    {
+        // TODO: 이전 씬으로 돌아가는 로직
+        Debug.Log("[CampaignScene] Back button clicked");
+    }
+
     private void Awake()
     {
         Managers.Scene.SetCurrentScene(this);
@@ -133,6 +141,14 @@ public class CampaignScene : MonoBehaviour, IScene
         // ViewModel 생성 및 명시적 참조 카운트 증가
         _stageInfoPopupViewModel = new StageInfoPopupViewModel();
         _stageInfoPopupViewModel.AddRef(); // CampaignScene이 소유 (RefCount = 1)
+
+        // HUD ViewModel 생성 및 연결
+        _campaignHUDViewModel = new CampaignHUDViewModel();
+        _campaignHUDViewModel.AddRef();
+        _campaignHUDViewModel.OnBackButtonClicked += OnBackButtonClicked;
+
+        if (_campaignHUD != null)
+            _campaignHUD.SetViewModel(_campaignHUDViewModel);
 
         // 이벤트 구독 (한 번만)
         _stageInfoPopupViewModel.OnCloseRequested += OnStageInfoPopupClosed;
@@ -177,6 +193,14 @@ public class CampaignScene : MonoBehaviour, IScene
             _stageInfoPopupViewModel.OnSquadEditRequested -= OnSquadEditRequested;
             _stageInfoPopupViewModel.Release(); // RefCount = 0 → OnDispose() 호출됨
             _stageInfoPopupViewModel = null;
+        }
+
+        // HUD ViewModel 정리
+        if (_campaignHUDViewModel != null)
+        {
+            _campaignHUDViewModel.OnBackButtonClicked -= OnBackButtonClicked;
+            _campaignHUDViewModel.Release();
+            _campaignHUDViewModel = null;
         }
 
         // SquadDetailPopup 정리
