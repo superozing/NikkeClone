@@ -350,6 +350,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d612d716f5ec3ee46840df918feb7107
+    m_Address: Assets/Prefabs/UI/View/UI_CampaignHUD.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d6130b5ca4cb6e346b1c321863ab6266
     m_Address: "Assets/Textures/Icon/Class/\uD654\uB825\uD615"
     m_ReadOnly: 0
