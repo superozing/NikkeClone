@@ -15,8 +15,7 @@ public class CampaignScene : MonoBehaviour, IScene
         "ItemGameData.json",
     };
 
-    [Header("UI")]
-    [SerializeField] private UI_CampaignHUD _campaignHUD;
+    private UI_CampaignHUD _campaignHUD;
     private int _currentCombatStageId = -1;
 
     [Header("챕터 정보")]
@@ -134,6 +133,15 @@ public class CampaignScene : MonoBehaviour, IScene
         Debug.Log($"CampaignScene Awake() - ChapterId: {_chapterId}");
     }
 
+    private async void InitializeHUD()
+    {
+        _campaignHUD = await Managers.UI.ShowAsync<UI_CampaignHUD>(_campaignHUDViewModel);
+        if (_campaignHUD != null)
+        {
+            await _campaignHUD.PlayShowAnimationAsync();
+        }
+    }
+
     void IScene.Init()
     {
         Debug.Log($"CampaignScene Init() - ChapterId: {_chapterId}");
@@ -147,11 +155,8 @@ public class CampaignScene : MonoBehaviour, IScene
         _campaignHUDViewModel.AddRef();
         _campaignHUDViewModel.OnBackButtonClicked += OnBackButtonClicked;
 
-        if (_campaignHUD != null)
-            _campaignHUD.SetViewModel(_campaignHUDViewModel);
-
-        // 초기 진입 시 HUD 등장 연출 재생
-        _ = _campaignHUD.PlayShowAnimationAsync();
+        // HUD 동적 생성 요청 (비동기)
+        InitializeHUD();
 
         // 이벤트 구독 (한 번만)
         _stageInfoPopupViewModel.OnCloseRequested += OnStageInfoPopupClosed;
@@ -196,6 +201,13 @@ public class CampaignScene : MonoBehaviour, IScene
             _stageInfoPopupViewModel.OnSquadEditRequested -= OnSquadEditRequested;
             _stageInfoPopupViewModel.Release(); // RefCount = 0 → OnDispose() 호출됨
             _stageInfoPopupViewModel = null;
+        }
+
+        // HUD 정리
+        if (_campaignHUD != null)
+        {
+            Managers.UI.Close(_campaignHUD);
+            _campaignHUD = null;
         }
 
         // HUD ViewModel 정리
