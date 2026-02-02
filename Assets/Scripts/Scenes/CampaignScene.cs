@@ -97,7 +97,7 @@ public class CampaignScene : MonoBehaviour, IScene
 
         _squadDetailPopupViewModel.OnCloseRequested += OnSquadDetailPopupClosed;
 
-        Managers.UI.ShowAsync<UI_SquadDetailPopup>(_squadDetailPopupViewModel);
+        _ = Managers.UI.ShowAsync<UI_SquadDetailPopup>(_squadDetailPopupViewModel);
     }
 
     private async void OnSquadDetailPopupClosed()
@@ -149,6 +149,9 @@ public class CampaignScene : MonoBehaviour, IScene
 
         if (_campaignHUD != null)
             _campaignHUD.SetViewModel(_campaignHUDViewModel);
+
+        // 초기 진입 시 HUD 등장 연출 재생
+        _ = _campaignHUD.PlayShowAnimationAsync();
 
         // 이벤트 구독 (한 번만)
         _stageInfoPopupViewModel.OnCloseRequested += OnStageInfoPopupClosed;
