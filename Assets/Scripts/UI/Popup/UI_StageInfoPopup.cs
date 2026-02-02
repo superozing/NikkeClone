@@ -158,16 +158,12 @@ public class UI_StageInfoPopup : UI_Popup, IUIShowHideable
 
     public async Task PlayShowAnimationAsync(float delay = 0)
     {
-        if (delay > 0) await Task.Delay(TimeSpan.FromSeconds(delay));
-        if (_showAnim != null)
-            await _showAnim.ExecuteAsync();
+        if (_showAnim != null) await _showAnim.ExecuteAsync(delay);
     }
 
     public async Task PlayHideAnimationAsync(float delay = 0)
     {
-        if (delay > 0) await Task.Delay(TimeSpan.FromSeconds(delay));
-        if (_hideAnim != null)
-            await _hideAnim.ExecuteAsync();
+        if (_hideAnim != null) await _hideAnim.ExecuteAsync(delay);
     }
 
     protected override void OnDestroy()

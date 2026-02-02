@@ -233,8 +233,10 @@ public class UI_NikkeCardScrollView : UI_View
     {
         if (_buttonGroupFade != null)
         {
-            await Task.Delay(300); // 0.3s delay
-            await _buttonGroupFade.ExecuteAsync();
+            await _buttonGroupFade.ExecuteAsync(0.3f);
+
+            if (_buttonGroup != null)
+                _buttonGroup.interactable = true;
         }
     }
 

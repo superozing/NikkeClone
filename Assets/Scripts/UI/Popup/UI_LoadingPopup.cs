@@ -93,16 +93,14 @@ public class UI_LoadingPopup : UI_DontDestroyPopup, IUIShowHideable
 
     public async Task PlayShowAnimationAsync(float delay = 0f)
     {
-        if (delay > 0) await Task.Delay(TimeSpan.FromSeconds(delay));
         if (_wipeInAnim != null)
-            await _wipeInAnim.ExecuteAsync();
+            await _wipeInAnim.ExecuteAsync(delay);
     }
 
     public async Task PlayHideAnimationAsync(float delay = 0f)
     {
-        if (delay > 0) await Task.Delay(TimeSpan.FromSeconds(delay));
         if (_wipeOutAnim != null)
-            await _wipeOutAnim.ExecuteAsync();
+            await _wipeOutAnim.ExecuteAsync(delay);
     }
 
     // --- Event Handlers (ViewModel -> View) ---

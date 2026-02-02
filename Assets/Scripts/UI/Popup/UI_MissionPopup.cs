@@ -50,17 +50,15 @@ public class UI_MissionPopup : UI_Popup, IUIShowHideable
 
     public async Task PlayShowAnimationAsync(float delay = 0f)
     {
-        if (delay > 0) await Task.Delay(TimeSpan.FromSeconds(delay));
         // CanvasGroup은 부모(UI_View)의 protected 멤버 사용
         if (_showAnim != null)
-            await _showAnim.ExecuteAsync();
+            await _showAnim.ExecuteAsync(delay);
     }
 
     public async Task PlayHideAnimationAsync(float delay = 0f)
     {
-        if (delay > 0) await Task.Delay(TimeSpan.FromSeconds(delay));
         if (_hideAnim != null)
-            await _hideAnim.ExecuteAsync();
+            await _hideAnim.ExecuteAsync(delay);
     }
 
     private void OnEscapeAction(InputAction.CallbackContext _) => OnCloseClick();

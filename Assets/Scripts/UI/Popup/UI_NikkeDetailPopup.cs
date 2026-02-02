@@ -104,14 +104,12 @@ public class UI_NikkeDetailPopup : UI_Popup, IUIShowHideable
 
     public async Task PlayShowAnimationAsync(float delay = 0f)
     {
-        if (delay > 0) await Task.Delay(TimeSpan.FromSeconds(delay));
         if (_showAnim != null)
-            await _showAnim.ExecuteAsync();
+            await _showAnim.ExecuteAsync(delay);
     }
 
     public async Task PlayHideAnimationAsync(float delay = 0f)
     {
-        if (delay > 0) await Task.Delay(TimeSpan.FromSeconds(delay));
         if (_hideAnim != null)
             await _hideAnim.ExecuteAsync();
     }

@@ -116,12 +116,10 @@ public class UI_CampaignHUD : UI_View, IUIShowHideable
 
     public async Task PlayShowAnimationAsync(float delay = 0f)
     {
-        if (delay > 0) await Task.Delay(TimeSpan.FromSeconds(delay));
-
         var tasks = new List<Task>();
         foreach (var anim in _showAnimations.Values)
         {
-            tasks.Add(anim.ExecuteAsync());
+            tasks.Add(anim.ExecuteAsync(delay)); // delay 전파
         }
         await Task.WhenAll(tasks);
     }
