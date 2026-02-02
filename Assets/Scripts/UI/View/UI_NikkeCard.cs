@@ -48,11 +48,13 @@ public class UI_NikkeCard : UI_View, IUIShowHideable
         // CanvasGroup은 base.Awake()에서 초기화되므로 여기서 생성
         _showAnim = new VerticalSlideFadeUIAnimation(_canvasGroup, 0.3f, -50f, Ease.OutQuad);
 
-        // 애니메이션 전략 초기화 (속도 30, 딜레이 1.5초)
-        if (_nameMaskRect != null)
-            _marqueeAnim = new MarqueeUIAnimation(_canvasGroup, _nameMaskRect, 30f, 1.5f);
+        // CanvasGroup 초기화를 먼저 수행
+        if (_nameTextRect != null)
+            _nameTextCanvasGroup = _nameTextRect.gameObject.GetOrAddComponent<CanvasGroup>();
 
-        _nameTextCanvasGroup = _nameTextRect.gameObject.GetOrAddComponent<CanvasGroup>();
+        // 텍스트의 CanvasGroup을 전달하여 MarqueeAnimation 생성
+        if (_nameMaskRect != null && _nameTextCanvasGroup != null)
+            _marqueeAnim = new MarqueeUIAnimation(_nameTextCanvasGroup, _nameMaskRect, 30f, 1.5f);
     }
 
     public override void SetViewModel(ViewModelBase viewModel)
@@ -111,9 +113,8 @@ public class UI_NikkeCard : UI_View, IUIShowHideable
 
     public async Task PlayShowAnimationAsync(float delay = 0)
     {
-        if (delay > 0) await Task.Delay(TimeSpan.FromSeconds(delay));
         if (_showAnim != null && _canvasGroup != null)
-            await _showAnim.ExecuteAsync();
+            await _showAnim.ExecuteAsync(delay);
     }
 
     public Task PlayHideAnimationAsync(float delay = 0)
