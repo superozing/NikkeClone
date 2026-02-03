@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class UI_NikkeCardSortFilter : UI_Popup, IUIShowHideAnimation
+public class UI_NikkeCardSortFilter : UI_Popup, IUIShowHideable
 {
     public override string ActionMapKey => "UI_NikkeCardSortFilter";
 
@@ -49,12 +49,14 @@ public class UI_NikkeCardSortFilter : UI_Popup, IUIShowHideAnimation
     private readonly Color _inactiveColor = new Color(0.2f, 0.2f, 0.2f);
 
     private INikkeCardScrollViewModel _viewModel;
-    private readonly IUIAnimation _fadeIn = new FadeInUIAnimation(0.2f);
-    private readonly IUIAnimation _fadeOut = new FadeOutUIAnimation(0.2f);
+    private IUIAnimation _showAnim;
+    private IUIAnimation _hideAnim;
 
     protected override void Awake()
     {
         base.Awake();
+        _showAnim = new FadeUIAnimation(_canvasGroup, 0f, 1f, 0.2f);
+        _hideAnim = new FadeUIAnimation(_canvasGroup, 1f, 0f, 0.2f);
         // 팝업이므로 ESC 키 바인딩 (ViewModel에 닫기 요청)
         Managers.Input.BindAction("Close", OnEscapeAction, InputActionPhase.Performed);
     }
@@ -72,7 +74,6 @@ public class UI_NikkeCardSortFilter : UI_Popup, IUIShowHideAnimation
         // 2. 모든 리스너 및 데이터 바인딩 재설정
         BindAll();
     }
-
     private void BindAll()
     {
         _blocker.onClick.RemoveAllListeners();
@@ -154,19 +155,18 @@ public class UI_NikkeCardSortFilter : UI_Popup, IUIShowHideAnimation
     {
         await PlayShowAnimationAsync();
     }
-
-    // --- IUIShowHideAnimation Implementation ---
+    // --- IUIShowHideable Implementation ---
 
     public async Task PlayShowAnimationAsync(float delay = 0f)
     {
-        if (_fadeIn != null && _canvasGroup != null)
-            await _fadeIn.ExecuteAsync(_canvasGroup, delay);
+        if (_showAnim != null)
+            await _showAnim.ExecuteAsync(delay);
     }
 
     public async Task PlayHideAnimationAsync(float delay = 0f)
     {
-        if (_fadeOut != null && _canvasGroup != null)
-            await _fadeOut.ExecuteAsync(_canvasGroup, delay);
+        if (_hideAnim != null)
+            await _hideAnim.ExecuteAsync();
     }
 
     /// <summary>

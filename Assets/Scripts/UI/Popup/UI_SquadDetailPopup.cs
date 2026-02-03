@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class UI_SquadDetailPopup : UI_Popup, IUIShowHideAnimation
+public class UI_SquadDetailPopup : UI_Popup, IUIShowHideable
 {
     public override string ActionMapKey => "UI_SquadDetailPopup";
 
@@ -39,12 +39,15 @@ public class UI_SquadDetailPopup : UI_Popup, IUIShowHideAnimation
     private SquadDetailPopupViewModel _viewModel;
 
     // 연출
-    private readonly IUIAnimation _fadeIn = new FadeInUIAnimation(0.2f);
-    private readonly IUIAnimation _fadeOut = new FadeOutUIAnimation(0.2f);
+    private IUIAnimation _showAnim;
+    private IUIAnimation _hideAnim;
 
     protected override void Awake()
     {
         base.Awake();
+        _showAnim = new FadeUIAnimation(_canvasGroup, 0f, 1f, 0.2f);
+        _hideAnim = new FadeUIAnimation(_canvasGroup, 1f, 0f, 0.2f);
+
         Managers.Input.BindAction("Close", OnEscapeAction, InputActionPhase.Performed);
 
         _autoFormationButton.onClick.AddListener(() => _viewModel?.OnClickAutoFormation());
@@ -62,7 +65,6 @@ public class UI_SquadDetailPopup : UI_Popup, IUIShowHideAnimation
             }
         }
     }
-
     protected async void OnEnable()
     {
         await PlayShowAnimationAsync();
@@ -177,16 +179,6 @@ public class UI_SquadDetailPopup : UI_Popup, IUIShowHideAnimation
         }
     }
 
-    // --- Interaction Events Handlers ---
-
-    // --- Interaction Events Handlers ---
-    // Logic moved to ViewModel.
-
-    // -----------------------------------
-
-
-    // -----------------------------------
-
     private void OnEscapeAction(InputAction.CallbackContext ctx) => _viewModel?.OnClickClose();
 
     private async void OnCloseRequested()
@@ -194,17 +186,14 @@ public class UI_SquadDetailPopup : UI_Popup, IUIShowHideAnimation
         await PlayHideAnimationAsync();
         Managers.UI.Close(this);
     }
-
     public async Task PlayShowAnimationAsync(float delay = 0)
     {
-        if (_fadeIn != null && _canvasGroup != null)
-            await _fadeIn.ExecuteAsync(_canvasGroup, delay);
+        if (_showAnim != null) await _showAnim.ExecuteAsync(delay);
     }
 
     public async Task PlayHideAnimationAsync(float delay = 0)
     {
-        if (_fadeOut != null && _canvasGroup != null)
-            await _fadeOut.ExecuteAsync(_canvasGroup, delay);
+        if (_hideAnim != null) await _hideAnim.ExecuteAsync(delay);
     }
 
     protected override void OnDestroy()

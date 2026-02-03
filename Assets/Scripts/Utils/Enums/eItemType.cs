@@ -1,7 +1,7 @@
 ﻿
 public enum eItemType
 {
-    Jewel,
+    Jewel = 1,
     Credit,
 
     End,

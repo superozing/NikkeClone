@@ -418,5 +418,7 @@ public class UIManager : IManagerBase
         EnsureUICamera();
 
         Clear();
+
+        GetSceneRoot();
     }
 }

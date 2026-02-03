@@ -26,14 +26,15 @@ public class UI_InventoryTab : UI_TabBase
         _iconTemplate.SetActive(false);
 
         // UI 연출 객체 생성
-        _bgExpandAnim = new HorizontalExpandUIAnimation(0.3f, Ease.OutQuart);
-        _contentSlideAnim = new VerticalSlideFadeUIAnimation(0.3f, 100f, Ease.OutQuart);
+        // UI 연출 객체 생성
+        _bgExpandAnim = new HorizontalExpandUIAnimation(_bgCanvasGroup, 0.3f, Ease.OutQuart);
+        _contentSlideAnim = new VerticalSlideFadeUIAnimation(_scrollCanvasGroup, 0.3f, 100f, Ease.OutQuart);
 
         _itemBg.localScale = new Vector3(0f, 1f, 1f); // x축 커지며 확장시키기 위해 0으로 설정
 
         _originScrollPos = _scrollCanvasGroup.GetComponent<RectTransform>().anchoredPosition;
 
-        _scrollCanvasGroup.alpha = 0f; 
+        _scrollCanvasGroup.alpha = 0f;
         _scrollCanvasGroup.interactable = false;
     }
 
@@ -90,15 +91,15 @@ public class UI_InventoryTab : UI_TabBase
         _scrollCanvasGroup.alpha = 0f;
 
         // 1. 배경 확장
-        await _bgExpandAnim.ExecuteAsync(_bgCanvasGroup);
+        await _bgExpandAnim.ExecuteAsync();
 
         // 2. 콘텐츠 등장
-        await _contentSlideAnim.ExecuteAsync(_scrollCanvasGroup);
+        await _contentSlideAnim.ExecuteAsync();
     }
 
     private void RefreshList()
     {
-        if (_iconTemplate == null || _contentTransform == null) 
+        if (_iconTemplate == null || _contentTransform == null)
             return;
 
         // 기존 아이콘 제거

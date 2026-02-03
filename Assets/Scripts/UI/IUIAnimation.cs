@@ -7,10 +7,10 @@ using UnityEngine;
 public interface IUIAnimation
 {
     /// <summary>
-    /// 대상 CanvasGroup에 대해 연출을 비동기적으로 실행합니다.
+    /// 연출을 비동기적으로 실행합니다.
+    /// 대상(Context)과 설정은 생성자에서 주입받습니다.
     /// </summary>
-    /// <param name="cg">연출을 적용할 대상 CanvasGroup</param>
-    /// <param name="delay">연출 시작 전 딜레이(초)</param>
+    /// <param name="delay">실행 전 대기 시간(초)</param>
     /// <returns>연출 완료를 알리는 Task</returns>
-    Task ExecuteAsync(CanvasGroup cg, float delay = 0f);
+    Task ExecuteAsync(float delay = 0f);
 }

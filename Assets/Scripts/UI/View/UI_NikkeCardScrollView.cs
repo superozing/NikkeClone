@@ -31,7 +31,7 @@ public class UI_NikkeCardScrollView : UI_View
     private readonly List<UI_NikkeCard> _cardInstances = new();
 
     // 버튼 등장시키기 위한 연출 클래스
-    private readonly IUIAnimation _buttonGroupFadeIn = new FadeInUIAnimation(0.2f, Ease.OutQuad);
+    private IUIAnimation _buttonGroupFade;
 
     // 색상 정의
     private readonly Color _activeColor = new Color(.2f, .7f, .9f);
@@ -40,6 +40,7 @@ public class UI_NikkeCardScrollView : UI_View
     protected override void Awake()
     {
         base.Awake();
+        _buttonGroupFade = new FadeUIAnimation(_buttonGroup, 0f, 1f, 0.2f, Ease.OutQuad);
 
         // null 체크를 추가하여 버튼이 없는 View에서도 오류가 나지 않도록 함 (SquadDetail 등에서 재사용 시)
         if (_searchButton) _searchButton.onClick.AddListener(() => _viewModel?.OnClickSearch());
@@ -228,10 +229,15 @@ public class UI_NikkeCardScrollView : UI_View
     /// <summary>
     /// 버튼 그룹에 등장 연출을 재생합니다.
     /// </summary>
-    public void PlayButtonActiveAnimation()
+    public async void PlayButtonActiveAnimation()
     {
-        if (_buttonGroup != null)
-            _buttonGroupFadeIn.ExecuteAsync(_buttonGroup, 0.3f);
+        if (_buttonGroupFade != null)
+        {
+            await _buttonGroupFade.ExecuteAsync(0.3f);
+
+            if (_buttonGroup != null)
+                _buttonGroup.interactable = true;
+        }
     }
 
     /// <summary>
