@@ -41,6 +41,15 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Background
+    uniqueID: 1763034681
+    locked: 0
+  - name: Cover
+    uniqueID: 627954189
+    locked: 0
+  - name: Nikke
+    uniqueID: 3959567737
+    locked: 0
   m_RenderingLayers:
   - Default
   - Light Layer 1
