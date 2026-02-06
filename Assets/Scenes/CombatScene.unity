@@ -170,8 +170,8 @@ MonoBehaviour:
   _spawnPositions:
   - {fileID: 2141292014}
   - {fileID: 1043128791}
-  _leftBound: -20
-  _rightBound: 20
+  _leftBound: -50
+  _rightBound: 50
 --- !u!1001 &53960624
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -985,8 +985,8 @@ MonoBehaviour:
   _spawnPositions:
   - {fileID: 1214629839}
   - {fileID: 891526903}
-  _leftBound: -20
-  _rightBound: 20
+  _leftBound: -80
+  _rightBound: 80
 --- !u!1 &891526902
 GameObject:
   m_ObjectHideFlags: 0
