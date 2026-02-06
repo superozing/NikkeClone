@@ -335,6 +335,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c79494ab64253764cb6b795fdb02335c
+    m_Address: Prefabs/UI/View/UI_CombatHUD
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: cc29d66e40c965e48a3411db6178c06d
     m_Address: "Assets/Textures/Nikke/\uC544\uB2C8\uC2A4_Shoot"
     m_ReadOnly: 0
