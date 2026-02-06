@@ -172,6 +172,12 @@ public class UserDataModel
     public Dictionary<int, UserSquadData> Squads { get; set; } = new Dictionary<int, UserSquadData>();
     public Dictionary<int, UserMissionData> Missions { get; set; } = new Dictionary<int, UserMissionData>();
     public UserChapterData Chapter { get; set; } = new UserChapterData();
+
+    /// <summary>
+    /// 현재 진행 중인 전투 정보입니다.
+    /// 전투 시작 시 설정, 전투 종료 시 null로 초기화합니다.
+    /// </summary>
+    public UserCombatData Combat { get; set; }
 }
 
 [Serializable]
@@ -257,6 +263,29 @@ public class UserMissionData
         this.currentCount = new ReactiveProperty<int>(0);
     }
 }
+
+#region UserCombatData
+
+/// <summary>
+/// 전투 씬으로 전달할 파라미터입니다.
+/// </summary>
+[Serializable]
+public class UserCombatData
+{
+    /// <summary>전투할 스테이지 ID</summary>
+    public int stageId;
+
+    /// <summary>출전 스쿼드 ID</summary>
+    public int squadId;
+
+    public UserCombatData(int stageId, int squadId)
+    {
+        this.stageId = stageId;
+        this.squadId = squadId;
+    }
+}
+
+#endregion
 
 #region UserChapterData
 
