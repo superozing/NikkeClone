@@ -171,9 +171,17 @@ public class DataManager : IManagerBase
 
     /// <summary>
     /// 유저 데이터를 로드합니다.
+    /// 이미 로드된 데이터가 있으면 재로딩하지 않습니다 (forceReload = true일 때만 강제 로드).
     /// </summary>
-    public async Task LoadUserData()
+    public async Task LoadUserData(bool forceReload = false)
     {
+        // 이미 데이터가 로드되어 있고 강제 로드가 아니라면 리턴 (메모리 데이터 유지)
+        if (!forceReload && UserData != null)
+        {
+            Debug.Log("[DataManager] 유저 데이터가 이미 로드되어 있어 넘어갑니다.");
+            return;
+        }
+
         // 1. 데이터 무결성 검사 (파일 없으면 템플릿 복제)
         await EnsureUserDataReady();
 
