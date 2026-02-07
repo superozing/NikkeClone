@@ -8,9 +8,9 @@ using UnityEngine;
 public class CombatScene : MonoBehaviour, IScene
 {
     // ==================== IScene Implementation ====================
-    
+
     eSceneType IScene.SceneType => eSceneType.Combat;
-    
+
     public List<string> RequiredDataFiles => new()
     {
         "NikkeGameData.json",
@@ -21,14 +21,14 @@ public class CombatScene : MonoBehaviour, IScene
     };
 
     // ==================== SerializeFields ====================
-    
+
     [SerializeField] private CombatNikke[] _nikkes;  // 5개, Inspector에서 할당
 
     // ==================== Runtime ====================
-    
+
     private UI_CombatHUD _combatHUD;
     private CombatHUDViewModel _combatHUDViewModel;
-    
+
     private int _stageId;
     private int _squadId;
 
@@ -48,17 +48,17 @@ public class CombatScene : MonoBehaviour, IScene
             Debug.LogError("[CombatScene] Combat data is null! 캠페인에서 전투를 시작해주세요.");
             return;
         }
-        
+
         _stageId = combatData.stageId;
         _squadId = combatData.squadId;
         Debug.Log($"[CombatScene] Init - Stage: {_stageId}, Squad: {_squadId}");
-        
+
         // 2. 니케에 데이터 주입
         InitializeNikkes();
-        
+
         // 3. HUD 초기화
         InitializeHUD();
-        
+
         // TODO Phase 4: 웨이브 시작
     }
 
@@ -72,11 +72,11 @@ public class CombatScene : MonoBehaviour, IScene
 
             var gameData = Managers.Data.Get<NikkeGameData>(nikkeId);
             var userData = Managers.Data.UserData.Nikkes[nikkeId];
-            
+
             // 전략 패턴: 니케 오브젝트에 데이터 주입
-            _nikkes[i].Initialize(gameData, userData);
+            _nikkes[i].Initialize(gameData, userData, i);
         }
-        
+
         Debug.Log($"[CombatScene] Initialized {_nikkes.Length} nikkes");
     }
 
@@ -84,7 +84,7 @@ public class CombatScene : MonoBehaviour, IScene
     {
         _combatHUDViewModel = new CombatHUDViewModel(_nikkes);
         _combatHUDViewModel.AddRef();
-        
+
         _combatHUD = await Managers.UI.ShowAsync<UI_CombatHUD>(_combatHUDViewModel);
     }
 

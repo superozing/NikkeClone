@@ -8,9 +8,6 @@
     "rarity": "SR",
     "manufacturer": "엘리시온",
     "squad": "카운터스",
-    "hp": 14500,
-    "attack": 650,
-    "defense": 140,
     "color": {
       "r": 1.0,
       "g": 0.0,
@@ -36,9 +33,15 @@
         "cooldown": 0.0,
         "skillIconPath": "Skill/Rapi_S1",
         "values": [
-          { "value": "20" },
-          { "value": "21.81" },
-          { "value": "20" }
+          {
+            "value": "20"
+          },
+          {
+            "value": "21.81"
+          },
+          {
+            "value": "20"
+          }
         ]
       },
       {
@@ -50,9 +53,15 @@
         "cooldown": 20.0,
         "skillIconPath": "Skill/Rapi_S2",
         "values": [
-          { "value": "1" },
-          { "value": "528.97" },
-          { "value": "5" }
+          {
+            "value": "1"
+          },
+          {
+            "value": "528.97"
+          },
+          {
+            "value": "5"
+          }
         ]
       },
       {
@@ -64,13 +73,26 @@
         "cooldown": 40.0,
         "skillIconPath": "Skill/Rapi_Burst",
         "values": [
-          { "value": "1" },
-          { "value": "657.72" },
-          { "value": "60.75" },
-          { "value": "10" }
+          {
+            "value": "1"
+          },
+          {
+            "value": "657.72"
+          },
+          {
+            "value": "60.75"
+          },
+          {
+            "value": "10"
+          }
         ]
       }
-    ]
+    ],
+    "status": {
+      "hp": 14500,
+      "attack": 650,
+      "defense": 140
+    }
   },
   "1": {
     "id": 1,
@@ -81,9 +103,6 @@
     "rarity": "SR",
     "manufacturer": "테트라",
     "squad": "카운터스",
-    "hp": 18000,
-    "attack": 500,
-    "defense": 200,
     "color": {
       "r": 1.0,
       "g": 1.0,
@@ -109,9 +128,15 @@
         "cooldown": 0.0,
         "skillIconPath": "Skill/Anis_S1",
         "values": [
-          { "value": "40" },
-          { "value": "120" },
-          { "value": "10" }
+          {
+            "value": "40"
+          },
+          {
+            "value": "120"
+          },
+          {
+            "value": "10"
+          }
         ]
       },
       {
@@ -123,10 +148,18 @@
         "cooldown": 30.0,
         "skillIconPath": "Skill/Anis_S2",
         "values": [
-          { "value": "2" },
-          { "value": "80" },
-          { "value": "5" },
-          { "value": "10" }
+          {
+            "value": "2"
+          },
+          {
+            "value": "80"
+          },
+          {
+            "value": "5"
+          },
+          {
+            "value": "10"
+          }
         ]
       },
       {
@@ -138,12 +171,23 @@
         "cooldown": 20.0,
         "skillIconPath": "Skill/Anis_Burst",
         "values": [
-          { "value": "156.73" },
-          { "value": "32" },
-          { "value": "5" }
+          {
+            "value": "156.73"
+          },
+          {
+            "value": "32"
+          },
+          {
+            "value": "5"
+          }
         ]
       }
-    ]
+    ],
+    "status": {
+      "hp": 18000,
+      "attack": 500,
+      "defense": 200
+    }
   },
   "2": {
     "id": 2,
@@ -154,9 +198,6 @@
     "rarity": "SR",
     "manufacturer": "엘리시온",
     "squad": "카운터스",
-    "hp": 14000,
-    "attack": 550,
-    "defense": 160,
     "color": {
       "r": 0.0,
       "g": 0.0,
@@ -182,9 +223,15 @@
         "cooldown": 0.0,
         "skillIconPath": "Skill/Neon_S1",
         "values": [
-          { "value": "2" },
-          { "value": "3.56" },
-          { "value": "5" }
+          {
+            "value": "2"
+          },
+          {
+            "value": "3.56"
+          },
+          {
+            "value": "5"
+          }
         ]
       },
       {
@@ -196,8 +243,12 @@
         "cooldown": 0.0,
         "skillIconPath": "Skill/Neon_S2",
         "values": [
-          { "value": "45.93" },
-          { "value": "2" }
+          {
+            "value": "45.93"
+          },
+          {
+            "value": "2"
+          }
         ]
       },
       {
@@ -209,13 +260,26 @@
         "cooldown": 20.0,
         "skillIconPath": "Skill/Neon_Burst",
         "values": [
-          { "value": "1" },
-          { "value": "528.97" },
-          { "value": "3" },
-          { "value": "10" }
+          {
+            "value": "1"
+          },
+          {
+            "value": "528.97"
+          },
+          {
+            "value": "3"
+          },
+          {
+            "value": "10"
+          }
         ]
       }
-    ]
+    ],
+    "status": {
+      "hp": 14000,
+      "attack": 550,
+      "defense": 160
+    }
   },
   "3": {
     "id": 3,
@@ -226,9 +290,6 @@
     "rarity": "SSR",
     "manufacturer": "엘리시온",
     "squad": "인피니티 레일",
-    "hp": 20000,
-    "attack": 600,
-    "defense": 220,
     "color": {
       "r": 0.0,
       "g": 1.0,
@@ -254,9 +315,15 @@
         "cooldown": 0.0,
         "skillIconPath": "Skill/Diesel_S1",
         "values": [
-          { "value": "25.92" },
-          { "value": "10" },
-          { "value": "12.96" }
+          {
+            "value": "25.92"
+          },
+          {
+            "value": "10"
+          },
+          {
+            "value": "12.96"
+          }
         ]
       },
       {
@@ -268,11 +335,21 @@
         "cooldown": 0.0,
         "skillIconPath": "Skill/Diesel_S2",
         "values": [
-          { "value": "100" },
-          { "value": "56.7" },
-          { "value": "10" },
-          { "value": "10" },
-          { "value": "86.62" }
+          {
+            "value": "100"
+          },
+          {
+            "value": "56.7"
+          },
+          {
+            "value": "10"
+          },
+          {
+            "value": "10"
+          },
+          {
+            "value": "86.62"
+          }
         ]
       },
       {
@@ -284,12 +361,23 @@
         "cooldown": 20.0,
         "skillIconPath": "Skill/Diesel_Burst",
         "values": [
-          { "value": "5" },
-          { "value": "299.66" },
-          { "value": "5.06" }
+          {
+            "value": "5"
+          },
+          {
+            "value": "299.66"
+          },
+          {
+            "value": "5.06"
+          }
         ]
       }
-    ]
+    ],
+    "status": {
+      "hp": 20000,
+      "attack": 600,
+      "defense": 220
+    }
   },
   "4": {
     "id": 4,
@@ -300,9 +388,6 @@
     "rarity": "SSR",
     "manufacturer": "테트라",
     "squad": "언리미티드",
-    "hp": 16500,
-    "attack": 750,
-    "defense": 150,
     "color": {
       "r": 1.0,
       "g": 0.5,
@@ -328,11 +413,21 @@
         "cooldown": 0.0,
         "skillIconPath": "Skill/Alice_S1",
         "values": [
-          { "value": "2" },
-          { "value": "11.67" },
-          { "value": "10" },
-          { "value": "7" },
-          { "value": "10" }
+          {
+            "value": "2"
+          },
+          {
+            "value": "11.67"
+          },
+          {
+            "value": "10"
+          },
+          {
+            "value": "7"
+          },
+          {
+            "value": "10"
+          }
         ]
       },
       {
@@ -344,9 +439,15 @@
         "cooldown": 0.0,
         "skillIconPath": "Skill/Alice_S2",
         "values": [
-          { "value": "80" },
-          { "value": "80" },
-          { "value": "8.12" }
+          {
+            "value": "80"
+          },
+          {
+            "value": "80"
+          },
+          {
+            "value": "8.12"
+          }
         ]
       },
       {
@@ -358,13 +459,26 @@
         "cooldown": 40.0,
         "skillIconPath": "Skill/Alice_Burst",
         "values": [
-          { "value": "80.15" },
-          { "value": "10" },
-          { "value": "55.12" },
-          { "value": "10" }
+          {
+            "value": "80.15"
+          },
+          {
+            "value": "10"
+          },
+          {
+            "value": "55.12"
+          },
+          {
+            "value": "10"
+          }
         ]
       }
-    ]
+    ],
+    "status": {
+      "hp": 16500,
+      "attack": 750,
+      "defense": 150
+    }
   },
   "5": {
     "id": 5,
@@ -375,9 +489,6 @@
     "rarity": "SSR",
     "manufacturer": "어브노멀",
     "squad": "갓데스...?",
-    "hp": 15000,
-    "attack": 700,
-    "defense": 145,
     "color": {
       "r": 0.8,
       "g": 0.8,
@@ -424,7 +535,12 @@
         "skillIconPath": "Skill/Doro_Burst",
         "values": []
       }
-    ]
+    ],
+    "status": {
+      "hp": 15000,
+      "attack": 700,
+      "defense": 145
+    }
   },
   "6": {
     "id": 6,
@@ -435,9 +551,6 @@
     "rarity": "SR",
     "manufacturer": "어브노멀",
     "squad": "갓데스...?",
-    "hp": 13500,
-    "attack": 520,
-    "defense": 155,
     "color": {
       "r": 0.7,
       "g": 0.7,
@@ -484,7 +597,12 @@
         "skillIconPath": "Skill/Doro_Burst",
         "values": []
       }
-    ]
+    ],
+    "status": {
+      "hp": 13500,
+      "attack": 520,
+      "defense": 155
+    }
   },
   "7": {
     "id": 7,
@@ -495,9 +613,6 @@
     "rarity": "SSR",
     "manufacturer": "어브노멀",
     "squad": "갓데스...?",
-    "hp": 21000,
-    "attack": 580,
-    "defense": 230,
     "color": {
       "r": 0.6,
       "g": 0.9,
@@ -544,7 +659,12 @@
         "skillIconPath": "Skill/Doro_Burst",
         "values": []
       }
-    ]
+    ],
+    "status": {
+      "hp": 21000,
+      "attack": 580,
+      "defense": 230
+    }
   },
   "8": {
     "id": 8,
@@ -555,9 +675,6 @@
     "rarity": "SSR",
     "manufacturer": "어브노멀",
     "squad": "갓데스...?",
-    "hp": 16000,
-    "attack": 720,
-    "defense": 150,
     "color": {
       "r": 0.5,
       "g": 0.5,
@@ -604,7 +721,12 @@
         "skillIconPath": "Skill/Doro_Burst",
         "values": []
       }
-    ]
+    ],
+    "status": {
+      "hp": 16000,
+      "attack": 720,
+      "defense": 150
+    }
   },
   "9": {
     "id": 9,
@@ -615,9 +737,6 @@
     "rarity": "SR",
     "manufacturer": "어브노멀",
     "squad": "갓데스...?",
-    "hp": 13800,
-    "attack": 540,
-    "defense": 160,
     "color": {
       "r": 1.0,
       "g": 0.4,
@@ -664,7 +783,12 @@
         "skillIconPath": "Skill/Doro_Burst",
         "values": []
       }
-    ]
+    ],
+    "status": {
+      "hp": 13800,
+      "attack": 540,
+      "defense": 160
+    }
   },
   "10": {
     "id": 10,
@@ -675,9 +799,6 @@
     "rarity": "SSR",
     "manufacturer": "어브노멀",
     "squad": "갓데스...?",
-    "hp": 19500,
-    "attack": 610,
-    "defense": 215,
     "color": {
       "r": 0.9,
       "g": 0.9,
@@ -724,7 +845,12 @@
         "skillIconPath": "Skill/Doro_Burst",
         "values": []
       }
-    ]
+    ],
+    "status": {
+      "hp": 19500,
+      "attack": 610,
+      "defense": 215
+    }
   },
   "11": {
     "id": 11,
@@ -735,9 +861,6 @@
     "rarity": "R",
     "manufacturer": "어브노멀",
     "squad": "갓데스...?",
-    "hp": 12000,
-    "attack": 450,
-    "defense": 120,
     "color": {
       "r": 0.4,
       "g": 0.4,
@@ -784,7 +907,12 @@
         "skillIconPath": "Skill/Doro_Burst",
         "values": []
       }
-    ]
+    ],
+    "status": {
+      "hp": 12000,
+      "attack": 450,
+      "defense": 120
+    }
   },
   "12": {
     "id": 12,
@@ -795,9 +923,6 @@
     "rarity": "SSR",
     "manufacturer": "어브노멀",
     "squad": "갓데스...?",
-    "hp": 14200,
-    "attack": 560,
-    "defense": 170,
     "color": {
       "r": 0.5,
       "g": 0.8,
@@ -844,7 +969,12 @@
         "skillIconPath": "Skill/Doro_Burst",
         "values": []
       }
-    ]
+    ],
+    "status": {
+      "hp": 14200,
+      "attack": 560,
+      "defense": 170
+    }
   },
   "13": {
     "id": 13,
@@ -855,9 +985,6 @@
     "rarity": "SR",
     "manufacturer": "어브노멀",
     "squad": "갓데스...?",
-    "hp": 18500,
-    "attack": 490,
-    "defense": 205,
     "color": {
       "r": 0.7,
       "g": 0.7,
@@ -904,7 +1031,12 @@
         "skillIconPath": "Skill/Doro_Burst",
         "values": []
       }
-    ]
+    ],
+    "status": {
+      "hp": 18500,
+      "attack": 490,
+      "defense": 205
+    }
   },
   "14": {
     "id": 14,
@@ -915,9 +1047,6 @@
     "rarity": "SSR",
     "manufacturer": "어브노멀",
     "squad": "갓데스...?",
-    "hp": 15500,
-    "attack": 710,
-    "defense": 150,
     "color": {
       "r": 0.9,
       "g": 0.3,
@@ -964,6 +1093,11 @@
         "skillIconPath": "Skill/Doro_Burst",
         "values": []
       }
-    ]
+    ],
+    "status": {
+      "hp": 15500,
+      "attack": 710,
+      "defense": 150
+    }
   }
 }

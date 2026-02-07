@@ -29,9 +29,7 @@ public class NikkeGameData : IDataId
     public string manufacturer;
     public string squad;
 
-    public int hp;
-    public int attack;
-    public int defense;
+    public StatusData status;
 
     public Color color;
 

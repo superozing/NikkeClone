@@ -96,15 +96,15 @@ public class NikkeLevelUpPopupViewModel : ViewModelBase
         IsPlusActive.Value = _targetLevel < MAX_LEVEL_LIMIT;
 
         // 3. Stats Calculation 
-        // 현재 전체 HP = Base(_gameData.hp) + (CurrentLevel - 1) * INC
-        int curHp = _gameData.hp + (_currentLevel - 1) * INC_HP;
-        int curAtk = _gameData.attack + (_currentLevel - 1) * INC_ATK;
-        int curDef = _gameData.defense + (_currentLevel - 1) * INC_DEF;
+        // 현재 전체 HP = Base(_gameData.status.hp) + (CurrentLevel - 1) * INC
+        int curHp = (int)_gameData.status.hp + (_currentLevel - 1) * INC_HP;
+        int curAtk = (int)_gameData.status.attack + (_currentLevel - 1) * INC_ATK;
+        int curDef = (int)_gameData.status.defense + (_currentLevel - 1) * INC_DEF;
 
         // 목표 전체 HP
-        int nextHpTotal = _gameData.hp + (_targetLevel - 1) * INC_HP;
-        int nextAtkTotal = _gameData.attack + (_targetLevel - 1) * INC_ATK;
-        int nextDefTotal = _gameData.defense + (_targetLevel - 1) * INC_DEF;
+        int nextHpTotal = (int)_gameData.status.hp + (_targetLevel - 1) * INC_HP;
+        int nextAtkTotal = (int)_gameData.status.attack + (_targetLevel - 1) * INC_ATK;
+        int nextDefTotal = (int)_gameData.status.defense + (_targetLevel - 1) * INC_DEF;
 
         // UI 반영 (Value는 현재 수치, Inc는 증가량)
         StatHpValue.Value = curHp.ToString();
@@ -171,9 +171,9 @@ public class NikkeLevelUpPopupViewModel : ViewModelBase
 
         // 3. 전투력 계산 및 캐싱
         // 최종 스탯
-        int finalHp = _gameData.hp + (_targetLevel - 1) * INC_HP;
-        int finalAtk = _gameData.attack + (_targetLevel - 1) * INC_ATK;
-        int finalDef = _gameData.defense + (_targetLevel - 1) * INC_DEF;
+        int finalHp = (int)_gameData.status.hp + (_targetLevel - 1) * INC_HP;
+        int finalAtk = (int)_gameData.status.attack + (_targetLevel - 1) * INC_ATK;
+        int finalDef = (int)_gameData.status.defense + (_targetLevel - 1) * INC_DEF;
 
         // 임의 공식: (HP*0.5 + Atk*2.5 + Def*1.2) * Level * 0.001
         float score = (finalHp * 0.5f) + (finalAtk * 2.5f) + (finalDef * 1.2f);
