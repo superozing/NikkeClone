@@ -27,25 +27,13 @@ public class RaptureZone : MonoBehaviour
     public (float left, float right) MovementBounds => (_leftBound, _rightBound);
 
     /// <summary>현재 구역에 있는 랩쳐들</summary>
-    // Note: CombatRapture 클래스는 Phase 2에서 구현되므로 여기서는 주석 처리하거나 빈 리스트만 유지
-    // Phase 1: 컴파일 에러 방지를 위해 object로 대체하거나 나중에 추가
-    // public List<CombatRapture> Raptors { get; } = new List<CombatRapture>();
+    public List<CombatRapture> Raptures { get; } = new List<CombatRapture>();
 
-    // Phase 1 Interim:
-    public List<Transform> Raptors { get; } = new List<Transform>();
+    // Phase 4: WaveManager에서 랩쳐 스폰 시 호출
+    // public void AddRapture(CombatRapture rapture)
+    // Caller: WaveManager.SpawnRapture()
 
-    /*
-    /// <summary>랩쳐를 구역에 추가</summary>
-    public void AddRaptor(CombatRapture raptor)
-    {
-        if (!Raptors.Contains(raptor))
-            Raptors.Add(raptor);
-    }
-    
-    /// <summary>랩쳐를 구역에서 제거</summary>
-    public void RemoveRaptor(CombatRapture raptor)
-    {
-        Raptors.Remove(raptor);
-    }
-    */
+    // Phase 4: 랩쳐 사망/이동 시 호출
+    // public void RemoveRapture(CombatRapture rapture)
+    // Caller: CombatRapture.Die() 또는 SetZone()
 }

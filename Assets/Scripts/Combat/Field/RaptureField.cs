@@ -25,12 +25,12 @@ public class RaptureField : MonoBehaviour
 
     /* Phase 2: CombatRapture 구현 후 활성화
     /// <summary>모든 구역의 랩쳐 목록</summary>
-    public List<CombatRapture> GetAllRaptors()
+    public List<CombatRapture> GetAllRaptures()
     {
         var all = new List<CombatRapture>();
-        all.AddRange(_nearZone.Raptors);
-        all.AddRange(_midZone.Raptors);
-        all.AddRange(_farZone.Raptors);
+        all.AddRange(_nearZone.Raptures);
+        all.AddRange(_midZone.Raptures);
+        all.AddRange(_farZone.Raptures);
         return all;
     }
     */
