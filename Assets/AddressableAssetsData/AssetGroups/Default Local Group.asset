@@ -336,7 +336,7 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c79494ab64253764cb6b795fdb02335c
-    m_Address: Prefabs/UI/View/UI_CombatHUD
+    m_Address: UI/View/UI_CombatHUD
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
