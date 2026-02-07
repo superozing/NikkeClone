@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TestScene : MonoBehaviour, IScene
 {
-    eSceneType IScene.SceneType => eSceneType.Test;
+    eSceneType IScene.SceneType => eSceneType.TestScene;
     public List<string> RequiredDataFiles => new()
     {
         "NikkeGameData.json",

@@ -243,13 +243,14 @@ public class StageInfoPopupViewModel : ViewModelBase
     {
         // 1. 유저 데이터에 전투 정보 저장
         // SquadId는 1부터 시작하므로 Index + 1
-        Managers.Data.UserData.Combat = new UserCombatData(
+        var combatData = new UserCombatData(
             StageId,
             CurrentSquadIndex.Value + 1
         );
+        Managers.Data.UserData.Combat = combatData;
 
         // 2. 전투 씬으로 전환
-        await Managers.Scene.LoadSceneAsync(eSceneType.Combat);
+        await Managers.Scene.LoadSceneAsync(eSceneType.CombatScene);
 
         // 기존 이벤트 호출 유지 (필요한 경우)
         OnBattleRequested?.Invoke(StageId);

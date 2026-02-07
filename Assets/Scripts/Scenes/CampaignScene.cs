@@ -5,7 +5,7 @@ using UI;
 
 public class CampaignScene : MonoBehaviour, IScene
 {
-    eSceneType IScene.SceneType => eSceneType.Campaign;
+    eSceneType IScene.SceneType => eSceneType.CampaignScene;
     public List<string> RequiredDataFiles => new()
     {
         "ChapterGameData.json",

@@ -9,7 +9,7 @@ public class CombatScene : MonoBehaviour, IScene
 {
     // ==================== IScene Implementation ====================
 
-    eSceneType IScene.SceneType => eSceneType.Combat;
+    eSceneType IScene.SceneType => eSceneType.CombatScene;
 
     public List<string> RequiredDataFiles => new()
     {
@@ -18,6 +18,7 @@ public class CombatScene : MonoBehaviour, IScene
         "StageBattleGameData.json",
         "PhaseGameData.json",
         "RaptureGameData.json",
+        "MissionGameData.json",
     };
 
     // ==================== SerializeFields ====================

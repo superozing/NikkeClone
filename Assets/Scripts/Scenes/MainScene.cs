@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class MainScene : MonoBehaviour, IScene
 {
-    eSceneType IScene.SceneType => eSceneType.Main;
+    eSceneType IScene.SceneType => eSceneType.MainScene;
     public List<string> RequiredDataFiles => new List<string>();
 
     void Awake()
