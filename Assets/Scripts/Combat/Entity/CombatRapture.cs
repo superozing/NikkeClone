@@ -27,6 +27,10 @@ public class CombatRapture : CombatEntity
     /// <summary>현재 위치 구역</summary>
     public eRangeZone CurrentZone => _currentZone;
 
+    /// <summary>사망 시 발생</summary>
+    /// <remarks>Caller: CombatScene (테스트용 로그)</remarks>
+    public event System.Action<CombatRapture> OnDeath;
+
     // ==================== Public Methods ====================
 
     /// <summary>
@@ -78,7 +82,15 @@ public class CombatRapture : CombatEntity
         }
     }
 
-    // Phase 4: SetZone 구현 예정
+    /// <summary>
+    /// 사망 처리 (Override)
+    /// </summary>
+    public override void Die()
+    {
+        base.Die();
+        ChangeState(eRaptureState.Dead);
+        OnDeath?.Invoke(this);
+    }
 
     // ==================== Test Code (Phase 2 Only) ====================
 
