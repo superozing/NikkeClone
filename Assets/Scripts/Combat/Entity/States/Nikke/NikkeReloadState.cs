@@ -5,19 +5,34 @@ using UnityEngine;
 /// </summary>
 public class NikkeReloadState : IState<CombatNikke>
 {
+    private float _reloadTimer;
+
     public void Enter(CombatNikke owner)
     {
-        Debug.Log($"[{owner.NikkeName}] Enter Reload State");
-        // TODO Phase 3: 재장전 애니메이션 및 타이머 시작
+        _reloadTimer = 0f;
+        Debug.Log($"[{owner.NikkeName}] Reloading... ({owner.ReloadTime}s)");
     }
 
     public void Execute(CombatNikke owner)
     {
-        // TODO Phase 3: 재장전 완료 체크 -> Cover로 전환
+        _reloadTimer += Time.deltaTime;
+
+        if (_reloadTimer >= owner.ReloadTime)
+        {
+            // 재장전 완료 처리
+            owner.RefillAmmo();
+
+            // 원래 상태로 복귀 (Phase 3: 단순화하여 Cover로 복귀)
+            // *디자인 문서*: "여전히 공격 중이면 Attack으로, 아니면 Cover로"
+            // 하지만 현재는 Input 기반이므로 기본적으로 Cover로 돌아가고,
+            // 유저가 계속 클릭하면 다음 프레임에 Attack으로 전환될 것임 (또는 HandleClick에서 처리)
+            // 우선 Cover로 전환.
+            owner.ChangeState(eNikkeState.Cover);
+        }
     }
 
     public void Exit(CombatNikke owner)
     {
-        // TODO Phase 3: 탄환 보충 (RefillAmmo)
+        // Enter/Execute에서 처리했으므로 Exit에서는 특별한 처리 없음
     }
 }

@@ -39,7 +39,13 @@ public class CombatNikke : CombatEntity
     /// <summary>재장전 시간</summary>
     public float ReloadTime => _gameData.weapon.reloadTime;
 
-    // Phase 3: CanAttack 프로퍼티 추가 예정
+    /// <summary>공격력 (BaseStatus 기준)</summary>
+    /// <remarks>Caller: CombatScene.OnRaptureHit()</remarks>
+    public long AttackPower => _baseStatus.attack;
+
+    /// <summary>발사 가능 여부</summary>
+    /// <remarks>Caller: CombatScene.HandleClick()</remarks>
+    public bool CanFire => _currentAmmo > 0 && !IsDead;
 
     // ==================== Public Methods ====================
 
@@ -92,7 +98,65 @@ public class CombatNikke : CombatEntity
         }
     }
 
-    // Phase 3: ConsumeAmmo, RefillAmmo 구현 예정
+    /// <summary>
+    /// 대상 랩쳐를 공격합니다.
+    /// Caller: CombatScene.OnRaptureHit()
+    /// </summary>
+    public void Fire(CombatRapture target)
+    {
+        ConsumeAmmo();
+        target.TakeDamage(AttackPower);
+    }
+
+    /// <summary>
+    /// 탄약을 소비합니다.
+    /// Caller: Fire(), CombatScene.HandleClick() (빗나감)
+    /// </summary>
+    public void ConsumeAmmo(int amount = 1)
+    {
+        _currentAmmo = Mathf.Max(0, _currentAmmo - amount);
+
+        if (_currentAmmo <= 0)
+        {
+            ChangeState(eNikkeState.Reload);
+        }
+    }
+
+    /// <summary>
+    /// 공격을 시작합니다.
+    /// Caller: CombatScene.HandleInput()
+    /// </summary>
+    public void StartAttack()
+    {
+        if (IsDead || CurrentState == eNikkeState.Reload || CurrentState == eNikkeState.Attack) return;
+        ChangeState(eNikkeState.Attack);
+    }
+
+    /// <summary>
+    /// 공격을 중지합니다.
+    /// Caller: CombatScene.HandleInput()
+    /// </summary>
+    public void StopAttack()
+    {
+        if (IsDead) return;
+        if (CurrentState == eNikkeState.Reload) return; // 이미 재장전 중이면 무시
+
+        // 탄약이 가득 찼으면 바로 Cover, 아니면 Reload
+        if (_currentAmmo >= MaxAmmo)
+            ChangeState(eNikkeState.Cover);
+        else
+            ChangeState(eNikkeState.Reload);
+    }
+
+    /// <summary>
+    /// 탄약을 충전합니다.
+    /// Caller: NikkeReloadState.Exit()
+    /// </summary>
+    public void RefillAmmo()
+    {
+        _currentAmmo = MaxAmmo;
+        Debug.Log($"[{NikkeName}] Ammo Refilled: {CurrentAmmo}/{MaxAmmo}");
+    }
 
     // ==================== Private Methods ====================
 
@@ -122,17 +186,5 @@ public class CombatNikke : CombatEntity
     private void Update()
     {
         _stateMachine?.Update();
-
-        // 테스트: 스페이스바로 상태 전환 루프
-        // Cover -> Attack -> Reload -> Cover
-        if (Input.GetKeyDown(KeyCode.Space) && _stateMachine != null)
-        {
-            if (CurrentState == eNikkeState.Cover)
-                ChangeState(eNikkeState.Attack);
-            else if (CurrentState == eNikkeState.Attack)
-                ChangeState(eNikkeState.Reload);
-            else if (CurrentState == eNikkeState.Reload)
-                ChangeState(eNikkeState.Cover);
-        }
     }
 }
