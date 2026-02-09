@@ -35,7 +35,7 @@ public class CombatRapture : CombatEntity
 
     /// <summary>
     /// 랩쳐 데이터를 주입하고 상태 머신을 초기화합니다.
-    /// Caller: WaveManager (Phase 4)
+    /// Caller: WaveSystem (Phase 4)
     /// </summary>
     public void Initialize(RaptureGameData gameData, eRangeZone zone)
     {

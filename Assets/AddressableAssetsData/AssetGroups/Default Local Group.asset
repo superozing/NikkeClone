@@ -160,6 +160,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 51333e5a2e1b2ad4c886b995c6e30a25
+    m_Address: Assets/Textures/Nikke/DORO_Idle
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5233127e71fcb0648a36489c9dae13e2
     m_Address: "Assets/Textures/Nikke/\uB124\uC628_Idle"
     m_ReadOnly: 0
@@ -172,6 +177,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 582541f48350c8c43badd93a0f1bd193
     m_Address: UI/View/UI_Money
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5b34249f55de1334eb50740da04dc573
+    m_Address: Prefabs/Combat/CombatRapture1
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
