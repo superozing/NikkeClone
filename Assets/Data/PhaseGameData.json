@@ -1,38 +1,74 @@
 {
-    "3001": {
-        "id": 3001,
+    "1": {
+        "id": 1,
         "isTargetPhase": false,
         "appearingRaptureIds": [
-            4001,
-            4002
+            1,
+            2
         ],
         "spawns": [
             {
-                "raptureId": 4001,
+                "raptureId": 1,
                 "spawnDelaySec": 0.0,
                 "spawnerId": "Near_Ground_1",
                 "appearPosition": 1
             },
             {
-                "raptureId": 4002,
+                "raptureId": 2,
                 "spawnDelaySec": 2.5,
                 "spawnerId": "Mid_Air_2",
                 "appearPosition": 0
             }
         ]
     },
-    "3002": {
-        "id": 3002,
+    "2": {
+        "id": 2,
         "isTargetPhase": false,
         "appearingRaptureIds": [],
         "spawns": []
     },
-    "3003": {
-        "id": 3003,
+    "3": {
+        "id": 3,
         "isTargetPhase": true,
         "appearingRaptureIds": [
-            4003
+            3
         ],
         "spawns": []
+    },
+    "4": {
+        "id": 4,
+        "isTargetPhase": false,
+        "appearingRaptureIds": [
+            1
+        ],
+        "spawns": [
+            {
+                "raptureId": 1,
+                "spawnDelaySec": 0.0,
+                "spawnerId": "Near_Ground_1",
+                "appearPosition": 1
+            }
+        ]
+    },
+    "5": {
+        "id": 5,
+        "isTargetPhase": true,
+        "appearingRaptureIds": [
+            1
+        ],
+        "spawns": [
+            {
+                "raptureId": 1,
+                "spawnDelaySec": 0.0,
+                "spawnerId": "Mid_Ground_1",
+                "appearPosition": 0
+            },
+            {
+                "raptureId": 1,
+                "spawnDelaySec": 2.0,
+                "spawnerId": "Mid_Ground_2",
+                "appearPosition": 1
+            }
+        ]
     }
 }

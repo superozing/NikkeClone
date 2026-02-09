@@ -228,5 +228,19 @@
             }
         ],
         "stageBattleDataId": 1
+    },
+    "11": {
+        "id": 11,
+        "name": "TEST STAGE",
+        "stageType": 0,
+        "weaknessCode": 1,
+        "adequateRange": {
+            "near": 40,
+            "mid": 40,
+            "far": 20
+        },
+        "referenceCombatPower": 100,
+        "rewards": [],
+        "stageBattleDataId": 2
     }
 }
