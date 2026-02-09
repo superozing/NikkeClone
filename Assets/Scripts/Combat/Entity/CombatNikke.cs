@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 /// <summary>
@@ -9,12 +10,18 @@ public class CombatNikke : CombatEntity
 {
     // ==================== Data ====================
 
+    private SpriteRenderer _spriteRenderer;
+
     private NikkeGameData _gameData;
     private UserNikkeData _userData;
     private StateMachine<CombatNikke> _stateMachine;
     private int _slotIndex;
     private int _currentAmmo;
     private Dictionary<eNikkeState, IState<CombatNikke>> _states;
+
+    // Sprite 캐싱 (상태별 이미지)
+    private Sprite _idleSprite;
+    private Sprite _shootSprite;
 
     // ==================== Properties ====================
 
@@ -53,7 +60,7 @@ public class CombatNikke : CombatEntity
     /// 니케 데이터를 주입하고 상태 머신을 초기화합니다.
     /// Caller: CombatScene.InitializeNikkes()
     /// </summary>
-    public void Initialize(NikkeGameData gameData, UserNikkeData userData, int slotIndex)
+    public async Task InitializeAsync(NikkeGameData gameData, UserNikkeData userData, int slotIndex)
     {
         _gameData = gameData;
         _userData = userData;
@@ -63,6 +70,13 @@ public class CombatNikke : CombatEntity
         CalculateStatus();
         _currentHp = MaxHp;
         _currentAmmo = MaxAmmo;
+
+        // SpriteRenderer 동적 할당 (Sprite 자식 오브젝트)
+        _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+
+        // 상태별 Sprite 로드 (Addressables)
+        _idleSprite = await Managers.Resource.LoadAsync<Sprite>($"Assets/Textures/Nikke/{_gameData.name}_Idle");
+        _shootSprite = await Managers.Resource.LoadAsync<Sprite>($"Assets/Textures/Nikke/{_gameData.name}_Shoot");
 
         // 상태 머신 초기화
         _stateMachine = new StateMachine<CombatNikke>(this);
@@ -99,6 +113,50 @@ public class CombatNikke : CombatEntity
     }
 
     /// <summary>
+    /// 상태에 따라 스프라이트를 변경합니다.
+    /// Caller: NikkeCoverState.Enter(), NikkeAttackState.Enter()
+    /// </summary>
+    public void SetStateSprite(eNikkeState state)
+    {
+        if (_spriteRenderer == null) return;
+
+        Sprite newSprite = state switch
+        {
+            eNikkeState.Cover => _idleSprite,
+            eNikkeState.Attack => _shootSprite,
+            eNikkeState.Reload => _idleSprite,
+            _ => _spriteRenderer.sprite // Dead/Stunned: 기존 유지
+        };
+
+        if (newSprite == null) return;
+
+        _spriteRenderer.sprite = newSprite;
+
+        // 500x500 크기로 비율 유지하며 스케일 조정
+        AdjustSpriteScale(newSprite, 500f);
+    }
+
+    /// <summary>
+    /// 스프라이트를 목표 높이에 맞게 비율 유지하며 스케일 조정합니다.
+    /// Caller: SetStateSprite()
+    /// </summary>
+    private void AdjustSpriteScale(Sprite sprite, float targetHeight)
+    {
+        if (sprite == null || _spriteRenderer == null) return;
+
+        // 스프라이트의 월드 유닛 높이 계산
+        float spriteHeight = sprite.rect.height / sprite.pixelsPerUnit;
+
+        // 목표 높이를 픽셀 단위에서 월드 유닛으로 변환 (PPU 100 기준)
+        float targetWorldHeight = targetHeight / 100f;
+
+        // 세로 크기 기준으로 비율 유지하며 스케일 계산
+        float uniformScale = targetWorldHeight / spriteHeight;
+
+        _spriteRenderer.transform.localScale = new Vector3(uniformScale, uniformScale, 1f);
+    }
+
+    /// <summary>
     /// 대상 랩쳐를 공격합니다.
     /// Caller: CombatScene.OnRaptureHit()
     /// </summary>
@@ -115,6 +173,7 @@ public class CombatNikke : CombatEntity
     public void ConsumeAmmo(int amount = 1)
     {
         _currentAmmo = Mathf.Max(0, _currentAmmo - amount);
+        Debug.Log($"[{NikkeName}] Ammo: {_currentAmmo}/{MaxAmmo}");
 
         if (_currentAmmo <= 0)
         {
@@ -128,7 +187,7 @@ public class CombatNikke : CombatEntity
     /// </summary>
     public void StartAttack()
     {
-        if (IsDead || CurrentState == eNikkeState.Reload || CurrentState == eNikkeState.Attack) return;
+        if (IsDead || CurrentState == eNikkeState.Attack) return;
         ChangeState(eNikkeState.Attack);
     }
 

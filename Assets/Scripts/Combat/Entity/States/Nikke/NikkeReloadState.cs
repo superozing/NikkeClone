@@ -11,6 +11,7 @@ public class NikkeReloadState : IState<CombatNikke>
     {
         _reloadTimer = 0f;
         Debug.Log($"[{owner.NikkeName}] Reloading... ({owner.ReloadTime}s)");
+        owner.SetStateSprite(eNikkeState.Reload);
     }
 
     public void Execute(CombatNikke owner)

@@ -8,7 +8,7 @@ public class NikkeAttackState : IState<CombatNikke>
     public void Enter(CombatNikke owner)
     {
         Debug.Log($"[{owner.NikkeName}] Enter Attack State");
-        // TODO Phase 3: 조준/발사 애니메이션 재생
+        owner.SetStateSprite(eNikkeState.Attack);
     }
 
     public void Execute(CombatNikke owner)
