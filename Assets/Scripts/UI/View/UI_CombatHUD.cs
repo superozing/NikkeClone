@@ -42,7 +42,19 @@ public class UI_CombatHUD : UI_View
         _viewModel = null;
     }
 
-    // TODO Phase 4: 진행률 바
+    [Header("Phase 4: Wave Progress")]
+    [SerializeField] private UnityEngine.UI.Image _progressFill; // Inspector에서 할당
+
+    // Phase 4: WaveSystem 연동
+    // Caller: CombatScene.Update()
+    public void UpdateProgress(float progress)
+    {
+        if (_progressFill != null)
+        {
+            _progressFill.fillAmount = progress;
+        }
+    }
+
     // TODO Phase 5: 제한시간 표시
     // TODO Phase 8: 버스트 게이지/버튼
 }
