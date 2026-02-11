@@ -24,16 +24,76 @@
     "2": {
         "id": 2,
         "isTargetPhase": false,
-        "appearingRaptureIds": [],
-        "spawns": []
+        "appearingRaptureIds": [
+            1,
+            2
+        ],
+        "spawns": [
+            {
+                "raptureId": 1,
+                "spawnDelaySec": 0.0,
+                "spawnerId": "Near_Ground_1",
+                "appearPosition": 1
+            },
+            {
+                "raptureId": 2,
+                "spawnDelaySec": 1.5,
+                "spawnerId": "Near_Ground_2",
+                "appearPosition": 2
+            },
+            {
+                "raptureId": 1,
+                "spawnDelaySec": 3.0,
+                "spawnerId": "Mid_Ground_1",
+                "appearPosition": 0
+            },
+            {
+                "raptureId": 1,
+                "spawnDelaySec": 4.5,
+                "spawnerId": "Far_Ground_1",
+                "appearPosition": 1
+            }
+        ]
     },
     "3": {
         "id": 3,
         "isTargetPhase": true,
         "appearingRaptureIds": [
+            1,
             3
         ],
-        "spawns": []
+        "spawns": [
+            {
+                "raptureId": 1,
+                "spawnDelaySec": 0.0,
+                "spawnerId": "Near_Ground_1",
+                "appearPosition": 1
+            },
+            {
+                "raptureId": 1,
+                "spawnDelaySec": 1.0,
+                "spawnerId": "Near_Ground_2",
+                "appearPosition": 2
+            },
+            {
+                "raptureId": 3,
+                "spawnDelaySec": 2.5,
+                "spawnerId": "Mid_Ground_1",
+                "appearPosition": 0
+            },
+            {
+                "raptureId": 1,
+                "spawnDelaySec": 4.0,
+                "spawnerId": "Mid_Ground_2",
+                "appearPosition": 1
+            },
+            {
+                "raptureId": 2,
+                "spawnDelaySec": 5.5,
+                "spawnerId": "Far_Ground_1",
+                "appearPosition": 0
+            }
+        ]
     },
     "4": {
         "id": 4,

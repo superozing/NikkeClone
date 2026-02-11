@@ -8,7 +8,7 @@ public class NikkeCoverState : IState<CombatNikke>
     public void Enter(CombatNikke owner)
     {
         Debug.Log($"[{owner.NikkeName}] Enter Cover State");
-        // TODO Phase 3: 엄폐 애니메이션 재생
+        owner.SetStateSprite(eNikkeState.Cover);
         // TODO Phase 3: 피격 범위 축소 적용
     }
 

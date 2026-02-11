@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 /// <summary>
@@ -26,6 +27,10 @@ public class CombatScene : MonoBehaviour, IScene
     [SerializeField] private CombatNikke[] _nikkes;  // 5개, Inspector에서 할당
     [SerializeField] private Camera _mainCamera;     // Phase 3: 레이캐스트용 카메라
     [SerializeField] private LayerMask _raptureLayer;// Phase 3: 랩쳐 레이어
+
+    [Header("Phase 4: Wave System")]
+    [SerializeField] private WaveSystem _waveManager;
+    [SerializeField] private RaptureField _raptureField; // Inspector 할당용 (WaveSystem가 사용)
 
     // ==================== Runtime ====================
 
@@ -55,9 +60,15 @@ public class CombatScene : MonoBehaviour, IScene
         {
             HandleInput(false);
         }
+
+        // Phase 4: UI 업데이트
+        if (_waveManager != null && _combatHUD != null)
+        {
+            _combatHUD.UpdateProgress(_waveManager.Progress);
+        }
     }
 
-    void IScene.Init()
+    async void IScene.Init()
     {
         // 1. 유저 데이터에서 전투 파라미터 읽기
         var combatData = Managers.Data.UserData.Combat;
@@ -72,34 +83,74 @@ public class CombatScene : MonoBehaviour, IScene
         Debug.Log($"[CombatScene] Init - Stage: {_stageId}, Squad: {_squadId}");
 
         // 2. 니케에 데이터 주입
-        InitializeNikkes();
+        await InitializeNikkesAsync();
 
         // 3. HUD 초기화
         InitializeHUD();
 
-        // Phase 3: 테스트용 랩쳐 이벤트 연결 및 초기화
+        // Phase 4: 웨이브 시스템 동적 생성 및 시작
+        if (_waveManager == null)
+        {
+            // WaveSystem이 없으면 동적 생성
+            GameObject wmGo = new GameObject("WaveSystem");
+            _waveManager = wmGo.AddComponent<WaveSystem>();
+            Debug.Log("[CombatScene] WaveSystem dynamically created.");
+        }
+
+        if (_raptureField == null)
+        {
+            // RaptureField가 없으면 찾거나 생성
+            _raptureField = FindFirstObjectByType<RaptureField>();
+            if (_raptureField == null)
+            {
+                GameObject rfGo = new GameObject("RaptureField");
+                _raptureField = rfGo.AddComponent<RaptureField>();
+                // 주의: RaptureField는 Zone 설정 데이터가 필요하므로, 
+                // 빈 오브젝트로 생성되면 정상 동작하지 않을 수 있음.
+                // 프리팹을 로드하는 방식이 안전함 (추후 개선 포인트)
+                Debug.LogWarning("[CombatScene] RaptureField dynamically created (Empty!). Zone data might be missing.");
+            }
+        }
+
+        // WaveSystem 초기화 (RaptureField 주입)
+        _waveManager.Initialize(_raptureField);
+        _waveManager.OnAllPhasesComplete += OnAllPhasesComplete;
+
+
+        // 필요한 데이터 로드
+        var stageData = Managers.Data.Get<StageGameData>(_stageId);
+        if (stageData != null)
+        {
+            var battleData = Managers.Data.Get<StageBattleGameData>(stageData.stageBattleDataId);
+            if (battleData != null)
+            {
+                await _waveManager.StartBattleAsync(battleData);
+            }
+            else
+            {
+                Debug.LogError($"[CombatScene] StageBattleGameData not found for ID: {stageData.stageBattleDataId}");
+            }
+        }
+        else
+        {
+            Debug.LogError($"[CombatScene] StageGameData not found for ID: {_stageId}");
+        }
+
+        /* Phase 3 테스트 코드 제거
         var raptures = FindObjectsByType<CombatRapture>(FindObjectsSortMode.None);
         foreach (var rapture in raptures)
         {
-            // 수동 배치된 랩쳐 초기화 (ID가 없는 경우)
             if (rapture.RaptureId == -1) // -1: Uninitialized
             {
-                // 테스트용 데이터 (4001: 일반형 랩쳐)
-                var raptureData = Managers.Data.Get<RaptureGameData>(4001);
+                var raptureData = Managers.Data.Get<RaptureGameData>(1);
                 if (raptureData != null)
                 {
                     rapture.Initialize(raptureData, eRangeZone.Near);
                 }
-                else
-                {
-                    Debug.LogError("[CombatScene] Default Rapture Data (4001) not found for test.");
-                }
             }
-
             rapture.OnDeath += OnRaptureKilled;
         }
-
-        // TODO Phase 4: 웨이브 시작
+        */
     }
 
     private void HandleInput(bool isDown)
@@ -161,7 +212,7 @@ public class CombatScene : MonoBehaviour, IScene
         Debug.Log($"[CombatScene] Rapture Killed: {rapture.RaptureName}");
     }
 
-    private void InitializeNikkes()
+    private async Task InitializeNikkesAsync()
     {
         var squadData = Managers.Data.UserData.Squads[_squadId];
 
@@ -173,7 +224,7 @@ public class CombatScene : MonoBehaviour, IScene
             var userData = Managers.Data.UserData.Nikkes[nikkeId];
 
             // 전략 패턴: 니케 오브젝트에 데이터 주입
-            _nikkes[i].Initialize(gameData, userData, i);
+            await _nikkes[i].InitializeAsync(gameData, userData, i);
         }
 
         Debug.Log($"[CombatScene] Initialized {_nikkes.Length} nikkes");
@@ -187,9 +238,22 @@ public class CombatScene : MonoBehaviour, IScene
         _combatHUD = await Managers.UI.ShowAsync<UI_CombatHUD>(_combatHUDViewModel);
     }
 
+    private void OnAllPhasesComplete()
+    {
+        Debug.Log("==========================================");
+        Debug.Log("[CombatScene] VICTORY! All phases complete.");
+        Debug.Log("==========================================");
+    }
+
     void IScene.Clear()
     {
         Debug.Log("[CombatScene] Clear");
+
+        // 이벤트 해제
+        if (_waveManager != null)
+        {
+            _waveManager.OnAllPhasesComplete -= OnAllPhasesComplete;
+        }
 
         // 전투 데이터 초기화
         Managers.Data.UserData.Combat = null;
