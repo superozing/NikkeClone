@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UI;
+using UnityEngine.UI;
 
 /// <summary>
 /// 전투 씬 HUD입니다.
@@ -9,6 +10,8 @@ public class UI_CombatHUD : UI_View
 {
     [Header("Nikke State Slots")]
     [SerializeField] private UI_NikkeStateSlot[] _nikkeStateSlots;  // 5개
+    [Header("Phase 4: Wave Progress")]
+    [SerializeField] private Image _progressFill; // Inspector에서 할당
 
     private CombatHUDViewModel _viewModel;
 
@@ -42,8 +45,6 @@ public class UI_CombatHUD : UI_View
         _viewModel = null;
     }
 
-    [Header("Phase 4: Wave Progress")]
-    [SerializeField] private UnityEngine.UI.Image _progressFill; // Inspector에서 할당
 
     // Phase 4: WaveSystem 연동
     // Caller: CombatScene.Update()
@@ -52,6 +53,23 @@ public class UI_CombatHUD : UI_View
         if (_progressFill != null)
         {
             _progressFill.fillAmount = progress;
+        }
+    }
+
+    /// <summary>
+    /// 현재 조작 중인 니케 슬롯을 하이라이트합니다.
+    /// Caller: CombatScene.SwitchNikke()
+    /// </summary>
+    public void SetActiveNikkeSlot(int slotIndex)
+    {
+        if (_nikkeStateSlots == null) return;
+
+        for (int i = 0; i < _nikkeStateSlots.Length; i++)
+        {
+            if (_nikkeStateSlots[i] != null)
+            {
+                _nikkeStateSlots[i].SetControlled(i == slotIndex);
+            }
         }
     }
 
