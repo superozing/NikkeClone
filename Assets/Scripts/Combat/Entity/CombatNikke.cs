@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using Unity.Cinemachine;
 
 /// <summary>
 /// 전투용 니케 클래스입니다.
@@ -22,6 +23,10 @@ public class CombatNikke : CombatEntity
     // Sprite 캐싱 (상태별 이미지)
     private Sprite _idleSprite;
     private Sprite _shootSprite;
+
+    // Phase 5: Cinemachine Camera
+    [SerializeField] private CinemachineCamera _vcam; // Inspector 할당
+    private const int NIKKE_CAM_PRIORITY = 200;
 
     // ==================== Properties ====================
 
@@ -77,6 +82,22 @@ public class CombatNikke : CombatEntity
         // 상태별 Sprite 로드 (Addressables)
         _idleSprite = await Managers.Resource.LoadAsync<Sprite>($"Assets/Textures/Nikke/{_gameData.name}_Idle");
         _shootSprite = await Managers.Resource.LoadAsync<Sprite>($"Assets/Textures/Nikke/{_gameData.name}_Shoot");
+
+        // Phase 5: Cinemachine Camera 등록
+        if (_vcam != null)
+        {
+            Managers.Camera.RegisterCamera($"CAM_NIKKE_{_slotIndex}", _vcam, NIKKE_CAM_PRIORITY);
+
+            // 0번 슬롯(초기 조작 니케)인 경우 카메라 활성화
+            if (_slotIndex == 0)
+            {
+                Managers.Camera.Activate($"CAM_NIKKE_{_slotIndex}");
+            }
+        }
+        else
+        {
+            Debug.LogError($"[CombatNikke] CinemachineCamera is not assigned in Inspector! Name: {name}");
+        }
 
         // 상태 머신 초기화
         _stateMachine = new StateMachine<CombatNikke>(this);
@@ -215,6 +236,35 @@ public class CombatNikke : CombatEntity
     {
         _currentAmmo = MaxAmmo;
         Debug.Log($"[{NikkeName}] Ammo Refilled: {CurrentAmmo}/{MaxAmmo}");
+    }
+
+    /// <summary>
+    /// 강제로 엄폐 상태로 전환합니다. (전체 엄폐용)
+    /// Caller: CombatScene.ToggleAllCover()
+    /// </summary>
+    public void ForceEnterCover()
+    {
+        if (IsDead) return;
+        if (CurrentState == eNikkeState.Cover) return;
+        if (CurrentState == eNikkeState.Stunned) return; // 기절 중에는 엄폐 불가 (기획 확인 필요)
+
+        // 리로드 중이면 리로드 유지 (Phase 5 정책: 옵션 B)
+        if (CurrentState == eNikkeState.Reload) return;
+
+        ChangeState(eNikkeState.Cover);
+    }
+
+    private void OnDestroy()
+    {
+        // 카메라 해제
+        if (_vcam != null)
+        {
+            // Managers.Camera가 살아있는지 확인 (씬 종료 시점 고려)
+            if (Managers.Inst != null && Managers.Camera != null)
+            {
+                Managers.Camera.UnregisterCamera($"CAM_NIKKE_{_slotIndex}");
+            }
+        }
     }
 
     // ==================== Private Methods ====================
