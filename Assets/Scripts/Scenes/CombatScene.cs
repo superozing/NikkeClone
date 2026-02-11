@@ -28,8 +28,12 @@ public class CombatScene : MonoBehaviour, IScene
     [SerializeField] private Camera _mainCamera;     // Phase 3: 레이캐스트용 카메라
     [SerializeField] private LayerMask _raptureLayer;// Phase 3: 랩쳐 레이어
 
+    // Phase 5: State & Input
+    private int _activeNikkeIndex = 0;
+    private bool _isAllCover = false;
+
     [Header("Phase 4: Wave System")]
-    [SerializeField] private WaveSystem _waveManager;
+    [SerializeField] private WaveSystem _waveSystem;
     [SerializeField] private RaptureField _raptureField; // Inspector 할당용 (WaveSystem가 사용)
 
     // ==================== Runtime ====================
@@ -49,22 +53,81 @@ public class CombatScene : MonoBehaviour, IScene
 
     private void Update()
     {
-        // Phase 3: 입력 처리
-        // 공격 시작 (눌렀을 때)
-        if (Input.GetMouseButtonDown(0))
+        // Phase 4: UI 업데이트
+        if (_waveSystem != null && _combatHUD != null)
         {
-            HandleInput(true);
+            _combatHUD.UpdateProgress(_waveSystem.Progress);
         }
-        // 공격 중지 (뗐을 때)
-        else if (Input.GetMouseButtonUp(0))
+    }
+
+    private void HandleInput(bool isDown)
+    {
+        // 현재 조작 중인 니케 가져오기
+        if (_nikkes == null)
         {
-            HandleInput(false);
+            Debug.LogError("[CombatScene] HandleInput: _nikkes array is null!");
+            return;
         }
 
-        // Phase 4: UI 업데이트
-        if (_waveManager != null && _combatHUD != null)
+        if (_activeNikkeIndex < 0 || _activeNikkeIndex >= _nikkes.Length)
         {
-            _combatHUD.UpdateProgress(_waveManager.Progress);
+            Debug.LogError($"[CombatScene] HandleInput: Invalid _activeNikkeIndex {_activeNikkeIndex}");
+            return;
+        }
+
+        var nikke = _nikkes[_activeNikkeIndex];
+        if (nikke == null)
+        {
+            Debug.LogError($"[CombatScene] HandleInput: Nikke at index {_activeNikkeIndex} is null!");
+            return;
+        }
+
+        if (isDown)
+        {
+            // 눌렀을 때: Attack 상태 전환 + 발사 시도
+            nikke.StartAttack();
+
+            // Phase 5: Fire Action Binding에서 호출되므로 여기서 발사 로직 처리
+            // 하지만 Fire Action은 Pressed 상태에서 매 프레임 호출이 아니라 Performed(눌렀을 때) 한번 호출됨?
+            // 연사를 위해서는 Pressed 상태 체크 필요?
+            // 아니면 Input System의 Hold Interaction 사용?
+            // 일단 'Click'과 유사하게 구현.
+
+            if (!nikke.CanFire)
+            {
+                // 재장전 중이거나 사망 시
+                Debug.Log("[CombatScene] Cannot fire - reloading or dead");
+                return;
+            }
+
+            // 발사 로직 (기존 HandleClick 내용)
+            FireRaycast(nikke);
+        }
+        else
+        {
+            // 뗐을 때: Reload/Cover 전환
+            nikke.StopAttack();
+        }
+    }
+
+    private void FireRaycast(CombatNikke nikke)
+    {
+        // 마우스 위치에서 레이캐스트
+        Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
+
+        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, _raptureLayer))
+        {
+            var rapture = hit.collider.GetComponent<CombatRapture>();
+            if (rapture != null && !rapture.IsDead)
+            {
+                OnRaptureHit(rapture);
+            }
+        }
+        else
+        {
+            // 빗나감 - 탄약만 소비
+            nikke.ConsumeAmmo();
+            Debug.Log("[CombatScene] Shot missed");
         }
     }
 
@@ -82,6 +145,9 @@ public class CombatScene : MonoBehaviour, IScene
         _squadId = combatData.squadId;
         Debug.Log($"[CombatScene] Init - Stage: {_stageId}, Squad: {_squadId}");
 
+        // Phase 5: Input Binding
+        BindInputs();
+
         // 2. 니케에 데이터 주입
         await InitializeNikkesAsync();
 
@@ -89,11 +155,11 @@ public class CombatScene : MonoBehaviour, IScene
         InitializeHUD();
 
         // Phase 4: 웨이브 시스템 동적 생성 및 시작
-        if (_waveManager == null)
+        if (_waveSystem == null)
         {
             // WaveSystem이 없으면 동적 생성
             GameObject wmGo = new GameObject("WaveSystem");
-            _waveManager = wmGo.AddComponent<WaveSystem>();
+            _waveSystem = wmGo.AddComponent<WaveSystem>();
             Debug.Log("[CombatScene] WaveSystem dynamically created.");
         }
 
@@ -113,8 +179,8 @@ public class CombatScene : MonoBehaviour, IScene
         }
 
         // WaveSystem 초기화 (RaptureField 주입)
-        _waveManager.Initialize(_raptureField);
-        _waveManager.OnAllPhasesComplete += OnAllPhasesComplete;
+        _waveSystem.Initialize(_raptureField);
+        _waveSystem.OnAllPhasesComplete += OnAllPhasesComplete;
 
 
         // 필요한 데이터 로드
@@ -124,7 +190,7 @@ public class CombatScene : MonoBehaviour, IScene
             var battleData = Managers.Data.Get<StageBattleGameData>(stageData.stageBattleDataId);
             if (battleData != null)
             {
-                await _waveManager.StartBattleAsync(battleData);
+                await _waveSystem.StartBattleAsync(battleData);
             }
             else
             {
@@ -153,58 +219,14 @@ public class CombatScene : MonoBehaviour, IScene
         */
     }
 
-    private void HandleInput(bool isDown)
-    {
-        // 0번 니케가 발사 가능한지 체크 (Phase 3: 단일 니케 조작 가정)
-        // 실제 게임에서는 선택된 니케가 발사하지만, 지금은 0번 고정
-        if (_nikkes == null || _nikkes.Length == 0 || _nikkes[0] == null) return;
 
-        var nikke = _nikkes[0];
-
-        if (isDown)
-        {
-            // 눌렀을 때: Attack 상태 전환 + 발사 시도
-            nikke.StartAttack();
-
-            if (!nikke.CanFire)
-            {
-                // 재장전 중이거나 사망 시
-                Debug.Log("[CombatScene] Cannot fire - reloading or dead");
-                return;
-            }
-
-            // 발사 로직 (기존 HandleClick 내용)
-            // 마우스 위치에서 레이캐스트
-            Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
-
-            if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, _raptureLayer))
-            {
-                var rapture = hit.collider.GetComponent<CombatRapture>();
-                if (rapture != null && !rapture.IsDead)
-                {
-                    OnRaptureHit(rapture);
-                }
-            }
-            else
-            {
-                // 빗나감 - 탄약만 소비
-                nikke.ConsumeAmmo();
-                Debug.Log("[CombatScene] Shot missed");
-            }
-        }
-        else
-        {
-            // 뗐을 때: Reload/Cover 전환
-            nikke.StopAttack();
-        }
-    }
 
     private void OnRaptureHit(CombatRapture rapture)
     {
-        if (_nikkes == null || _nikkes.Length == 0) return;
+        if (_nikkes == null || _activeNikkeIndex < 0 || _activeNikkeIndex >= _nikkes.Length) return;
 
-        // 0번 니케가 발사
-        _nikkes[0].Fire(rapture);
+        // 현재 조작 중인 니케가 발사
+        _nikkes[_activeNikkeIndex].Fire(rapture);
     }
 
     private void OnRaptureKilled(CombatRapture rapture)
@@ -236,6 +258,9 @@ public class CombatScene : MonoBehaviour, IScene
         _combatHUDViewModel.AddRef();
 
         _combatHUD = await Managers.UI.ShowAsync<UI_CombatHUD>(_combatHUDViewModel);
+
+        // 초기 UI 상태 동기화
+        _combatHUD.SetActiveNikkeSlot(_activeNikkeIndex);
     }
 
     private void OnAllPhasesComplete()
@@ -250,10 +275,13 @@ public class CombatScene : MonoBehaviour, IScene
         Debug.Log("[CombatScene] Clear");
 
         // 이벤트 해제
-        if (_waveManager != null)
+        if (_waveSystem != null)
         {
-            _waveManager.OnAllPhasesComplete -= OnAllPhasesComplete;
+            _waveSystem.OnAllPhasesComplete -= OnAllPhasesComplete;
         }
+
+        // Input Unbinding
+        UnbindInputs();
 
         // 전투 데이터 초기화
         Managers.Data.UserData.Combat = null;
@@ -269,6 +297,88 @@ public class CombatScene : MonoBehaviour, IScene
         {
             _combatHUDViewModel.Release();
             _combatHUDViewModel = null;
+        }
+    }
+
+    private void BindInputs()
+    {
+        Managers.Input.BindAction("SelectNikke1", _ => SwitchNikke(0));
+        Managers.Input.BindAction("SelectNikke2", _ => SwitchNikke(1));
+        Managers.Input.BindAction("SelectNikke3", _ => SwitchNikke(2));
+        Managers.Input.BindAction("SelectNikke4", _ => SwitchNikke(3));
+        Managers.Input.BindAction("SelectNikke5", _ => SwitchNikke(4));
+        Managers.Input.BindAction("ToggleAllCover", _ => ToggleAllCover());
+
+        // Phase 5: Fire Binding (Mouse Left)
+        // Performed: 눌렀을 때, Canceled: 뗐을 때
+        Managers.Input.BindAction("Fire", ctx =>
+        {
+            if (ctx.performed) HandleInput(true);
+            else if (ctx.canceled) HandleInput(false);
+        }, UnityEngine.InputSystem.InputActionPhase.Performed | UnityEngine.InputSystem.InputActionPhase.Canceled);
+    }
+
+    private void UnbindInputs()
+    {
+        if (Managers.Inst != null && Managers.Input != null)
+        {
+            Managers.Input.Clear(); // 씬 전환 시 클리어
+        }
+    }
+
+    private void SwitchNikke(int slotIndex)
+    {
+        // 1. 유효성 검사
+        if (slotIndex < 0 || slotIndex >= _nikkes.Length) return;
+        if (slotIndex == _activeNikkeIndex) return; // 같은 니케
+
+        var targetNikke = _nikkes[slotIndex];
+        if (targetNikke == null || targetNikke.IsDead) return; // 사망한 니케
+
+        Debug.Log($"[CombatScene] Switch Nikke: {_activeNikkeIndex} -> {slotIndex}");
+
+        // 2. 이전 니케 공격 중지
+        var prevNikke = _nikkes[_activeNikkeIndex];
+        if (prevNikke != null)
+        {
+            prevNikke.StopAttack();
+        }
+
+        // 3. 인덱스 변경
+        _activeNikkeIndex = slotIndex;
+
+        // 4. 카메라 전환
+        Managers.Camera.Activate($"CAM_NIKKE_{slotIndex}");
+
+        // 5. UI 업데이트
+        if (_combatHUD != null)
+        {
+            _combatHUD.SetActiveNikkeSlot(slotIndex);
+        }
+        if (_combatHUDViewModel != null)
+        {
+            _combatHUDViewModel.ActiveNikkeIndex = slotIndex;
+        }
+    }
+
+    private void ToggleAllCover()
+    {
+        _isAllCover = !_isAllCover;
+        Debug.Log($"[CombatScene] Toggle All Cover: {_isAllCover}");
+
+        for (int i = 0; i < _nikkes.Length; i++)
+        {
+            if (_nikkes[i] == null) continue;
+
+            if (_isAllCover)
+            {
+                // 엄폐 진입
+                _nikkes[i].ForceEnterCover();
+            }
+            else
+            {
+                // 엄폐 해제: 별도 로직 없음 (마우스 입력 허용됨)
+            }
         }
     }
 }
