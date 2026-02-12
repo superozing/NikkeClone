@@ -46,6 +46,9 @@ public class SceneManagerEx : IManagerBase
         // 게임 데이터 로드 후 게임 시스템 설정
         Managers.GameSystem.OnDataLoaded();
 
+        // 씬 기본 액션맵으로 전환
+        Managers.Input.SwitchActionMap(scene.DefaultActionMapKey);
+
         // 현재 씬 스크립트 초기화
         scene.Init();
     }
