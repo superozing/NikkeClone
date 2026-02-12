@@ -5,6 +5,7 @@ using UnityEngine;
 public class TestScene : MonoBehaviour, IScene
 {
     eSceneType IScene.SceneType => eSceneType.TestScene;
+    public string DefaultActionMapKey => "None";
     public List<string> RequiredDataFiles => new()
     {
         "NikkeGameData.json",

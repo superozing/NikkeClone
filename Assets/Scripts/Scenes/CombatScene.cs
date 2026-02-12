@@ -11,6 +11,7 @@ public class CombatScene : MonoBehaviour, IScene
     // ==================== IScene Implementation ====================
 
     eSceneType IScene.SceneType => eSceneType.CombatScene;
+    public string DefaultActionMapKey => "Combat";
 
     public List<string> RequiredDataFiles => new()
     {
@@ -21,6 +22,7 @@ public class CombatScene : MonoBehaviour, IScene
         "RaptureGameData.json",
         "MissionGameData.json",
     };
+
 
     // ==================== SerializeFields ====================
 
