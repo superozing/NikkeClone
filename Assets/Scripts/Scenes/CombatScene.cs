@@ -21,6 +21,7 @@ public class CombatScene : MonoBehaviour, IScene
         "PhaseGameData.json",
         "RaptureGameData.json",
         "MissionGameData.json",
+        "ItemGameData.json"
     };
 
 
