@@ -65,6 +65,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2b1a2905c63c22e44a9b114c01e7d634
+    m_Address: UI/Popup/UI_CombatResultVictoryPopup
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 2c242e5c5b55ef24db003061d0a1580f
     m_Address: "Assets/Textures/Nikke/\uB514\uC824_Shoot"
     m_ReadOnly: 0
@@ -302,6 +307,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 9c154fe72685df741be04dc51f56817f
     m_Address: "Assets/Textures/Icon/Class/\uBC29\uC5B4\uD615"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9f7205df00bb68d4fb4f717cf922544d
+    m_Address: UI/Popup/UI_CombatResultDefeatPopup
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
