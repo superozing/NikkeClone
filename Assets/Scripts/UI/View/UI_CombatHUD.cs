@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UI;
 using UnityEngine.UI;
+using TMPro;
 
 /// <summary>
 /// 전투 씬 HUD입니다.
@@ -8,6 +9,10 @@ using UnityEngine.UI;
 /// </summary>
 public class UI_CombatHUD : UI_View
 {
+    [Header("Phase 6: Timer & Pause")]
+    [SerializeField] private TMP_Text _txtTimer;
+    [SerializeField] private Button _btnPause;
+
     [Header("Nikke State Slots")]
     [SerializeField] private UI_NikkeStateSlot[] _nikkeStateSlots;  // 5개
     [Header("Phase 4: Wave Progress")]
@@ -73,6 +78,23 @@ public class UI_CombatHUD : UI_View
         }
     }
 
-    // TODO Phase 5: 제한시간 표시
-    // TODO Phase 8: 버스트 게이지/버튼
+
+
+    /// <summary>
+    /// 남은 시간을 갱신합니다.
+    /// Caller: CombatScene.Update()
+    /// </summary>
+    /// <param name="remainingSec">남은 시간(초)</param>
+    public void UpdateTimer(float remainingSec)
+    {
+        if (_txtTimer == null) return;
+
+        // 음수 방지
+        remainingSec = Mathf.Max(0, remainingSec);
+
+        int minutes = Mathf.FloorToInt(remainingSec / 60);
+        int seconds = Mathf.FloorToInt(remainingSec % 60);
+
+        _txtTimer.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+    }
 }
