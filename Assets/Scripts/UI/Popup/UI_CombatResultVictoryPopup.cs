@@ -21,9 +21,6 @@ public class UI_CombatResultVictoryPopup : UI_Popup, IUIShowHideable
     {
         base.Awake();
 
-        if (_canvasGroup == null)
-            _canvasGroup = GetComponent<CanvasGroup>();
-
         _showAnim = new FadeUIAnimation(_canvasGroup, 0f, 1f, 0.2f);
         _hideAnim = new FadeUIAnimation(_canvasGroup, 1f, 0f, 0.2f);
 
