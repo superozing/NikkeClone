@@ -490,6 +490,24 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DebugWin"",
+                    ""type"": ""Button"",
+                    ""id"": ""3edf579f-c582-42d2-a22f-8b623adcf609"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DebugLose"",
+                    ""type"": ""Button"",
+                    ""id"": ""1eb32638-f133-406d-8b2a-f6dc1898698f"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -569,6 +587,84 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Fire"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f306ea5c-5f58-4a83-b7c7-985748e52c18"",
+                    ""path"": ""<Keyboard>/f1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DebugWin"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c57b449a-7bb2-4241-9283-d7d2a162f0d1"",
+                    ""path"": ""<Keyboard>/f2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DebugLose"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""UI_CombatResultVictoryPopup"",
+            ""id"": ""3f976408-6e43-44b9-a5b3-deb200d0835c"",
+            ""actions"": [
+                {
+                    ""name"": ""New action"",
+                    ""type"": ""Button"",
+                    ""id"": ""1585c064-a592-42b0-b289-3eba0f91d17f"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""1d0541f7-99a7-4c26-8230-1289de008c8c"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""New action"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""UI_CombatResultDefeatPopup"",
+            ""id"": ""7add75a1-8282-4e50-9fb9-80b469168a9d"",
+            ""actions"": [
+                {
+                    ""name"": ""New action"",
+                    ""type"": ""Button"",
+                    ""id"": ""e98e77b6-446e-4eb6-b00e-0f9898ddc932"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""8e5bd8e2-e5de-4df3-b7b0-5488b5c3a3d0"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""New action"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -620,6 +716,14 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
         m_Combat_SelectNikke5 = m_Combat.FindAction("SelectNikke5", throwIfNotFound: true);
         m_Combat_ToggleAllCover = m_Combat.FindAction("ToggleAllCover", throwIfNotFound: true);
         m_Combat_Fire = m_Combat.FindAction("Fire", throwIfNotFound: true);
+        m_Combat_DebugWin = m_Combat.FindAction("DebugWin", throwIfNotFound: true);
+        m_Combat_DebugLose = m_Combat.FindAction("DebugLose", throwIfNotFound: true);
+        // UI_CombatResultVictoryPopup
+        m_UI_CombatResultVictoryPopup = asset.FindActionMap("UI_CombatResultVictoryPopup", throwIfNotFound: true);
+        m_UI_CombatResultVictoryPopup_Newaction = m_UI_CombatResultVictoryPopup.FindAction("New action", throwIfNotFound: true);
+        // UI_CombatResultDefeatPopup
+        m_UI_CombatResultDefeatPopup = asset.FindActionMap("UI_CombatResultDefeatPopup", throwIfNotFound: true);
+        m_UI_CombatResultDefeatPopup_Newaction = m_UI_CombatResultDefeatPopup.FindAction("New action", throwIfNotFound: true);
     }
 
     ~@GameInputActions()
@@ -637,6 +741,8 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
         UnityEngine.Debug.Assert(!m_UI_SquadDetailPopup.enabled, "This will cause a leak and performance issues, GameInputActions.UI_SquadDetailPopup.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_UI_StageInfoPopup.enabled, "This will cause a leak and performance issues, GameInputActions.UI_StageInfoPopup.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_Combat.enabled, "This will cause a leak and performance issues, GameInputActions.Combat.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_UI_CombatResultVictoryPopup.enabled, "This will cause a leak and performance issues, GameInputActions.UI_CombatResultVictoryPopup.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_UI_CombatResultDefeatPopup.enabled, "This will cause a leak and performance issues, GameInputActions.UI_CombatResultDefeatPopup.Disable() has not been called.");
     }
 
     /// <summary>
@@ -1871,6 +1977,8 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Combat_SelectNikke5;
     private readonly InputAction m_Combat_ToggleAllCover;
     private readonly InputAction m_Combat_Fire;
+    private readonly InputAction m_Combat_DebugWin;
+    private readonly InputAction m_Combat_DebugLose;
     /// <summary>
     /// Provides access to input actions defined in input action map "Combat".
     /// </summary>
@@ -1910,6 +2018,14 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Combat/Fire".
         /// </summary>
         public InputAction @Fire => m_Wrapper.m_Combat_Fire;
+        /// <summary>
+        /// Provides access to the underlying input action "Combat/DebugWin".
+        /// </summary>
+        public InputAction @DebugWin => m_Wrapper.m_Combat_DebugWin;
+        /// <summary>
+        /// Provides access to the underlying input action "Combat/DebugLose".
+        /// </summary>
+        public InputAction @DebugLose => m_Wrapper.m_Combat_DebugLose;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1957,6 +2073,12 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
             @Fire.started += instance.OnFire;
             @Fire.performed += instance.OnFire;
             @Fire.canceled += instance.OnFire;
+            @DebugWin.started += instance.OnDebugWin;
+            @DebugWin.performed += instance.OnDebugWin;
+            @DebugWin.canceled += instance.OnDebugWin;
+            @DebugLose.started += instance.OnDebugLose;
+            @DebugLose.performed += instance.OnDebugLose;
+            @DebugLose.canceled += instance.OnDebugLose;
         }
 
         /// <summary>
@@ -1989,6 +2111,12 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
             @Fire.started -= instance.OnFire;
             @Fire.performed -= instance.OnFire;
             @Fire.canceled -= instance.OnFire;
+            @DebugWin.started -= instance.OnDebugWin;
+            @DebugWin.performed -= instance.OnDebugWin;
+            @DebugWin.canceled -= instance.OnDebugWin;
+            @DebugLose.started -= instance.OnDebugLose;
+            @DebugLose.performed -= instance.OnDebugLose;
+            @DebugLose.canceled -= instance.OnDebugLose;
         }
 
         /// <summary>
@@ -2022,6 +2150,198 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
     /// Provides a new <see cref="CombatActions" /> instance referencing this action map.
     /// </summary>
     public CombatActions @Combat => new CombatActions(this);
+
+    // UI_CombatResultVictoryPopup
+    private readonly InputActionMap m_UI_CombatResultVictoryPopup;
+    private List<IUI_CombatResultVictoryPopupActions> m_UI_CombatResultVictoryPopupActionsCallbackInterfaces = new List<IUI_CombatResultVictoryPopupActions>();
+    private readonly InputAction m_UI_CombatResultVictoryPopup_Newaction;
+    /// <summary>
+    /// Provides access to input actions defined in input action map "UI_CombatResultVictoryPopup".
+    /// </summary>
+    public struct UI_CombatResultVictoryPopupActions
+    {
+        private @GameInputActions m_Wrapper;
+
+        /// <summary>
+        /// Construct a new instance of the input action map wrapper class.
+        /// </summary>
+        public UI_CombatResultVictoryPopupActions(@GameInputActions wrapper) { m_Wrapper = wrapper; }
+        /// <summary>
+        /// Provides access to the underlying input action "UI_CombatResultVictoryPopup/Newaction".
+        /// </summary>
+        public InputAction @Newaction => m_Wrapper.m_UI_CombatResultVictoryPopup_Newaction;
+        /// <summary>
+        /// Provides access to the underlying input action map instance.
+        /// </summary>
+        public InputActionMap Get() { return m_Wrapper.m_UI_CombatResultVictoryPopup; }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
+        public void Enable() { Get().Enable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Disable()" />
+        public void Disable() { Get().Disable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.enabled" />
+        public bool enabled => Get().enabled;
+        /// <summary>
+        /// Implicitly converts an <see ref="UI_CombatResultVictoryPopupActions" /> to an <see ref="InputActionMap" /> instance.
+        /// </summary>
+        public static implicit operator InputActionMap(UI_CombatResultVictoryPopupActions set) { return set.Get(); }
+        /// <summary>
+        /// Adds <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <param name="instance">Callback instance.</param>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c> or <paramref name="instance"/> have already been added this method does nothing.
+        /// </remarks>
+        /// <seealso cref="UI_CombatResultVictoryPopupActions" />
+        public void AddCallbacks(IUI_CombatResultVictoryPopupActions instance)
+        {
+            if (instance == null || m_Wrapper.m_UI_CombatResultVictoryPopupActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_UI_CombatResultVictoryPopupActionsCallbackInterfaces.Add(instance);
+            @Newaction.started += instance.OnNewaction;
+            @Newaction.performed += instance.OnNewaction;
+            @Newaction.canceled += instance.OnNewaction;
+        }
+
+        /// <summary>
+        /// Removes <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <remarks>
+        /// Calling this method when <paramref name="instance" /> have not previously been registered has no side-effects.
+        /// </remarks>
+        /// <seealso cref="UI_CombatResultVictoryPopupActions" />
+        private void UnregisterCallbacks(IUI_CombatResultVictoryPopupActions instance)
+        {
+            @Newaction.started -= instance.OnNewaction;
+            @Newaction.performed -= instance.OnNewaction;
+            @Newaction.canceled -= instance.OnNewaction;
+        }
+
+        /// <summary>
+        /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="UI_CombatResultVictoryPopupActions.UnregisterCallbacks(IUI_CombatResultVictoryPopupActions)" />.
+        /// </summary>
+        /// <seealso cref="UI_CombatResultVictoryPopupActions.UnregisterCallbacks(IUI_CombatResultVictoryPopupActions)" />
+        public void RemoveCallbacks(IUI_CombatResultVictoryPopupActions instance)
+        {
+            if (m_Wrapper.m_UI_CombatResultVictoryPopupActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        /// <summary>
+        /// Replaces all existing callback instances and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
+        /// </summary>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
+        /// </remarks>
+        /// <seealso cref="UI_CombatResultVictoryPopupActions.AddCallbacks(IUI_CombatResultVictoryPopupActions)" />
+        /// <seealso cref="UI_CombatResultVictoryPopupActions.RemoveCallbacks(IUI_CombatResultVictoryPopupActions)" />
+        /// <seealso cref="UI_CombatResultVictoryPopupActions.UnregisterCallbacks(IUI_CombatResultVictoryPopupActions)" />
+        public void SetCallbacks(IUI_CombatResultVictoryPopupActions instance)
+        {
+            foreach (var item in m_Wrapper.m_UI_CombatResultVictoryPopupActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_UI_CombatResultVictoryPopupActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    /// <summary>
+    /// Provides a new <see cref="UI_CombatResultVictoryPopupActions" /> instance referencing this action map.
+    /// </summary>
+    public UI_CombatResultVictoryPopupActions @UI_CombatResultVictoryPopup => new UI_CombatResultVictoryPopupActions(this);
+
+    // UI_CombatResultDefeatPopup
+    private readonly InputActionMap m_UI_CombatResultDefeatPopup;
+    private List<IUI_CombatResultDefeatPopupActions> m_UI_CombatResultDefeatPopupActionsCallbackInterfaces = new List<IUI_CombatResultDefeatPopupActions>();
+    private readonly InputAction m_UI_CombatResultDefeatPopup_Newaction;
+    /// <summary>
+    /// Provides access to input actions defined in input action map "UI_CombatResultDefeatPopup".
+    /// </summary>
+    public struct UI_CombatResultDefeatPopupActions
+    {
+        private @GameInputActions m_Wrapper;
+
+        /// <summary>
+        /// Construct a new instance of the input action map wrapper class.
+        /// </summary>
+        public UI_CombatResultDefeatPopupActions(@GameInputActions wrapper) { m_Wrapper = wrapper; }
+        /// <summary>
+        /// Provides access to the underlying input action "UI_CombatResultDefeatPopup/Newaction".
+        /// </summary>
+        public InputAction @Newaction => m_Wrapper.m_UI_CombatResultDefeatPopup_Newaction;
+        /// <summary>
+        /// Provides access to the underlying input action map instance.
+        /// </summary>
+        public InputActionMap Get() { return m_Wrapper.m_UI_CombatResultDefeatPopup; }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
+        public void Enable() { Get().Enable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Disable()" />
+        public void Disable() { Get().Disable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.enabled" />
+        public bool enabled => Get().enabled;
+        /// <summary>
+        /// Implicitly converts an <see ref="UI_CombatResultDefeatPopupActions" /> to an <see ref="InputActionMap" /> instance.
+        /// </summary>
+        public static implicit operator InputActionMap(UI_CombatResultDefeatPopupActions set) { return set.Get(); }
+        /// <summary>
+        /// Adds <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <param name="instance">Callback instance.</param>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c> or <paramref name="instance"/> have already been added this method does nothing.
+        /// </remarks>
+        /// <seealso cref="UI_CombatResultDefeatPopupActions" />
+        public void AddCallbacks(IUI_CombatResultDefeatPopupActions instance)
+        {
+            if (instance == null || m_Wrapper.m_UI_CombatResultDefeatPopupActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_UI_CombatResultDefeatPopupActionsCallbackInterfaces.Add(instance);
+            @Newaction.started += instance.OnNewaction;
+            @Newaction.performed += instance.OnNewaction;
+            @Newaction.canceled += instance.OnNewaction;
+        }
+
+        /// <summary>
+        /// Removes <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <remarks>
+        /// Calling this method when <paramref name="instance" /> have not previously been registered has no side-effects.
+        /// </remarks>
+        /// <seealso cref="UI_CombatResultDefeatPopupActions" />
+        private void UnregisterCallbacks(IUI_CombatResultDefeatPopupActions instance)
+        {
+            @Newaction.started -= instance.OnNewaction;
+            @Newaction.performed -= instance.OnNewaction;
+            @Newaction.canceled -= instance.OnNewaction;
+        }
+
+        /// <summary>
+        /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="UI_CombatResultDefeatPopupActions.UnregisterCallbacks(IUI_CombatResultDefeatPopupActions)" />.
+        /// </summary>
+        /// <seealso cref="UI_CombatResultDefeatPopupActions.UnregisterCallbacks(IUI_CombatResultDefeatPopupActions)" />
+        public void RemoveCallbacks(IUI_CombatResultDefeatPopupActions instance)
+        {
+            if (m_Wrapper.m_UI_CombatResultDefeatPopupActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        /// <summary>
+        /// Replaces all existing callback instances and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
+        /// </summary>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
+        /// </remarks>
+        /// <seealso cref="UI_CombatResultDefeatPopupActions.AddCallbacks(IUI_CombatResultDefeatPopupActions)" />
+        /// <seealso cref="UI_CombatResultDefeatPopupActions.RemoveCallbacks(IUI_CombatResultDefeatPopupActions)" />
+        /// <seealso cref="UI_CombatResultDefeatPopupActions.UnregisterCallbacks(IUI_CombatResultDefeatPopupActions)" />
+        public void SetCallbacks(IUI_CombatResultDefeatPopupActions instance)
+        {
+            foreach (var item in m_Wrapper.m_UI_CombatResultDefeatPopupActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_UI_CombatResultDefeatPopupActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    /// <summary>
+    /// Provides a new <see cref="UI_CombatResultDefeatPopupActions" /> instance referencing this action map.
+    /// </summary>
+    public UI_CombatResultDefeatPopupActions @UI_CombatResultDefeatPopup => new UI_CombatResultDefeatPopupActions(this);
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "None" which allows adding and removing callbacks.
     /// </summary>
@@ -2258,5 +2578,49 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnFire(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "DebugWin" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnDebugWin(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "DebugLose" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnDebugLose(InputAction.CallbackContext context);
+    }
+    /// <summary>
+    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI_CombatResultVictoryPopup" which allows adding and removing callbacks.
+    /// </summary>
+    /// <seealso cref="UI_CombatResultVictoryPopupActions.AddCallbacks(IUI_CombatResultVictoryPopupActions)" />
+    /// <seealso cref="UI_CombatResultVictoryPopupActions.RemoveCallbacks(IUI_CombatResultVictoryPopupActions)" />
+    public interface IUI_CombatResultVictoryPopupActions
+    {
+        /// <summary>
+        /// Method invoked when associated input action "New action" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnNewaction(InputAction.CallbackContext context);
+    }
+    /// <summary>
+    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI_CombatResultDefeatPopup" which allows adding and removing callbacks.
+    /// </summary>
+    /// <seealso cref="UI_CombatResultDefeatPopupActions.AddCallbacks(IUI_CombatResultDefeatPopupActions)" />
+    /// <seealso cref="UI_CombatResultDefeatPopupActions.RemoveCallbacks(IUI_CombatResultDefeatPopupActions)" />
+    public interface IUI_CombatResultDefeatPopupActions
+    {
+        /// <summary>
+        /// Method invoked when associated input action "New action" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnNewaction(InputAction.CallbackContext context);
     }
 }
