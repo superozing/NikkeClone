@@ -1,8 +1,10 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Threading.Tasks;
+using UI;
 
 public class UI_CombatResultVictoryPopup : UI_Popup, IUIShowHideable
 {
@@ -10,7 +12,6 @@ public class UI_CombatResultVictoryPopup : UI_Popup, IUIShowHideable
 
     [SerializeField] private UI_Icon[] _rewardItemSlots;
     [SerializeField] private Button _btnBackground;
-    [SerializeField] private CanvasGroup _canvasGroup;
 
     private CombatResultVictoryPopupViewModel _viewModel;
     private IUIAnimation _showAnim;

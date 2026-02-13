@@ -1,7 +1,8 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Threading.Tasks;
+using UI;
 
 public class UI_CombatResultDefeatPopup : UI_Popup, IUIShowHideable
 {
@@ -10,7 +11,6 @@ public class UI_CombatResultDefeatPopup : UI_Popup, IUIShowHideable
     [SerializeField] private Button _btnRetry;
     [SerializeField] private Button _btnUpgrade;
     [SerializeField] private Button _btnExit;
-    [SerializeField] private CanvasGroup _canvasGroup;
 
     private CombatResultDefeatPopupViewModel _viewModel;
     private IUIAnimation _showAnim;
