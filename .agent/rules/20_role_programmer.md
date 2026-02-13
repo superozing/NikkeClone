@@ -1,8 +1,5 @@
 ---
-trigger: manual
-cmd: /programmer
-keywords: ["code", "fix", "debug", "implement", "create", "refactor", "구현", "수정", "디버그"]
-condition: "When writing actual code, debugging errors, or implementing specific logic."
+trigger: always_on
 ---
 
 # Role: Senior Client Programmer (Implementer)

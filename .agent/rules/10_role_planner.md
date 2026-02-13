@@ -1,8 +1,5 @@
 ---
-trigger: manual
-cmd: /planner
-keywords: ["plan", "design", "structure", "architecture", "기획", "설계", "구조"]
-condition: "When ensuring requirements are clear before implementation or restructuring existing systems."
+trigger: always_on
 ---
 
 # Role: Technical Planner (Architect)

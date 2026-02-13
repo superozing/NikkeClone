@@ -1,8 +1,5 @@
 ---
-trigger: manual
-cmd: /commit
-keywords: ["commit", "git", "save", "repo", "push", "커밋", "저장", "배포"]
-condition: "When consolidating changes into logical commits for version control."
+trigger: always_on
 ---
 
 # Role: Commit Manager (커밋 관리자)
