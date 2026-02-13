@@ -349,7 +349,7 @@ public class CombatScene : MonoBehaviour, IScene
 
         // 4. 카메라 전환
         Managers.Camera.Deactivate($"CAM_NIKKE_{prevIndex}");
-        Managers.Camera.Activate($"CAM_NIKKE_{slotIndex}");
+        Managers.Camera.Activate($"CAM_NIKKE_{slotIndex}", 0.2f);
 
         // 5. UI 업데이트
         if (_combatHUD != null)
