@@ -313,11 +313,8 @@ public class CombatScene : MonoBehaviour, IScene
 
         // Phase 5: Fire Binding (Mouse Left)
         // Performed: 눌렀을 때, Canceled: 뗐을 때
-        Managers.Input.BindAction("Fire", ctx =>
-        {
-            if (ctx.performed) HandleInput(true);
-            else if (ctx.canceled) HandleInput(false);
-        }, UnityEngine.InputSystem.InputActionPhase.Performed | UnityEngine.InputSystem.InputActionPhase.Canceled);
+        Managers.Input.BindAction("Fire", _ => HandleInput(true), UnityEngine.InputSystem.InputActionPhase.Performed);
+        Managers.Input.BindAction("Fire", _ => HandleInput(false), UnityEngine.InputSystem.InputActionPhase.Canceled);
     }
 
     private void UnbindInputs()
