@@ -149,12 +149,25 @@ public class CombatScene : MonoBehaviour, IScene
 
         // Phase 5: Input Binding
         BindInputs();
+        BindDebugKeys(); // Phase 6
 
         // 2. 니케에 데이터 주입
         await InitializeNikkesAsync();
 
         // 3. HUD 초기화
         InitializeHUD();
+
+        // Phase 6: Init Logic
+        _isCombatEnded = false;
+        _aliveNikkeCount = 0;
+        foreach (var nikke in _nikkes)
+        {
+            if (nikke != null)
+            {
+                _aliveNikkeCount++;
+                nikke.OnDeath += OnNikkeDied;
+            }
+        }
 
         // Phase 4: 웨이브 시스템 동적 생성 및 시작
         if (_waveSystem == null)
@@ -182,7 +195,7 @@ public class CombatScene : MonoBehaviour, IScene
 
         // WaveSystem 초기화 (RaptureField 주입)
         _waveSystem.Initialize(_raptureField);
-        _waveSystem.OnAllPhasesComplete += OnAllPhasesComplete;
+        _waveSystem.OnAllPhasesComplete += () => EndCombat(eCombatResult.Victory); // Phase 6
 
 
         // 필요한 데이터 로드
@@ -192,6 +205,10 @@ public class CombatScene : MonoBehaviour, IScene
             var battleData = Managers.Data.Get<StageBattleGameData>(stageData.stageBattleDataId);
             if (battleData != null)
             {
+                // Phase 6: Time Limit
+                _timeLimitSec = battleData.timeLimitSec > 0 ? battleData.timeLimitSec : 180;
+                _remainingTime = _timeLimitSec;
+
                 await _waveSystem.StartBattleAsync(battleData);
             }
             else
@@ -267,9 +284,7 @@ public class CombatScene : MonoBehaviour, IScene
 
     private void OnAllPhasesComplete()
     {
-        Debug.Log("==========================================");
-        Debug.Log("[CombatScene] VICTORY! All phases complete.");
-        Debug.Log("==========================================");
+        EndCombat(eCombatResult.Victory);
     }
 
     void IScene.Clear()
@@ -381,5 +396,125 @@ public class CombatScene : MonoBehaviour, IScene
                 // 엄폐 해제: 별도 로직 없음 (마우스 입력 허용됨)
             }
         }
+    }
+
+
+    // ==================== Phase 6: Combat Result Logic ====================
+
+    private float _remainingTime;
+    private float _timeLimitSec;
+    private bool _isCombatEnded;
+    private int _aliveNikkeCount;
+
+    private void UpdateTimer()
+    {
+        if (_isCombatEnded) return;
+
+        _remainingTime -= Time.deltaTime;
+        _combatHUD?.UpdateTimer(_remainingTime);
+
+        if (_remainingTime <= 0)
+        {
+            EndCombat(eCombatResult.Timeout);
+        }
+    }
+
+    private void OnNikkeDied(CombatNikke nikke)
+    {
+        _aliveNikkeCount--;
+        Debug.Log($"[CombatScene] Nikke Died: {nikke.NikkeName}. Alive: {_aliveNikkeCount}");
+
+        if (_aliveNikkeCount <= 0)
+        {
+            EndCombat(eCombatResult.Defeat);
+            return;
+        }
+
+        // 현재 조작 중인 니케가 죽었으면 다른 니케로 전환
+        if (_activeNikkeIndex == nikke.SlotIndex)
+        {
+            SwitchToNextAliveNikke();
+        }
+    }
+
+    private void SwitchToNextAliveNikke()
+    {
+        for (int i = 0; i < _nikkes.Length; i++)
+        {
+            if (_nikkes[i] != null && !_nikkes[i].IsDead)
+            {
+                SwitchNikke(i);
+                return;
+            }
+        }
+    }
+
+    public void EndCombat(eCombatResult result)
+    {
+        if (_isCombatEnded) return;
+        _isCombatEnded = true;
+
+        Debug.Log($"[CombatScene] EndCombat: {result}");
+
+        // 1. 입력 비활성화
+        UnbindInputs();
+
+        // 2. 결과별 분기
+        if (result == eCombatResult.Victory)
+        {
+            // Update Data
+            Managers.Data.UserData.Chapter.MarkStageCleared(_stageId);
+            GrantRewards();
+
+            // Show Popup
+            ShowVictoryPopup();
+        }
+        else // Defeat or Timeout
+        {
+            // Show Popup
+            ShowDefeatPopup();
+        }
+    }
+
+    private void GrantRewards()
+    {
+        var stageData = Managers.Data.Get<StageGameData>(_stageId);
+        if (stageData?.rewards == null) return;
+
+        foreach (var reward in stageData.rewards)
+        {
+            if (Managers.Data.UserData.Items.ContainsKey(reward.itemId))
+            {
+                Managers.Data.UserData.Items[reward.itemId].count.Value += reward.count;
+            }
+            else
+            {
+                Managers.Data.UserData.Items[reward.itemId] = new UserItemData(reward.itemId, reward.count);
+            }
+        }
+
+        Managers.Data.SaveUserData();
+        Debug.Log("[CombatScene] Rewards granted and UserData saved.");
+    }
+
+    private async void ShowVictoryPopup()
+    {
+        var stageData = Managers.Data.Get<StageGameData>(_stageId);
+        var viewModel = new CombatResultVictoryPopupViewModel(stageData?.rewards ?? new List<RewardData>());
+        await Managers.UI.ShowAsync<UI_CombatResultVictoryPopup>(viewModel);
+    }
+
+    private async void ShowDefeatPopup()
+    {
+        var viewModel = new CombatResultDefeatPopupViewModel();
+        await Managers.UI.ShowAsync<UI_CombatResultDefeatPopup>(viewModel);
+    }
+
+    // ==================== Debug ====================
+    private void BindDebugKeys()
+    {
+        // Phase 6: Debug Keys
+        Managers.Input.BindAction("DebugWin", _ => EndCombat(eCombatResult.Victory));
+        Managers.Input.BindAction("DebugLose", _ => EndCombat(eCombatResult.Defeat));
     }
 }

@@ -55,11 +55,34 @@ public class CombatNikke : CombatEntity
     /// <remarks>Caller: CombatScene.OnRaptureHit()</remarks>
     public long AttackPower => _baseStatus.attack;
 
-    /// <summary>발사 가능 여부</summary>
-    /// <remarks>Caller: CombatScene.HandleClick()</remarks>
     public bool CanFire => _currentAmmo > 0 && !IsDead;
 
+    // ==================== Events ====================
+
+    /// <summary>
+    /// 사망 시 발생하는 이벤트입니다.
+    /// Caller: Set in CombatScene.Init()
+    /// </summary>
+    public event System.Action<CombatNikke> OnDeath;
+
     // ==================== Public Methods ====================
+
+    /// <summary>
+    /// 사망 처리입니다.
+    /// </summary>
+    public override void Die()
+    {
+        base.Die();
+        ChangeState(eNikkeState.Dead);
+
+        // 카메라 해제
+        if (Managers.Inst != null && Managers.Camera != null)
+        {
+            Managers.Camera.UnregisterCamera($"CAM_NIKKE_{SlotIndex}");
+        }
+
+        OnDeath?.Invoke(this);
+    }
 
     /// <summary>
     /// 니케 데이터를 주입하고 상태 머신을 초기화합니다.
