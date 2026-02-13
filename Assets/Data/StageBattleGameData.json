@@ -1,4 +1,4 @@
-{
+﻿{
     "1": {
         "id": 1,
         "phaseIds": [
@@ -15,7 +15,8 @@
             1,
             2,
             3
-        ]
+        ],
+        "timeLimitSec": 120
     },
     "2": {
         "id": 2,
@@ -29,6 +30,7 @@
         ],
         "appearingRaptureIds": [
             1
-        ]
+        ],
+        "timeLimitSec": 120
     }
 }

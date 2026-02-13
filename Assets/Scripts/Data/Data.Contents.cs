@@ -426,6 +426,8 @@ public class StageBattleGameData : IDataId
     public float[] phaseProgressWeights;    // 각 페이즈 완료 시 진행률 가중치 (합계 1.0)
     public int[] appearingRaptureIds;       // 등장하는 모든 랩쳐 ID (캐싱용, 후순위)
 
+    public int timeLimitSec;                // 전투 제한 시간 (초)
+
     public int ID => id;
 
     /// <summary>
