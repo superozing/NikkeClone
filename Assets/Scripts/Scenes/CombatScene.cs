@@ -344,9 +344,11 @@ public class CombatScene : MonoBehaviour, IScene
         }
 
         // 3. 인덱스 변경
+        int prevIndex = _activeNikkeIndex;
         _activeNikkeIndex = slotIndex;
 
         // 4. 카메라 전환
+        Managers.Camera.Deactivate($"CAM_NIKKE_{prevIndex}");
         Managers.Camera.Activate($"CAM_NIKKE_{slotIndex}");
 
         // 5. UI 업데이트
