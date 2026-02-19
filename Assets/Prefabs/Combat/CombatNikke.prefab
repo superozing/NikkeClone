@@ -176,6 +176,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1734463104392382201}
   - component: {fileID: 1297145743340087582}
+  - component: {fileID: 7682150193057454033}
   m_Layer: 0
   m_Name: CombatNikke
   m_TagString: Untagged
@@ -213,7 +214,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b821db67b1bc4b4cb61b92515a33325, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CombatNikke
+  _view: {fileID: 7682150193057454033}
   _vcam: {fileID: 2246298638360263891}
+--- !u!114 &7682150193057454033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5527150380223026637}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e26d7c962939c9f49b096ba68dabf85f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NikkeView
+  _spriteRenderer: {fileID: 644184696145053191}
 --- !u!1 &6483713520964651655
 GameObject:
   m_ObjectHideFlags: 0
