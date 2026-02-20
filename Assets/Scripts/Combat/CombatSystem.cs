@@ -113,16 +113,8 @@ public class CombatSystem : MonoBehaviour
         // CombatNikke가 스스로 판단하기 어려움 (다른 생존 니케를 모르므로)
         // 따라서 여기서 다음 니케를 찾아 NotifySwitched(또는 특정 니케 Activate) 호출
 
-        // TODO: 사망한 니케가 현재 조작중이었는지 확인 필요
-        // 하지만 CombatSystem은 _activeNikkeIndex를 굳이 들고 있을 필요 없게 설계함 (느슨한 결합)
-        // 그래도 편의상 들고 있거나, 아니면 Nikke 상태를 순회해야 함.
-
-        // 순회해서 다음 조작 니케 찾기
-        // 만약 방금 죽은 니케가 Manual이었다면, 얘가 죽으면서 Manual 상태가 꺼졌음.
-        // 누군가는 Manual이 되어야 함.
-
-        // 간단한 로직: 조작 중인 니케가 없으면(모두 Auto/Dead) 0번부터 순회해서 첫 생존자를 Manual로 만듦
-        // 이를 위해 매 프레임 체크하기보다, 사망 이벤트 시점에 체크
+        // 사망 이벤트 시점에 다음 조작 니케를 찾아 활성화
+        // 방금 죽은 니케가 수동 조작 상태였다면 해당 상태가 해제되었으므로 새로운 니케를 수동 상태로 전환해야 함
 
         for (int i = 0; i < _nikkes.Length; i++)
         {
