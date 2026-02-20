@@ -32,6 +32,11 @@ public interface IWeapon
     float ReloadTime { get; }
 
     /// <summary>
+    /// 무기의 공격력 비율 (계수)
+    /// </summary>
+    float DamagePercent { get; }
+
+    /// <summary>
     /// 무기 사용 시작 (예: 공격 버튼 누름)
     /// Caller: NikkeAttackSubState.Enter()
     /// </summary>
@@ -42,8 +47,7 @@ public interface IWeapon
     /// Caller: NikkeAttackSubState.Execute()
     /// </summary>
     /// <param name="owner">무기 소유자</param>
-    /// <param name="targetPosition">조준점 위치 (화면 중앙 or 마우스 위치)</param>
-    void Update(CombatNikke owner, Vector3 targetPosition);
+    void Update(CombatNikke owner);
 
     /// <summary>
     /// 무기 사용 종료 (예: 공격 버튼 뗌, 재장전, 탄약 소진)

@@ -63,8 +63,8 @@ public class CombatNikke : CombatEntity
             return;
         }
 
-        // Weapon 초기화 (Phase 6.1: TestWeapon 고정)
-        _weapon = new TestWeapon(_gameData?.weapon);
+        // Weapon 초기화 (Phase 7: 다형성 기반 Factory 패턴)
+        _weapon = WeaponFactory.CreateWeapon(_gameData?.weapon, _gameData?.WeaponType ?? eNikkeWeapon.AR);
 
         // View 초기화
         await _view.InitializeAsync(gameData, slotIndex, _vcam);
