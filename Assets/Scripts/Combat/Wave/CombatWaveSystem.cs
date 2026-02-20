@@ -7,8 +7,9 @@ using UnityEngine;
 
 /// <summary>
 /// 웨이브(페이즈) 기반으로 랩쳐 스폰을 관리하는 매니저입니다.
+/// Phase 6: CombatSystem에 의해 관리되도록 리팩토링되었습니다.
 /// </summary>
-public class WaveSystem : MonoBehaviour
+public class CombatWaveSystem : MonoBehaviour
 {
     // ==================== Fields ====================
 
@@ -69,7 +70,7 @@ public class WaveSystem : MonoBehaviour
 
     /// <summary>
     /// 동적 생성 시 의존성을 주입합니다.
-    /// Caller: CombatScene.Init()
+    /// Caller: CombatSystem.InitializeAsync() (필요 시)
     /// </summary>
     public void Initialize(RaptureField raptureField)
     {
@@ -78,7 +79,7 @@ public class WaveSystem : MonoBehaviour
 
     /// <summary>
     /// 전투를 시작합니다.
-    /// Caller: CombatScene.Init()
+    /// Caller: CombatSystem.InitializeAsync()
     /// </summary>
     public async Task StartBattleAsync(StageBattleGameData battleData)
     {
@@ -88,7 +89,7 @@ public class WaveSystem : MonoBehaviour
         _accumulatedWeight = 0f;
         _aliveRaptures.Clear();
 
-        Debug.Log($"[WaveSystem] StartBattleAsync: BattleID {battleData.ID}");
+        Debug.Log($"[CombatWaveSystem] StartBattleAsync: BattleID {battleData.ID}");
 
         // 1. 첫 페이즈 시작
         StartPhase(_currentPhaseIndex);
@@ -100,12 +101,12 @@ public class WaveSystem : MonoBehaviour
     {
         if (index >= _battleData.PhaseCount)
         {
-            Debug.Log("[WaveSystem] All phases complete!");
+            Debug.Log("[CombatWaveSystem] All phases complete!");
             OnAllPhasesComplete?.Invoke();
             return;
         }
 
-        Debug.Log($"[WaveSystem] StartPhase: {index}");
+        Debug.Log($"[CombatWaveSystem] StartPhase: {index}");
         _currentPhaseIndex = index;
         _currentPhaseKillCount = 0;
 
@@ -114,7 +115,7 @@ public class WaveSystem : MonoBehaviour
 
         if (phaseData == null)
         {
-            Debug.LogError($"[WaveSystem] Phase data not found: {phaseId}");
+            Debug.LogError($"[CombatWaveSystem] Phase data not found: {phaseId}");
             OnPhaseComplete?.Invoke(index); // 강제 완료 처리
             return;
         }
@@ -159,7 +160,7 @@ public class WaveSystem : MonoBehaviour
 
         if (go == null)
         {
-            Debug.LogError($"[WaveSystem] Failed to instantiate rapture: {RAPTURE_PREFAB_KEY}");
+            Debug.LogError($"[CombatWaveSystem] Failed to instantiate rapture: {RAPTURE_PREFAB_KEY}");
             return;
         }
 
@@ -167,7 +168,7 @@ public class WaveSystem : MonoBehaviour
         var rapture = go.GetComponent<CombatRapture>();
         if (rapture == null)
         {
-            Debug.LogError("[WaveSystem] Rapture prefab missing CombatRapture component!");
+            Debug.LogError("[CombatWaveSystem] Rapture prefab missing CombatRapture component!");
             Managers.Resource.Destroy(go);
             return;
         }
@@ -175,7 +176,7 @@ public class WaveSystem : MonoBehaviour
         var gameData = Managers.Data.Get<RaptureGameData>(entry.raptureId);
         if (gameData == null)
         {
-            Debug.LogError($"[WaveSystem] Rapture data not found: {entry.raptureId}");
+            Debug.LogError($"[CombatWaveSystem] Rapture data not found: {entry.raptureId}");
             // Fallback: 4001 (기본)
             gameData = Managers.Data.Get<RaptureGameData>(1);
         }
@@ -215,7 +216,7 @@ public class WaveSystem : MonoBehaviour
         // PoolManager로 반환 (ResourceManager를 통해)
         Managers.Resource.Destroy(rapture.gameObject);
 
-        Debug.Log($"[WaveSystem] Rapture Killed. Progress: {Progress * 100:F1}%");
+        Debug.Log($"[CombatWaveSystem] Rapture Killed. Progress: {Progress * 100:F1}%");
 
         // 페이즈 완료 체크 (모든 랩쳐 처치 시)
         // 주의: 스폰이 아직 다 안 끝났을 수도 있으므로, _currentPhaseKillCount와 _currentPhaseSpawnCount 비교 권장
@@ -228,7 +229,7 @@ public class WaveSystem : MonoBehaviour
 
     private void FinishPhase()
     {
-        Debug.Log($"[WaveSystem] Phase {_currentPhaseIndex} Complete!");
+        Debug.Log($"[CombatWaveSystem] Phase {_currentPhaseIndex} Complete!");
 
         // 가중치 누적
         if (_currentPhaseIndex < _battleData.phaseProgressWeights.Length)

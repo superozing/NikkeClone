@@ -11,6 +11,8 @@ public abstract class CombatEntity : MonoBehaviour
     /// <summary>기본 스탯 (레벨/버프 적용 전/후 관리용)</summary>
     protected StatusData _baseStatus;
 
+    public StatusData Status => _baseStatus;
+
     /// <summary>현재 HP</summary>
     protected long _currentHp;
 
@@ -24,6 +26,13 @@ public abstract class CombatEntity : MonoBehaviour
 
     /// <summary>사망 여부</summary>
     public bool IsDead => _currentHp <= 0;
+
+    // ==================== Events ====================
+
+    /// <summary>
+    /// HP 변경 시 발생 (CurrentHp, MaxHp)
+    /// </summary>
+    public event System.Action<long, long> OnHpChanged;
 
     // ==================== Public Methods ====================
 
@@ -40,6 +49,8 @@ public abstract class CombatEntity : MonoBehaviour
 
         long actualDamage = damage;// Mathf.Max(1, damage);
         _currentHp -= actualDamage;
+
+        OnHpChanged?.Invoke(_currentHp, MaxHp);
 
         Debug.Log($"[{GetType().Name}] Took {actualDamage} damage. HP: {_currentHp}/{MaxHp}");
 

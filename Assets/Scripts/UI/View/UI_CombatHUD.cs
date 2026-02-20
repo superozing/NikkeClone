@@ -37,11 +37,23 @@ public class UI_CombatHUD : UI_View
 
 
         // 각 슬롯에 니케 상태 바인딩
-        for (int i = 0; i < _nikkeStateSlots.Length; i++)
+        if (_viewModel.Nikkes != null)
         {
-            // TODO: CombatHUD뷰모델이 생성할 NikkeState 뷰모델에 니케 아이디 세팅하는 로직 필요
-            // 여기서는 SetViewModel만 호출해주어야 한다.
+            for (int i = 0; i < _nikkeStateSlots.Length; i++)
+            {
+                if (_nikkeStateSlots[i] == null) continue;
+
+                CombatNikke nikke = (i < _viewModel.Nikkes.Length) ? _viewModel.Nikkes[i] : null;
+                var slotViewModel = new NikkeStateViewModel(nikke);
+                _nikkeStateSlots[i].SetViewModel(slotViewModel);
+            }
         }
+
+        // Timer Binding
+        Bind(_viewModel.TimeText, timeStr =>
+        {
+            if (_txtTimer != null) _txtTimer.text = timeStr;
+        });
     }
 
     protected override void OnDestroy()
@@ -59,42 +71,5 @@ public class UI_CombatHUD : UI_View
         {
             _progressFill.fillAmount = progress;
         }
-    }
-
-    /// <summary>
-    /// 현재 조작 중인 니케 슬롯을 하이라이트합니다.
-    /// Caller: CombatScene.SwitchNikke()
-    /// </summary>
-    public void SetActiveNikkeSlot(int slotIndex)
-    {
-        if (_nikkeStateSlots == null) return;
-
-        for (int i = 0; i < _nikkeStateSlots.Length; i++)
-        {
-            if (_nikkeStateSlots[i] != null)
-            {
-                _nikkeStateSlots[i].SetControlled(i == slotIndex);
-            }
-        }
-    }
-
-
-
-    /// <summary>
-    /// 남은 시간을 갱신합니다.
-    /// Caller: CombatScene.Update()
-    /// </summary>
-    /// <param name="remainingSec">남은 시간(초)</param>
-    public void UpdateTimer(float remainingSec)
-    {
-        if (_txtTimer == null) return;
-
-        // 음수 방지
-        remainingSec = Mathf.Max(0, remainingSec);
-
-        int minutes = Mathf.FloorToInt(remainingSec / 60);
-        int seconds = Mathf.FloorToInt(remainingSec % 60);
-
-        _txtTimer.text = string.Format("{0:00}:{1:00}", minutes, seconds);
     }
 }
