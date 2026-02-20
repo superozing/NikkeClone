@@ -105,6 +105,10 @@ public class WeaponData
     public string controlType;
     public string description;
     public float damagePercent;
+
+    public float fireRate;             // 초당 발사 수 
+    public float chargeTime;           // 차지형 전용: 풀차지 소요 시간
+    public float fullChargeMultiplier; // 차지형 전용: 풀차지 배율
 }
 
 
