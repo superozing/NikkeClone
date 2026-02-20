@@ -26,8 +26,7 @@ public class NikkeManualAttackState : IState<CombatNikke>
             return;
         }
 
-        Vector3 targetPos = Input.mousePosition;
-        owner.Weapon?.Update(owner, targetPos);
+        owner.Weapon?.Update(owner);
 
 
     }
