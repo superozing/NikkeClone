@@ -18,13 +18,20 @@ public interface IWeapon
 
     /// <summary>
     /// 현재 탄약 수
+    /// // Implements Section 2.1: IWeapon & WeaponBase 리팩토링
     /// </summary>
-    int CurrentAmmo { get; }
+    ReactiveProperty<int> CurrentAmmo { get; }
 
     /// <summary>
     /// 최대 탄약 수
     /// </summary>
     int MaxAmmo { get; }
+
+    /// <summary>
+    /// 차지 게이지 (0.0 ~ 1.0)
+    /// // Implements Section 2.1: IWeapon & WeaponBase 리팩토링
+    /// </summary>
+    ReactiveProperty<float> ChargeProgress { get; }
 
     /// <summary>
     /// 재장전 시간 (초)
@@ -64,8 +71,6 @@ public interface IWeapon
 
     /// <summary>
     /// 탄약 소비
-    /// Caller: Weapon Internal or CombatNikke?
-    /// 보통 Weapon 내부에서 Fire 시 소비하지만, 외부에서 강제 소비할 수도 있음.
     /// </summary>
     void ConsumeAmmo(int amount);
 }

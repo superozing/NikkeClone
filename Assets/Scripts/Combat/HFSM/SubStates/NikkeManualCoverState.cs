@@ -24,7 +24,7 @@ public class NikkeManualCoverState : IState<CombatNikke>
         // 기획 결정: "엄폐 시 자동 장전" (유저 피드백 반영 B안)
         // -> 탄약이 부족하면 Reload로, 아니면 Idle로.
 
-        if (owner.Weapon.CurrentAmmo < owner.Weapon.MaxAmmo)
+        if (owner.Weapon.CurrentAmmo.Value < owner.Weapon.MaxAmmo)
         {
             _coverStateMachine.ChangeState(_reloadState);
         }
@@ -48,7 +48,7 @@ public class NikkeManualCoverState : IState<CombatNikke>
         {
             // ReloadState 로직 내에서 owner.RefillAmmo() 호출됨.
             // 완료 여부를 owner.CurrentAmmo == MaxAmmo로 판단 가능.
-            if (owner.Weapon.CurrentAmmo >= owner.Weapon.MaxAmmo)
+            if (owner.Weapon.CurrentAmmo.Value >= owner.Weapon.MaxAmmo)
             {
                 _coverStateMachine.ChangeState(_idleState);
             }
