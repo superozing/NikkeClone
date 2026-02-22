@@ -60,6 +60,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 256d57106f1930b4fb90d0f7e061a2ee
+    m_Address: UI/View/UI_ARCrosshair
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 2639e0bb0865c3c48b99f3ccedc70470
     m_Address: RaptureGameData.json
     m_ReadOnly: 0
@@ -82,6 +87,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 30ac6530eec34c14d9d414d9e3d455a0
     m_Address: UI/View/UI_SkillSlot
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 347dc5a6ce68d744a9fd46a764ffa0eb
+    m_Address: UI/View/UI_SGCrosshair
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -385,6 +395,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d6181f91742ede249a528252bbb8403b
+    m_Address: UI/View/UI_MGCrosshair
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d838b12b712e82a44940307b4b6800c9
     m_Address: UI/View/UI_InventoryTab
     m_ReadOnly: 0
@@ -397,6 +412,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: dc54caf0438e29747a5d0258f440d99b
     m_Address: "Assets/Textures/Nikke/\uB124\uC628_Face"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e076901c9e7abf04db55410ec7095427
+    m_Address: UI/View/UI_SRCrosshair
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -452,6 +472,16 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: fbc459a2112c7604e8cb6c16167b72e3
     m_Address: Assets/Textures/Icon/Weapon/MG
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fd94e5596bf41994aa3371412b3786c2
+    m_Address: UI/View/UI_RLCrosshair
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fdb56f14e618edd45b2cf02fd9ce7904
+    m_Address: UI/View/UI_SMGCrosshair
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

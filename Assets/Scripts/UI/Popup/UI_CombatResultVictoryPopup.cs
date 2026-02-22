@@ -73,8 +73,11 @@ public class UI_CombatResultVictoryPopup : UI_Popup, IUIShowHideable
 
     private void UpdateRewardSlots(List<StageRewardItemIconViewModel> rewards)
     {
-        if (_rewardItemSlots == null) return;
-        if (rewards == null) rewards = new List<StageRewardItemIconViewModel>();
+        if (_rewardItemSlots == null)
+        {
+            Debug.LogError("[UI_CombatResultVictoryPopup] _rewardItemSlots is not bound in the Inspector!");
+            return;
+        }
 
         for (int i = 0; i < _rewardItemSlots.Length; i++)
         {
