@@ -56,10 +56,9 @@ public class CombatNikke : CombatEntity
         _currentHp = MaxHp;
 
         // View 초기화
-        if (_view == null) _view = GetComponentInChildren<NikkeView>();
         if (_view == null)
         {
-            Debug.LogError($"[CombatNikke] {_gameData?.name} (Slot {_slotIndex}) has no NikkeView! Check Prefab.");
+            Debug.LogError($"[CombatNikke] {_gameData?.name} (Slot {_slotIndex}) has no NikkeView! Check Inspector binding.");
             return;
         }
 
@@ -118,6 +117,18 @@ public class CombatNikke : CombatEntity
     public void ForceActivate()
     {
         SetCombatMode(eNikkeCombatMode.Manual);
+    }
+
+    /// <summary>
+    /// 수동 조작으로 활성화되었음을 시스템에 알립니다.
+    /// Caller: NikkeManualState.Enter()
+    /// </summary>
+    public void NotifyManualActivated()
+    {
+        if (_weapon != null && _combatSystem != null)
+        {
+            _combatSystem.SetCrosshairWeapon(_weapon);
+        }
     }
 
     private void CalculateStatus()

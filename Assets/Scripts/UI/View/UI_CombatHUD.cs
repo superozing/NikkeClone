@@ -33,27 +33,26 @@ public class UI_CombatHUD : UI_View
         base.SetViewModel(viewModel);
 
         if (_viewModel != null)
-            return;
-
-
-        // 각 슬롯에 니케 상태 바인딩
-        if (_viewModel.Nikkes != null)
         {
-            for (int i = 0; i < _nikkeStateSlots.Length; i++)
+            // 각 슬롯에 니케 상태 바인딩
+            if (_viewModel.Nikkes != null)
             {
-                if (_nikkeStateSlots[i] == null) continue;
+                for (int i = 0; i < _nikkeStateSlots.Length; i++)
+                {
+                    if (_nikkeStateSlots[i] == null) continue;
 
-                CombatNikke nikke = (i < _viewModel.Nikkes.Length) ? _viewModel.Nikkes[i] : null;
-                var slotViewModel = new NikkeStateViewModel(nikke);
-                _nikkeStateSlots[i].SetViewModel(slotViewModel);
+                    CombatNikke nikke = (i < _viewModel.Nikkes.Length) ? _viewModel.Nikkes[i] : null;
+                    var slotViewModel = new NikkeStateViewModel(nikke);
+                    _nikkeStateSlots[i].SetViewModel(slotViewModel);
+                }
             }
-        }
 
-        // Timer Binding
-        Bind(_viewModel.TimeText, timeStr =>
-        {
-            if (_txtTimer != null) _txtTimer.text = timeStr;
-        });
+            // Timer Binding
+            Bind(_viewModel.TimeText, timeStr =>
+            {
+                if (_txtTimer != null) _txtTimer.text = timeStr;
+            });
+        }
     }
 
     protected override void OnDestroy()
