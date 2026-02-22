@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: f4a5ca8c315bd9c4ca4ec93b7d102bd7
+guid: 2a0b8d0248d59d945a460d0e18f4a18c
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -136,23 +136,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: white_0
+      name: AmmoBg_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 4
-        height: 4
+        width: 219
+        height: 112
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1add9475c76956f46aa428bb54160666
-      internalID: -1115936070
+      spriteID: 2e32b7f2dea171542918f07cea920d5a
+      internalID: -43506869
       vertices: []
       indices: 
       edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 10ee63e8432473941894efc368401496
+    spriteID: 5f9e8330ae4bd994983821b9bdad509a
     internalID: 0
     vertices: []
     indices: 
@@ -171,7 +171,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      white_0: -1115936070
+      AmmoBg_0: -43506869
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

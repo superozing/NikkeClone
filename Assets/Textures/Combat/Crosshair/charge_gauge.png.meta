@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 2a0b8d0248d59d945a460d0e18f4a18c
+guid: 7dd3be5c2dd4a2c4fba64507d0aad2ca
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -136,13 +136,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: AmmoBg_0
+      name: charge_gauge_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 368
-        height: 182
+        width: 44
+        height: 148
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -151,8 +151,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2e32b7f2dea171542918f07cea920d5a
-      internalID: -43506869
+      spriteID: c368863fdfee2554d879c2530360999e
+      internalID: -132665024
       vertices: []
       indices: 
       edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5f9e8330ae4bd994983821b9bdad509a
+    spriteID: d62bcdc6cab41e04eae3dbd9e3d22b80
     internalID: 0
     vertices: []
     indices: 
@@ -171,7 +171,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      AmmoBg_0: -43506869
+      charge_gauge_0: -132665024
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
