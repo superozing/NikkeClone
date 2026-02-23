@@ -508,6 +508,15 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ToggleAuto"",
+                    ""type"": ""Button"",
+                    ""id"": ""3c574a36-f76b-44ec-8033-a9437a4d7f72"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -607,6 +616,17 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""DebugLose"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""89f62dd0-1c7d-454c-bd63-c0905eaabe90"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleAuto"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -718,6 +738,7 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
         m_Combat_Fire = m_Combat.FindAction("Fire", throwIfNotFound: true);
         m_Combat_DebugWin = m_Combat.FindAction("DebugWin", throwIfNotFound: true);
         m_Combat_DebugLose = m_Combat.FindAction("DebugLose", throwIfNotFound: true);
+        m_Combat_ToggleAuto = m_Combat.FindAction("ToggleAuto", throwIfNotFound: true);
         // UI_CombatResultVictoryPopup
         m_UI_CombatResultVictoryPopup = asset.FindActionMap("UI_CombatResultVictoryPopup", throwIfNotFound: true);
         m_UI_CombatResultVictoryPopup_Newaction = m_UI_CombatResultVictoryPopup.FindAction("New action", throwIfNotFound: true);
@@ -1979,6 +2000,7 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Combat_Fire;
     private readonly InputAction m_Combat_DebugWin;
     private readonly InputAction m_Combat_DebugLose;
+    private readonly InputAction m_Combat_ToggleAuto;
     /// <summary>
     /// Provides access to input actions defined in input action map "Combat".
     /// </summary>
@@ -2026,6 +2048,10 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Combat/DebugLose".
         /// </summary>
         public InputAction @DebugLose => m_Wrapper.m_Combat_DebugLose;
+        /// <summary>
+        /// Provides access to the underlying input action "Combat/ToggleAuto".
+        /// </summary>
+        public InputAction @ToggleAuto => m_Wrapper.m_Combat_ToggleAuto;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -2079,6 +2105,9 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
             @DebugLose.started += instance.OnDebugLose;
             @DebugLose.performed += instance.OnDebugLose;
             @DebugLose.canceled += instance.OnDebugLose;
+            @ToggleAuto.started += instance.OnToggleAuto;
+            @ToggleAuto.performed += instance.OnToggleAuto;
+            @ToggleAuto.canceled += instance.OnToggleAuto;
         }
 
         /// <summary>
@@ -2117,6 +2146,9 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
             @DebugLose.started -= instance.OnDebugLose;
             @DebugLose.performed -= instance.OnDebugLose;
             @DebugLose.canceled -= instance.OnDebugLose;
+            @ToggleAuto.started -= instance.OnToggleAuto;
+            @ToggleAuto.performed -= instance.OnToggleAuto;
+            @ToggleAuto.canceled -= instance.OnToggleAuto;
         }
 
         /// <summary>
@@ -2592,6 +2624,13 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnDebugLose(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "ToggleAuto" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnToggleAuto(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI_CombatResultVictoryPopup" which allows adding and removing callbacks.

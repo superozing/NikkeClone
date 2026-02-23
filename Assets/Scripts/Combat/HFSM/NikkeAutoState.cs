@@ -1,59 +1,63 @@
 using UnityEngine;
 
-/// <summary>
-/// 자동 전투(AI) 모드 상태입니다.
-/// Phase 6.1에서는 구조만 잡고, 실제 AI 로직은 추후 구현합니다.
-/// 현재는 단순히 엄폐 상태만 유지하거나, 간단한 로직만 수행합니다.
-/// </summary>
 public class NikkeAutoState : IState<CombatNikke>
 {
     private StateMachine<CombatNikke> _subStateMachine;
     private NikkeAutoCoverState _coverState;
-    // 추후 AutoAttack, AutoReload 등 추가
-
-    private System.Action<UnityEngine.InputSystem.InputAction.CallbackContext> _onSelectSelf;
+    private NikkeAutoAttackState _attackState;
 
     public void Enter(CombatNikke owner)
     {
-        // Debug.Log($"[{owner.name}] Enter Auto Mode");
-
         if (_subStateMachine == null)
         {
             _subStateMachine = new StateMachine<CombatNikke>(owner);
             _coverState = new NikkeAutoCoverState();
+            _attackState = new NikkeAutoAttackState(); // [추가]
         }
 
-        // 일단 무조건 Cover 상태로 시작 (AI 미구현)
+        // 초기 상태: Cover (장전 상태 확인 후 Attack 전환은 Execute에서)
         _subStateMachine.ChangeState(_coverState);
 
-        // Auto 모드에서는 카메라 비활성화 (선택된 니케만 활성화)
         owner.View.SetCameraActive(false);
-
-        // Input 바인딩 (자신 선택 시 Manual 전환)
-        _onSelectSelf = _ => OnSelectSelfInput(owner);
-        Managers.Input.BindAction($"SelectNikke{owner.SlotIndex + 1}", _onSelectSelf);
     }
 
+    // [전면 재작성]
     public void Execute(CombatNikke owner)
     {
         _subStateMachine.Update();
 
-        // Phase 8: 여기서 AI 판단 로직 (엄폐할지, 쏠지, 재장전할지) 수행
+        var preferredZone = owner.Weapon.PreferredZone;
+
+        // 매 프레임(주기)마다 타겟 존재 여부 확인
+        var target = owner.TargetingSystem?.GetTarget(preferredZone);
+        bool hasTarget = target != null;
+        bool needsReload = owner.Weapon.CurrentAmmo.Value <= 0;
+
+        if (_subStateMachine.CurrentState == _attackState)
+        {
+            if (!hasTarget)
+            {
+                // 타겟이 없다 -> 자동 엄폐 상태
+                _subStateMachine.ChangeState(_coverState);
+            }
+            else if (needsReload)
+            {
+                // 타겟이 있지만 재장전해야 한다 -> 자동 엄폐 상태
+                _subStateMachine.ChangeState(_coverState);
+            }
+        }
+        else if (_subStateMachine.CurrentState == _coverState)
+        {
+            // 타겟이 있고 쏠 총알이 1발이라도 있다면 공격 상태
+            if (hasTarget && !needsReload)
+            {
+                _subStateMachine.ChangeState(_attackState);
+            }
+        }
     }
 
     public void Exit(CombatNikke owner)
     {
         _subStateMachine.CurrentState?.Exit(owner);
-
-        if (_onSelectSelf != null)
-        {
-            Managers.Input.UnbindAction($"SelectNikke{owner.SlotIndex + 1}", _onSelectSelf);
-            _onSelectSelf = null;
-        }
-    }
-
-    private void OnSelectSelfInput(CombatNikke owner)
-    {
-        owner.SetCombatMode(NikkeClone.Utils.eNikkeCombatMode.Manual);
     }
 }
