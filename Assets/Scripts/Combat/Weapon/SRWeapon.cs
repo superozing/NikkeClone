@@ -8,10 +8,12 @@ public class SRWeapon : ChargeWeaponBase
 {
     public SRWeapon(WeaponData data) : base(data, eNikkeWeapon.SR) { }
 
-    protected override void FireOnRelease(CombatNikke owner, long damage)
+    protected override void FireOnRelease(CombatNikke owner, long damage, Vector3 targetWorldPos)
     {
-        Vector2 screenPos = GetTargetScreenPosition(owner);
-        if (PerformRaycast(screenPos, out var hit))
+        Vector3 mPos = owner.transform.position + Vector3.up * 1f;
+        Vector3 direction = (targetWorldPos - mPos).normalized;
+
+        if (Physics.Raycast(mPos, direction, out var hit, Mathf.Infinity, _layerMask))
         {
             var rapture = hit.collider.GetComponent<CombatRapture>();
             if (rapture != null && !rapture.IsDead)

@@ -8,25 +8,15 @@ public class RLWeapon : ChargeWeaponBase
 {
     public RLWeapon(WeaponData data) : base(data, eNikkeWeapon.RL) { }
 
-    protected override void FireOnRelease(CombatNikke owner, long damage)
+    protected override void FireOnRelease(CombatNikke owner, long damage, Vector3 targetWorldPos)
     {
-        Vector2 screenPos = GetTargetScreenPosition(owner);
-        Ray ray = _mainCamera.ScreenPointToRay(screenPos);
+        Vector3 mPos = owner.transform.position + Vector3.up * 1.5f;
+        Vector3 direction = (targetWorldPos - mPos).normalized;
 
-        Vector3 targetPoint;
-        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, _layerMask))
-        {
-            targetPoint = hit.point;
-        }
-        else
-        {
-            targetPoint = ray.GetPoint(100f);
-        }
+        // RLWeapon은 투사체를 날립니다. targetWorldPos를 향해 발사.
+        // 추가 보정이 필요하다면 여기서 수행 (예: 사거리 끝까지 날리기)
 
-        Vector3 spawnPos = owner.transform.position + Vector3.up * 1.5f;
-        Vector3 direction = (targetPoint - spawnPos).normalized;
-
-        FireProjectileAsync(owner, damage, spawnPos, direction);
+        FireProjectileAsync(owner, damage, mPos, direction);
     }
 
     private async void FireProjectileAsync(CombatNikke owner, long damage, Vector3 spawnPos, Vector3 direction)

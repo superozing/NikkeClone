@@ -8,10 +8,14 @@ public class ARWeapon : DefaultWeaponBase
 {
     public ARWeapon(WeaponData data) : base(data, eNikkeWeapon.AR) { }
 
-    protected override void TryFire(CombatNikke owner)
+    protected override void TryFire(CombatNikke owner, Vector3 targetWorldPos)
     {
-        Vector2 screenPos = GetTargetScreenPosition(owner);
-        if (PerformRaycast(screenPos, out var hit))
+        // 임시로 owner 위치 대체
+        Vector3 mPos = owner.transform.position + Vector3.up * 1f;
+
+        Vector3 direction = (targetWorldPos - mPos).normalized;
+
+        if (Physics.Raycast(mPos, direction, out var hit, Mathf.Infinity, _layerMask))
         {
             var rapture = hit.collider.GetComponent<CombatRapture>();
             if (rapture != null && !rapture.IsDead)

@@ -11,19 +11,20 @@ public class SGWeapon : DefaultWeaponBase
 
     public SGWeapon(WeaponData data) : base(data, eNikkeWeapon.SG) { }
 
-    protected override void TryFire(CombatNikke owner)
+    protected override void TryFire(CombatNikke owner, Vector3 targetWorldPos)
     {
         // 샷건은 각 펠릿당 데미지를 분산시킵니다.
         long perPelletDamage = CalculateDamage(owner, 1.0f) / _pelletCount;
-        Vector2 screenPos = GetTargetScreenPosition(owner);
-        Ray baseRay = _mainCamera.ScreenPointToRay(screenPos);
+
+        Vector3 mPos = owner.transform.position + Vector3.up * 1f;
+        Vector3 baseDirection = (targetWorldPos - mPos).normalized;
 
         for (int i = 0; i < _pelletCount; i++)
         {
             Vector2 spread = Random.insideUnitCircle * _spreadAngle;
-            Vector3 spreadDir = Quaternion.Euler(spread.y, spread.x, 0) * baseRay.direction;
-            
-            if (Physics.Raycast(baseRay.origin, spreadDir, out var hit, Mathf.Infinity, _layerMask))
+            Vector3 spreadDir = Quaternion.Euler(spread.y, spread.x, 0) * baseDirection;
+
+            if (Physics.Raycast(mPos, spreadDir, out var hit, Mathf.Infinity, _layerMask))
             {
                 var rapture = hit.collider.GetComponent<CombatRapture>();
                 if (rapture != null && !rapture.IsDead)
@@ -32,7 +33,7 @@ public class SGWeapon : DefaultWeaponBase
                 }
             }
         }
-        
+
         ConsumeAmmo(1);
     }
 }

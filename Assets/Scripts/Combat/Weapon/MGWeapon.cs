@@ -40,10 +40,14 @@ public class MGWeapon : DefaultWeaponBase
         _fireInterval = Mathf.Lerp(_minFireInterval, _maxFireInterval, _chargeProgress.Value);
     }
 
-    protected override void TryFire(CombatNikke owner)
+    protected override void TryFire(CombatNikke owner, Vector3 targetWorldPos)
     {
-        Vector2 screenPos = GetTargetScreenPosition(owner);
-        if (PerformRaycast(screenPos, out var hit))
+        // 예열 단계에 따른 발사 지연 처리 (간이 구현)
+        // 실제로는 Update에서 FireInterval을 조절하는 방식이 더 정확할 수 있습니다.
+        Vector3 mPos = owner.transform.position + Vector3.up * 1f;
+        Vector3 direction = (targetWorldPos - mPos).normalized;
+
+        if (Physics.Raycast(mPos, direction, out var hit, Mathf.Infinity, _layerMask))
         {
             var rapture = hit.collider.GetComponent<CombatRapture>();
             if (rapture != null && !rapture.IsDead)
