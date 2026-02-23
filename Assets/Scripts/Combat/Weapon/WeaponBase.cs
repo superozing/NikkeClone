@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 /// <summary>
 /// 무기 시스템의 최상위 추상 클래스.
@@ -59,9 +58,9 @@ public abstract class WeaponBase : IWeapon
 
     public virtual void Enter(CombatNikke owner) { }
 
-    public virtual void Update(CombatNikke owner) { }
+    public virtual void Update(CombatNikke owner, Vector3 targetWorldPos) { }
 
-    public virtual void Exit(CombatNikke owner) { }
+    public virtual void Exit(CombatNikke owner, bool isCancel = false) { }
 
     public virtual void Tick(float deltaTime) { }
 
@@ -75,25 +74,9 @@ public abstract class WeaponBase : IWeapon
         _currentAmmo.Value = Mathf.Max(0, _currentAmmo.Value - amount);
     }
 
-    /// <summary>
-    /// 발사 시점의 화면 좌표를 가져옵니다.
-    /// 수동(Manual) 모드 시 마우스/터치 위치를 가져옵니다.
-    /// 자동(Auto) 모드 구현 시 타겟 기반 좌표로 확장될 수 있습니다.
-    /// </summary>
-    protected Vector2 GetTargetScreenPosition(CombatNikke owner)
-    {
-        // 현재는 수동 모드만 고려. Phase 8(Auto)에서 타겟 좌표 계산 추가 예정.
-        return Pointer.current?.position.ReadValue() ?? Vector2.zero;
-    }
 
-    /// <summary>
-    /// 지정된 스크린 좌표 기준 Raycast 수행
-    /// </summary>
-    protected bool PerformRaycast(Vector2 screenPos, out RaycastHit hit)
-    {
-        Ray ray = _mainCamera.ScreenPointToRay(screenPos);
-        return Physics.Raycast(ray, out hit, Mathf.Infinity, _layerMask);
-    }
+
+
 
     /// <summary>
     /// 데미지 계산 유틸리티

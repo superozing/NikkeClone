@@ -27,18 +27,18 @@ public abstract class DefaultWeaponBase : WeaponBase
         _lastFireTime = -_fireInterval;
     }
 
-    public override void Update(CombatNikke owner)
+    public override void Update(CombatNikke owner, Vector3 targetWorldPos)
     {
         if (!CanFire) return;
 
         if (Time.time - _lastFireTime >= _fireInterval)
         {
             _lastFireTime = Time.time;
-            TryFire(owner);
+            TryFire(owner, targetWorldPos);
         }
     }
 
-    public override void Exit(CombatNikke owner)
+    public override void Exit(CombatNikke owner, bool isCancel = false)
     {
         // 기본형은 버튼 해제 시 아무 동작 안 함
     }
@@ -46,5 +46,5 @@ public abstract class DefaultWeaponBase : WeaponBase
     /// <summary>
     /// 실제 격발 수행 (하위 클래스에서 디테일 구현)
     /// </summary>
-    protected abstract void TryFire(CombatNikke owner);
+    protected abstract void TryFire(CombatNikke owner, Vector3 targetWorldPos);
 }

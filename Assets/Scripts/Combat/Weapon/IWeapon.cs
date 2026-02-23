@@ -55,18 +55,18 @@ public interface IWeapon
     void Enter(CombatNikke owner);
 
     /// <summary>
-    /// 매 프레임 무기 로직 실행 (예: 연사, 차징, 레이캐스트 판정)
+    /// 매 프레임 무기 로직 실행 (예: 연사, 차징, 지향 보정)
     /// Caller: NikkeAttackSubState.Execute()
     /// </summary>
     /// <param name="owner">무기 소유자</param>
-    void Update(CombatNikke owner);
+    /// <param name="targetWorldPos">타겟 월드 3D 좌표</param>
+    void Update(CombatNikke owner, Vector3 targetWorldPos);
 
     /// <summary>
     /// 무기 사용 종료 (예: 공격 버튼 뗌, 재장전, 탄약 소진)
     /// Caller: NikkeAttackSubState.Exit()
-    /// TestWeapon: 클릭 해제 시 발사 처리
     /// </summary>
-    void Exit(CombatNikke owner);
+    void Exit(CombatNikke owner, bool isCancel = false);
 
     /// <summary>
     /// 재장전 (탄약 보충)

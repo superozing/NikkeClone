@@ -8,6 +8,7 @@ public abstract class ChargeWeaponBase : WeaponBase
 {
     protected float _chargeTime;
     protected float _fullChargeMultiplier;
+    protected Vector3 _lastTargetPos;
 
     public ChargeWeaponBase(WeaponData data, eNikkeWeapon type) : base(data, type)
     {
@@ -30,9 +31,11 @@ public abstract class ChargeWeaponBase : WeaponBase
         _chargeProgress.Value = 0f;
     }
 
-    public override void Update(CombatNikke owner)
+    public override void Update(CombatNikke owner, Vector3 targetWorldPos)
     {
         if (!CanFire) return;
+
+        _lastTargetPos = targetWorldPos;
 
         // 차지 누적
         // Implements Section 2.1: IWeapon & WeaponBase 리팩토링
@@ -40,15 +43,21 @@ public abstract class ChargeWeaponBase : WeaponBase
         _chargeProgress.Value = Mathf.Clamp01(newCharge);
     }
 
-    public override void Exit(CombatNikke owner)
+    public override void Exit(CombatNikke owner, bool isCancel = false)
     {
         if (!CanFire) return;
+
+        if (isCancel)
+        {
+            _chargeProgress.Value = 0f;
+            return;
+        }
 
         // 차지량에 따른 데미지 배율 적용 (기본 1.0배 ~ 풀차지)
         float currentMultiplier = Mathf.Lerp(1.0f, _fullChargeMultiplier, _chargeProgress.Value);
         long damage = CalculateDamage(owner, currentMultiplier);
 
-        FireOnRelease(owner, damage);
+        FireOnRelease(owner, damage, _lastTargetPos);
 
         ConsumeAmmo(1); // 격발 후 탄약 1 감소
         _chargeProgress.Value = 0f;
@@ -57,5 +66,5 @@ public abstract class ChargeWeaponBase : WeaponBase
     /// <summary>
     /// 차지가 풀릴 때 격발 수행 (하위 클래스에서 디테일 구현)
     /// </summary>
-    protected abstract void FireOnRelease(CombatNikke owner, long damage);
+    protected abstract void FireOnRelease(CombatNikke owner, long damage, Vector3 targetWorldPos);
 }
