@@ -39,6 +39,42 @@ public interface IWeapon
     float FullChargeMultiplier { get; }
 
     /// <summary>
+    /// 무기의 적정 사거리
+    /// </summary>
+    eRangeZone PreferredZone { get; }
+
+    /// <summary>
+    /// 현재 조준 중인 타겟이 적정 사거리에 있는지 여부를 나타내는 반응형 속성입니다.
+    /// UI(조준선) 등에서 구독하여 피드백을 표시하는 데 사용됩니다.
+    /// </summary>
+    ReactiveProperty<bool> IsInPreferredZone { get; }
+
+    /// <summary>
+    /// 무기를 소유한 니케의 현재 전투 모드 (수동/자동 등)
+    /// </summary>
+    ReactiveProperty<NikkeClone.Utils.eNikkeCombatMode> CombatMode { get; }
+
+    /// <summary>
+    /// 자동 조준 대상의 Screen Space 좌표
+    /// </summary>
+    ReactiveProperty<Vector2> AutoTargetScreenPosition { get; }
+
+    /// <summary>
+    /// 조준선의 현재 화면 픽셀 좌표 (수동/자동 모두 보간/추적된 최종 좌표)
+    /// </summary>
+    ReactiveProperty<Vector2> CurrentAimScreenPosition { get; }
+
+    /// <summary>
+    /// 타겟 거리에 따른 데미지 어드밴티지 배율 반환
+    /// </summary>
+    float GetRangeAdvantageMultiplier(eRangeZone targetZone);
+
+    /// <summary>
+    /// 타겟이 적정 사거리에 있는지 여부
+    /// </summary>
+    bool IsPreferredZone(eRangeZone targetZone);
+
+    /// <summary>
     /// 재장전 시간 (초)
     /// </summary>
     float ReloadTime { get; }

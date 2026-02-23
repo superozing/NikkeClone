@@ -11,6 +11,8 @@ public class SGWeapon : DefaultWeaponBase
 
     public SGWeapon(WeaponData data) : base(data, eNikkeWeapon.SG) { }
 
+    public override eRangeZone PreferredZone => eRangeZone.Near;
+
     protected override void TryFire(CombatNikke owner, Vector3 targetWorldPos)
     {
         // 샷건은 각 펠릿당 데미지를 분산시킵니다.

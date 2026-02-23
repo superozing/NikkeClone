@@ -8,6 +8,10 @@ public class RLWeapon : ChargeWeaponBase
 {
     public RLWeapon(WeaponData data) : base(data, eNikkeWeapon.RL) { }
 
+    public override eRangeZone PreferredZone => eRangeZone.Near;
+    public override float GetRangeAdvantageMultiplier(eRangeZone targetZone) => 1.0f;
+    public override bool IsPreferredZone(eRangeZone targetZone) => false;
+
     protected override void FireOnRelease(CombatNikke owner, long damage, Vector3 targetWorldPos)
     {
         Vector3 mPos = owner.transform.position + Vector3.up * 1.5f;
