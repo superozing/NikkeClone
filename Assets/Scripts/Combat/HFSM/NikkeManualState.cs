@@ -101,9 +101,12 @@ public class NikkeManualState : IState<CombatNikke>
     public void Exit(CombatNikke owner)
     {
         // Debug.Log($"[{owner.name}] Exit Manual Mode");
-        // Managers.Input.UnbindAction("Fire", ???); 
-        // Lambda binding cannot be simply unbound.
-        // Refactoring to use stored delegates.
+        if (_subStateMachine != null && _subStateMachine.CurrentState == _attackState)
+        {
+            // 수동 조작 해제(다른 니케 선택 등) 시 무기 강제 취소 (차지 보존)
+            owner.Weapon?.Exit(owner, isCancel: true);
+        }
+
         if (_onFirePerformed != null) Managers.Input.UnbindAction("Fire", _onFirePerformed, UnityEngine.InputSystem.InputActionPhase.Performed);
         if (_onFireCanceled != null) Managers.Input.UnbindAction("Fire", _onFireCanceled, UnityEngine.InputSystem.InputActionPhase.Canceled);
         UnbindOtherSlotInputs(owner);
