@@ -21,8 +21,8 @@ public class UI_MGCrosshair : UI_CrosshairBase
         base.Awake();
         if (_crosshairPartsRoot != null)
         {
-            // MG 반동 애니메이션 설정 (0.2만큼 작게 튀고 0.1초 복구)
-            _recoilAnim = new PunchScaleUIAnimation(_crosshairPartsRoot, Vector3.one * 0.2f, 0.1f, 1, 0.1f);
+            // MG 반동 애니메이션 설정 (1.2배까지 다소 작게 튀고 0.1초 복구)
+            _recoilAnim = new PunchScaleUIAnimation(_crosshairPartsRoot, Vector3.one * 1.2f, 0.1f, 1, 0.1f);
         }
     }
 

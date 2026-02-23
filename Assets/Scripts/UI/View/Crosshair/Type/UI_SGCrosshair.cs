@@ -20,8 +20,8 @@ public class UI_SGCrosshair : UI_CrosshairBase
         base.Awake();
         if (_spreadCircleImage != null)
         {
-            // SG 반동 애니메이션 설정 (0.3만큼 튀고 0.15초에 복구)
-            _recoilAnim = new PunchScaleUIAnimation(_spreadCircleImage.rectTransform, Vector3.one * 0.3f, 0.15f, 1, 0.5f);
+            // SG 반동 애니메이션 설정 (1.3배까지 커지고 0.15초에 복구)
+            _recoilAnim = new PunchScaleUIAnimation(_spreadCircleImage.rectTransform, Vector3.one * 1.3f, 0.15f, 1, 0.5f);
         }
     }
 

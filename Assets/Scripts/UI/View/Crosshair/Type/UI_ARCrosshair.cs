@@ -19,8 +19,8 @@ public class UI_ARCrosshair : UI_CrosshairBase
         base.Awake();
         if (_crosshairPartsRoot != null)
         {
-            // AR 반동 애니메이션 설정 (0.3만큼 튀고 0.1초 복구)
-            _recoilAnim = new PunchScaleUIAnimation(_crosshairPartsRoot, Vector3.one * 0.3f, 0.1f, 1, 0.3f);
+            // AR 반동 애니메이션 설정 (1.3배까지 커지고 0.1초 복구)
+            _recoilAnim = new PunchScaleUIAnimation(_crosshairPartsRoot, Vector3.one * 1.3f, 0.1f, 1, 0.3f);
         }
     }
 

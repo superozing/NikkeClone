@@ -19,8 +19,8 @@ public class UI_SMGCrosshair : UI_CrosshairBase
         base.Awake();
         if (_crosshairPartsRoot != null)
         {
-            // SMG 반동 애니메이션 설정 (0.4만큼 크게 튀고 0.08초만에 빠르게 복구)
-            _recoilAnim = new PunchScaleUIAnimation(_crosshairPartsRoot, Vector3.one * 0.4f, 0.08f, 1, 0.2f);
+            // SMG 반동 애니메이션 설정 (1.4배로 크게 튀고 0.08초만에 빠르게 복구)
+            _recoilAnim = new PunchScaleUIAnimation(_crosshairPartsRoot, Vector3.one * 1.4f, 0.08f, 1, 0.2f);
         }
     }
 
