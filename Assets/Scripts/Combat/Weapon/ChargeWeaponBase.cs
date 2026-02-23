@@ -23,6 +23,8 @@ public abstract class ChargeWeaponBase : WeaponBase
         }
     }
 
+    public override float FullChargeMultiplier => _fullChargeMultiplier;
+
     public override void Enter(CombatNikke owner)
     {
         _chargeProgress.Value = 0f;
