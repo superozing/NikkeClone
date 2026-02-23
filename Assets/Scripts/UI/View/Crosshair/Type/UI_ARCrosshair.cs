@@ -9,23 +9,25 @@ using UnityEngine;
 public class UI_ARCrosshair : UI_CrosshairBase
 {
     [Header("AR Crosshair")]
-    [SerializeField] private TMP_Text _ammoText;
     [SerializeField] private RectTransform _crosshairPartsRoot;
 
+    private PunchScaleUIAnimation _recoilAnim;
     private int _prevAmmo = -1;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        if (_crosshairPartsRoot != null)
+        {
+            // AR 반동 애니메이션 설정 (0.3만큼 튀고 0.1초 복구)
+            _recoilAnim = new PunchScaleUIAnimation(_crosshairPartsRoot, Vector3.one * 0.3f, 0.1f, 1, 0.3f);
+        }
+    }
 
     protected override void BindWeaponProperties()
     {
         Bind(_viewModel.CurrentAmmo, OnAmmoChanged);
-        Bind(_viewModel.MaxAmmo, max => UpdateAmmoText(_viewModel.CurrentAmmo.Value, max));
-    }
-
-    private void UpdateAmmoText(int current, int max)
-    {
-        if (_ammoText != null)
-        {
-            _ammoText.text = $"{current} / {max}";
-        }
+        Bind(_viewModel.MaxAmmo, max => UpdateAmmoUI(_viewModel.CurrentAmmo.Value, max));
     }
 
     private void OnAmmoChanged(int currentAmmo)
@@ -35,27 +37,12 @@ public class UI_ARCrosshair : UI_CrosshairBase
             OnFire();
         }
         _prevAmmo = currentAmmo;
-        UpdateAmmoText(currentAmmo, _viewModel.MaxAmmo.Value);
+        UpdateAmmoUI(currentAmmo, _viewModel.MaxAmmo.Value);
     }
 
     protected override void OnFire()
     {
         base.OnFire();
-        if (_crosshairPartsRoot != null)
-        {
-            _crosshairPartsRoot.localScale = Vector3.one * 1.3f;
-        }
-    }
-
-    protected override void Update()
-    {
-        base.Update();
-        
-        if (_crosshairPartsRoot != null && _crosshairPartsRoot.localScale.x > 1f)
-        {
-            float newScale = Mathf.Lerp(_crosshairPartsRoot.localScale.x, 1f, Time.deltaTime * 15f);
-            if (newScale < 1.01f) newScale = 1f;
-            _crosshairPartsRoot.localScale = Vector3.one * newScale;
-        }
+        _recoilAnim?.ExecuteAsync();
     }
 }

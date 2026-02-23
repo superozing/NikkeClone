@@ -10,33 +10,42 @@ using UnityEngine.UI;
 public class UI_SRCrosshair : UI_CrosshairBase
 {
     [Header("SR Crosshair")]
-    [SerializeField] private TMP_Text _ammoText;
     [SerializeField] private Image _chargeGaugeFill;
     [SerializeField] private GameObject _fullChargeEffectObj;
+    [SerializeField] private TMP_Text _chargeMultiplierText;
+    [SerializeField] private TMP_Text _damageMultiplierText;
 
     protected override void BindWeaponProperties()
     {
-        Bind(_viewModel.CurrentAmmo, ammo => UpdateAmmoText(ammo, _viewModel.MaxAmmo.Value));
-        Bind(_viewModel.MaxAmmo, max => UpdateAmmoText(_viewModel.CurrentAmmo.Value, max));
+        Bind(_viewModel.CurrentAmmo, ammo => UpdateAmmoUI(ammo, _viewModel.MaxAmmo.Value));
+        Bind(_viewModel.MaxAmmo, max => UpdateAmmoUI(_viewModel.CurrentAmmo.Value, max));
         Bind(_viewModel.ChargeProgress, OnChargeRatioChanged);
     }
 
-    private void UpdateAmmoText(int current, int max)
+    private void UpdateMultiplierText(float ratio)
     {
-        if (_ammoText != null)
+        float multiplier = Mathf.Lerp(1.0f, _viewModel.FullChargeMultiplier, ratio);
+
+        if (_chargeMultiplierText != null)
         {
-            _ammoText.text = $"{current} / {max}";
+            _chargeMultiplierText.text = $"{Mathf.RoundToInt(ratio * 100):D3}%";
+        }
+        if (_damageMultiplierText != null)
+        {
+            _damageMultiplierText.text = $"{Mathf.RoundToInt(multiplier * 100):D3}%";
         }
     }
 
     protected override void OnChargeRatioChanged(float ratio)
     {
         base.OnChargeRatioChanged(ratio);
-        
+
         if (_chargeGaugeFill != null)
         {
             _chargeGaugeFill.fillAmount = ratio;
         }
+
+        UpdateMultiplierText(ratio);
 
         if (_fullChargeEffectObj != null)
         {

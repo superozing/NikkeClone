@@ -14,6 +14,10 @@ public abstract class UI_CrosshairBase : UI_View
     protected CrosshairViewModel _viewModel;
     protected RectTransform _rectTransform;
 
+    [Header("Ammo Shared UI")]
+    [SerializeField] protected TMPro.TMP_Text _ammoText;
+    [SerializeField] protected UnityEngine.UI.Image _ammoFillImage;
+
     private Camera _uiCamera;
     private RectTransform _parentRect;
 
@@ -138,6 +142,25 @@ public abstract class UI_CrosshairBase : UI_View
     protected virtual void OnFire() { }
     protected virtual void OnReloadStateChanged(bool isReloading) { }
     protected virtual void OnChargeRatioChanged(float ratio) { }
+
+    protected virtual void UpdateAmmoUI(int current, int max)
+    {
+        float ratio = max > 0 ? (float)current / max : 0f;
+        bool isLowAmmo = ratio < 0.4f;
+        Color targetColor = isLowAmmo ? Color.red : Color.white;
+
+        if (_ammoText != null)
+        {
+            _ammoText.text = $"{current:D3}";
+            _ammoText.color = targetColor;
+        }
+
+        if (_ammoFillImage != null)
+        {
+            _ammoFillImage.fillAmount = ratio;
+            _ammoFillImage.color = targetColor;
+        }
+    }
 
     protected override void OnDestroy()
     {

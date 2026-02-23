@@ -13,6 +13,7 @@ public class CrosshairViewModel : ViewModelBase
     public ReactiveProperty<int> CurrentAmmo { get; } = new ReactiveProperty<int>(0);
     public ReactiveProperty<int> MaxAmmo { get; } = new ReactiveProperty<int>(0);
     public ReactiveProperty<float> ChargeProgress { get; } = new ReactiveProperty<float>(0f);
+    public float FullChargeMultiplier { get; private set; } = 1f;
     public ReactiveProperty<Vector2> TargetPosition { get; } = new ReactiveProperty<Vector2>(Vector2.zero);
 
     private IWeapon _currentWeapon;
@@ -33,6 +34,7 @@ public class CrosshairViewModel : ViewModelBase
             // Refactor: ActiveWeapon에 무기 객체 자체를 할당하여 View가 WeaponType을 직접 참조
             ActiveWeapon.Value = _currentWeapon;
             MaxAmmo.Value = _currentWeapon.MaxAmmo;
+            FullChargeMultiplier = _currentWeapon.FullChargeMultiplier;
 
             // 새 무기 구독
             _currentWeapon.CurrentAmmo.OnValueChanged += OnAmmoChanged;

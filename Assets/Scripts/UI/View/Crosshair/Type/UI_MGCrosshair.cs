@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 /// <summary>
 /// MG 무기 전용 조준선입니다.
@@ -9,22 +10,34 @@ using UnityEngine;
 public class UI_MGCrosshair : UI_CrosshairBase
 {
     [Header("MG Crosshair")]
-    [SerializeField] private TMP_Text _ammoText;
     [SerializeField] private RectTransform _crosshairPartsRoot;
+    [SerializeField] private Image _gaugeImage;
 
+    private PunchScaleUIAnimation _recoilAnim;
     private int _prevAmmo = -1;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        if (_crosshairPartsRoot != null)
+        {
+            // MG 반동 애니메이션 설정 (0.2만큼 작게 튀고 0.1초 복구)
+            _recoilAnim = new PunchScaleUIAnimation(_crosshairPartsRoot, Vector3.one * 0.2f, 0.1f, 1, 0.1f);
+        }
+    }
 
     protected override void BindWeaponProperties()
     {
         Bind(_viewModel.CurrentAmmo, OnAmmoChanged);
-        Bind(_viewModel.MaxAmmo, max => UpdateAmmoText(_viewModel.CurrentAmmo.Value, max));
+        Bind(_viewModel.MaxAmmo, max => UpdateAmmoUI(_viewModel.CurrentAmmo.Value, max));
+        Bind(_viewModel.ChargeProgress, OnChargeProgressChanged);
     }
 
-    private void UpdateAmmoText(int current, int max)
+    private void OnChargeProgressChanged(float progress)
     {
-        if (_ammoText != null)
+        if (_gaugeImage != null)
         {
-            _ammoText.text = $"{current} / {max}";
+            _gaugeImage.fillAmount = progress;
         }
     }
 
@@ -35,27 +48,12 @@ public class UI_MGCrosshair : UI_CrosshairBase
             OnFire();
         }
         _prevAmmo = currentAmmo;
-        UpdateAmmoText(currentAmmo, _viewModel.MaxAmmo.Value);
+        UpdateAmmoUI(currentAmmo, _viewModel.MaxAmmo.Value);
     }
 
     protected override void OnFire()
     {
         base.OnFire();
-        if (_crosshairPartsRoot != null)
-        {
-            _crosshairPartsRoot.localScale = Vector3.one * 1.25f; // MG는 AR수준 혹은 지속 시 고정 크기 유지 등의 연출 가능 
-        }
-    }
-
-    protected override void Update()
-    {
-        base.Update();
-        
-        if (_crosshairPartsRoot != null && _crosshairPartsRoot.localScale.x > 1f)
-        {
-            float newScale = Mathf.Lerp(_crosshairPartsRoot.localScale.x, 1f, Time.deltaTime * 10f); // MG 반동 복구 속도 조정
-            if (newScale < 1.01f) newScale = 1f;
-            _crosshairPartsRoot.localScale = Vector3.one * newScale;
-        }
+        _recoilAnim?.ExecuteAsync();
     }
 }

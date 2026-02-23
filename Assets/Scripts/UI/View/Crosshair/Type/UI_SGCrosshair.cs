@@ -10,20 +10,41 @@ using UnityEngine.UI;
 public class UI_SGCrosshair : UI_CrosshairBase
 {
     [Header("SG Crosshair")]
-    [SerializeField] private TMP_Text _ammoText;
     [SerializeField] private Image _spreadCircleImage;
+
+    private PunchScaleUIAnimation _recoilAnim;
+    private int _prevAmmo = -1;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        if (_spreadCircleImage != null)
+        {
+            // SG 반동 애니메이션 설정 (0.3만큼 튀고 0.15초에 복구)
+            _recoilAnim = new PunchScaleUIAnimation(_spreadCircleImage.rectTransform, Vector3.one * 0.3f, 0.15f, 1, 0.5f);
+        }
+    }
 
     protected override void BindWeaponProperties()
     {
-        Bind(_viewModel.CurrentAmmo, ammo => UpdateAmmoText(ammo, _viewModel.MaxAmmo.Value));
-        Bind(_viewModel.MaxAmmo, max => UpdateAmmoText(_viewModel.CurrentAmmo.Value, max));
+        Bind(_viewModel.CurrentAmmo, OnAmmoChanged);
+        Bind(_viewModel.MaxAmmo, max => UpdateAmmoUI(_viewModel.CurrentAmmo.Value, max));
     }
 
-    private void UpdateAmmoText(int current, int max)
+    private void OnAmmoChanged(int currentAmmo)
     {
-        if (_ammoText != null)
+        if (_prevAmmo != -1 && currentAmmo < _prevAmmo)
         {
-            _ammoText.text = $"{current} / {max}";
+            OnFire();
         }
+        _prevAmmo = currentAmmo;
+        UpdateAmmoUI(currentAmmo, _viewModel.MaxAmmo.Value);
+    }
+
+    protected override void OnFire()
+    {
+        base.OnFire();
+        // DOTween 애니메이션 클래스를 통해 재생
+        _recoilAnim?.ExecuteAsync();
     }
 }
