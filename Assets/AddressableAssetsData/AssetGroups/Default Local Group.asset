@@ -200,6 +200,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 61e86401632c5654a9c2f804cf995925
+    m_Address: Prefabs/Combat/RL_Projectile
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6337c7980aa26e3479291c6aec0cc13e
     m_Address: UI/Popup/UI_PopupTest
     m_ReadOnly: 0
