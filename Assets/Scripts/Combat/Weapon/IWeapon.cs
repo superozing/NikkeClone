@@ -34,6 +34,11 @@ public interface IWeapon
     ReactiveProperty<float> ChargeProgress { get; }
 
     /// <summary>
+    /// 최대 차지 배율 (기본 1.0, 차지형 무기에서 재정의)
+    /// </summary>
+    float FullChargeMultiplier { get; }
+
+    /// <summary>
     /// 재장전 시간 (초)
     /// </summary>
     float ReloadTime { get; }
@@ -73,4 +78,9 @@ public interface IWeapon
     /// 탄약 소비
     /// </summary>
     void ConsumeAmmo(int amount);
+
+    /// <summary>
+    /// 매 프레임 무기 고유의 로직(차지 게이지 감소, 예열 등) 실행
+    /// </summary>
+    void Tick(float deltaTime);
 }

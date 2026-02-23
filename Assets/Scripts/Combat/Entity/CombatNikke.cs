@@ -151,6 +151,7 @@ public class CombatNikke : CombatEntity
     private void Update()
     {
         _hfsm?.Update();
+        _weapon?.Tick(Time.deltaTime);
     }
 
     private void OnDestroy()

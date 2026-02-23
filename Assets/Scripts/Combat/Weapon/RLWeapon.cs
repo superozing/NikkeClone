@@ -6,24 +6,45 @@ using UnityEngine;
 /// </summary>
 public class RLWeapon : ChargeWeaponBase
 {
-    private float _explosionRadius = 3.0f;
-
     public RLWeapon(WeaponData data) : base(data, eNikkeWeapon.RL) { }
 
     protected override void FireOnRelease(CombatNikke owner, long damage)
     {
         Vector2 screenPos = GetTargetScreenPosition(owner);
-        if (PerformRaycast(screenPos, out var hit))
+        Ray ray = _mainCamera.ScreenPointToRay(screenPos);
+
+        Vector3 targetPoint;
+        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, _layerMask))
         {
-            Collider[] colliders = Physics.OverlapSphere(hit.point, _explosionRadius, _layerMask);
-            foreach (var col in colliders)
+            targetPoint = hit.point;
+        }
+        else
+        {
+            targetPoint = ray.GetPoint(100f);
+        }
+
+        Vector3 spawnPos = owner.transform.position + Vector3.up * 1.5f;
+        Vector3 direction = (targetPoint - spawnPos).normalized;
+
+        FireProjectileAsync(owner, damage, spawnPos, direction);
+    }
+
+    private async void FireProjectileAsync(CombatNikke owner, long damage, Vector3 spawnPos, Vector3 direction)
+    {
+        // TODO: Addressables에 "RL_Projectile" 키 등록 필요
+        GameObject projObj = await Managers.Resource.InstantiateAsync("Prefabs/Combat/RL_Projectile", spawnPos, Quaternion.LookRotation(direction));
+
+        if (projObj != null)
+        {
+            var projectile = projObj.GetComponent<CombatProjectile>();
+            if (projectile != null)
             {
-                var rapture = col.GetComponent<CombatRapture>();
-                if (rapture != null && !rapture.IsDead)
-                {
-                    rapture.TakeDamage(damage);
-                }
+                projectile.Initialize(owner, damage, 50f, direction);
             }
+        }
+        else
+        {
+            Debug.LogError("[RLWeapon] RL_Projectile Addressable load failed.");
         }
     }
 }

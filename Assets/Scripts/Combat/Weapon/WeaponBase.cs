@@ -30,6 +30,9 @@ public abstract class WeaponBase : IWeapon
     public float ReloadTime => _reloadTime;
     public float DamagePercent => _damagePercent;
 
+    // 일반 무기는 배율 1.0 고정
+    public virtual float FullChargeMultiplier => 1.0f;
+
     public WeaponBase(WeaponData data, eNikkeWeapon type)
     {
         _weaponType = type;
@@ -59,6 +62,8 @@ public abstract class WeaponBase : IWeapon
     public virtual void Update(CombatNikke owner) { }
 
     public virtual void Exit(CombatNikke owner) { }
+
+    public virtual void Tick(float deltaTime) { }
 
     public void Reload()
     {
