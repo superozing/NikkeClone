@@ -12,6 +12,7 @@ public class CombatSystem : MonoBehaviour
     [Header("Dependencies")]
     [SerializeField] private CombatNikke[] _nikkes; // 5 slot
     [SerializeField] private CombatWaveSystem _waveSystem;
+    [SerializeField] private CombatCrosshairSystem _crosshairSystem;
     private UI_CombatHUD _combatHUD;
 
     // ==================== State ====================
@@ -82,6 +83,23 @@ public class CombatSystem : MonoBehaviour
         await InitializeNikkesAsync(squadId);
         await InitializeHUDAsync();
 
+        // 3.5 조준선 시스템 초기화 (Phase 7.1 Refactor v2)
+        if (_crosshairSystem != null)
+        {
+            HashSet<eNikkeWeapon> squadWeaponTypes = new HashSet<eNikkeWeapon>();
+            foreach (var nikke in _nikkes)
+            {
+                if (nikke != null && nikke.Weapon != null)
+                {
+                    squadWeaponTypes.Add(nikke.Weapon.WeaponType);
+                }
+            }
+            await _crosshairSystem.InitializeAsync(squadWeaponTypes);
+        }
+
+        // 3.6 초기 조작 니케 설정 (HUD와 Crosshair 객체가 모두 생성된 후에 호출되어야 함)
+        ActivateDefaultNikke();
+
         // 4. 전투 시작 (웨이브)
         if (_waveSystem != null)
         {
@@ -90,6 +108,19 @@ public class CombatSystem : MonoBehaviour
 
         Debug.Log("[CombatSystem] Initialization Complete. Battle Started.");
         _isInitialized = true;
+    }
+
+    private void ActivateDefaultNikke()
+    {
+        int defaultIndex = 2;
+        if (defaultIndex < _nikkes.Length && _nikkes[defaultIndex] != null)
+        {
+            _nikkes[defaultIndex].ForceActivate();
+        }
+        else if (_nikkes.Length > 0 && _nikkes[0] != null)
+        {
+            _nikkes[0].ForceActivate();
+        }
     }
 
 
@@ -128,6 +159,16 @@ public class CombatSystem : MonoBehaviour
     }
 
     /// <summary>
+    /// 수동 조작 전투 니케가 활성화될 때 UI와 바인딩할 무기 객체를 갱신합니다.
+    /// Phase 7.1 Crosshair UI
+    /// </summary>
+    public void SetCrosshairWeapon(IWeapon weapon)
+    {
+        // Phase 7.1 Refactor v2: CombatCrosshairSystem에 위임
+        _crosshairSystem?.SwitchCrosshair(weapon);
+    }
+
+    /// <summary>
     /// 전투 종료 및 정리
     /// Caller: CombatScene.Clear()
     /// </summary>
@@ -137,6 +178,9 @@ public class CombatSystem : MonoBehaviour
         {
             _waveSystem.OnAllPhasesComplete -= OnAllPhasesComplete;
         }
+
+        // Phase 7.1 Refactor v2: 조준선 시스템 정리
+        _crosshairSystem?.Cleanup();
 
         // 이벤트 해제 등
     }
@@ -205,17 +249,6 @@ public class CombatSystem : MonoBehaviour
             await _nikkes[i].InitializeAsync(gameData, userData, i, this);
 
             AliveNikkeCount++;
-        }
-
-        // 초기 조작 니케 설정 (2번이 기본)
-        int defaultIndex = 2;
-        if (defaultIndex < _nikkes.Length && _nikkes[defaultIndex] != null)
-        {
-            _nikkes[defaultIndex].ForceActivate();
-        }
-        else if (_nikkes.Length > 0 && _nikkes[0] != null)
-        {
-            _nikkes[0].ForceActivate();
         }
     }
 

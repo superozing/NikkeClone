@@ -8,8 +8,6 @@ public abstract class ChargeWeaponBase : WeaponBase
 {
     protected float _chargeTime;
     protected float _fullChargeMultiplier;
-    
-    protected float _currentCharge; // 0.0 ~ 1.0
 
     public ChargeWeaponBase(WeaponData data, eNikkeWeapon type) : base(data, type)
     {
@@ -25,9 +23,11 @@ public abstract class ChargeWeaponBase : WeaponBase
         }
     }
 
+    public override float FullChargeMultiplier => _fullChargeMultiplier;
+
     public override void Enter(CombatNikke owner)
     {
-        _currentCharge = 0f;
+        _chargeProgress.Value = 0f;
     }
 
     public override void Update(CombatNikke owner)
@@ -35,8 +35,9 @@ public abstract class ChargeWeaponBase : WeaponBase
         if (!CanFire) return;
 
         // 차지 누적
-        _currentCharge += Time.deltaTime / _chargeTime;
-        _currentCharge = Mathf.Clamp01(_currentCharge);
+        // Implements Section 2.1: IWeapon & WeaponBase 리팩토링
+        float newCharge = _chargeProgress.Value + Time.deltaTime / _chargeTime;
+        _chargeProgress.Value = Mathf.Clamp01(newCharge);
     }
 
     public override void Exit(CombatNikke owner)
@@ -44,13 +45,13 @@ public abstract class ChargeWeaponBase : WeaponBase
         if (!CanFire) return;
 
         // 차지량에 따른 데미지 배율 적용 (기본 1.0배 ~ 풀차지)
-        float currentMultiplier = Mathf.Lerp(1.0f, _fullChargeMultiplier, _currentCharge);
+        float currentMultiplier = Mathf.Lerp(1.0f, _fullChargeMultiplier, _chargeProgress.Value);
         long damage = CalculateDamage(owner, currentMultiplier);
 
         FireOnRelease(owner, damage);
 
         ConsumeAmmo(1); // 격발 후 탄약 1 감소
-        _currentCharge = 0f;
+        _chargeProgress.Value = 0f;
     }
 
     /// <summary>

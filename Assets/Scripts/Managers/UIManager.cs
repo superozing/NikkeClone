@@ -18,6 +18,8 @@ public class UIManager : IManagerBase
     private Transform _dontDestroyRoot;
     private Camera _uiCamera;
 
+    public Camera UICamera => _uiCamera;
+
     /// <summary>
     /// UI Popup 관리를 위한 Sorting Order 입니다.
     /// </summary>

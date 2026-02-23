@@ -10,18 +10,28 @@ public abstract class WeaponBase : IWeapon
     protected Camera _mainCamera;
     protected int _layerMask;
 
-    protected int _currentAmmo;
+    // Implements Section 2.1: IWeapon & WeaponBase 리팩토링
+    protected ReactiveProperty<int> _currentAmmo = new ReactiveProperty<int>(0);
+    protected ReactiveProperty<float> _chargeProgress = new ReactiveProperty<float>(0f);
+
     protected int _maxAmmo;
     protected float _reloadTime;
     protected float _damagePercent;
     protected eNikkeWeapon _weaponType;
 
     public eNikkeWeapon WeaponType => _weaponType;
-    public bool CanFire => _currentAmmo > 0;
-    public int CurrentAmmo => _currentAmmo;
+    public bool CanFire => _currentAmmo.Value > 0;
+
+    // Implements Section 2.1: IWeapon & WeaponBase 리팩토링
+    public ReactiveProperty<int> CurrentAmmo => _currentAmmo;
+    public ReactiveProperty<float> ChargeProgress => _chargeProgress;
+
     public int MaxAmmo => _maxAmmo;
     public float ReloadTime => _reloadTime;
     public float DamagePercent => _damagePercent;
+
+    // 일반 무기는 배율 1.0 고정
+    public virtual float FullChargeMultiplier => 1.0f;
 
     public WeaponBase(WeaponData data, eNikkeWeapon type)
     {
@@ -39,6 +49,9 @@ public abstract class WeaponBase : IWeapon
             _damagePercent = 100f;
         }
 
+        _currentAmmo.Value = _maxAmmo;
+        _chargeProgress.Value = 0f;
+
         _mainCamera = Camera.main;
         // 적(CombatRapture)과 지형 장애물(CombatObstacle)을 모두 검출하기 위한 레이어 마스크
         _layerMask = LayerMask.GetMask("CombatRapture", "CombatObstacle"); // TODO: "CombatObstacle" 레이어 추가해야 해요.
@@ -50,14 +63,16 @@ public abstract class WeaponBase : IWeapon
 
     public virtual void Exit(CombatNikke owner) { }
 
+    public virtual void Tick(float deltaTime) { }
+
     public void Reload()
     {
-        _currentAmmo = _maxAmmo;
+        _currentAmmo.Value = _maxAmmo;
     }
 
     public void ConsumeAmmo(int amount)
     {
-        _currentAmmo = Mathf.Max(0, _currentAmmo - amount);
+        _currentAmmo.Value = Mathf.Max(0, _currentAmmo.Value - amount);
     }
 
     /// <summary>

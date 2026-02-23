@@ -16,7 +16,7 @@ public class NikkeAutoCoverState : IState<CombatNikke>
         }
 
         // Auto 모드: 엄폐 시 탄약 부족하면 자동 장전
-        if (owner.Weapon.CurrentAmmo < owner.Weapon.MaxAmmo)
+        if (owner.Weapon.CurrentAmmo.Value < owner.Weapon.MaxAmmo)
         {
             _coverStateMachine.ChangeState(_reloadState);
         }
@@ -32,7 +32,7 @@ public class NikkeAutoCoverState : IState<CombatNikke>
 
         if (_coverStateMachine.CurrentState == _reloadState)
         {
-            if (owner.Weapon.CurrentAmmo >= owner.Weapon.MaxAmmo)
+            if (owner.Weapon.CurrentAmmo.Value >= owner.Weapon.MaxAmmo)
             {
                 _coverStateMachine.ChangeState(_idleState);
             }

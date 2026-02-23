@@ -2138,6 +2138,7 @@ GameObject:
   - component: {fileID: 1917626633}
   - component: {fileID: 1917626635}
   - component: {fileID: 1917626634}
+  - component: {fileID: 1917626636}
   m_Layer: 0
   m_Name: '@Scene'
   m_TagString: Untagged
@@ -2205,6 +2206,19 @@ MonoBehaviour:
   - {fileID: 686603429}
   - {fileID: 1275576422}
   _waveSystem: {fileID: 1917626634}
+  _crosshairSystem: {fileID: 1917626636}
+--- !u!114 &1917626636
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1917626630}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 389d33af3a90e8d46bfdedc5b0565d7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CombatCrosshairSystem
 --- !u!1 &2128302717
 GameObject:
   m_ObjectHideFlags: 0

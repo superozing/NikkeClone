@@ -42,6 +42,9 @@ public class NikkeManualState : IState<CombatNikke>
         BindOtherSlotInputs(owner);
 
         owner.View.SetCameraActive(true);
+
+        // Phase 7.1 Crosshair 연동: 수동 조작 활성화 시 무기를 알림
+        owner.NotifyManualActivated();
     }
 
     private void BindOtherSlotInputs(CombatNikke owner)
@@ -87,7 +90,7 @@ public class NikkeManualState : IState<CombatNikke>
         // AttackState는 IWeapon.Update()만 호출하고, 상태 전환 판단은 상위(Manual)에서 수행
         if (_subStateMachine.CurrentState == _attackState)
         {
-            if (owner.Weapon.CurrentAmmo <= 0)
+            if (owner.Weapon.CurrentAmmo.Value <= 0)
             {
                 // 탄약 다 떨어짐 -> 엄폐(Cover)로 전환 -> Cover 내부에서 Reload 시작
                 _subStateMachine.ChangeState(_coverState);
@@ -128,7 +131,7 @@ public class NikkeManualState : IState<CombatNikke>
         if (isPressed)
         {
             // 탄약 없으면 못 쏨 (재장전 필요 -> Cover로 가야 함)
-            if (owner.Weapon.CurrentAmmo <= 0)
+            if (owner.Weapon.CurrentAmmo.Value <= 0)
             {
                 // 이미 Cover라면 거기서 재장전 중일 것임.
                 // Attack 중 0이 되면? -> AttackState에서 체크해서 끝내야 함.
