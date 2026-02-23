@@ -27,7 +27,7 @@ public class NikkeManualAttackState : IState<CombatNikke>
             return;
         }
 
-        Vector2 screenPos = Pointer.current?.position.ReadValue() ?? Vector2.zero;
+        Vector2 screenPos = owner.Weapon?.CurrentAimScreenPosition.Value ?? Vector2.zero;
 
         // 카메라에서 화면 클릭 지점을 향해 Ray 발사
         Ray ray = Camera.main.ScreenPointToRay(screenPos);
@@ -36,9 +36,20 @@ public class NikkeManualAttackState : IState<CombatNikke>
         // 적군이나 지형 등 지정된 레이어(LayerMask) 충돌 검사
         // WeaponBase에서 사용하는 마스크와 동일하게 설정
         int layerMask = LayerMask.GetMask("CombatRapture", "CombatObstacle");
+
+        bool isAdvantage = false;
+
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, layerMask))
         {
             targetWorldPos = hit.point;
+
+            // [추가] 피격된 적이 타겟 구역에 있는지 계산 (수동 조준 피드백용)
+            // 성능이 중요하다면 Raycast 대신 화면 중앙 타겟팅 로직을 추가할 수도 있음.
+            var rapture = hit.collider.GetComponent<CombatRapture>();
+            if (rapture != null && owner.Weapon != null)
+            {
+                isAdvantage = owner.Weapon.IsPreferredZone(rapture.CurrentZone);
+            }
         }
         else
         {
@@ -46,9 +57,11 @@ public class NikkeManualAttackState : IState<CombatNikke>
             targetWorldPos = ray.GetPoint(100f);
         }
 
-        owner.Weapon?.Update(owner, targetWorldPos);
-
-
+        if (owner.Weapon != null)
+        {
+            owner.Weapon.Update(owner, targetWorldPos);
+            owner.Weapon.IsInPreferredZone.Value = isAdvantage;
+        }
     }
 
     public void Exit(CombatNikke owner)
@@ -57,5 +70,9 @@ public class NikkeManualAttackState : IState<CombatNikke>
         // 현재는 상위 상태에서 FireCanceled에 의해 Exit되는 경우이므로 isCancel=false. 
         // 조작 니케 전환 등으로 강제로 Exit 시키는 경우엔 상위 State 처리가 필요하지만 일단 Manual에서의 Exit은 버튼 뗌으로 간주.
         owner.Weapon?.Exit(owner, isCancel: false);
+        if (owner.Weapon != null)
+        {
+            owner.Weapon.IsInPreferredZone.Value = false;
+        }
     }
 }

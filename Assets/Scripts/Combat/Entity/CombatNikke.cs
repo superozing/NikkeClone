@@ -24,6 +24,7 @@ public class CombatNikke : CombatEntity
     private IWeapon _weapon;
     private CombatSystem _combatSystem;
     private int _slotIndex;
+    private TargetingSystem _targetingSystem;
 
     // ==================== Properties ====================
 
@@ -32,6 +33,8 @@ public class CombatNikke : CombatEntity
     public IWeapon Weapon => _weapon;
     public NikkeView View => _view;
     public string NikkeName => _gameData?.name;
+    public TargetingSystem TargetingSystem => _targetingSystem;
+    public CombatSystem CombatSystem => _combatSystem;
 
     // ==================== Events ====================
 
@@ -50,6 +53,7 @@ public class CombatNikke : CombatEntity
         _userData = userData;
         _slotIndex = slotIndex;
         _combatSystem = combatSystem;
+        _targetingSystem = combatSystem.TargetingSystem;
 
         // 스탯 계산
         CalculateStatus();
@@ -105,6 +109,12 @@ public class CombatNikke : CombatEntity
         if (_hfsm.CurrentMode == mode) return;
 
         _hfsm.ChangeMode(mode);
+
+        if (_weapon != null)
+        {
+            _weapon.CombatMode.Value = mode;
+        }
+
         OnModeChanged?.Invoke(mode);
     }
 
@@ -120,8 +130,8 @@ public class CombatNikke : CombatEntity
     }
 
     /// <summary>
-    /// 수동 조작으로 활성화되었음을 시스템에 알립니다.
-    /// Caller: NikkeManualState.Enter()
+    /// 수동 조작 전투 니케가 활성화될 때 UI와 바인딩할 무기 객체를 갱신합니다.
+    /// Phase 7.1 Crosshair UI
     /// </summary>
     public void NotifyManualActivated()
     {
@@ -129,6 +139,28 @@ public class CombatNikke : CombatEntity
         {
             _combatSystem.SetCrosshairWeapon(_weapon);
         }
+    }
+
+    /// <summary>
+    /// 선택된 니케의 카메라를 활성화하고 크로스헤어를 바인딩합니다.
+    /// Caller: CombatSystem.SelectNikke()
+    /// </summary>
+    public void ActivateCameraAndCrosshair()
+    {
+        _view.SetCameraActive(true);
+        if (_weapon != null && _combatSystem != null)
+        {
+            _combatSystem.SetCrosshairWeapon(_weapon);
+        }
+    }
+
+    /// <summary>
+    /// 선택 해제된 니케의 카메라를 비활성화합니다.
+    /// Caller: CombatSystem.SelectNikke()
+    /// </summary>
+    public void DeactivateCamera()
+    {
+        _view.SetCameraActive(false);
     }
 
     private void CalculateStatus()

@@ -17,8 +17,6 @@ public class NikkeManualState : IState<CombatNikke>
     private System.Action<UnityEngine.InputSystem.InputAction.CallbackContext> _onFirePerformed;
     private System.Action<UnityEngine.InputSystem.InputAction.CallbackContext> _onFireCanceled;
 
-    private System.Action<UnityEngine.InputSystem.InputAction.CallbackContext>[] _onSelectOtherSlots;
-
     public void Enter(CombatNikke owner)
     {
         // Debug.Log($"[{owner.name}] Enter Manual Mode");
@@ -38,47 +36,10 @@ public class NikkeManualState : IState<CombatNikke>
         Managers.Input.BindAction("Fire", _onFirePerformed, UnityEngine.InputSystem.InputActionPhase.Performed);
         Managers.Input.BindAction("Fire", _onFireCanceled, UnityEngine.InputSystem.InputActionPhase.Canceled);
 
-        // Input 바인딩 (다른 슬롯 선택 시 Auto 전환)
-        BindOtherSlotInputs(owner);
-
         owner.View.SetCameraActive(true);
 
         // Phase 7.1 Crosshair 연동: 수동 조작 활성화 시 무기를 알림
         owner.NotifyManualActivated();
-    }
-
-    private void BindOtherSlotInputs(CombatNikke owner)
-    {
-        // 최대 5슬롯 가정
-        _onSelectOtherSlots = new System.Action<UnityEngine.InputSystem.InputAction.CallbackContext>[5];
-
-        for (int i = 0; i < 5; i++)
-        {
-            if (i == owner.SlotIndex) continue;
-
-            int targetIndex = i; // Closure capture
-            _onSelectOtherSlots[i] = _ => OnSelectOtherInput(owner);
-            Managers.Input.BindAction($"SelectNikke{targetIndex + 1}", _onSelectOtherSlots[i]);
-        }
-    }
-
-    private void UnbindOtherSlotInputs(CombatNikke owner)
-    {
-        if (_onSelectOtherSlots == null) return;
-
-        for (int i = 0; i < 5; i++)
-        {
-            if (_onSelectOtherSlots[i] != null)
-            {
-                Managers.Input.UnbindAction($"SelectNikke{i + 1}", _onSelectOtherSlots[i]);
-            }
-        }
-        _onSelectOtherSlots = null;
-    }
-
-    private void OnSelectOtherInput(CombatNikke owner)
-    {
-        owner.SetCombatMode(eNikkeCombatMode.Auto);
     }
 
     public void Execute(CombatNikke owner)
@@ -109,7 +70,6 @@ public class NikkeManualState : IState<CombatNikke>
 
         if (_onFirePerformed != null) Managers.Input.UnbindAction("Fire", _onFirePerformed, UnityEngine.InputSystem.InputActionPhase.Performed);
         if (_onFireCanceled != null) Managers.Input.UnbindAction("Fire", _onFireCanceled, UnityEngine.InputSystem.InputActionPhase.Canceled);
-        UnbindOtherSlotInputs(owner);
 
         _onFirePerformed = null;
         _onFireCanceled = null;
