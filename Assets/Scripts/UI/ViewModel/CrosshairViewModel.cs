@@ -16,6 +16,12 @@ public class CrosshairViewModel : ViewModelBase
     public float FullChargeMultiplier { get; private set; } = 1f;
     public ReactiveProperty<Vector2> TargetPosition { get; } = new ReactiveProperty<Vector2>(Vector2.zero);
 
+    public ReactiveProperty<bool> IsAutoMode { get; } = new ReactiveProperty<bool>(true);
+    public ReactiveProperty<Vector2> AutoTargetScreenPosition { get; } = new ReactiveProperty<Vector2>(Vector2.zero);
+
+    // [제거됨] 적정 사거리 피드백 (주석 처리 또는 제거, 무기의 것을 직접 구독 권장)
+    // public ReactiveProperty<bool> IsInPreferredZone { get; } = new ReactiveProperty<bool>(false);
+
     private IWeapon _currentWeapon;
 
     public void SetWeapon(IWeapon weapon)
@@ -25,6 +31,9 @@ public class CrosshairViewModel : ViewModelBase
         {
             _currentWeapon.CurrentAmmo.OnValueChanged -= OnAmmoChanged;
             _currentWeapon.ChargeProgress.OnValueChanged -= OnChargeProgressChanged;
+            _currentWeapon.CombatMode.OnValueChanged -= OnCombatModeChanged;
+            _currentWeapon.AutoTargetScreenPosition.OnValueChanged -= OnAutoTargetScreenPositionChanged;
+            TargetPosition.OnValueChanged -= OnViewModelTargetPositionChanged;
         }
 
         _currentWeapon = weapon;
@@ -39,10 +48,18 @@ public class CrosshairViewModel : ViewModelBase
             // 새 무기 구독
             _currentWeapon.CurrentAmmo.OnValueChanged += OnAmmoChanged;
             _currentWeapon.ChargeProgress.OnValueChanged += OnChargeProgressChanged;
+            _currentWeapon.CombatMode.OnValueChanged += OnCombatModeChanged;
+            _currentWeapon.AutoTargetScreenPosition.OnValueChanged += OnAutoTargetScreenPositionChanged;
+
+            // ViewModel -> Weapon 단방향 푸시 구독 (UI가 TargetPosition을 업데이트하면 무기에 전달)
+            TargetPosition.OnValueChanged += OnViewModelTargetPositionChanged;
 
             // 초기값 동기화
             OnAmmoChanged(_currentWeapon.CurrentAmmo.Value);
             OnChargeProgressChanged(_currentWeapon.ChargeProgress.Value);
+            OnCombatModeChanged(_currentWeapon.CombatMode.Value);
+            OnAutoTargetScreenPositionChanged(_currentWeapon.AutoTargetScreenPosition.Value);
+            OnViewModelTargetPositionChanged(TargetPosition.Value);
         }
         else
         {
@@ -58,5 +75,23 @@ public class CrosshairViewModel : ViewModelBase
     private void OnChargeProgressChanged(float progress)
     {
         ChargeProgress.Value = progress;
+    }
+
+    private void OnCombatModeChanged(NikkeClone.Utils.eNikkeCombatMode mode)
+    {
+        IsAutoMode.Value = (mode == NikkeClone.Utils.eNikkeCombatMode.Auto);
+    }
+
+    private void OnAutoTargetScreenPositionChanged(Vector2 position)
+    {
+        AutoTargetScreenPosition.Value = position;
+    }
+
+    private void OnViewModelTargetPositionChanged(Vector2 position)
+    {
+        if (_currentWeapon != null)
+        {
+            _currentWeapon.CurrentAimScreenPosition.Value = position;
+        }
     }
 }

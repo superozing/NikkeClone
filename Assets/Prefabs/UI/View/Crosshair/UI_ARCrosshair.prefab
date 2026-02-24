@@ -231,6 +231,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UI_ARCrosshair
   _ammoText: {fileID: 6769722927976270049}
   _ammoFillImage: {fileID: 2117796740313401680}
+  _crosshairGraphics:
+  - {fileID: 2031902540916312975}
+  - {fileID: 6184700073827160062}
+  - {fileID: 7905686395175893560}
+  - {fileID: 2757135953575619977}
   _crosshairPartsRoot: {fileID: 3113208595275514533}
 --- !u!1 &564510872376164927
 GameObject:

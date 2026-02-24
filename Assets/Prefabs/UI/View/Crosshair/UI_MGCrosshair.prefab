@@ -82,6 +82,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UI_MGCrosshair
   _ammoText: {fileID: 2571640891431259835}
   _ammoFillImage: {fileID: 5327918610992282522}
+  _crosshairGraphics:
+  - {fileID: 1636748244897404460}
   _crosshairPartsRoot: {fileID: 3113208595275514533}
   _gaugeImage: {fileID: 1448726478624622181}
 --- !u!1 &564510872376164927

@@ -156,6 +156,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UI_SGCrosshair
   _ammoText: {fileID: 1595202020636701483}
   _ammoFillImage: {fileID: 5790856912025976232}
+  _crosshairGraphics:
+  - {fileID: 4858427930549457510}
   _spreadCircleImage: {fileID: 4858427930549457510}
 --- !u!1 &564510872376164927
 GameObject:

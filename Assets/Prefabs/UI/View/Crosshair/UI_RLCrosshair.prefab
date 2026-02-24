@@ -159,6 +159,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UI_RLCrosshair
   _ammoText: {fileID: 5448176823319315047}
   _ammoFillImage: {fileID: 1751167482408452055}
+  _crosshairGraphics:
+  - {fileID: 4858427930549457510}
   _chargeGaugeFill: {fileID: 2577500050427540306}
   _chargeMultiplierText: {fileID: 5039006742437489130}
   _damageMultiplierText: {fileID: 4994726190017295091}

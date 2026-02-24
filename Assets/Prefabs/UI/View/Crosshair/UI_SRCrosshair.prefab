@@ -221,6 +221,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UI_SRCrosshair
   _ammoText: {fileID: 1054326664455085556}
   _ammoFillImage: {fileID: 2603183001884489391}
+  _crosshairGraphics:
+  - {fileID: 2080883031976480260}
   _chargeGaugeFill: {fileID: 7640514791735083193}
   _fullChargeEffectObj: {fileID: 4100685236720601444}
   _chargeMultiplierText: {fileID: 529548405038234148}
