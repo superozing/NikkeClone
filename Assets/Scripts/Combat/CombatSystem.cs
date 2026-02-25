@@ -34,8 +34,10 @@ public class CombatSystem : MonoBehaviour
 
 
     private System.Action<UnityEngine.InputSystem.InputAction.CallbackContext> _onToggleAuto;
+    private System.Action<UnityEngine.InputSystem.InputAction.CallbackContext> _onToggleAllCover;
     private System.Action<UnityEngine.InputSystem.InputAction.CallbackContext>[] _onSelectNikkeInputs;
     private bool _isAutoMode = false;
+    private bool _isAllCover = false;
     private int _currentSelectedSlot = -1;
 
     private CombatHUDViewModel _hudViewModel;
@@ -100,6 +102,10 @@ public class CombatSystem : MonoBehaviour
         // ToggleAuto 입력 바인딩
         _onToggleAuto = _ => OnToggleAuto();
         Managers.Input.BindAction("ToggleAuto", _onToggleAuto);
+
+        // ToggleAllCover 입력 바인딩
+        _onToggleAllCover = _ => ToggleAllCover();
+        Managers.Input.BindAction("ToggleAllCover", _onToggleAllCover);
 
         // NIKKE 선택 입력 바인딩
         _onSelectNikkeInputs = new System.Action<UnityEngine.InputSystem.InputAction.CallbackContext>[5];
@@ -170,14 +176,7 @@ public class CombatSystem : MonoBehaviour
         // 1. 현재 조작 중이던 니케 카메라 및 조전선 연결 비활성화
         if (_currentSelectedSlot >= 0 && _currentSelectedSlot < _nikkes.Length && _nikkes[_currentSelectedSlot] != null)
         {
-            var prevNikke = _nikkes[_currentSelectedSlot];
-            prevNikke.DeactivateCamera();
-
-            if (!_isAutoMode)
-            {
-                // 전체 수동 모드 상태 중 니케 변경이었다면, 이전 니케는 Auto 로 전환
-                prevNikke.SetCombatMode(NikkeClone.Utils.eNikkeCombatMode.Auto);
-            }
+            _nikkes[_currentSelectedSlot].OnDeselected();
         }
 
         // 2. 새 니케 선택
@@ -185,13 +184,8 @@ public class CombatSystem : MonoBehaviour
         var newNikke = _nikkes[_currentSelectedSlot];
 
         // 카메라 및 조준선 활성화
-        newNikke.ActivateCameraAndCrosshair();
-
-        if (!_isAutoMode)
-        {
-            // 수동 모드 상태라면 즉시 수동 상태로 전환
-            newNikke.SetCombatMode(NikkeClone.Utils.eNikkeCombatMode.Manual);
-        }
+        newNikke.OnSelected();
+        newNikke.AutoToggle = _isAutoMode; // 현재 전투의 Auto 상태를 새 니케에 적용
     }
 
 
@@ -242,6 +236,25 @@ public class CombatSystem : MonoBehaviour
     }
 
     /// <summary>
+    /// 전체 엄폐 토글. 활성화 시 모든 니케 Cover 강제, 해제 시 정상 전환 재개.
+    /// </summary>
+    /// Caller: Input Action "ToggleAllCover"
+    private void ToggleAllCover()
+    {
+        _isAllCover = !_isAllCover;
+
+        foreach (var nikke in _nikkes)
+        {
+            if (nikke != null && !nikke.IsDead)
+            {
+                nikke.SetForcedCover(_isAllCover);
+            }
+        }
+
+        Debug.Log($"[CombatSystem] ToggleAllCover: {_isAllCover}");
+    }
+
+    /// <summary>
     /// 전투 종료 및 정리
     /// Caller: CombatScene.Clear()
     /// </summary>
@@ -256,6 +269,12 @@ public class CombatSystem : MonoBehaviour
         {
             Managers.Input.UnbindAction("ToggleAuto", _onToggleAuto);
             _onToggleAuto = null;
+        }
+
+        if (_onToggleAllCover != null)
+        {
+            Managers.Input.UnbindAction("ToggleAllCover", _onToggleAllCover);
+            _onToggleAllCover = null;
         }
 
         if (_onSelectNikkeInputs != null)
@@ -353,41 +372,17 @@ public class CombatSystem : MonoBehaviour
     {
         _isAutoMode = !_isAutoMode;
 
-        var targetMode = _isAutoMode
-            ? NikkeClone.Utils.eNikkeCombatMode.Auto
-            : NikkeClone.Utils.eNikkeCombatMode.Manual;
-
-        foreach (var nikke in _nikkes)
+        // Selected 니케의 AutoToggle만 변경
+        if (_currentSelectedSlot >= 0 && _currentSelectedSlot < _nikkes.Length)
         {
-            if (nikke != null && !nikke.IsDead)
+            var selectedNikke = _nikkes[_currentSelectedSlot];
+            if (selectedNikke != null && !selectedNikke.IsDead)
             {
-                // 수동 모드로 변환 시 오직 "현재 선택된 니케"만 수동으로 전환
-                if (targetMode == NikkeClone.Utils.eNikkeCombatMode.Manual)
-                {
-                    if (nikke.SlotIndex == _currentSelectedSlot)
-                    {
-                        nikke.SetCombatMode(NikkeClone.Utils.eNikkeCombatMode.Manual);
-                    }
-                    else
-                    {
-                        nikke.SetCombatMode(NikkeClone.Utils.eNikkeCombatMode.Auto);
-                    }
-                }
-                else
-                {
-                    // 자동 모드일 때는 모두 자동으로 바꿈
-                    nikke.SetCombatMode(NikkeClone.Utils.eNikkeCombatMode.Auto);
-                }
+                selectedNikke.AutoToggle = _isAutoMode;
             }
         }
 
-        // Manual 복귀 시 첫 번째 생존 니케를 강제 활성화
-        if (!_isAutoMode)
-        {
-            ActivateDefaultNikke();
-        }
-
-        Debug.Log($"[CombatSystem] ToggleAuto: {targetMode}");
+        Debug.Log($"[CombatSystem] ToggleAuto: {_isAutoMode}");
     }
 
     private async Task InitializeHUDAsync()
