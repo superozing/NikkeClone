@@ -19,7 +19,7 @@ public abstract class WeaponBase : IWeapon
     protected eNikkeWeapon _weaponType;
 
     public eNikkeWeapon WeaponType => _weaponType;
-    public bool CanFire => _currentAmmo.Value > 0;
+    protected bool CanFire => _currentAmmo.Value > 0;
 
     // Implements Section 2.1: IWeapon & WeaponBase 리팩토링
     public ReactiveProperty<int> CurrentAmmo => _currentAmmo;
@@ -27,7 +27,7 @@ public abstract class WeaponBase : IWeapon
 
     public int MaxAmmo => _maxAmmo;
     public float ReloadTime => _reloadTime;
-    public float DamagePercent => _damagePercent;
+    protected float DamagePercent => _damagePercent;
 
     // 일반 무기는 배율 1.0 고정
     public virtual float FullChargeMultiplier => 1.0f;
@@ -42,13 +42,8 @@ public abstract class WeaponBase : IWeapon
     public ReactiveProperty<bool> IsInPreferredZone { get; } = new ReactiveProperty<bool>(false);
 
     public ReactiveProperty<NikkeClone.Utils.eNikkeCombatMode> CombatMode { get; } = new ReactiveProperty<NikkeClone.Utils.eNikkeCombatMode>(NikkeClone.Utils.eNikkeCombatMode.Auto);
-    public ReactiveProperty<Vector2> AutoTargetScreenPosition { get; } = new ReactiveProperty<Vector2>(Vector2.zero);
     public ReactiveProperty<Vector2> CurrentAimScreenPosition { get; } = new ReactiveProperty<Vector2>(Vector2.zero);
 
-    public virtual float GetRangeAdvantageMultiplier(eRangeZone targetZone)
-    {
-        return targetZone == PreferredZone ? 1.2f : 1.0f;
-    }
 
     public virtual bool IsPreferredZone(eRangeZone targetZone)
     {
@@ -81,18 +76,27 @@ public abstract class WeaponBase : IWeapon
 
     public virtual void Enter(CombatNikke owner) { }
 
-    public virtual void Update(CombatNikke owner, Vector3 targetWorldPos) { }
+    protected virtual void Update(CombatNikke owner, Vector3 targetWorldPos) { }
 
     public virtual void Exit(CombatNikke owner, bool isCancel = false) { }
 
     public virtual void Tick(float deltaTime) { }
+
+    /// <summary>
+    /// 기본 전투 처리. 파생 클래스에서 override합니다.
+    /// </summary>
+    /// Caller: NikkeAttackState.Execute()
+    public virtual void ProcessCombat(CombatNikke owner, Vector3 targetWorldPos, bool isTargetValid)
+    {
+        Update(owner, targetWorldPos);
+    }
 
     public void Reload()
     {
         _currentAmmo.Value = _maxAmmo;
     }
 
-    public void ConsumeAmmo(int amount)
+    protected void ConsumeAmmo(int amount)
     {
         _currentAmmo.Value = Mathf.Max(0, _currentAmmo.Value - amount);
     }

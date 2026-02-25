@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 /// <summary>
 /// 기본형 무기 (AR, SMG, MG, SG) 추상 클래스.
@@ -27,7 +27,7 @@ public abstract class DefaultWeaponBase : WeaponBase
         _lastFireTime = -_fireInterval;
     }
 
-    public override void Update(CombatNikke owner, Vector3 targetWorldPos)
+    protected override void Update(CombatNikke owner, Vector3 targetWorldPos)
     {
         if (!CanFire) return;
 
@@ -41,6 +41,20 @@ public abstract class DefaultWeaponBase : WeaponBase
     public override void Exit(CombatNikke owner, bool isCancel = false)
     {
         // 기본형은 버튼 해제 시 아무 동작 안 함
+    }
+
+    /// <summary>
+    /// 일반형 무기 전투 처리.
+    /// Auto 모드에서는 CombatRapture 타겟에만 사격합니다.
+    /// </summary>
+    /// Caller: NikkeAttackState.Execute()
+    public override void ProcessCombat(CombatNikke owner, Vector3 targetWorldPos, bool isTargetValid)
+    {
+        bool isAuto = CombatMode.Value == NikkeClone.Utils.eNikkeCombatMode.Auto;
+        if (!isAuto || isTargetValid)
+        {
+            Update(owner, targetWorldPos);
+        }
     }
 
     /// <summary>
