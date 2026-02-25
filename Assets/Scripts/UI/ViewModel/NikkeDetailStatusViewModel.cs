@@ -72,9 +72,9 @@ public class NikkeDetailStatusViewModel : ViewModelBase
         LevelText.Value = $"Lv.{level}";
 
         // 기본 값 * 레벨
-        HP.Value = (_gameData.hp * level).ToString();
-        Attack.Value = (_gameData.attack * level).ToString();
-        Defense.Value = (_gameData.defense * level).ToString();
+        HP.Value = (_gameData.status.hp * level).ToString();
+        Attack.Value = (_gameData.status.attack * level).ToString();
+        Defense.Value = (_gameData.status.defense * level).ToString();
     }
 
     private void OnCombatPowerChanged(int cp) => CombatPower.Value = cp.ToString();

@@ -158,9 +158,9 @@ public class CameraManager : IManagerBase
         entry.IsActive = true;
         entry.Camera.Priority = entry.RegisteredPriority;
 
-        if (blendTime.HasValue && _brain != null)
+        if (blendTime.HasValue)
         {
-            _brain.DefaultBlend = new CinemachineBlendDefinition(
+            GetBrain().DefaultBlend = new CinemachineBlendDefinition(
                 CinemachineBlendDefinition.Styles.EaseInOut,
                 blendTime.Value
             );

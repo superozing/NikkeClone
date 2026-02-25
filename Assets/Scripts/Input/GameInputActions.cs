@@ -423,6 +423,270 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Combat"",
+            ""id"": ""ae31a0a8-d3d2-4a76-8237-766c0f93410f"",
+            ""actions"": [
+                {
+                    ""name"": ""SelectNikke1"",
+                    ""type"": ""Button"",
+                    ""id"": ""b28a8523-eae3-45ff-86c4-ab31726fb292"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SelectNikke2"",
+                    ""type"": ""Button"",
+                    ""id"": ""59e7fc1b-5b7c-434a-8cdd-628396d06ff3"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SelectNikke3"",
+                    ""type"": ""Button"",
+                    ""id"": ""aaa3fdea-95fa-43e8-a107-968e554e03dc"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SelectNikke4"",
+                    ""type"": ""Button"",
+                    ""id"": ""e29c42c6-b690-470b-af5c-85b3cd34a4d3"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SelectNikke5"",
+                    ""type"": ""Button"",
+                    ""id"": ""69ba016d-01da-4a2c-9fc7-8c25ff7331ff"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ToggleAllCover"",
+                    ""type"": ""Button"",
+                    ""id"": ""a4a71036-a0a7-4cd3-a4b0-1e227bf946b7"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Fire"",
+                    ""type"": ""Button"",
+                    ""id"": ""7075fccc-8662-4964-a39a-54c5912c630b"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DebugWin"",
+                    ""type"": ""Button"",
+                    ""id"": ""3edf579f-c582-42d2-a22f-8b623adcf609"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DebugLose"",
+                    ""type"": ""Button"",
+                    ""id"": ""1eb32638-f133-406d-8b2a-f6dc1898698f"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ToggleAuto"",
+                    ""type"": ""Button"",
+                    ""id"": ""3c574a36-f76b-44ec-8033-a9437a4d7f72"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""e7aa49fb-4b3f-4bc2-986f-5d4afc50a72f"",
+                    ""path"": ""<Keyboard>/z"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectNikke1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bd1973ff-d344-4693-aa42-ed1a86f1a3a6"",
+                    ""path"": ""<Keyboard>/x"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectNikke2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ec308c1d-8978-4bf8-a317-184d7a8ff2ec"",
+                    ""path"": ""<Keyboard>/c"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectNikke3"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7becff5e-6cee-4dd1-91cc-7bfb2c459482"",
+                    ""path"": ""<Keyboard>/v"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectNikke4"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a2512a0e-04e0-4723-b1c5-1c732e2bae22"",
+                    ""path"": ""<Keyboard>/b"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectNikke5"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""752857ff-022b-4159-8423-feff0bdccd9f"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleAllCover"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cdf8eeb9-ff0e-4683-8728-1ecb7fa65cbf"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Fire"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f306ea5c-5f58-4a83-b7c7-985748e52c18"",
+                    ""path"": ""<Keyboard>/f1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DebugWin"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c57b449a-7bb2-4241-9283-d7d2a162f0d1"",
+                    ""path"": ""<Keyboard>/f2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DebugLose"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""89f62dd0-1c7d-454c-bd63-c0905eaabe90"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleAuto"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""UI_CombatResultVictoryPopup"",
+            ""id"": ""3f976408-6e43-44b9-a5b3-deb200d0835c"",
+            ""actions"": [
+                {
+                    ""name"": ""New action"",
+                    ""type"": ""Button"",
+                    ""id"": ""1585c064-a592-42b0-b289-3eba0f91d17f"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""1d0541f7-99a7-4c26-8230-1289de008c8c"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""New action"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""UI_CombatResultDefeatPopup"",
+            ""id"": ""7add75a1-8282-4e50-9fb9-80b469168a9d"",
+            ""actions"": [
+                {
+                    ""name"": ""New action"",
+                    ""type"": ""Button"",
+                    ""id"": ""e98e77b6-446e-4eb6-b00e-0f9898ddc932"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""8e5bd8e2-e5de-4df3-b7b0-5488b5c3a3d0"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""New action"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -463,6 +727,24 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
         // UI_StageInfoPopup
         m_UI_StageInfoPopup = asset.FindActionMap("UI_StageInfoPopup", throwIfNotFound: true);
         m_UI_StageInfoPopup_Close = m_UI_StageInfoPopup.FindAction("Close", throwIfNotFound: true);
+        // Combat
+        m_Combat = asset.FindActionMap("Combat", throwIfNotFound: true);
+        m_Combat_SelectNikke1 = m_Combat.FindAction("SelectNikke1", throwIfNotFound: true);
+        m_Combat_SelectNikke2 = m_Combat.FindAction("SelectNikke2", throwIfNotFound: true);
+        m_Combat_SelectNikke3 = m_Combat.FindAction("SelectNikke3", throwIfNotFound: true);
+        m_Combat_SelectNikke4 = m_Combat.FindAction("SelectNikke4", throwIfNotFound: true);
+        m_Combat_SelectNikke5 = m_Combat.FindAction("SelectNikke5", throwIfNotFound: true);
+        m_Combat_ToggleAllCover = m_Combat.FindAction("ToggleAllCover", throwIfNotFound: true);
+        m_Combat_Fire = m_Combat.FindAction("Fire", throwIfNotFound: true);
+        m_Combat_DebugWin = m_Combat.FindAction("DebugWin", throwIfNotFound: true);
+        m_Combat_DebugLose = m_Combat.FindAction("DebugLose", throwIfNotFound: true);
+        m_Combat_ToggleAuto = m_Combat.FindAction("ToggleAuto", throwIfNotFound: true);
+        // UI_CombatResultVictoryPopup
+        m_UI_CombatResultVictoryPopup = asset.FindActionMap("UI_CombatResultVictoryPopup", throwIfNotFound: true);
+        m_UI_CombatResultVictoryPopup_Newaction = m_UI_CombatResultVictoryPopup.FindAction("New action", throwIfNotFound: true);
+        // UI_CombatResultDefeatPopup
+        m_UI_CombatResultDefeatPopup = asset.FindActionMap("UI_CombatResultDefeatPopup", throwIfNotFound: true);
+        m_UI_CombatResultDefeatPopup_Newaction = m_UI_CombatResultDefeatPopup.FindAction("New action", throwIfNotFound: true);
     }
 
     ~@GameInputActions()
@@ -479,6 +761,9 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
         UnityEngine.Debug.Assert(!m_UI_SkillInfoPopup.enabled, "This will cause a leak and performance issues, GameInputActions.UI_SkillInfoPopup.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_UI_SquadDetailPopup.enabled, "This will cause a leak and performance issues, GameInputActions.UI_SquadDetailPopup.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_UI_StageInfoPopup.enabled, "This will cause a leak and performance issues, GameInputActions.UI_StageInfoPopup.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_Combat.enabled, "This will cause a leak and performance issues, GameInputActions.Combat.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_UI_CombatResultVictoryPopup.enabled, "This will cause a leak and performance issues, GameInputActions.UI_CombatResultVictoryPopup.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_UI_CombatResultDefeatPopup.enabled, "This will cause a leak and performance issues, GameInputActions.UI_CombatResultDefeatPopup.Disable() has not been called.");
     }
 
     /// <summary>
@@ -1702,6 +1987,393 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
     /// Provides a new <see cref="UI_StageInfoPopupActions" /> instance referencing this action map.
     /// </summary>
     public UI_StageInfoPopupActions @UI_StageInfoPopup => new UI_StageInfoPopupActions(this);
+
+    // Combat
+    private readonly InputActionMap m_Combat;
+    private List<ICombatActions> m_CombatActionsCallbackInterfaces = new List<ICombatActions>();
+    private readonly InputAction m_Combat_SelectNikke1;
+    private readonly InputAction m_Combat_SelectNikke2;
+    private readonly InputAction m_Combat_SelectNikke3;
+    private readonly InputAction m_Combat_SelectNikke4;
+    private readonly InputAction m_Combat_SelectNikke5;
+    private readonly InputAction m_Combat_ToggleAllCover;
+    private readonly InputAction m_Combat_Fire;
+    private readonly InputAction m_Combat_DebugWin;
+    private readonly InputAction m_Combat_DebugLose;
+    private readonly InputAction m_Combat_ToggleAuto;
+    /// <summary>
+    /// Provides access to input actions defined in input action map "Combat".
+    /// </summary>
+    public struct CombatActions
+    {
+        private @GameInputActions m_Wrapper;
+
+        /// <summary>
+        /// Construct a new instance of the input action map wrapper class.
+        /// </summary>
+        public CombatActions(@GameInputActions wrapper) { m_Wrapper = wrapper; }
+        /// <summary>
+        /// Provides access to the underlying input action "Combat/SelectNikke1".
+        /// </summary>
+        public InputAction @SelectNikke1 => m_Wrapper.m_Combat_SelectNikke1;
+        /// <summary>
+        /// Provides access to the underlying input action "Combat/SelectNikke2".
+        /// </summary>
+        public InputAction @SelectNikke2 => m_Wrapper.m_Combat_SelectNikke2;
+        /// <summary>
+        /// Provides access to the underlying input action "Combat/SelectNikke3".
+        /// </summary>
+        public InputAction @SelectNikke3 => m_Wrapper.m_Combat_SelectNikke3;
+        /// <summary>
+        /// Provides access to the underlying input action "Combat/SelectNikke4".
+        /// </summary>
+        public InputAction @SelectNikke4 => m_Wrapper.m_Combat_SelectNikke4;
+        /// <summary>
+        /// Provides access to the underlying input action "Combat/SelectNikke5".
+        /// </summary>
+        public InputAction @SelectNikke5 => m_Wrapper.m_Combat_SelectNikke5;
+        /// <summary>
+        /// Provides access to the underlying input action "Combat/ToggleAllCover".
+        /// </summary>
+        public InputAction @ToggleAllCover => m_Wrapper.m_Combat_ToggleAllCover;
+        /// <summary>
+        /// Provides access to the underlying input action "Combat/Fire".
+        /// </summary>
+        public InputAction @Fire => m_Wrapper.m_Combat_Fire;
+        /// <summary>
+        /// Provides access to the underlying input action "Combat/DebugWin".
+        /// </summary>
+        public InputAction @DebugWin => m_Wrapper.m_Combat_DebugWin;
+        /// <summary>
+        /// Provides access to the underlying input action "Combat/DebugLose".
+        /// </summary>
+        public InputAction @DebugLose => m_Wrapper.m_Combat_DebugLose;
+        /// <summary>
+        /// Provides access to the underlying input action "Combat/ToggleAuto".
+        /// </summary>
+        public InputAction @ToggleAuto => m_Wrapper.m_Combat_ToggleAuto;
+        /// <summary>
+        /// Provides access to the underlying input action map instance.
+        /// </summary>
+        public InputActionMap Get() { return m_Wrapper.m_Combat; }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
+        public void Enable() { Get().Enable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Disable()" />
+        public void Disable() { Get().Disable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.enabled" />
+        public bool enabled => Get().enabled;
+        /// <summary>
+        /// Implicitly converts an <see ref="CombatActions" /> to an <see ref="InputActionMap" /> instance.
+        /// </summary>
+        public static implicit operator InputActionMap(CombatActions set) { return set.Get(); }
+        /// <summary>
+        /// Adds <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <param name="instance">Callback instance.</param>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c> or <paramref name="instance"/> have already been added this method does nothing.
+        /// </remarks>
+        /// <seealso cref="CombatActions" />
+        public void AddCallbacks(ICombatActions instance)
+        {
+            if (instance == null || m_Wrapper.m_CombatActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_CombatActionsCallbackInterfaces.Add(instance);
+            @SelectNikke1.started += instance.OnSelectNikke1;
+            @SelectNikke1.performed += instance.OnSelectNikke1;
+            @SelectNikke1.canceled += instance.OnSelectNikke1;
+            @SelectNikke2.started += instance.OnSelectNikke2;
+            @SelectNikke2.performed += instance.OnSelectNikke2;
+            @SelectNikke2.canceled += instance.OnSelectNikke2;
+            @SelectNikke3.started += instance.OnSelectNikke3;
+            @SelectNikke3.performed += instance.OnSelectNikke3;
+            @SelectNikke3.canceled += instance.OnSelectNikke3;
+            @SelectNikke4.started += instance.OnSelectNikke4;
+            @SelectNikke4.performed += instance.OnSelectNikke4;
+            @SelectNikke4.canceled += instance.OnSelectNikke4;
+            @SelectNikke5.started += instance.OnSelectNikke5;
+            @SelectNikke5.performed += instance.OnSelectNikke5;
+            @SelectNikke5.canceled += instance.OnSelectNikke5;
+            @ToggleAllCover.started += instance.OnToggleAllCover;
+            @ToggleAllCover.performed += instance.OnToggleAllCover;
+            @ToggleAllCover.canceled += instance.OnToggleAllCover;
+            @Fire.started += instance.OnFire;
+            @Fire.performed += instance.OnFire;
+            @Fire.canceled += instance.OnFire;
+            @DebugWin.started += instance.OnDebugWin;
+            @DebugWin.performed += instance.OnDebugWin;
+            @DebugWin.canceled += instance.OnDebugWin;
+            @DebugLose.started += instance.OnDebugLose;
+            @DebugLose.performed += instance.OnDebugLose;
+            @DebugLose.canceled += instance.OnDebugLose;
+            @ToggleAuto.started += instance.OnToggleAuto;
+            @ToggleAuto.performed += instance.OnToggleAuto;
+            @ToggleAuto.canceled += instance.OnToggleAuto;
+        }
+
+        /// <summary>
+        /// Removes <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <remarks>
+        /// Calling this method when <paramref name="instance" /> have not previously been registered has no side-effects.
+        /// </remarks>
+        /// <seealso cref="CombatActions" />
+        private void UnregisterCallbacks(ICombatActions instance)
+        {
+            @SelectNikke1.started -= instance.OnSelectNikke1;
+            @SelectNikke1.performed -= instance.OnSelectNikke1;
+            @SelectNikke1.canceled -= instance.OnSelectNikke1;
+            @SelectNikke2.started -= instance.OnSelectNikke2;
+            @SelectNikke2.performed -= instance.OnSelectNikke2;
+            @SelectNikke2.canceled -= instance.OnSelectNikke2;
+            @SelectNikke3.started -= instance.OnSelectNikke3;
+            @SelectNikke3.performed -= instance.OnSelectNikke3;
+            @SelectNikke3.canceled -= instance.OnSelectNikke3;
+            @SelectNikke4.started -= instance.OnSelectNikke4;
+            @SelectNikke4.performed -= instance.OnSelectNikke4;
+            @SelectNikke4.canceled -= instance.OnSelectNikke4;
+            @SelectNikke5.started -= instance.OnSelectNikke5;
+            @SelectNikke5.performed -= instance.OnSelectNikke5;
+            @SelectNikke5.canceled -= instance.OnSelectNikke5;
+            @ToggleAllCover.started -= instance.OnToggleAllCover;
+            @ToggleAllCover.performed -= instance.OnToggleAllCover;
+            @ToggleAllCover.canceled -= instance.OnToggleAllCover;
+            @Fire.started -= instance.OnFire;
+            @Fire.performed -= instance.OnFire;
+            @Fire.canceled -= instance.OnFire;
+            @DebugWin.started -= instance.OnDebugWin;
+            @DebugWin.performed -= instance.OnDebugWin;
+            @DebugWin.canceled -= instance.OnDebugWin;
+            @DebugLose.started -= instance.OnDebugLose;
+            @DebugLose.performed -= instance.OnDebugLose;
+            @DebugLose.canceled -= instance.OnDebugLose;
+            @ToggleAuto.started -= instance.OnToggleAuto;
+            @ToggleAuto.performed -= instance.OnToggleAuto;
+            @ToggleAuto.canceled -= instance.OnToggleAuto;
+        }
+
+        /// <summary>
+        /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="CombatActions.UnregisterCallbacks(ICombatActions)" />.
+        /// </summary>
+        /// <seealso cref="CombatActions.UnregisterCallbacks(ICombatActions)" />
+        public void RemoveCallbacks(ICombatActions instance)
+        {
+            if (m_Wrapper.m_CombatActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        /// <summary>
+        /// Replaces all existing callback instances and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
+        /// </summary>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
+        /// </remarks>
+        /// <seealso cref="CombatActions.AddCallbacks(ICombatActions)" />
+        /// <seealso cref="CombatActions.RemoveCallbacks(ICombatActions)" />
+        /// <seealso cref="CombatActions.UnregisterCallbacks(ICombatActions)" />
+        public void SetCallbacks(ICombatActions instance)
+        {
+            foreach (var item in m_Wrapper.m_CombatActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_CombatActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    /// <summary>
+    /// Provides a new <see cref="CombatActions" /> instance referencing this action map.
+    /// </summary>
+    public CombatActions @Combat => new CombatActions(this);
+
+    // UI_CombatResultVictoryPopup
+    private readonly InputActionMap m_UI_CombatResultVictoryPopup;
+    private List<IUI_CombatResultVictoryPopupActions> m_UI_CombatResultVictoryPopupActionsCallbackInterfaces = new List<IUI_CombatResultVictoryPopupActions>();
+    private readonly InputAction m_UI_CombatResultVictoryPopup_Newaction;
+    /// <summary>
+    /// Provides access to input actions defined in input action map "UI_CombatResultVictoryPopup".
+    /// </summary>
+    public struct UI_CombatResultVictoryPopupActions
+    {
+        private @GameInputActions m_Wrapper;
+
+        /// <summary>
+        /// Construct a new instance of the input action map wrapper class.
+        /// </summary>
+        public UI_CombatResultVictoryPopupActions(@GameInputActions wrapper) { m_Wrapper = wrapper; }
+        /// <summary>
+        /// Provides access to the underlying input action "UI_CombatResultVictoryPopup/Newaction".
+        /// </summary>
+        public InputAction @Newaction => m_Wrapper.m_UI_CombatResultVictoryPopup_Newaction;
+        /// <summary>
+        /// Provides access to the underlying input action map instance.
+        /// </summary>
+        public InputActionMap Get() { return m_Wrapper.m_UI_CombatResultVictoryPopup; }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
+        public void Enable() { Get().Enable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Disable()" />
+        public void Disable() { Get().Disable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.enabled" />
+        public bool enabled => Get().enabled;
+        /// <summary>
+        /// Implicitly converts an <see ref="UI_CombatResultVictoryPopupActions" /> to an <see ref="InputActionMap" /> instance.
+        /// </summary>
+        public static implicit operator InputActionMap(UI_CombatResultVictoryPopupActions set) { return set.Get(); }
+        /// <summary>
+        /// Adds <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <param name="instance">Callback instance.</param>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c> or <paramref name="instance"/> have already been added this method does nothing.
+        /// </remarks>
+        /// <seealso cref="UI_CombatResultVictoryPopupActions" />
+        public void AddCallbacks(IUI_CombatResultVictoryPopupActions instance)
+        {
+            if (instance == null || m_Wrapper.m_UI_CombatResultVictoryPopupActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_UI_CombatResultVictoryPopupActionsCallbackInterfaces.Add(instance);
+            @Newaction.started += instance.OnNewaction;
+            @Newaction.performed += instance.OnNewaction;
+            @Newaction.canceled += instance.OnNewaction;
+        }
+
+        /// <summary>
+        /// Removes <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <remarks>
+        /// Calling this method when <paramref name="instance" /> have not previously been registered has no side-effects.
+        /// </remarks>
+        /// <seealso cref="UI_CombatResultVictoryPopupActions" />
+        private void UnregisterCallbacks(IUI_CombatResultVictoryPopupActions instance)
+        {
+            @Newaction.started -= instance.OnNewaction;
+            @Newaction.performed -= instance.OnNewaction;
+            @Newaction.canceled -= instance.OnNewaction;
+        }
+
+        /// <summary>
+        /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="UI_CombatResultVictoryPopupActions.UnregisterCallbacks(IUI_CombatResultVictoryPopupActions)" />.
+        /// </summary>
+        /// <seealso cref="UI_CombatResultVictoryPopupActions.UnregisterCallbacks(IUI_CombatResultVictoryPopupActions)" />
+        public void RemoveCallbacks(IUI_CombatResultVictoryPopupActions instance)
+        {
+            if (m_Wrapper.m_UI_CombatResultVictoryPopupActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        /// <summary>
+        /// Replaces all existing callback instances and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
+        /// </summary>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
+        /// </remarks>
+        /// <seealso cref="UI_CombatResultVictoryPopupActions.AddCallbacks(IUI_CombatResultVictoryPopupActions)" />
+        /// <seealso cref="UI_CombatResultVictoryPopupActions.RemoveCallbacks(IUI_CombatResultVictoryPopupActions)" />
+        /// <seealso cref="UI_CombatResultVictoryPopupActions.UnregisterCallbacks(IUI_CombatResultVictoryPopupActions)" />
+        public void SetCallbacks(IUI_CombatResultVictoryPopupActions instance)
+        {
+            foreach (var item in m_Wrapper.m_UI_CombatResultVictoryPopupActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_UI_CombatResultVictoryPopupActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    /// <summary>
+    /// Provides a new <see cref="UI_CombatResultVictoryPopupActions" /> instance referencing this action map.
+    /// </summary>
+    public UI_CombatResultVictoryPopupActions @UI_CombatResultVictoryPopup => new UI_CombatResultVictoryPopupActions(this);
+
+    // UI_CombatResultDefeatPopup
+    private readonly InputActionMap m_UI_CombatResultDefeatPopup;
+    private List<IUI_CombatResultDefeatPopupActions> m_UI_CombatResultDefeatPopupActionsCallbackInterfaces = new List<IUI_CombatResultDefeatPopupActions>();
+    private readonly InputAction m_UI_CombatResultDefeatPopup_Newaction;
+    /// <summary>
+    /// Provides access to input actions defined in input action map "UI_CombatResultDefeatPopup".
+    /// </summary>
+    public struct UI_CombatResultDefeatPopupActions
+    {
+        private @GameInputActions m_Wrapper;
+
+        /// <summary>
+        /// Construct a new instance of the input action map wrapper class.
+        /// </summary>
+        public UI_CombatResultDefeatPopupActions(@GameInputActions wrapper) { m_Wrapper = wrapper; }
+        /// <summary>
+        /// Provides access to the underlying input action "UI_CombatResultDefeatPopup/Newaction".
+        /// </summary>
+        public InputAction @Newaction => m_Wrapper.m_UI_CombatResultDefeatPopup_Newaction;
+        /// <summary>
+        /// Provides access to the underlying input action map instance.
+        /// </summary>
+        public InputActionMap Get() { return m_Wrapper.m_UI_CombatResultDefeatPopup; }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
+        public void Enable() { Get().Enable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Disable()" />
+        public void Disable() { Get().Disable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.enabled" />
+        public bool enabled => Get().enabled;
+        /// <summary>
+        /// Implicitly converts an <see ref="UI_CombatResultDefeatPopupActions" /> to an <see ref="InputActionMap" /> instance.
+        /// </summary>
+        public static implicit operator InputActionMap(UI_CombatResultDefeatPopupActions set) { return set.Get(); }
+        /// <summary>
+        /// Adds <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <param name="instance">Callback instance.</param>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c> or <paramref name="instance"/> have already been added this method does nothing.
+        /// </remarks>
+        /// <seealso cref="UI_CombatResultDefeatPopupActions" />
+        public void AddCallbacks(IUI_CombatResultDefeatPopupActions instance)
+        {
+            if (instance == null || m_Wrapper.m_UI_CombatResultDefeatPopupActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_UI_CombatResultDefeatPopupActionsCallbackInterfaces.Add(instance);
+            @Newaction.started += instance.OnNewaction;
+            @Newaction.performed += instance.OnNewaction;
+            @Newaction.canceled += instance.OnNewaction;
+        }
+
+        /// <summary>
+        /// Removes <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <remarks>
+        /// Calling this method when <paramref name="instance" /> have not previously been registered has no side-effects.
+        /// </remarks>
+        /// <seealso cref="UI_CombatResultDefeatPopupActions" />
+        private void UnregisterCallbacks(IUI_CombatResultDefeatPopupActions instance)
+        {
+            @Newaction.started -= instance.OnNewaction;
+            @Newaction.performed -= instance.OnNewaction;
+            @Newaction.canceled -= instance.OnNewaction;
+        }
+
+        /// <summary>
+        /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="UI_CombatResultDefeatPopupActions.UnregisterCallbacks(IUI_CombatResultDefeatPopupActions)" />.
+        /// </summary>
+        /// <seealso cref="UI_CombatResultDefeatPopupActions.UnregisterCallbacks(IUI_CombatResultDefeatPopupActions)" />
+        public void RemoveCallbacks(IUI_CombatResultDefeatPopupActions instance)
+        {
+            if (m_Wrapper.m_UI_CombatResultDefeatPopupActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        /// <summary>
+        /// Replaces all existing callback instances and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
+        /// </summary>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
+        /// </remarks>
+        /// <seealso cref="UI_CombatResultDefeatPopupActions.AddCallbacks(IUI_CombatResultDefeatPopupActions)" />
+        /// <seealso cref="UI_CombatResultDefeatPopupActions.RemoveCallbacks(IUI_CombatResultDefeatPopupActions)" />
+        /// <seealso cref="UI_CombatResultDefeatPopupActions.UnregisterCallbacks(IUI_CombatResultDefeatPopupActions)" />
+        public void SetCallbacks(IUI_CombatResultDefeatPopupActions instance)
+        {
+            foreach (var item in m_Wrapper.m_UI_CombatResultDefeatPopupActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_UI_CombatResultDefeatPopupActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    /// <summary>
+    /// Provides a new <see cref="UI_CombatResultDefeatPopupActions" /> instance referencing this action map.
+    /// </summary>
+    public UI_CombatResultDefeatPopupActions @UI_CombatResultDefeatPopup => new UI_CombatResultDefeatPopupActions(this);
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "None" which allows adding and removing callbacks.
     /// </summary>
@@ -1881,5 +2553,113 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnClose(InputAction.CallbackContext context);
+    }
+    /// <summary>
+    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Combat" which allows adding and removing callbacks.
+    /// </summary>
+    /// <seealso cref="CombatActions.AddCallbacks(ICombatActions)" />
+    /// <seealso cref="CombatActions.RemoveCallbacks(ICombatActions)" />
+    public interface ICombatActions
+    {
+        /// <summary>
+        /// Method invoked when associated input action "SelectNikke1" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSelectNikke1(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "SelectNikke2" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSelectNikke2(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "SelectNikke3" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSelectNikke3(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "SelectNikke4" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSelectNikke4(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "SelectNikke5" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSelectNikke5(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "ToggleAllCover" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnToggleAllCover(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Fire" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnFire(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "DebugWin" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnDebugWin(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "DebugLose" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnDebugLose(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "ToggleAuto" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnToggleAuto(InputAction.CallbackContext context);
+    }
+    /// <summary>
+    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI_CombatResultVictoryPopup" which allows adding and removing callbacks.
+    /// </summary>
+    /// <seealso cref="UI_CombatResultVictoryPopupActions.AddCallbacks(IUI_CombatResultVictoryPopupActions)" />
+    /// <seealso cref="UI_CombatResultVictoryPopupActions.RemoveCallbacks(IUI_CombatResultVictoryPopupActions)" />
+    public interface IUI_CombatResultVictoryPopupActions
+    {
+        /// <summary>
+        /// Method invoked when associated input action "New action" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnNewaction(InputAction.CallbackContext context);
+    }
+    /// <summary>
+    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI_CombatResultDefeatPopup" which allows adding and removing callbacks.
+    /// </summary>
+    /// <seealso cref="UI_CombatResultDefeatPopupActions.AddCallbacks(IUI_CombatResultDefeatPopupActions)" />
+    /// <seealso cref="UI_CombatResultDefeatPopupActions.RemoveCallbacks(IUI_CombatResultDefeatPopupActions)" />
+    public interface IUI_CombatResultDefeatPopupActions
+    {
+        /// <summary>
+        /// Method invoked when associated input action "New action" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnNewaction(InputAction.CallbackContext context);
     }
 }

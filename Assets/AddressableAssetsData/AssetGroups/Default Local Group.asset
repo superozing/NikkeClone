@@ -60,8 +60,18 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 256d57106f1930b4fb90d0f7e061a2ee
+    m_Address: UI/View/UI_ARCrosshair
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 2639e0bb0865c3c48b99f3ccedc70470
     m_Address: RaptureGameData.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2b1a2905c63c22e44a9b114c01e7d634
+    m_Address: UI/Popup/UI_CombatResultVictoryPopup
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -77,6 +87,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 30ac6530eec34c14d9d414d9e3d455a0
     m_Address: UI/View/UI_SkillSlot
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 347dc5a6ce68d744a9fd46a764ffa0eb
+    m_Address: UI/View/UI_SGCrosshair
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -160,6 +175,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 51333e5a2e1b2ad4c886b995c6e30a25
+    m_Address: Assets/Textures/Nikke/DORO_Idle
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5233127e71fcb0648a36489c9dae13e2
     m_Address: "Assets/Textures/Nikke/\uB124\uC628_Idle"
     m_ReadOnly: 0
@@ -172,6 +192,16 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 582541f48350c8c43badd93a0f1bd193
     m_Address: UI/View/UI_Money
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5b34249f55de1334eb50740da04dc573
+    m_Address: Prefabs/Combat/CombatRapture1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 61e86401632c5654a9c2f804cf995925
+    m_Address: Prefabs/Combat/RL_Projectile
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -295,6 +325,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9f7205df00bb68d4fb4f717cf922544d
+    m_Address: UI/Popup/UI_CombatResultDefeatPopup
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a212979f6a313104185673ddbb83ff20
     m_Address: "Assets/Textures/Nikke/\uB77C\uD53C_Idle"
     m_ReadOnly: 0
@@ -335,6 +370,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c79494ab64253764cb6b795fdb02335c
+    m_Address: UI/View/UI_CombatHUD
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: cc29d66e40c965e48a3411db6178c06d
     m_Address: "Assets/Textures/Nikke/\uC544\uB2C8\uC2A4_Shoot"
     m_ReadOnly: 0
@@ -360,6 +400,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d6181f91742ede249a528252bbb8403b
+    m_Address: UI/View/UI_MGCrosshair
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d838b12b712e82a44940307b4b6800c9
     m_Address: UI/View/UI_InventoryTab
     m_ReadOnly: 0
@@ -372,6 +417,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: dc54caf0438e29747a5d0258f440d99b
     m_Address: "Assets/Textures/Nikke/\uB124\uC628_Face"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e076901c9e7abf04db55410ec7095427
+    m_Address: UI/View/UI_SRCrosshair
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -427,6 +477,16 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: fbc459a2112c7604e8cb6c16167b72e3
     m_Address: Assets/Textures/Icon/Weapon/MG
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fd94e5596bf41994aa3371412b3786c2
+    m_Address: UI/View/UI_RLCrosshair
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fdb56f14e618edd45b2cf02fd9ce7904
+    m_Address: UI/View/UI_SMGCrosshair
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

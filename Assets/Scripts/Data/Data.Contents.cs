@@ -29,9 +29,7 @@ public class NikkeGameData : IDataId
     public string manufacturer;
     public string squad;
 
-    public int hp;
-    public int attack;
-    public int defense;
+    public StatusData status;
 
     public Color color;
 
@@ -107,6 +105,10 @@ public class WeaponData
     public string controlType;
     public string description;
     public float damagePercent;
+
+    public float fireRate;             // 초당 발사 수 
+    public float chargeTime;           // 차지형 전용: 풀차지 소요 시간
+    public float fullChargeMultiplier; // 차지형 전용: 풀차지 배율
 }
 
 
@@ -172,6 +174,12 @@ public class UserDataModel
     public Dictionary<int, UserSquadData> Squads { get; set; } = new Dictionary<int, UserSquadData>();
     public Dictionary<int, UserMissionData> Missions { get; set; } = new Dictionary<int, UserMissionData>();
     public UserChapterData Chapter { get; set; } = new UserChapterData();
+
+    /// <summary>
+    /// 현재 진행 중인 전투 정보입니다.
+    /// 전투 시작 시 설정, 전투 종료 시 null로 초기화합니다.
+    /// </summary>
+    public UserCombatData Combat { get; set; }
 }
 
 [Serializable]
@@ -257,6 +265,29 @@ public class UserMissionData
         this.currentCount = new ReactiveProperty<int>(0);
     }
 }
+
+#region UserCombatData
+
+/// <summary>
+/// 전투 씬으로 전달할 파라미터입니다.
+/// </summary>
+[Serializable]
+public class UserCombatData
+{
+    /// <summary>전투할 스테이지 ID</summary>
+    public int stageId;
+
+    /// <summary>출전 스쿼드 ID</summary>
+    public int squadId;
+
+    public UserCombatData(int stageId, int squadId)
+    {
+        this.stageId = stageId;
+        this.squadId = squadId;
+    }
+}
+
+#endregion
 
 #region UserChapterData
 
@@ -398,6 +429,8 @@ public class StageBattleGameData : IDataId
     public int[] phaseIds;                  // 페이즈 ID 배열 (순서대로)
     public float[] phaseProgressWeights;    // 각 페이즈 완료 시 진행률 가중치 (합계 1.0)
     public int[] appearingRaptureIds;       // 등장하는 모든 랩쳐 ID (캐싱용, 후순위)
+
+    public int timeLimitSec;                // 전투 제한 시간 (초)
 
     public int ID => id;
 

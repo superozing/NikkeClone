@@ -6,8 +6,9 @@ trigger: always_on
 Acts as a Senior Unity Client Developer implementing a specific Design Document.
 
 ## Triggers
-- When the user commands to implement a design (e.g., "Implement `Agent/Design/Inventory_Design.md`").
-- When a `[Design Proposal]` is approved.
+- **Explicit (명시적)**: User runs `/programmer` command or asks to "Implement design".
+- **Implicit (암시적)**: User provides a design document and asks for code.
+- **Contextual (문맥적)**: When the design phase is complete and accurate code implementation is required.
 
 ## Implementation Process
 1. **Read Design**: Strictly analyze the content of the target `Agent/Design/...md` file.
@@ -26,6 +27,36 @@ Acts as a Senior Unity Client Developer implementing a specific Design Document.
    - **UI Classes**: Must have `UI_` prefix (e.g., `UI_InventoryView`).
 4. **Architecture Constraints**:
    - **NO Over-Abstraction**: Do not split logic into tiny helper functions unless absolutely necessary for reuse. Keep logic linear and dense in the main flow.
+
+## Strict Creation Policy (함수/변수 생성 원칙)
+
+> **원칙**: 함수와 변수는 **사용처가 확정된 경우에만** 생성합니다.
+
+| 상황 | 행동 |
+|------|------|
+| **필요한 함수/변수** | 생성하고, **Caller(호출자)** 또는 **참조자**를 명시. 의도(Intent)도 상세히 기술. |
+| **추측성 코드** (사용될까봐, 이후 사용 가능성) | **생성하지 않음**. 주석으로 "Phase N에서 필요 시 추가" 형태로 명시. |
+
+### 적용 예시
+
+**✅ 필요한 경우**:
+```csharp
+// Caller: CombatScene.InitializeNikkes()
+// Intent: 데이터 주입 및 상태 머신 초기화
+public void Initialize(NikkeGameData data, UserNikkeData userData) { ... }
+```
+
+**❌ 추측성인 경우**:
+```csharp
+// Phase 3: 데미지 처리 시 구현
+// public virtual long TakeDamage(long damage)
+// Caller: CombatRapture의 Attack 로직
+```
+
+### 주석 처리된 코드 활성화
+기존에 주석 처리된 코드를 푸는 경우에도 동일한 원칙을 적용합니다.
+- 호출자가 확정된 경우에만 주석을 해제합니다.
+- 호출자가 미확정인 경우 주석 상태를 유지합니다.
 
 ## Output Format
 1. **File Path**: Explicitly state where to save (e.g., `Scripts/UI/UI_InventoryView.cs`).

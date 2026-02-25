@@ -8,23 +8,21 @@
     "rarity": "SR",
     "manufacturer": "엘리시온",
     "squad": "카운터스",
-    "hp": 14500,
-    "attack": 650,
-    "defense": 140,
     "color": {
-      "r": 1.0,
-      "g": 0.0,
-      "b": 0.0,
-      "a": 1.0
+      "r": 1,
+      "g": 0,
+      "b": 0,
+      "a": 1
     },
     "weapon": {
       "weaponName": "밀리터리아",
       "weaponClass": "AR",
       "maxAmmo": 60,
-      "reloadTime": 1.0,
+      "reloadTime": 1,
       "controlType": "기본형",
       "description": "대상에게\n[공격력 13.65% 대미지]\n[코어 대미지 200%]",
-      "damagePercent": 13.65
+      "damagePercent": 13.65,
+      "fireRate": 10
     },
     "skills": [
       {
@@ -33,12 +31,18 @@
         "name": "포메이션 F.F",
         "description": "{0}회 피격 시 자신에게\n[공격력 {1}%▲] [{2}초 유지]",
         "skillTypeName": "패시브",
-        "cooldown": 0.0,
+        "cooldown": 0,
         "skillIconPath": "Skill/Rapi_S1",
         "values": [
-          { "value": "20" },
-          { "value": "21.81" },
-          { "value": "20" }
+          {
+            "value": "20"
+          },
+          {
+            "value": "21.81"
+          },
+          {
+            "value": "20"
+          }
         ]
       },
       {
@@ -47,12 +51,18 @@
         "name": "미사일",
         "description": "공격력이 가장 높은 적 {0}기에게\n[최종 공격력 {1}% 추가 대미지]\n[도발] [{2}초 유지]",
         "skillTypeName": "액티브",
-        "cooldown": 20.0,
+        "cooldown": 20,
         "skillIconPath": "Skill/Rapi_S2",
         "values": [
-          { "value": "1" },
-          { "value": "528.97" },
-          { "value": "5" }
+          {
+            "value": "1"
+          },
+          {
+            "value": "528.97"
+          },
+          {
+            "value": "5"
+          }
         ]
       },
       {
@@ -61,16 +71,29 @@
         "name": "다탄두 미사일",
         "description": "공격력이 가장 높은 적 {0}기에게\n[최종 공격력 {1}% 대미지]\n자신에게\n[공격력 {2}% ▲][{3}초 유지]",
         "skillTypeName": "액티브",
-        "cooldown": 40.0,
+        "cooldown": 40,
         "skillIconPath": "Skill/Rapi_Burst",
         "values": [
-          { "value": "1" },
-          { "value": "657.72" },
-          { "value": "60.75" },
-          { "value": "10" }
+          {
+            "value": "1"
+          },
+          {
+            "value": "657.72"
+          },
+          {
+            "value": "60.75"
+          },
+          {
+            "value": "10"
+          }
         ]
       }
-    ]
+    ],
+    "status": {
+      "hp": 14500,
+      "attack": 650,
+      "defense": 140
+    }
   },
   "1": {
     "id": 1,
@@ -81,14 +104,11 @@
     "rarity": "SR",
     "manufacturer": "테트라",
     "squad": "카운터스",
-    "hp": 18000,
-    "attack": 500,
-    "defense": 200,
     "color": {
-      "r": 1.0,
-      "g": 1.0,
-      "b": 0.0,
-      "a": 1.0
+      "r": 1,
+      "g": 1,
+      "b": 0,
+      "a": 1
     },
     "weapon": {
       "weaponName": "리버틴 테일",
@@ -97,7 +117,10 @@
       "reloadTime": 2.03,
       "controlType": "차지형",
       "description": "대상에게\n[공격력 65.02% 대미지]\n차지 시간: 1초\n풀 차지 대미지: 250% 대미지\n[코어 대미지 200%]",
-      "damagePercent": 65.02
+      "damagePercent": 65.02,
+      "fireRate": 0,
+      "chargeTime": 1,
+      "fullChargeMultiplier": 2.5
     },
     "skills": [
       {
@@ -106,12 +129,18 @@
         "name": "포메이션 D.H",
         "description": "{0}회 피격 시 자신에게\n[방어력 {1}% ▲] [{2}초 유지]",
         "skillTypeName": "패시브",
-        "cooldown": 0.0,
+        "cooldown": 0,
         "skillIconPath": "Skill/Anis_S1",
         "values": [
-          { "value": "40" },
-          { "value": "120" },
-          { "value": "10" }
+          {
+            "value": "40"
+          },
+          {
+            "value": "120"
+          },
+          {
+            "value": "10"
+          }
         ]
       },
       {
@@ -120,13 +149,21 @@
         "name": "포메이션 C.H",
         "description": "자신과 자신을 제외한 공격력이 가장 높은 아군 {0}기에게\n[방어력 {1}% ▲] [{2}초 유지]\n[피격 대미지 균등 분배] [{3}초 유지]",
         "skillTypeName": "액티브",
-        "cooldown": 30.0,
+        "cooldown": 30,
         "skillIconPath": "Skill/Anis_S2",
         "values": [
-          { "value": "2" },
-          { "value": "80" },
-          { "value": "5" },
-          { "value": "10" }
+          {
+            "value": "2"
+          },
+          {
+            "value": "80"
+          },
+          {
+            "value": "5"
+          },
+          {
+            "value": "10"
+          }
         ]
       },
       {
@@ -135,15 +172,26 @@
         "name": "핀 포인트 미사일",
         "description": "공격 범위 내 적들에게\n[최종 공격력 {0}% 대미지]\n[방어력 {1}% ▼] [{2}초 유지]",
         "skillTypeName": "액티브",
-        "cooldown": 20.0,
+        "cooldown": 20,
         "skillIconPath": "Skill/Anis_Burst",
         "values": [
-          { "value": "156.73" },
-          { "value": "32" },
-          { "value": "5" }
+          {
+            "value": "156.73"
+          },
+          {
+            "value": "32"
+          },
+          {
+            "value": "5"
+          }
         ]
       }
-    ]
+    ],
+    "status": {
+      "hp": 18000,
+      "attack": 500,
+      "defense": 200
+    }
   },
   "2": {
     "id": 2,
@@ -154,14 +202,11 @@
     "rarity": "SR",
     "manufacturer": "엘리시온",
     "squad": "카운터스",
-    "hp": 14000,
-    "attack": 550,
-    "defense": 160,
     "color": {
-      "r": 0.0,
-      "g": 0.0,
-      "b": 1.0,
-      "a": 1.0
+      "r": 0,
+      "g": 0,
+      "b": 1,
+      "a": 1
     },
     "weapon": {
       "weaponName": "올 브레이크",
@@ -170,7 +215,8 @@
       "reloadTime": 1.82,
       "controlType": "기본형",
       "description": "대상에게\n[공격력 224.5% 대미지]\n[코어 대미지 200%]",
-      "damagePercent": 224.5
+      "damagePercent": 224.5,
+      "fireRate": 2
     },
     "skills": [
       {
@@ -179,12 +225,18 @@
         "name": "네온 특제탄",
         "description": "적 처치 시 공격력이 가장 높은 아군 {0}기에게\n[크리티컬 확률 {1}% ▲] [{2}초 유지]",
         "skillTypeName": "패시브",
-        "cooldown": 0.0,
+        "cooldown": 0,
         "skillIconPath": "Skill/Neon_S1",
         "values": [
-          { "value": "2" },
-          { "value": "3.56" },
-          { "value": "5" }
+          {
+            "value": "2"
+          },
+          {
+            "value": "3.56"
+          },
+          {
+            "value": "5"
+          }
         ]
       },
       {
@@ -193,11 +245,15 @@
         "name": "화력 만세!",
         "description": "풀 버스트 타임 시작 시 아군 전체에게\n[크리티컬 확률 {0}% ▲] [{1}발 유지]",
         "skillTypeName": "패시브",
-        "cooldown": 0.0,
+        "cooldown": 0,
         "skillIconPath": "Skill/Neon_S2",
         "values": [
-          { "value": "45.93" },
-          { "value": "2" }
+          {
+            "value": "45.93"
+          },
+          {
+            "value": "2"
+          }
         ]
       },
       {
@@ -206,16 +262,29 @@
         "name": "오직 화력!",
         "description": "방어력이 가장 높은 적 {0}기에게\n[최종 공격력 {1}% 대미지]\n샷건 소지 아군 전체에게\n[최대 장탄수 {2}발 ▲] [{3}초 유지]",
         "skillTypeName": "액티브",
-        "cooldown": 20.0,
+        "cooldown": 20,
         "skillIconPath": "Skill/Neon_Burst",
         "values": [
-          { "value": "1" },
-          { "value": "528.97" },
-          { "value": "3" },
-          { "value": "10" }
+          {
+            "value": "1"
+          },
+          {
+            "value": "528.97"
+          },
+          {
+            "value": "3"
+          },
+          {
+            "value": "10"
+          }
         ]
       }
-    ]
+    ],
+    "status": {
+      "hp": 14000,
+      "attack": 550,
+      "defense": 160
+    }
   },
   "3": {
     "id": 3,
@@ -226,14 +295,11 @@
     "rarity": "SSR",
     "manufacturer": "엘리시온",
     "squad": "인피니티 레일",
-    "hp": 20000,
-    "attack": 600,
-    "defense": 220,
     "color": {
-      "r": 0.0,
-      "g": 1.0,
-      "b": 0.0,
-      "a": 1.0
+      "r": 0,
+      "g": 1,
+      "b": 0,
+      "a": 1
     },
     "weapon": {
       "weaponName": "원더링 트랙",
@@ -242,7 +308,8 @@
       "reloadTime": 2.16,
       "controlType": "기본형",
       "description": "대상에게\n[공격력 5.38% 대미지]\n[코어 대미지 200%]",
-      "damagePercent": 5.38
+      "damagePercent": 5.38,
+      "fireRate": 20
     },
     "skills": [
       {
@@ -251,12 +318,18 @@
         "name": "딸기향 이끌림",
         "description": "풀 버스트 타임 시작 시 자신에게\n[방어력 {0}% ▲] [{1}초 유지]\n풀 버스트 타임 지속 시간 중 피격 시 자신에게\n[시전자의 최종 최대 체력 비례 {2}% 회복]",
         "skillTypeName": "패시브",
-        "cooldown": 0.0,
+        "cooldown": 0,
         "skillIconPath": "Skill/Diesel_S1",
         "values": [
-          { "value": "25.92" },
-          { "value": "10" },
-          { "value": "12.96" }
+          {
+            "value": "25.92"
+          },
+          {
+            "value": "10"
+          },
+          {
+            "value": "12.96"
+          }
         ]
       },
       {
@@ -265,14 +338,24 @@
         "name": "딸기 사탕의 힘",
         "description": "일반 공격 {0}회 명중 시 자신에게\n[딸기 사탕: 최대 장탄 수 {1}% ▲] [{2}중첩] [{3}초 유지]\n자신이 딸기 사탕 최대 중첩 상태라면 중첩 해제 후 아군 전체에게\n[탄환 충전 {4}%]",
         "skillTypeName": "패시브",
-        "cooldown": 0.0,
+        "cooldown": 0,
         "skillIconPath": "Skill/Diesel_S2",
         "values": [
-          { "value": "100" },
-          { "value": "56.7" },
-          { "value": "10" },
-          { "value": "10" },
-          { "value": "86.62" }
+          {
+            "value": "100"
+          },
+          {
+            "value": "56.7"
+          },
+          {
+            "value": "10"
+          },
+          {
+            "value": "10"
+          },
+          {
+            "value": "86.62"
+          }
         ]
       },
       {
@@ -281,15 +364,26 @@
         "name": "스트로베리 쇼크",
         "description": "공격력이 가장 높은 적 {0}기에게\n[최종 공격력 {1}% 대미지]\n[도발] [{2}초 유지]",
         "skillTypeName": "액티브",
-        "cooldown": 20.0,
+        "cooldown": 20,
         "skillIconPath": "Skill/Diesel_Burst",
         "values": [
-          { "value": "5" },
-          { "value": "299.66" },
-          { "value": "5.06" }
+          {
+            "value": "5"
+          },
+          {
+            "value": "299.66"
+          },
+          {
+            "value": "5.06"
+          }
         ]
       }
-    ]
+    ],
+    "status": {
+      "hp": 20000,
+      "attack": 600,
+      "defense": 220
+    }
   },
   "4": {
     "id": 4,
@@ -300,23 +394,23 @@
     "rarity": "SSR",
     "manufacturer": "테트라",
     "squad": "언리미티드",
-    "hp": 16500,
-    "attack": 750,
-    "defense": 150,
     "color": {
-      "r": 1.0,
+      "r": 1,
       "g": 0.5,
       "b": 0.5,
-      "a": 1.0
+      "a": 1
     },
     "weapon": {
       "weaponName": "어메이징 원더랜드",
       "weaponClass": "SR",
       "maxAmmo": 6,
-      "reloadTime": 2.0,
+      "reloadTime": 2,
       "controlType": "차지형",
       "description": "대상에게\n[공격력 69.04% 대미지]\n차지 시간: 1.5초\n풀 차지 대미지: 350% 대미지\n[코어 대미지 200%]",
-      "damagePercent": 69.04
+      "damagePercent": 69.04,
+      "fireRate": 0,
+      "chargeTime": 1.5,
+      "fullChargeMultiplier": 3.5
     },
     "skills": [
       {
@@ -325,14 +419,24 @@
         "name": "힘나는 당근",
         "description": "풀 버스트 타임 시작 시 공격력이 가장 높은 아군 {0}기에게\n[시전자 기준 차지 속도 {1}% ▲] [{2}초 유지]\n[차지 대미지 {3}% ▲] [{4}초 유지]",
         "skillTypeName": "패시브",
-        "cooldown": 0.0,
+        "cooldown": 0,
         "skillIconPath": "Skill/Alice_S1",
         "values": [
-          { "value": "2" },
-          { "value": "11.67" },
-          { "value": "10" },
-          { "value": "7" },
-          { "value": "10" }
+          {
+            "value": "2"
+          },
+          {
+            "value": "11.67"
+          },
+          {
+            "value": "10"
+          },
+          {
+            "value": "7"
+          },
+          {
+            "value": "10"
+          }
         ]
       },
       {
@@ -341,12 +445,18 @@
         "name": "건강한 당근",
         "description": "자신의 체력이 {0}% 이상이라면 자신에게\n[관통 특화] [지속]\n자신의 체력이 {1}% 미만이라면 자신에게\n[공격 대미지 비례 {2}% 회복] [지속]",
         "skillTypeName": "패시브",
-        "cooldown": 0.0,
+        "cooldown": 0,
         "skillIconPath": "Skill/Alice_S2",
         "values": [
-          { "value": "80" },
-          { "value": "80" },
-          { "value": "8.12" }
+          {
+            "value": "80"
+          },
+          {
+            "value": "80"
+          },
+          {
+            "value": "8.12"
+          }
         ]
       },
       {
@@ -355,16 +465,29 @@
         "name": "신기하고 이상한 나라",
         "description": "자신에게\n[차지 속도 {0}% ▲] [{1}초 유지]\n[공격력 {2}% ▲] [{3}초 유지]",
         "skillTypeName": "액티브",
-        "cooldown": 40.0,
+        "cooldown": 40,
         "skillIconPath": "Skill/Alice_Burst",
         "values": [
-          { "value": "80.15" },
-          { "value": "10" },
-          { "value": "55.12" },
-          { "value": "10" }
+          {
+            "value": "80.15"
+          },
+          {
+            "value": "10"
+          },
+          {
+            "value": "55.12"
+          },
+          {
+            "value": "10"
+          }
         ]
       }
-    ]
+    ],
+    "status": {
+      "hp": 16500,
+      "attack": 750,
+      "defense": 150
+    }
   },
   "5": {
     "id": 5,
@@ -375,14 +498,11 @@
     "rarity": "SSR",
     "manufacturer": "어브노멀",
     "squad": "갓데스...?",
-    "hp": 15000,
-    "attack": 700,
-    "defense": 145,
     "color": {
       "r": 0.8,
       "g": 0.8,
       "b": 0.8,
-      "a": 1.0
+      "a": 1
     },
     "weapon": {
       "weaponName": "기관단총",
@@ -391,7 +511,8 @@
       "reloadTime": 1.5,
       "controlType": "기본형",
       "description": "대상에게\n[공격력 8.5% 대미지]\n[코어 대미지 200%]",
-      "damagePercent": 8.5
+      "damagePercent": 8.5,
+      "fireRate": 15
     },
     "skills": [
       {
@@ -400,7 +521,7 @@
         "name": "이 것은 임시 스킬 1이다",
         "description": "DORO",
         "skillTypeName": "패시브",
-        "cooldown": 0.0,
+        "cooldown": 0,
         "skillIconPath": "Skill/Doro_S1",
         "values": []
       },
@@ -410,7 +531,7 @@
         "name": "이 것은 임시 스킬 2이다",
         "description": "DORO",
         "skillTypeName": "패시브",
-        "cooldown": 0.0,
+        "cooldown": 0,
         "skillIconPath": "Skill/Doro_S2",
         "values": []
       },
@@ -420,11 +541,16 @@
         "name": "이 것은 임시 버스트이다",
         "description": "DORO",
         "skillTypeName": "액티브",
-        "cooldown": 20.0,
+        "cooldown": 20,
         "skillIconPath": "Skill/Doro_Burst",
         "values": []
       }
-    ]
+    ],
+    "status": {
+      "hp": 15000,
+      "attack": 700,
+      "defense": 145
+    }
   },
   "6": {
     "id": 6,
@@ -435,14 +561,11 @@
     "rarity": "SR",
     "manufacturer": "어브노멀",
     "squad": "갓데스...?",
-    "hp": 13500,
-    "attack": 520,
-    "defense": 155,
     "color": {
       "r": 0.7,
       "g": 0.7,
       "b": 0.9,
-      "a": 1.0
+      "a": 1
     },
     "weapon": {
       "weaponName": "샷건",
@@ -451,7 +574,8 @@
       "reloadTime": 1.9,
       "controlType": "기본형",
       "description": "대상에게\n[공격력 180.0% 대미지]\n[코어 대미지 200%]",
-      "damagePercent": 180.0
+      "damagePercent": 180,
+      "fireRate": 2
     },
     "skills": [
       {
@@ -460,7 +584,7 @@
         "name": "이 것은 임시 스킬 1이다",
         "description": "DORO",
         "skillTypeName": "패시브",
-        "cooldown": 0.0,
+        "cooldown": 0,
         "skillIconPath": "Skill/Doro_S1",
         "values": []
       },
@@ -470,7 +594,7 @@
         "name": "이 것은 임시 스킬 2이다",
         "description": "DORO",
         "skillTypeName": "패시브",
-        "cooldown": 0.0,
+        "cooldown": 0,
         "skillIconPath": "Skill/Doro_S2",
         "values": []
       },
@@ -480,11 +604,16 @@
         "name": "이 것은 임시 버스트이다",
         "description": "DORO",
         "skillTypeName": "액티브",
-        "cooldown": 20.0,
+        "cooldown": 20,
         "skillIconPath": "Skill/Doro_Burst",
         "values": []
       }
-    ]
+    ],
+    "status": {
+      "hp": 13500,
+      "attack": 520,
+      "defense": 155
+    }
   },
   "7": {
     "id": 7,
@@ -495,23 +624,21 @@
     "rarity": "SSR",
     "manufacturer": "어브노멀",
     "squad": "갓데스...?",
-    "hp": 21000,
-    "attack": 580,
-    "defense": 230,
     "color": {
       "r": 0.6,
       "g": 0.9,
       "b": 0.6,
-      "a": 1.0
+      "a": 1
     },
     "weapon": {
       "weaponName": "머신건",
       "weaponClass": "MG",
       "maxAmmo": 400,
-      "reloadTime": 3.0,
+      "reloadTime": 3,
       "controlType": "기본형",
       "description": "대상에게\n[공격력 4.5% 대미지]\n[코어 대미지 200%]",
-      "damagePercent": 4.5
+      "damagePercent": 4.5,
+      "fireRate": 20
     },
     "skills": [
       {
@@ -520,7 +647,7 @@
         "name": "이 것은 임시 스킬 1이다",
         "description": "DORO",
         "skillTypeName": "패시브",
-        "cooldown": 0.0,
+        "cooldown": 0,
         "skillIconPath": "Skill/Doro_S1",
         "values": []
       },
@@ -530,7 +657,7 @@
         "name": "이 것은 임시 스킬 2이다",
         "description": "DORO",
         "skillTypeName": "패시브",
-        "cooldown": 0.0,
+        "cooldown": 0,
         "skillIconPath": "Skill/Doro_S2",
         "values": []
       },
@@ -540,11 +667,16 @@
         "name": "이 것은 임시 버스트이다",
         "description": "DORO",
         "skillTypeName": "액티브",
-        "cooldown": 40.0,
+        "cooldown": 40,
         "skillIconPath": "Skill/Doro_Burst",
         "values": []
       }
-    ]
+    ],
+    "status": {
+      "hp": 21000,
+      "attack": 580,
+      "defense": 230
+    }
   },
   "8": {
     "id": 8,
@@ -555,14 +687,11 @@
     "rarity": "SSR",
     "manufacturer": "어브노멀",
     "squad": "갓데스...?",
-    "hp": 16000,
-    "attack": 720,
-    "defense": 150,
     "color": {
       "r": 0.5,
       "g": 0.5,
       "b": 0.5,
-      "a": 1.0
+      "a": 1
     },
     "weapon": {
       "weaponName": "저격소총",
@@ -571,7 +700,10 @@
       "reloadTime": 2.2,
       "controlType": "차지형",
       "description": "대상에게\n[공격력 85.0% 대미지]\n차지 시간: 1.0초\n풀 차지 대미지: 250% 대미지\n[코어 대미지 200%]",
-      "damagePercent": 85.0
+      "damagePercent": 85,
+      "fireRate": 0,
+      "chargeTime": 1,
+      "fullChargeMultiplier": 2.5
     },
     "skills": [
       {
@@ -580,7 +712,7 @@
         "name": "이 것은 임시 스킬 1이다",
         "description": "DORO",
         "skillTypeName": "패시브",
-        "cooldown": 0.0,
+        "cooldown": 0,
         "skillIconPath": "Skill/Doro_S1",
         "values": []
       },
@@ -590,7 +722,7 @@
         "name": "이 것은 임시 스킬 2이다",
         "description": "DORO",
         "skillTypeName": "패시브",
-        "cooldown": 0.0,
+        "cooldown": 0,
         "skillIconPath": "Skill/Doro_S2",
         "values": []
       },
@@ -600,11 +732,16 @@
         "name": "이 것은 임시 버스트이다",
         "description": "DORO",
         "skillTypeName": "액티브",
-        "cooldown": 20.0,
+        "cooldown": 20,
         "skillIconPath": "Skill/Doro_Burst",
         "values": []
       }
-    ]
+    ],
+    "status": {
+      "hp": 16000,
+      "attack": 720,
+      "defense": 150
+    }
   },
   "9": {
     "id": 9,
@@ -615,14 +752,11 @@
     "rarity": "SR",
     "manufacturer": "어브노멀",
     "squad": "갓데스...?",
-    "hp": 13800,
-    "attack": 540,
-    "defense": 160,
     "color": {
-      "r": 1.0,
+      "r": 1,
       "g": 0.4,
       "b": 0.4,
-      "a": 1.0
+      "a": 1
     },
     "weapon": {
       "weaponName": "런처",
@@ -631,7 +765,10 @@
       "reloadTime": 2.4,
       "controlType": "차지형",
       "description": "대상에게\n[공격력 55.0% 대미지]\n차지 시간: 1.0초\n풀 차지 대미지: 250% 대미지\n[코어 대미지 200%]",
-      "damagePercent": 55.0
+      "damagePercent": 55,
+      "fireRate": 0,
+      "chargeTime": 1,
+      "fullChargeMultiplier": 2.5
     },
     "skills": [
       {
@@ -640,7 +777,7 @@
         "name": "이 것은 임시 스킬 1이다",
         "description": "DORO",
         "skillTypeName": "패시브",
-        "cooldown": 0.0,
+        "cooldown": 0,
         "skillIconPath": "Skill/Doro_S1",
         "values": []
       },
@@ -650,7 +787,7 @@
         "name": "이 것은 임시 스킬 2이다",
         "description": "DORO",
         "skillTypeName": "패시브",
-        "cooldown": 0.0,
+        "cooldown": 0,
         "skillIconPath": "Skill/Doro_S2",
         "values": []
       },
@@ -660,11 +797,16 @@
         "name": "이 것은 임시 버스트이다",
         "description": "DORO",
         "skillTypeName": "액티브",
-        "cooldown": 20.0,
+        "cooldown": 20,
         "skillIconPath": "Skill/Doro_Burst",
         "values": []
       }
-    ]
+    ],
+    "status": {
+      "hp": 13800,
+      "attack": 540,
+      "defense": 160
+    }
   },
   "10": {
     "id": 10,
@@ -675,14 +817,11 @@
     "rarity": "SSR",
     "manufacturer": "어브노멀",
     "squad": "갓데스...?",
-    "hp": 19500,
-    "attack": 610,
-    "defense": 215,
     "color": {
       "r": 0.9,
       "g": 0.9,
       "b": 0.2,
-      "a": 1.0
+      "a": 1
     },
     "weapon": {
       "weaponName": "소총",
@@ -691,7 +830,8 @@
       "reloadTime": 1.4,
       "controlType": "기본형",
       "description": "대상에게\n[공격력 11.0% 대미지]\n[코어 대미지 200%]",
-      "damagePercent": 11.0
+      "damagePercent": 11,
+      "fireRate": 10
     },
     "skills": [
       {
@@ -700,7 +840,7 @@
         "name": "이 것은 임시 스킬 1이다",
         "description": "DORO",
         "skillTypeName": "패시브",
-        "cooldown": 0.0,
+        "cooldown": 0,
         "skillIconPath": "Skill/Doro_S1",
         "values": []
       },
@@ -710,7 +850,7 @@
         "name": "이 것은 임시 스킬 2이다",
         "description": "DORO",
         "skillTypeName": "패시브",
-        "cooldown": 0.0,
+        "cooldown": 0,
         "skillIconPath": "Skill/Doro_S2",
         "values": []
       },
@@ -720,11 +860,16 @@
         "name": "이 것은 임시 버스트이다",
         "description": "DORO",
         "skillTypeName": "액티브",
-        "cooldown": 40.0,
+        "cooldown": 40,
         "skillIconPath": "Skill/Doro_Burst",
         "values": []
       }
-    ]
+    ],
+    "status": {
+      "hp": 19500,
+      "attack": 610,
+      "defense": 215
+    }
   },
   "11": {
     "id": 11,
@@ -735,14 +880,11 @@
     "rarity": "R",
     "manufacturer": "어브노멀",
     "squad": "갓데스...?",
-    "hp": 12000,
-    "attack": 450,
-    "defense": 120,
     "color": {
       "r": 0.4,
       "g": 0.4,
       "b": 0.9,
-      "a": 1.0
+      "a": 1
     },
     "weapon": {
       "weaponName": "기관단총",
@@ -751,7 +893,8 @@
       "reloadTime": 1.2,
       "controlType": "기본형",
       "description": "대상에게\n[공격력 6.0% 대미지]\n[코어 대미지 200%]",
-      "damagePercent": 6.0
+      "damagePercent": 6,
+      "fireRate": 10
     },
     "skills": [
       {
@@ -760,7 +903,7 @@
         "name": "이 것은 임시 스킬 1이다",
         "description": "DORO",
         "skillTypeName": "패시브",
-        "cooldown": 0.0,
+        "cooldown": 0,
         "skillIconPath": "Skill/Doro_S1",
         "values": []
       },
@@ -770,7 +913,7 @@
         "name": "이 것은 임시 스킬 2이다",
         "description": "DORO",
         "skillTypeName": "패시브",
-        "cooldown": 0.0,
+        "cooldown": 0,
         "skillIconPath": "Skill/Doro_S2",
         "values": []
       },
@@ -780,11 +923,16 @@
         "name": "이 것은 임시 버스트이다",
         "description": "DORO",
         "skillTypeName": "액티브",
-        "cooldown": 20.0,
+        "cooldown": 20,
         "skillIconPath": "Skill/Doro_Burst",
         "values": []
       }
-    ]
+    ],
+    "status": {
+      "hp": 12000,
+      "attack": 450,
+      "defense": 120
+    }
   },
   "12": {
     "id": 12,
@@ -795,23 +943,21 @@
     "rarity": "SSR",
     "manufacturer": "어브노멀",
     "squad": "갓데스...?",
-    "hp": 14200,
-    "attack": 560,
-    "defense": 170,
     "color": {
       "r": 0.5,
       "g": 0.8,
       "b": 0.5,
-      "a": 1.0
+      "a": 1
     },
     "weapon": {
       "weaponName": "샷건",
       "weaponClass": "SG",
       "maxAmmo": 10,
-      "reloadTime": 2.0,
+      "reloadTime": 2,
       "controlType": "기본형",
       "description": "대상에게\n[공격력 200.0% 대미지]\n[코어 대미지 200%]",
-      "damagePercent": 200.0
+      "damagePercent": 200,
+      "fireRate": 10
     },
     "skills": [
       {
@@ -820,7 +966,7 @@
         "name": "이 것은 임시 스킬 1이다",
         "description": "DORO",
         "skillTypeName": "패시브",
-        "cooldown": 0.0,
+        "cooldown": 0,
         "skillIconPath": "Skill/Doro_S1",
         "values": []
       },
@@ -830,7 +976,7 @@
         "name": "이 것은 임시 스킬 2이다",
         "description": "DORO",
         "skillTypeName": "패시브",
-        "cooldown": 0.0,
+        "cooldown": 0,
         "skillIconPath": "Skill/Doro_S2",
         "values": []
       },
@@ -840,11 +986,16 @@
         "name": "이 것은 임시 버스트이다",
         "description": "DORO",
         "skillTypeName": "액티브",
-        "cooldown": 20.0,
+        "cooldown": 20,
         "skillIconPath": "Skill/Doro_Burst",
         "values": []
       }
-    ]
+    ],
+    "status": {
+      "hp": 14200,
+      "attack": 560,
+      "defense": 170
+    }
   },
   "13": {
     "id": 13,
@@ -855,14 +1006,11 @@
     "rarity": "SR",
     "manufacturer": "어브노멀",
     "squad": "갓데스...?",
-    "hp": 18500,
-    "attack": 490,
-    "defense": 205,
     "color": {
       "r": 0.7,
       "g": 0.7,
       "b": 0.7,
-      "a": 1.0
+      "a": 1
     },
     "weapon": {
       "weaponName": "머신건",
@@ -871,7 +1019,8 @@
       "reloadTime": 2.8,
       "controlType": "기본형",
       "description": "대상에게\n[공격력 4.8% 대미지]\n[코어 대미지 200%]",
-      "damagePercent": 4.8
+      "damagePercent": 4.8,
+      "fireRate": 10
     },
     "skills": [
       {
@@ -880,7 +1029,7 @@
         "name": "이 것은 임시 스킬 1이다",
         "description": "DORO",
         "skillTypeName": "패시브",
-        "cooldown": 0.0,
+        "cooldown": 0,
         "skillIconPath": "Skill/Doro_S1",
         "values": []
       },
@@ -890,7 +1039,7 @@
         "name": "이 것은 임시 스킬 2이다",
         "description": "DORO",
         "skillTypeName": "패시브",
-        "cooldown": 0.0,
+        "cooldown": 0,
         "skillIconPath": "Skill/Doro_S2",
         "values": []
       },
@@ -900,11 +1049,16 @@
         "name": "이 것은 임시 버스트이다",
         "description": "DORO",
         "skillTypeName": "액티브",
-        "cooldown": 40.0,
+        "cooldown": 40,
         "skillIconPath": "Skill/Doro_Burst",
         "values": []
       }
-    ]
+    ],
+    "status": {
+      "hp": 18500,
+      "attack": 490,
+      "defense": 205
+    }
   },
   "14": {
     "id": 14,
@@ -915,14 +1069,11 @@
     "rarity": "SSR",
     "manufacturer": "어브노멀",
     "squad": "갓데스...?",
-    "hp": 15500,
-    "attack": 710,
-    "defense": 150,
     "color": {
       "r": 0.9,
       "g": 0.3,
       "b": 0.3,
-      "a": 1.0
+      "a": 1
     },
     "weapon": {
       "weaponName": "저격소총",
@@ -931,7 +1082,10 @@
       "reloadTime": 1.8,
       "controlType": "차지형",
       "description": "대상에게\n[공격력 68.0% 대미지]\n차지 시간: 1.0초\n풀 차지 대미지: 250% 대미지\n[코어 대미지 200%]",
-      "damagePercent": 68.0
+      "damagePercent": 68,
+      "fireRate": 0,
+      "chargeTime": 1,
+      "fullChargeMultiplier": 2.5
     },
     "skills": [
       {
@@ -940,7 +1094,7 @@
         "name": "이 것은 임시 스킬 1이다",
         "description": "DORO",
         "skillTypeName": "패시브",
-        "cooldown": 0.0,
+        "cooldown": 0,
         "skillIconPath": "Skill/Doro_S1",
         "values": []
       },
@@ -950,7 +1104,7 @@
         "name": "이 것은 임시 스킬 2이다",
         "description": "DORO",
         "skillTypeName": "패시브",
-        "cooldown": 0.0,
+        "cooldown": 0,
         "skillIconPath": "Skill/Doro_S2",
         "values": []
       },
@@ -960,10 +1114,15 @@
         "name": "이 것은 임시 버스트이다",
         "description": "DORO",
         "skillTypeName": "액티브",
-        "cooldown": 20.0,
+        "cooldown": 20,
         "skillIconPath": "Skill/Doro_Burst",
         "values": []
       }
-    ]
+    ],
+    "status": {
+      "hp": 15500,
+      "attack": 710,
+      "defense": 150
+    }
   }
 }

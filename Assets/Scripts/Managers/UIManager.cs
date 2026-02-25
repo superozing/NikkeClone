@@ -18,6 +18,8 @@ public class UIManager : IManagerBase
     private Transform _dontDestroyRoot;
     private Camera _uiCamera;
 
+    public Camera UICamera => _uiCamera;
+
     /// <summary>
     /// UI Popup 관리를 위한 Sorting Order 입니다.
     /// </summary>
@@ -235,10 +237,11 @@ public class UIManager : IManagerBase
                     var nextPopup = _popupStack.Peek();
                     Managers.Input.SwitchActionMap(nextPopup.ActionMapKey);
                 }
-                // 팝업이 없으면 None("None")
+                // 팝업이 없으면 현재 씬의 기본 액션맵으로 복귀
                 else
                 {
-                    Managers.Input.SwitchActionMap("None");
+                    string defaultActionMap = Managers.Scene.CurrentScene?.DefaultActionMapKey ?? "None";
+                    Managers.Input.SwitchActionMap(defaultActionMap);
                 }
             }
         }

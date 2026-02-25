@@ -1,0 +1,89 @@
+using UnityEngine;
+
+/// <summary>
+/// 차지형 무기 (SR, RL) 추상 클래스.
+/// 공격 버튼을 홀드하여 차지를 모으고, 릴리스 시점에 누적된 차지에 비례한 배율로 1회 격발합니다.
+/// </summary>
+public abstract class ChargeWeaponBase : WeaponBase
+{
+    protected float _chargeTime;
+    protected float _fullChargeMultiplier;
+    protected Vector3 _lastTargetPos;
+
+    public ChargeWeaponBase(WeaponData data, eNikkeWeapon type) : base(data, type)
+    {
+        if (data != null)
+        {
+            _chargeTime = data.chargeTime > 0 ? data.chargeTime : 1.0f;
+            _fullChargeMultiplier = data.fullChargeMultiplier > 0 ? data.fullChargeMultiplier : 2.5f;
+        }
+        else
+        {
+            _chargeTime = 1.0f;
+            _fullChargeMultiplier = 2.5f;
+        }
+    }
+
+    public override float FullChargeMultiplier => _fullChargeMultiplier;
+
+    public override void Enter(CombatNikke owner)
+    {
+        _chargeProgress.Value = 0f;
+    }
+
+    protected override void Update(CombatNikke owner, Vector3 targetWorldPos)
+    {
+        if (!CanFire) return;
+
+        _lastTargetPos = targetWorldPos;
+
+        // 차지 누적
+        // Implements Section 2.1: IWeapon & WeaponBase 리팩토링
+        float newCharge = _chargeProgress.Value + Time.deltaTime / _chargeTime;
+        _chargeProgress.Value = Mathf.Clamp01(newCharge);
+    }
+
+    public override void Exit(CombatNikke owner, bool isCancel = false)
+    {
+        if (!CanFire) return;
+
+        if (isCancel)
+        {
+            _chargeProgress.Value = 0f;
+            return;
+        }
+
+        // 차지량에 따른 데미지 배율 적용 (기본 1.0배 ~ 풀차지)
+        float currentMultiplier = Mathf.Lerp(1.0f, _fullChargeMultiplier, _chargeProgress.Value);
+        long damage = CalculateDamage(owner, currentMultiplier);
+
+        FireOnRelease(owner, damage, _lastTargetPos);
+
+        ConsumeAmmo(1); // 격발 후 탄약 1 감소
+        _chargeProgress.Value = 0f;
+    }
+
+    /// <summary>
+    /// 차지형 무기 전투 처리.
+    /// 차지 누적은 항상 수행하고, Auto 모드에서 풀차지 + 유효 타겟 시 자동 격발합니다.
+    /// </summary>
+    /// Caller: NikkeAttackState.Execute()
+    public override void ProcessCombat(CombatNikke owner, Vector3 targetWorldPos, bool isTargetValid)
+    {
+        // 차지 누적은 타겟 여부와 관계없이 항상 수행
+        Update(owner, targetWorldPos);
+
+        // Auto 모드: 풀차지 + 유효 타겟 → 격발 후 즉시 다음 차지 시작
+        bool isAuto = CombatMode.Value == NikkeClone.Utils.eNikkeCombatMode.Auto;
+        if (isAuto && isTargetValid && _chargeProgress.Value >= 0.98f)
+        {
+            Exit(owner, isCancel: false);
+            Enter(owner);
+        }
+    }
+
+    /// <summary>
+    /// 차지가 풀릴 때 격발 수행 (하위 클래스에서 디테일 구현)
+    /// </summary>
+    protected abstract void FireOnRelease(CombatNikke owner, long damage, Vector3 targetWorldPos);
+}

@@ -6,8 +6,9 @@ trigger: always_on
 Acts as a Git Commit Strategist and Message Writer.
 
 ## Triggers
-- When the user asks to "Commit", "커밋", "Organize commits", or "Prepare for commit".
-- When files have been modified/created and need to be committed.
+- **Explicit (명시적)**: User runs `/commit` command or asks to "Commit changes".
+- **Implicit (암시적)**: User mentions "save work", "push to repo", or asks to "organize current changes".
+- **Contextual (문맥적)**: When a significant coding task is completed and the user implies wrapping up the session.
 
 ## Core Responsibilities
 1. **Status Check**: Identify all modified, added, and deleted files using `git status`.
