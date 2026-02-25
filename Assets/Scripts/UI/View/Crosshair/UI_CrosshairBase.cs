@@ -103,30 +103,8 @@ public abstract class UI_CrosshairBase : UI_View
     {
         if (_viewModel != null)
         {
-            Vector2 targetScreenPos = Vector2.zero;
-
-            if (_viewModel.IsAutoMode.Value)
-            {
-                // [변경] 즉시 할당이 아닌, 이전 TargetPosition을 기반으로 보간 
-                Vector2 currentPos = _viewModel.TargetPosition.Value;
-                Vector2 targetPos = _viewModel.AutoTargetScreenPosition.Value;
-
-                // 타겟을 잃었거나 좌표가 초기화된 상태일 경우 화면 중앙 등 대기 위치로 보정
-                if (targetPos == Vector2.zero)
-                {
-                    targetPos = new Vector2(Screen.width / 2f, Screen.height / 2f);
-                }
-
-                // 15f는 보간 속도, 필요에 따라 상수로 분리 가능
-                targetScreenPos = Vector2.Lerp(currentPos, targetPos, Time.deltaTime * 15f);
-            }
-            else if (Pointer.current != null)
-            {
-                targetScreenPos = Pointer.current.position.ReadValue();
-            }
-
-            // [변경] 수동/자동 상관없이 항상 ViewModel에 현재 (보간된) 화면 픽셀 좌표(마우스 위치) 전달 
-            _viewModel.TargetPosition.Value = targetScreenPos;
+            // UI 계층의 보간 제거. CombatNikke에서 계산된 최종 좌표를 직접 사용.
+            Vector2 targetScreenPos = _viewModel.TargetPosition.Value;
 
             // 오브젝트 풀링 환경 대응: Awake 시점에는 캔버스 하위가 아닐 수 있으므로 동적 할당
             if (_parentRect == null && _rectTransform.parent != null)
