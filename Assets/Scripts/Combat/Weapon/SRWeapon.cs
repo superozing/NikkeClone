@@ -8,6 +8,8 @@ public class SRWeapon : ChargeWeaponBase
 {
     public SRWeapon(WeaponData data) : base(data, eNikkeWeapon.SR) { }
 
+    public override eRangeZone PreferredZone => eRangeZone.Far;
+
     protected override void FireOnRelease(CombatNikke owner, long damage, Vector3 targetWorldPos)
     {
         Vector3 mPos = owner.transform.position + Vector3.up * 1f;

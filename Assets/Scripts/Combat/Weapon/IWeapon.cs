@@ -12,11 +12,6 @@ public interface IWeapon
     eNikkeWeapon WeaponType { get; }
 
     /// <summary>
-    /// 발사 가능 여부 (탄약, 쿨타임 등 체크)
-    /// </summary>
-    bool CanFire { get; }
-
-    /// <summary>
     /// 현재 탄약 수
     /// // Implements Section 2.1: IWeapon & WeaponBase 리팩토링
     /// </summary>
@@ -39,14 +34,38 @@ public interface IWeapon
     float FullChargeMultiplier { get; }
 
     /// <summary>
+    /// 무기의 적정 사거리
+    /// </summary>
+    eRangeZone PreferredZone { get; }
+
+    /// <summary>
+    /// 현재 조준 중인 타겟이 적정 사거리에 있는지 여부를 나타내는 반응형 속성입니다.
+    /// UI(조준선) 등에서 구독하여 피드백을 표시하는 데 사용됩니다.
+    /// </summary>
+    ReactiveProperty<bool> IsInPreferredZone { get; }
+
+    /// <summary>
+    /// 무기를 소유한 니케의 현재 전투 모드 (수동/자동 등)
+    /// </summary>
+    ReactiveProperty<NikkeClone.Utils.eNikkeCombatMode> CombatMode { get; }
+
+
+    /// <summary>
+    /// 조준선의 현재 화면 픽셀 좌표 (수동/자동 모두 보간/추적된 최종 좌표)
+    /// </summary>
+    ReactiveProperty<Vector2> CurrentAimScreenPosition { get; }
+
+
+    /// <summary>
+    /// 타겟이 적정 사거리에 있는지 여부
+    /// </summary>
+    bool IsPreferredZone(eRangeZone targetZone);
+
+    /// <summary>
     /// 재장전 시간 (초)
     /// </summary>
     float ReloadTime { get; }
 
-    /// <summary>
-    /// 무기의 공격력 비율 (계수)
-    /// </summary>
-    float DamagePercent { get; }
 
     /// <summary>
     /// 무기 사용 시작 (예: 공격 버튼 누름)
@@ -54,13 +73,6 @@ public interface IWeapon
     /// </summary>
     void Enter(CombatNikke owner);
 
-    /// <summary>
-    /// 매 프레임 무기 로직 실행 (예: 연사, 차징, 지향 보정)
-    /// Caller: NikkeAttackSubState.Execute()
-    /// </summary>
-    /// <param name="owner">무기 소유자</param>
-    /// <param name="targetWorldPos">타겟 월드 3D 좌표</param>
-    void Update(CombatNikke owner, Vector3 targetWorldPos);
 
     /// <summary>
     /// 무기 사용 종료 (예: 공격 버튼 뗌, 재장전, 탄약 소진)
@@ -74,13 +86,19 @@ public interface IWeapon
     /// </summary>
     void Reload();
 
-    /// <summary>
-    /// 탄약 소비
-    /// </summary>
-    void ConsumeAmmo(int amount);
 
     /// <summary>
     /// 매 프레임 무기 고유의 로직(차지 게이지 감소, 예열 등) 실행
     /// </summary>
     void Tick(float deltaTime);
+
+    /// <summary>
+    /// 전투 프레임 처리. 무기 타입별로 사격 판단과 실행을 내부에서 결정합니다.
+    /// Raycast 결과(targetWorldPos, isTargetValid)를 받아 Update/Exit/Enter를 자체 판단합니다.
+    /// </summary>
+    /// <param name="owner">무기 소유자</param>
+    /// <param name="targetWorldPos">Raycast 결과 월드 좌표</param>
+    /// <param name="isTargetValid">CombatRapture에 적중했는지</param>
+    /// Caller: NikkeAttackState.Execute()
+    void ProcessCombat(CombatNikke owner, Vector3 targetWorldPos, bool isTargetValid);
 }

@@ -18,8 +18,14 @@ public abstract class UI_CrosshairBase : UI_View
     [SerializeField] protected TMPro.TMP_Text _ammoText;
     [SerializeField] protected UnityEngine.UI.Image _ammoFillImage;
 
+    [Header("Color Feedback")]
+    [SerializeField] protected UnityEngine.UI.Graphic[] _crosshairGraphics;
+
     private Camera _uiCamera;
     private RectTransform _parentRect;
+
+    protected static readonly Color _advantageColor = new Color(0.4f, 0.8f, 1f); // 하늘색
+    protected static readonly Color _defaultColor = Color.white;
 
     protected override void Awake()
     {
@@ -51,6 +57,10 @@ public abstract class UI_CrosshairBase : UI_View
         if (_viewModel != null && gameObject.activeInHierarchy)
         {
             BindWeaponProperties();
+            if (_viewModel.ActiveWeapon.Value != null)
+            {
+                _viewModel.ActiveWeapon.Value.IsInPreferredZone.OnValueChanged += OnPreferredZoneChanged;
+            }
         }
     }
 
@@ -63,6 +73,10 @@ public abstract class UI_CrosshairBase : UI_View
         if (_viewModel != null)
         {
             BindWeaponProperties();
+            if (_viewModel.ActiveWeapon.Value != null)
+            {
+                _viewModel.ActiveWeapon.Value.IsInPreferredZone.OnValueChanged += OnPreferredZoneChanged;
+            }
         }
     }
 
@@ -72,21 +86,25 @@ public abstract class UI_CrosshairBase : UI_View
     /// </summary>
     protected virtual void OnDisable()
     {
+        if (_viewModel?.ActiveWeapon.Value != null)
+        {
+            _viewModel.ActiveWeapon.Value.IsInPreferredZone.OnValueChanged -= OnPreferredZoneChanged;
+        }
         UnbindAll();
     }
 
+
+
     /// <summary>
-    /// 매 프레임 포인터(마우스/터치) 좌표를 추적하여 RectTransform을 이동합니다.
+    /// 매 프레임 마우스(수동) 또는 타겟 Screen 좌표(자동)를 추적하여 RectTransform을 이동합니다.
     /// ScreenSpaceCamera 렌더 모드 대응 완료.
     /// </summary>
     protected virtual void Update()
     {
-        if (_viewModel != null && Pointer.current != null)
+        if (_viewModel != null)
         {
-            Vector2 pointerPos = Pointer.current.position.ReadValue();
-
-            // ViewModel에는 실제 스크린 픽셀 좌표(마우스 위치) 전달 (무기 발사 로직 등에서 활용)
-            _viewModel.TargetPosition.Value = pointerPos;
+            // UI 계층의 보간 제거. CombatNikke에서 계산된 최종 좌표를 직접 사용.
+            Vector2 targetScreenPos = _viewModel.TargetPosition.Value;
 
             // 오브젝트 풀링 환경 대응: Awake 시점에는 캔버스 하위가 아닐 수 있으므로 동적 할당
             if (_parentRect == null && _rectTransform.parent != null)
@@ -98,7 +116,7 @@ public abstract class UI_CrosshairBase : UI_View
             if (_parentRect != null && _uiCamera != null)
             {
                 // RectTransformUtility를 사용하여 스크린 좌표를 캔버스(부모) 내의 로컬 포지션으로 변환
-                if (RectTransformUtility.ScreenPointToLocalPointInRectangle(_parentRect, pointerPos, _uiCamera, out Vector2 localPoint))
+                if (RectTransformUtility.ScreenPointToLocalPointInRectangle(_parentRect, targetScreenPos, _uiCamera, out Vector2 localPoint))
                 {
                     // UIManager의 UI카메라가 "Perspective"이므로 Z값이 0이 아니면 카메라에 가까워져서(원근감)
                     // 엄청나게 커지고, 마우스 위치와 실제 렌더링 위치 사이의 오차(Parallax)가 발생합니다. (우상단 쏠림 현상의 주 원인)
@@ -109,7 +127,7 @@ public abstract class UI_CrosshairBase : UI_View
             else
             {
                 // Fallback
-                _rectTransform.position = pointerPos;
+                _rectTransform.position = targetScreenPos;
             }
         }
     }
@@ -159,6 +177,22 @@ public abstract class UI_CrosshairBase : UI_View
         {
             _ammoFillImage.fillAmount = ratio;
             _ammoFillImage.color = targetColor;
+        }
+    }
+
+    protected virtual void OnPreferredZoneChanged(bool isPreferred)
+    {
+        Color targetColor = isPreferred ? _advantageColor : _defaultColor;
+
+        if (_crosshairGraphics != null)
+        {
+            foreach (var graphic in _crosshairGraphics)
+            {
+                if (graphic != null)
+                {
+                    graphic.color = targetColor;
+                }
+            }
         }
     }
 

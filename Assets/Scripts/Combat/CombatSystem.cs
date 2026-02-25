@@ -26,7 +26,19 @@ public class CombatSystem : MonoBehaviour
     private float _remainingTime;
     private int _lastRemainingSec = -1;
 
+    // ==================== Phase 8 ====================
+    private TargetingSystem _targetingSystem;
+    public TargetingSystem TargetingSystem => _targetingSystem;
 
+    // 적정 사거리 피드백용
+
+
+    private System.Action<UnityEngine.InputSystem.InputAction.CallbackContext> _onToggleAuto;
+    private System.Action<UnityEngine.InputSystem.InputAction.CallbackContext> _onToggleAllCover;
+    private System.Action<UnityEngine.InputSystem.InputAction.CallbackContext>[] _onSelectNikkeInputs;
+    private bool _isAutoMode = false;
+    private bool _isAllCover = false;
+    private int _currentSelectedSlot = -1;
 
     private CombatHUDViewModel _hudViewModel;
     private StageGameData _stageGameData;
@@ -79,6 +91,31 @@ public class CombatSystem : MonoBehaviour
             // _waveSystem.StartBattleAsync 호출은 아래에서
         }
 
+        // TargetingSystem 초기화
+        var raptureField = FindFirstObjectByType<RaptureField>();
+        if (raptureField != null)
+        {
+            _targetingSystem = new TargetingSystem();
+            _targetingSystem.Initialize(raptureField);
+        }
+
+        // ToggleAuto 입력 바인딩
+        _onToggleAuto = _ => OnToggleAuto();
+        Managers.Input.BindAction("ToggleAuto", _onToggleAuto);
+
+        // ToggleAllCover 입력 바인딩
+        _onToggleAllCover = _ => ToggleAllCover();
+        Managers.Input.BindAction("ToggleAllCover", _onToggleAllCover);
+
+        // NIKKE 선택 입력 바인딩
+        _onSelectNikkeInputs = new System.Action<UnityEngine.InputSystem.InputAction.CallbackContext>[5];
+        for (int i = 0; i < 5; i++)
+        {
+            int index = i; // Closure capture
+            _onSelectNikkeInputs[i] = _ => SelectNikke(index);
+            Managers.Input.BindAction($"SelectNikke{index + 1}", _onSelectNikkeInputs[i]);
+        }
+
         // 3. UI, Nikke 초기화
         await InitializeNikkesAsync(squadId);
         await InitializeHUDAsync();
@@ -95,6 +132,7 @@ public class CombatSystem : MonoBehaviour
                 }
             }
             await _crosshairSystem.InitializeAsync(squadWeaponTypes);
+
         }
 
         // 3.6 초기 조작 니케 설정 (HUD와 Crosshair 객체가 모두 생성된 후에 호출되어야 함)
@@ -112,15 +150,42 @@ public class CombatSystem : MonoBehaviour
 
     private void ActivateDefaultNikke()
     {
-        int defaultIndex = 2;
+        int defaultIndex = 2; // 중심에 있는 3번 캐릭터
         if (defaultIndex < _nikkes.Length && _nikkes[defaultIndex] != null)
         {
-            _nikkes[defaultIndex].ForceActivate();
+            SelectNikke(defaultIndex);
         }
         else if (_nikkes.Length > 0 && _nikkes[0] != null)
         {
-            _nikkes[0].ForceActivate();
+            SelectNikke(0);
         }
+    }
+
+    /// <summary>
+    /// 지정된 슬롯의 니케를 플레이어 화면/조작 니케로 선택합니다.
+    /// </summary>
+    public void SelectNikke(int slotIndex)
+    {
+        if (slotIndex < 0 || slotIndex >= _nikkes.Length || _nikkes[slotIndex] == null || _nikkes[slotIndex].IsDead)
+            return;
+
+        // 동일한 슬롯 선택 시 무시
+        if (_currentSelectedSlot == slotIndex)
+            return;
+
+        // 1. 현재 조작 중이던 니케 카메라 및 조전선 연결 비활성화
+        if (_currentSelectedSlot >= 0 && _currentSelectedSlot < _nikkes.Length && _nikkes[_currentSelectedSlot] != null)
+        {
+            _nikkes[_currentSelectedSlot].OnDeselected();
+        }
+
+        // 2. 새 니케 선택
+        _currentSelectedSlot = slotIndex;
+        var newNikke = _nikkes[_currentSelectedSlot];
+
+        // 카메라 및 조준선 활성화
+        newNikke.OnSelected();
+        newNikke.AutoToggle = _isAutoMode; // 현재 전투의 Auto 상태를 새 니케에 적용
     }
 
 
@@ -147,13 +212,15 @@ public class CombatSystem : MonoBehaviour
         // 사망 이벤트 시점에 다음 조작 니케를 찾아 활성화
         // 방금 죽은 니케가 수동 조작 상태였다면 해당 상태가 해제되었으므로 새로운 니케를 수동 상태로 전환해야 함
 
-        for (int i = 0; i < _nikkes.Length; i++)
+        if (nikke.SlotIndex == _currentSelectedSlot)
         {
-            if (_nikkes[i] != null && !_nikkes[i].IsDead)
+            for (int i = 0; i < _nikkes.Length; i++)
             {
-                // Phase 6.1 Fix: Use ForceActivate
-                _nikkes[i].ForceActivate();
-                return;
+                if (_nikkes[i] != null && !_nikkes[i].IsDead)
+                {
+                    SelectNikke(i);
+                    return;
+                }
             }
         }
     }
@@ -169,6 +236,25 @@ public class CombatSystem : MonoBehaviour
     }
 
     /// <summary>
+    /// 전체 엄폐 토글. 활성화 시 모든 니케 Cover 강제, 해제 시 정상 전환 재개.
+    /// </summary>
+    /// Caller: Input Action "ToggleAllCover"
+    private void ToggleAllCover()
+    {
+        _isAllCover = !_isAllCover;
+
+        foreach (var nikke in _nikkes)
+        {
+            if (nikke != null && !nikke.IsDead)
+            {
+                nikke.SetForcedCover(_isAllCover);
+            }
+        }
+
+        Debug.Log($"[CombatSystem] ToggleAllCover: {_isAllCover}");
+    }
+
+    /// <summary>
     /// 전투 종료 및 정리
     /// Caller: CombatScene.Clear()
     /// </summary>
@@ -177,6 +263,30 @@ public class CombatSystem : MonoBehaviour
         if (_waveSystem != null)
         {
             _waveSystem.OnAllPhasesComplete -= OnAllPhasesComplete;
+        }
+
+        if (_onToggleAuto != null)
+        {
+            Managers.Input.UnbindAction("ToggleAuto", _onToggleAuto);
+            _onToggleAuto = null;
+        }
+
+        if (_onToggleAllCover != null)
+        {
+            Managers.Input.UnbindAction("ToggleAllCover", _onToggleAllCover);
+            _onToggleAllCover = null;
+        }
+
+        if (_onSelectNikkeInputs != null)
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                if (_onSelectNikkeInputs[i] != null)
+                {
+                    Managers.Input.UnbindAction($"SelectNikke{i + 1}", _onSelectNikkeInputs[i]);
+                }
+            }
+            _onSelectNikkeInputs = null;
         }
 
         // Phase 7.1 Refactor v2: 조준선 시스템 정리
@@ -192,6 +302,8 @@ public class CombatSystem : MonoBehaviour
     private void Update()
     {
         if (!_isInitialized || _isCombatEnded) return;
+
+        _targetingSystem?.Tick(Time.deltaTime);
 
         // 타이머 업데이트 (Phase 6.1 Optimization: 초 단위 변경 시에만 갱신)
         _remainingTime -= Time.deltaTime;
@@ -250,6 +362,27 @@ public class CombatSystem : MonoBehaviour
 
             AliveNikkeCount++;
         }
+    }
+
+    /// <summary>
+    /// Caller: Input Action "ToggleAuto" (LShift)
+    /// Intent: 전체 니케 Auto↔Manual 토글
+    /// </summary>
+    private void OnToggleAuto()
+    {
+        _isAutoMode = !_isAutoMode;
+
+        // Selected 니케의 AutoToggle만 변경
+        if (_currentSelectedSlot >= 0 && _currentSelectedSlot < _nikkes.Length)
+        {
+            var selectedNikke = _nikkes[_currentSelectedSlot];
+            if (selectedNikke != null && !selectedNikke.IsDead)
+            {
+                selectedNikke.AutoToggle = _isAutoMode;
+            }
+        }
+
+        Debug.Log($"[CombatSystem] ToggleAuto: {_isAutoMode}");
     }
 
     private async Task InitializeHUDAsync()

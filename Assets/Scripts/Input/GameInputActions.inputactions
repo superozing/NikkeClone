@@ -422,6 +422,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "ToggleAuto",
+                    "type": "Button",
+                    "id": "3c574a36-f76b-44ec-8033-a9437a4d7f72",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -521,6 +530,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "DebugLose",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "89f62dd0-1c7d-454c-bd63-c0905eaabe90",
+                    "path": "<Keyboard>/leftShift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ToggleAuto",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -8,6 +8,8 @@ public class SMGWeapon : DefaultWeaponBase
 {
     public SMGWeapon(WeaponData data) : base(data, eNikkeWeapon.SMG) { }
 
+    public override eRangeZone PreferredZone => eRangeZone.Near;
+
     protected override void TryFire(CombatNikke owner, Vector3 targetWorldPos)
     {
         Vector3 mPos = owner.transform.position + Vector3.up * 1f;

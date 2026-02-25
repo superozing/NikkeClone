@@ -31,7 +31,7 @@ public abstract class ChargeWeaponBase : WeaponBase
         _chargeProgress.Value = 0f;
     }
 
-    public override void Update(CombatNikke owner, Vector3 targetWorldPos)
+    protected override void Update(CombatNikke owner, Vector3 targetWorldPos)
     {
         if (!CanFire) return;
 
@@ -61,6 +61,25 @@ public abstract class ChargeWeaponBase : WeaponBase
 
         ConsumeAmmo(1); // 격발 후 탄약 1 감소
         _chargeProgress.Value = 0f;
+    }
+
+    /// <summary>
+    /// 차지형 무기 전투 처리.
+    /// 차지 누적은 항상 수행하고, Auto 모드에서 풀차지 + 유효 타겟 시 자동 격발합니다.
+    /// </summary>
+    /// Caller: NikkeAttackState.Execute()
+    public override void ProcessCombat(CombatNikke owner, Vector3 targetWorldPos, bool isTargetValid)
+    {
+        // 차지 누적은 타겟 여부와 관계없이 항상 수행
+        Update(owner, targetWorldPos);
+
+        // Auto 모드: 풀차지 + 유효 타겟 → 격발 후 즉시 다음 차지 시작
+        bool isAuto = CombatMode.Value == NikkeClone.Utils.eNikkeCombatMode.Auto;
+        if (isAuto && isTargetValid && _chargeProgress.Value >= 0.98f)
+        {
+            Exit(owner, isCancel: false);
+            Enter(owner);
+        }
     }
 
     /// <summary>

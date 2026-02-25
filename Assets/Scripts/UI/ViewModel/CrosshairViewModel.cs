@@ -16,6 +16,8 @@ public class CrosshairViewModel : ViewModelBase
     public float FullChargeMultiplier { get; private set; } = 1f;
     public ReactiveProperty<Vector2> TargetPosition { get; } = new ReactiveProperty<Vector2>(Vector2.zero);
 
+    public ReactiveProperty<bool> IsAutoMode { get; } = new ReactiveProperty<bool>(true);
+
     private IWeapon _currentWeapon;
 
     public void SetWeapon(IWeapon weapon)
@@ -25,6 +27,8 @@ public class CrosshairViewModel : ViewModelBase
         {
             _currentWeapon.CurrentAmmo.OnValueChanged -= OnAmmoChanged;
             _currentWeapon.ChargeProgress.OnValueChanged -= OnChargeProgressChanged;
+            _currentWeapon.CombatMode.OnValueChanged -= OnCombatModeChanged;
+            _currentWeapon.CurrentAimScreenPosition.OnValueChanged -= OnAimPositionChanged;
         }
 
         _currentWeapon = weapon;
@@ -39,10 +43,14 @@ public class CrosshairViewModel : ViewModelBase
             // 새 무기 구독
             _currentWeapon.CurrentAmmo.OnValueChanged += OnAmmoChanged;
             _currentWeapon.ChargeProgress.OnValueChanged += OnChargeProgressChanged;
+            _currentWeapon.CombatMode.OnValueChanged += OnCombatModeChanged;
+            _currentWeapon.CurrentAimScreenPosition.OnValueChanged += OnAimPositionChanged;
 
             // 초기값 동기화
             OnAmmoChanged(_currentWeapon.CurrentAmmo.Value);
             OnChargeProgressChanged(_currentWeapon.ChargeProgress.Value);
+            OnCombatModeChanged(_currentWeapon.CombatMode.Value);
+            OnAimPositionChanged(_currentWeapon.CurrentAimScreenPosition.Value);
         }
         else
         {
@@ -59,4 +67,15 @@ public class CrosshairViewModel : ViewModelBase
     {
         ChargeProgress.Value = progress;
     }
+
+    private void OnCombatModeChanged(NikkeClone.Utils.eNikkeCombatMode mode)
+    {
+        IsAutoMode.Value = (mode == NikkeClone.Utils.eNikkeCombatMode.Auto);
+    }
+
+    private void OnAimPositionChanged(Vector2 position)
+    {
+        TargetPosition.Value = position;
+    }
+
 }
