@@ -36,11 +36,15 @@ public class CombatSystem : MonoBehaviour
     // 적정 사거리 피드백용
 
 
-    private System.Action<UnityEngine.InputSystem.InputAction.CallbackContext> _onToggleAuto;
+    private System.Action<UnityEngine.InputSystem.InputAction.CallbackContext> _onToggleAutoCombat;
+    private System.Action<UnityEngine.InputSystem.InputAction.CallbackContext> _onToggleAutoBurst;
     private System.Action<UnityEngine.InputSystem.InputAction.CallbackContext> _onToggleAllCover;
     private System.Action<UnityEngine.InputSystem.InputAction.CallbackContext>[] _onSelectNikkeInputs;
-    private bool _isAutoMode = false;
-    private bool _isAllCover = false;
+
+    private bool _isAutoCombatMode = false;
+    private bool _isAutoBurstMode = false;
+
+    public ReactiveProperty<bool> IsAllCover { get; } = new(false);
     private int _currentSelectedSlot = -1;
 
     private CombatHUDViewModel _hudViewModel;
@@ -102,9 +106,13 @@ public class CombatSystem : MonoBehaviour
             _targetingSystem.Initialize(raptureField);
         }
 
-        // ToggleAuto 입력 바인딩
-        _onToggleAuto = _ => OnToggleAuto();
-        Managers.Input.BindAction("ToggleAuto", _onToggleAuto);
+        // ToggleAuto(Combat) 입력 바인딩
+        _onToggleAutoCombat = _ => OnToggleAutoCombat();
+        Managers.Input.BindAction("ToggleAuto", _onToggleAutoCombat);
+
+        // ToggleAutoBurst 입력 바인딩
+        _onToggleAutoBurst = _ => OnToggleAutoBurst();
+        Managers.Input.BindAction("ToggleAutoBurst", _onToggleAutoBurst);
 
         // ToggleAllCover 입력 바인딩
         _onToggleAllCover = _ => ToggleAllCover();
@@ -121,7 +129,7 @@ public class CombatSystem : MonoBehaviour
 
         // 3. 버스트 매니저 초기화 (니케 초기화 및 HUD 초기화 이전에 수행)
         _burstSystem = new CombatBurstSystem(_nikkes);
-        _burstSystem.SetAutoMode(_isAutoMode);
+        _burstSystem.SetAutoMode(_isAutoBurstMode);
 
         // 3.1 UI, Nikke 초기화
         await InitializeNikkesAsync(squadId);
@@ -193,7 +201,7 @@ public class CombatSystem : MonoBehaviour
 
         // 카메라 및 조준선 활성화
         newNikke.OnSelected();
-        newNikke.AutoToggle = _isAutoMode; // 현재 전투의 Auto 상태를 새 니케에 적용
+        newNikke.AutoToggle = _isAutoCombatMode; // 현재 전투의 Auto 상태를 새 니케에 적용
     }
 
 
@@ -249,17 +257,18 @@ public class CombatSystem : MonoBehaviour
     /// Caller: Input Action "ToggleAllCover"
     private void ToggleAllCover()
     {
-        _isAllCover = !_isAllCover;
+        IsAllCover.Value = !IsAllCover.Value;
+        bool isCover = IsAllCover.Value;
 
         foreach (var nikke in _nikkes)
         {
             if (nikke != null && !nikke.IsDead)
             {
-                nikke.SetForcedCover(_isAllCover);
+                nikke.SetForcedCover(isCover);
             }
         }
 
-        Debug.Log($"[CombatSystem] ToggleAllCover: {_isAllCover}");
+        Debug.Log($"[CombatSystem] ToggleAllCover: {isCover}");
     }
 
     /// <summary>
@@ -273,10 +282,16 @@ public class CombatSystem : MonoBehaviour
             _waveSystem.OnAllPhasesComplete -= OnAllPhasesComplete;
         }
 
-        if (_onToggleAuto != null)
+        if (_onToggleAutoCombat != null)
         {
-            Managers.Input.UnbindAction("ToggleAuto", _onToggleAuto);
-            _onToggleAuto = null;
+            Managers.Input.UnbindAction("ToggleAuto", _onToggleAutoCombat);
+            _onToggleAutoCombat = null;
+        }
+
+        if (_onToggleAutoBurst != null)
+        {
+            Managers.Input.UnbindAction("ToggleAutoBurst", _onToggleAutoBurst);
+            _onToggleAutoBurst = null;
         }
 
         if (_onToggleAllCover != null)
@@ -412,12 +427,11 @@ public class CombatSystem : MonoBehaviour
 
     /// <summary>
     /// Caller: Input Action "ToggleAuto" (LShift)
-    /// Intent: 전체 니케 Auto↔Manual 토글
+    /// Intent: 전체 니케 AutoCombat 토글 (사격 및 엄폐 지능형 동작)
     /// </summary>
-    private void OnToggleAuto()
+    private void OnToggleAutoCombat()
     {
-        _isAutoMode = !_isAutoMode;
-        _burstSystem?.SetAutoMode(_isAutoMode);
+        _isAutoCombatMode = !_isAutoCombatMode;
 
         // Selected 니케의 AutoToggle만 변경
         if (_currentSelectedSlot >= 0 && _currentSelectedSlot < _nikkes.Length)
@@ -425,11 +439,23 @@ public class CombatSystem : MonoBehaviour
             var selectedNikke = _nikkes[_currentSelectedSlot];
             if (selectedNikke != null && !selectedNikke.IsDead)
             {
-                selectedNikke.AutoToggle = _isAutoMode;
+                selectedNikke.AutoToggle = _isAutoCombatMode;
             }
         }
 
-        Debug.Log($"[CombatSystem] ToggleAuto: {_isAutoMode}");
+        Debug.Log($"[CombatSystem] ToggleAutoCombat: {_isAutoCombatMode}");
+    }
+
+    /// <summary>
+    /// Caller: Input Action "ToggleAutoBurst" (Tab)
+    /// Intent: 버스트 스킬 자동 발동 토글
+    /// </summary>
+    private void OnToggleAutoBurst()
+    {
+        _isAutoBurstMode = !_isAutoBurstMode;
+        _burstSystem?.SetAutoMode(_isAutoBurstMode);
+
+        Debug.Log($"[CombatSystem] ToggleAutoBurst: {_isAutoBurstMode}");
     }
 
     private async Task InitializeHUDAsync()

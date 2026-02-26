@@ -25,6 +25,10 @@ public class CombatBurstSystem
     private eBurstStage _currentStage = eBurstStage.None;
     private bool _isAutoMode;
 
+    // 단계 전이 쿨다운: HandleAutoBurst()의 매 프레임 체이닝 방지
+    private float _stageTransitionCooldown;
+    private const float STAGE_TRANSITION_COOLDOWN = 0.5f;
+
     private float _fullBurstDuration = 10.0f;
     private float _fullBurstTimer = 0.0f;
 
@@ -139,6 +143,10 @@ public class CombatBurstSystem
             }
         }
 
+        // 단계 전이 쿨다운 Tick
+        if (_stageTransitionCooldown > 0f)
+            _stageTransitionCooldown -= deltaTime;
+
         // 3. 자동 전투 대응
         if (_isAutoMode)
         {
@@ -172,7 +180,10 @@ public class CombatBurstSystem
 
         if (_slotData[slotIndex].BurstLevel != currentStageInt) return false;
 
-        // 2. 쿨타임 체크
+        // 2. 단계 전이 쿨다운 체크
+        if (_stageTransitionCooldown > 0f) return false;
+
+        // 3. 쿨타임 체크
         if (_slotData[slotIndex].CooldownRemaining.Value > 0) return false;
 
         return true;
@@ -195,6 +206,7 @@ public class CombatBurstSystem
         _currentStage = stage;
         CurrentStage.Value = _currentStage;
         OnStageChanged?.Invoke(_currentStage);
+        _stageTransitionCooldown = STAGE_TRANSITION_COOLDOWN;
 
         Debug.Log($"[BurstManager] Stage Changed: {_currentStage}");
     }
