@@ -36,14 +36,21 @@ public class UI_NikkeStateSlot : UI_View
 
 
     [Header("Visual Settings")]
-    [SerializeField] private Color _coverColor = new Color(0.53f, 0.81f, 0.98f); // 하늘색
-    [SerializeField] private Color _attackColor = new Color(1f, 0.3f, 0.3f);     // 빨간색
-    [SerializeField] private float _fadeDuration = 0.2f;                         // 색상 전환 시간
+    [SerializeField] private Color _coverColor = new Color(0.53f, 0.81f, 0.98f);
+    [SerializeField] private Color _defaultColor = Color.black;
+    [SerializeField] private float _fadeDuration = 0.2f;
 
     private NikkeStateViewModel _stateViewModel;
     private IUIAnimation _attackEntryAnim;
     private IUIAnimation _coverEntryAnim;
     private CanvasGroup _currentActiveRoot;
+
+    // 연출 중 전환 시 RectTransform이 중간값을 유지하는 것을 방지하기 위해
+    // 두 루트의 초기 anchoredPosition / localScale을 캐싱해둔다.
+    private Vector2 _attackRootOriginalPos;
+    private Vector2 _coverRootOriginalPos;
+    private Vector3 _attackRootOriginalScale;
+    private Vector3 _coverRootOriginalScale;
 
     public override void SetViewModel(ViewModelBase viewModel)
     {
@@ -60,54 +67,34 @@ public class UI_NikkeStateSlot : UI_View
         // Bind ReactiveProperties
 
         // 1. Crop Image
-        Bind(_stateViewModel.ProfileImage, sprite =>
-        {
-            if (_cropImage != null) _cropImage.sprite = sprite;
-        });
+        Bind(_stateViewModel.ProfileImage, sprite => _cropImage.sprite = sprite);
 
         // 2. HP Ratio
-        Bind(_stateViewModel.HpRatio, ratio =>
-        {
-            if (_hpFill != null) _hpFill.fillAmount = ratio;
-        });
+        Bind(_stateViewModel.HpRatio, ratio => _hpFill.fillAmount = ratio);
 
         // 3. Attribute Code
-        Bind(_stateViewModel.CodeIcon, sprite =>
-        {
-            if (_codeImage != null) _codeImage.sprite = sprite;
-        });
+        Bind(_stateViewModel.CodeIcon, sprite => _codeImage.sprite = sprite);
 
         // 4. Ammo (Split)
-        Bind(_stateViewModel.CurrentAmmo, ammo =>
-        {
-            if (_txtCurrentAmmo != null) _txtCurrentAmmo.text = ammo.ToString();
-        });
+        Bind(_stateViewModel.CurrentAmmo, ammo => _txtCurrentAmmo.text = ammo.ToString());
+        Bind(_stateViewModel.MaxAmmo, max => _txtMaxAmmo.text = max.ToString());
 
-        Bind(_stateViewModel.MaxAmmo, max =>
-        {
-            if (_txtMaxAmmo != null) _txtMaxAmmo.text = max.ToString();
-        });
+        // 5. State (Unified)
+        Bind(_stateViewModel.CurrentState, state => UpdateSlotVisualState());
 
-        // 5. State (Unified) & Gradient Color
-        Bind(_stateViewModel.CurrentState, state =>
+        // 6. Selection Focus
+        Bind(_stateViewModel.IsSelected, isSelected => UpdateSlotVisualState());
+
+        // 7. Global Cover Gradient Color
+        Bind(_stateViewModel.IsGlobalCover, isGlobalCover =>
         {
             if (_gradientImage != null)
             {
-                // 재장전(Reload)도 엄폐(Cover)와 동일한 하늘색으로 처리
-                bool isCoverColor = (state == eNikkeState.Cover || state == eNikkeState.Reload);
-                Color targetColor = isCoverColor ? _coverColor : _attackColor;
+                Color targetColor = isGlobalCover ? _coverColor : _defaultColor;
 
                 _gradientImage.DOKill();
                 _gradientImage.DOColor(targetColor, _fadeDuration).SetEase(Ease.Linear);
             }
-
-            UpdateSlotVisualState();
-        });
-
-        // 6. Selection Focus
-        Bind(_stateViewModel.IsSelected, isSelected =>
-        {
-            UpdateSlotVisualState();
         });
 
         // Initialize Animations
@@ -122,18 +109,36 @@ public class UI_NikkeStateSlot : UI_View
 
         if (_attackRootCG != null)
         {
+            var attackRT = _attackRootCG.GetComponent<RectTransform>();
+            // 등장 연출 기준점 캐싱: DOKill 후 리셋에 사용
+            _attackRootOriginalPos = attackRT.anchoredPosition;
+            _attackRootOriginalScale = attackRT.localScale;
+
             _attackEntryAnim = new UIAnimationComposite(
                 new VerticalSlideFadeUIAnimation(_attackRootCG, animDuration, offsetY, Ease.OutCubic),
-                new ScaleUIAnimation(_attackRootCG.GetComponent<RectTransform>(), startScale, Vector3.one, animDuration, Ease.OutBack)
+                new ScaleUIAnimation(attackRT, startScale, Vector3.one, animDuration, Ease.OutBack)
             );
+
+            // Prefab 기본 상태와 무관하게 초기 비활성화
+            _attackRootCG.alpha = 0f;
+            _attackRootCG.gameObject.SetActive(false);
         }
 
         if (_coverRootCG != null)
         {
+            var coverRT = _coverRootCG.GetComponent<RectTransform>();
+            // 등장 연출 기준점 캐싱: DOKill 후 리셋에 사용
+            _coverRootOriginalPos = coverRT.anchoredPosition;
+            _coverRootOriginalScale = coverRT.localScale;
+
             _coverEntryAnim = new UIAnimationComposite(
                 new VerticalSlideFadeUIAnimation(_coverRootCG, animDuration, offsetY, Ease.OutCubic),
-                new ScaleUIAnimation(_coverRootCG.GetComponent<RectTransform>(), startScale, Vector3.one, animDuration, Ease.OutBack)
+                new ScaleUIAnimation(coverRT, startScale, Vector3.one, animDuration, Ease.OutBack)
             );
+
+            // Prefab 기본 상태와 무관하게 초기 비활성화
+            _coverRootCG.alpha = 0f;
+            _coverRootCG.gameObject.SetActive(false);
         }
     }
 
@@ -160,10 +165,8 @@ public class UI_NikkeStateSlot : UI_View
 
     private void ApplyManualState()
     {
-        SetAliveElementsActive(true);
+        ApplyVisualGroupActive(true);
         TransitionToRoot(null); // Manual: 모든 루트 숨김
-        if (_deadOverlay != null) _deadOverlay.SetActive(false);
-
         SlideNikkeImage(_manualPos);
     }
 
@@ -173,7 +176,7 @@ public class UI_NikkeStateSlot : UI_View
         bool isReloading = (state == eNikkeState.Reload);
         bool isCovering = (state == eNikkeState.Cover);
 
-        SetAliveElementsActive(true);
+        ApplyVisualGroupActive(true);
 
         if (isReloading || isCovering)
         {
@@ -187,16 +190,13 @@ public class UI_NikkeStateSlot : UI_View
             TransitionToRoot(_attackRootCG, _attackEntryAnim);
         }
 
-        if (_deadOverlay != null) _deadOverlay.SetActive(false);
-
         SlideNikkeImage(_autoPos);
     }
 
     private void ApplyDeadState()
     {
-        SetAliveElementsActive(false);
+        ApplyVisualGroupActive(false);
         TransitionToRoot(null);
-        if (_deadOverlay != null) _deadOverlay.SetActive(true);
     }
 
     private void TransitionToRoot(CanvasGroup targetCG, IUIAnimation entryAnim = null)
@@ -204,14 +204,8 @@ public class UI_NikkeStateSlot : UI_View
         // 1. 타겟과 현재가 같으면 중단 (단, 텍스트 변경 등은 위에서 처리됨)
         if (_currentActiveRoot == targetCG) return;
 
-        // 2. 기존 루트 즉시 비활성화 (진행 중인 트윈 Kill 후 퇴장)
-        if (_currentActiveRoot != null)
-        {
-            _currentActiveRoot.DOKill();
-            _currentActiveRoot.GetComponent<RectTransform>().DOKill();
-            _currentActiveRoot.alpha = 0f;
-            _currentActiveRoot.gameObject.SetActive(false);
-        }
+        // 2. 기존 루트 즉시 비활성화 및 리셋
+        CleanUpRoot(_currentActiveRoot);
 
         _currentActiveRoot = targetCG;
 
@@ -230,21 +224,48 @@ public class UI_NikkeStateSlot : UI_View
         }
     }
 
-    private void SetAliveElementsActive(bool isActive)
+    private void CleanUpRoot(CanvasGroup cg)
     {
+        if (cg == null) return;
+
+        cg.DOKill();
+
+        // 트윈 중단 후 RectTransform이 중간값을 유지하는 것을 방지.
+        var rt = cg.GetComponent<RectTransform>();
+        rt.DOKill();
+
+        if (cg == _attackRootCG)
+        {
+            rt.anchoredPosition = _attackRootOriginalPos;
+            rt.localScale = _attackRootOriginalScale;
+        }
+        else if (cg == _coverRootCG)
+        {
+            rt.anchoredPosition = _coverRootOriginalPos;
+            rt.localScale = _coverRootOriginalScale;
+        }
+
+        cg.alpha = 0f;
+        cg.gameObject.SetActive(false);
+    }
+
+    /// <summary>
+    /// 니케의 생존 상태에 따른 비주얼 그룹(오버레이, 생존 요소들)을 통합 관리합니다.
+    /// </summary>
+    private void ApplyVisualGroupActive(bool isAlive)
+    {
+        if (_deadOverlay != null) _deadOverlay.SetActive(!isAlive);
         if (_aliveElements == null) return;
 
         for (int i = 0; i < _aliveElements.Length; i++)
         {
             if (_aliveElements[i] != null)
-                _aliveElements[i].SetActive(isActive);
+                _aliveElements[i].SetActive(isAlive);
         }
     }
 
     private void SlideNikkeImage(Vector2 targetPos)
     {
-        if (_nikkeImageRT == null) return;
-
         _nikkeImageRT.DOKill();
         _nikkeImageRT.DOAnchorPos(targetPos, _slideDuration).SetEase(Ease.OutQuad);
     }
