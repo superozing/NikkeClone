@@ -236,8 +236,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7467299354029163473}
+  - component: {fileID: 826511564773128247}
   m_Layer: 5
-  m_Name: ReloadLayout
+  m_Name: CoverRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -263,6 +264,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 52}
   m_SizeDelta: {x: 100, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!225 &826511564773128247
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 910265196773760058}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1356435164302612034
 GameObject:
   m_ObjectHideFlags: 0
@@ -462,8 +475,9 @@ GameObject:
   - component: {fileID: 5467516729858624310}
   - component: {fileID: 7470572471535417277}
   - component: {fileID: 5596428331130765394}
+  - component: {fileID: 8990221146675627792}
   m_Layer: 5
-  m_Name: AmmoLayout
+  m_Name: AttackRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -532,6 +546,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.ContentSizeFitter
   m_HorizontalFit: 2
   m_VerticalFit: 0
+--- !u!225 &8990221146675627792
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3883948040938453599}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &4437304864892858198
 GameObject:
   m_ObjectHideFlags: 0
@@ -907,21 +933,24 @@ MonoBehaviour:
   _codeImage: {fileID: 1578189918700898931}
   _txtCurrentAmmo: {fileID: 3462146489114475536}
   _txtMaxAmmo: {fileID: 2572585141545424689}
-  _ammoRoot: {fileID: 3883948040938453599}
-  _reloadingRoot: {fileID: 910265196773760058}
+  _attackRootCG: {fileID: 8990221146675627792}
+  _coverRootCG: {fileID: 826511564773128247}
+  _txtCoverStatus: {fileID: 7455109363501518445}
   _gradientImage: {fileID: 6379821718098543120}
   _manualPos: {x: 0, y: 0}
   _autoPos: {x: 0, y: -80}
   _slideDuration: 0.15
   _deadOverlay: {fileID: 1356435164302612034}
   _aliveElements:
-  - {fileID: 4437304864892858198}
-  - {fileID: 3883948040938453599}
-  - {fileID: 2978599015991389208}
-  - {fileID: 5229193273740464652}
+  - {fileID: 3703159892551940028}
   - {fileID: 6920706339188880128}
+  - {fileID: 5229193273740464652}
+  - {fileID: 2978599015991389208}
+  - {fileID: 3883948040938453599}
+  - {fileID: 910265196773760058}
   _coverColor: {r: 0.53, g: 0.81, b: 0.98, a: 1}
   _attackColor: {r: 1, g: 0.3, b: 0.3, a: 1}
+  _fadeDuration: 0.2
 --- !u!225 &3365986883234195602
 CanvasGroup:
   m_ObjectHideFlags: 0
