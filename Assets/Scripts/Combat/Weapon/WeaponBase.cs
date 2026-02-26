@@ -21,6 +21,12 @@ public abstract class WeaponBase : IWeapon
     public eNikkeWeapon WeaponType => _weaponType;
     protected bool CanFire => _currentAmmo.Value > 0;
 
+    // ==================== Burst Related ====================
+    /// <summary>적중 시 발생하는 이벤트</summary>
+    public event System.Action<CombatNikke> OnHit;
+    /// <summary>적중 당 게이지 충전량 (무기별 오버라이드)</summary>
+    public virtual float GaugeChargePerHit => 0.01f;
+
     // Implements Section 2.1: IWeapon & WeaponBase 리팩토링
     public ReactiveProperty<int> CurrentAmmo => _currentAmmo;
     public ReactiveProperty<float> ChargeProgress => _chargeProgress;
@@ -89,6 +95,14 @@ public abstract class WeaponBase : IWeapon
     public virtual void ProcessCombat(CombatNikke owner, Vector3 targetWorldPos, bool isTargetValid)
     {
         Update(owner, targetWorldPos);
+    }
+
+    /// <summary>
+    /// 적중 성공을 알립니다. 파생 클래스나 투사체에서 호출합니다.
+    /// </summary>
+    public void NotifyHit(CombatNikke owner)
+    {
+        OnHit?.Invoke(owner);
     }
 
     public void Reload()

@@ -315,6 +315,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 94beea1874d020b4da1fcddac5086666
+    m_Address: UI/View/UI_BurstGauge
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 98127fff79c983745b13818b952936a0
     m_Address: "Assets/Textures/Icon/Code/\uD48D\uC555"
     m_ReadOnly: 0
@@ -332,6 +337,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a212979f6a313104185673ddbb83ff20
     m_Address: "Assets/Textures/Nikke/\uB77C\uD53C_Idle"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a23c8c9b6f99a9449a0f9e713ccbc115
+    m_Address: UI/View/UI_BurstSkillSlot
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

@@ -58,6 +58,12 @@ public class CombatProjectile : MonoBehaviour
         if (rapture != null && !rapture.IsDead)
         {
             rapture.TakeDamage(_damage);
+
+            // 버스트 게이지 충전을 위해 무기에 적중 알림
+            if (_owner != null && _owner.Weapon is WeaponBase weaponBase)
+            {
+                weaponBase.NotifyHit(_owner);
+            }
         }
 
         // 지형지물이거나 적이거나 충돌하면 투사체 반환

@@ -24,7 +24,8 @@ public class CombatNikke : CombatEntity
     private IWeapon _weapon;
     private CombatSystem _combatSystem;
     private int _slotIndex;
-    private TargetingSystem _targetingSystem;
+    private CombatTargetingSystem _targetingSystem;
+
 
     // ==================== Properties ====================
 
@@ -33,13 +34,18 @@ public class CombatNikke : CombatEntity
     public IWeapon Weapon => _weapon;
     public NikkeView View => _view;
     public string NikkeName => _gameData?.name;
-    public TargetingSystem TargetingSystem => _targetingSystem;
+    public NikkeGameData GameData => _gameData;
+    public CombatTargetingSystem CombatTargetingSystem => _targetingSystem;
     public CombatSystem CombatSystem => _combatSystem;
+
 
     // ==================== V2 추가 ====================
 
     /// <summary>현재 이 니케가 플레이어의 조작 대상인지 (반응형)</summary>
     public ReactiveProperty<bool> IsSelected { get; } = new(false);
+
+    /// <summary>현재 이 니케의 상태 (반응형 UI 및 애니메이션 동기화용)</summary>
+    public ReactiveProperty<eNikkeState> State { get; } = new(eNikkeState.Cover);
 
     /// <summary>자동 전투 토글 상태 (Selected 니케만 영향)</summary>
     /// Setter: CombatSystem.OnToggleAuto()
@@ -93,13 +99,13 @@ public class CombatNikke : CombatEntity
     /// 니케 초기화 및 HFSM 가동
     /// Caller: CombatSystem.InitializeAsync()
     /// </summary>
-    public async Task InitializeAsync(NikkeGameData gameData, UserNikkeData userData, int slotIndex, CombatSystem combatSystem)
+    public async Task InitializeAsync(NikkeGameData gameData, UserNikkeData userData, int slotIndex, CombatSystem combatSystem, IWeapon weapon)
     {
         _gameData = gameData;
         _userData = userData;
         _slotIndex = slotIndex;
         _combatSystem = combatSystem;
-        _targetingSystem = combatSystem.TargetingSystem;
+        _targetingSystem = combatSystem.CombatTargetingSystem;
 
         // 스탯 계산
         CalculateStatus();
@@ -112,8 +118,8 @@ public class CombatNikke : CombatEntity
             return;
         }
 
-        // Weapon 초기화 (Phase 7: 다형성 기반 Factory 패턴)
-        _weapon = WeaponFactory.CreateWeapon(_gameData?.weapon, _gameData?.WeaponType ?? eNikkeWeapon.AR);
+        // Weapon 주입 (CombatSystem에서 생성해서 넘겨줌)
+        _weapon = weapon;
 
         // View 초기화
         await _view.InitializeAsync(gameData, slotIndex, _vcam);
@@ -126,6 +132,7 @@ public class CombatNikke : CombatEntity
         // HFSM 초기화 (V2: 고정 상태 생성)
         _hfsm = new NikkeHFSM(this);
 
+
         Debug.Log($"[CombatNikke] Initialized: {name}");
     }
 
@@ -133,6 +140,7 @@ public class CombatNikke : CombatEntity
     public override void Die()
     {
         base.Die();
+        UpdateState(eNikkeState.Dead);
         _hfsm.OnDead();
         _view.PlayDeathEffect();
         OnDeath?.Invoke(this);
@@ -306,8 +314,21 @@ public class CombatNikke : CombatEntity
     {
         UpdateAimPosition();        // (1) 조준 좌표 (State 무관, 항상 실행)
         _hfsm?.Update();            // (2) 상태 실행 + 전환 평가
+
         _weapon?.Tick(Time.deltaTime); // (3) 무기 Tick
     }
+
+    /// <summary>
+    /// 니케의 상태를 갱신합니다. 애니메이션(View)과 UI(ReactiveProperty)를 함께 동기화합니다.
+    /// </summary>
+    public void UpdateState(eNikkeState newState)
+    {
+        if (State.Value == newState && newState != eNikkeState.Dead) return;
+
+        State.Value = newState;
+        _view.UpdateVisualState(newState);
+    }
+
 
     /// <summary>
     /// 전체 엄폐 토글. HFSM에 위임합니다.

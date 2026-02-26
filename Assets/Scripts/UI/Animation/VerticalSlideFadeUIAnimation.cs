@@ -34,25 +34,24 @@ public class VerticalSlideFadeUIAnimation : IUIAnimation
         _cg.alpha = 0f;
         _cg.interactable = false;
 
-        // 2. 딜레이 대기
-        if (delay > 0)
-            await Task.Delay(System.TimeSpan.FromSeconds(delay));
-
-        // 3. 시퀀스 구성
+        // 2. 시퀀스 구성 (Delay는 Sequence의 PrependInterval 사용)
         Sequence seq = DOTween.Sequence();
         seq.SetUpdate(true);
 
-        // 4. 애니메이션 시작 전 위치 오프셋 적용
+        if (delay > 0)
+            seq.PrependInterval(delay);
+
+        // 3. 애니메이션 시작 전 위치 오프셋 적용
         seq.AppendCallback(() =>
         {
             rt.anchoredPosition = targetPos + new Vector2(0, -_offsetY);
         });
 
-        // 5. 애니메이션 정의 (Fade In + Move To Target)
+        // 4. 애니메이션 정의 (Fade In + Move To Target)
         seq.Append(_cg.DOFade(1f, _duration).SetEase(Ease.OutQuad));
         seq.Join(rt.DOAnchorPos(targetPos, _duration).SetEase(_ease));
 
-        // 6. 실행 및 대기
+        // 5. 실행 및 대기
         await seq.Play().AsyncWaitForCompletion();
 
         _cg.interactable = true;

@@ -12,7 +12,7 @@ public class NikkeAttackState : IState<CombatNikke>
 
     public void Enter(CombatNikke owner)
     {
-        owner.View.UpdateVisualState(eNikkeState.Attack);
+        owner.UpdateState(eNikkeState.Attack);
         owner.Weapon?.Enter(owner);
     }
 

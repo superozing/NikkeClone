@@ -95,7 +95,7 @@ public class NikkeHFSM
         // P5: 수동 사격 (Selected 니케 + 마우스 누름)
         if (isMousePressed) return _attackState;
 
-        bool hasTarget = _owner.TargetingSystem?.GetTarget(_owner.Weapon.PreferredZone) != null;
+        bool hasTarget = _owner.CombatTargetingSystem?.GetTarget(_owner.Weapon.PreferredZone) != null;
         bool isAutoEligible = !_owner.IsSelected.Value || _owner.AutoToggle;
 
         // P6: 자동 사격 (타겟 존재 + 자동 적격)

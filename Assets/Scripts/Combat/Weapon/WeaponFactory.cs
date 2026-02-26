@@ -5,7 +5,7 @@ public static class WeaponFactory
 {
     /// <summary>
     /// 무기 타입에 맞는 구체 클래스를 생성 반환합니다.
-    /// Caller: CombatNikke.InitializeAsync()
+    /// Caller: CombatSystem.InitializeNikkesAsync()
     /// </summary>
     public static IWeapon CreateWeapon(WeaponData data, eNikkeWeapon weaponType)
     {

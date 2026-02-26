@@ -11,7 +11,7 @@ public class NikkeReloadState : IState<CombatNikke>
 
     public void Enter(CombatNikke owner)
     {
-        owner.View.UpdateVisualState(eNikkeState.Reload);
+        owner.UpdateState(eNikkeState.Reload);
         _reloadTimer = 0f;
         _isReloaded = false;
     }

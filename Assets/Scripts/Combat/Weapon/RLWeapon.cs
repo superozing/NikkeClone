@@ -7,6 +7,7 @@ using UnityEngine;
 public class RLWeapon : ChargeWeaponBase
 {
     public RLWeapon(WeaponData data) : base(data, eNikkeWeapon.RL) { }
+    public override float GaugeChargePerHit => 0.15f;
 
     public override eRangeZone PreferredZone => eRangeZone.Near;
     public override bool IsPreferredZone(eRangeZone targetZone) => false;

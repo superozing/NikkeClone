@@ -16,7 +16,11 @@ public class UI_CombatHUD : UI_View
     [Header("Nikke State Slots")]
     [SerializeField] private UI_NikkeStateSlot[] _nikkeStateSlots;  // 5개
     [Header("Phase 4: Wave Progress")]
-    [SerializeField] private Image _progressFill; // Inspector에서 할당
+    [SerializeField] private Image _progressFill;
+
+    [Header("Phase 9: Burst UI")]
+    [SerializeField] private UI_BurstGauge _burstGauge;
+    [SerializeField] private UI_BurstSkillSlot[] _burstSkillSlots; // 5개
 
     private CombatHUDViewModel _viewModel;
 
@@ -51,6 +55,26 @@ public class UI_CombatHUD : UI_View
             Bind(_viewModel.TimeText, timeStr =>
             {
                 if (_txtTimer != null) _txtTimer.text = timeStr;
+            });
+
+            // Phase 9: Burst UI Binding
+            Bind(_viewModel.BurstGauge, burstGaugeVM =>
+            {
+                if (_burstGauge != null)
+                {
+                    _burstGauge.SetViewModel(burstGaugeVM);
+                }
+
+                if (burstGaugeVM != null && _burstSkillSlots != null)
+                {
+                    for (int i = 0; i < _burstSkillSlots.Length; i++)
+                    {
+                        if (_burstSkillSlots[i] == null) continue;
+
+                        var slotVM = (i < burstGaugeVM.SlotViewModels.Count) ? burstGaugeVM.SlotViewModels[i] : null;
+                        _burstSkillSlots[i].SetViewModel(slotVM);
+                    }
+                }
             });
         }
     }

@@ -9,6 +9,7 @@ public class MGWeapon : DefaultWeaponBase
 {
     private float _minFireInterval = 0.3f; // 초기(가장 느린) 발사 간격
     private float _maxFireInterval;        // 최대 가속 시 발사 간격 (기본 _fireInterval)
+    public override float GaugeChargePerHit => 0.005f;
 
     // 예열 게이지는 WeaponBase의 _chargeProgress 를 재사용합니다. (0.0 ~ 1.0)
     private float _spinUpPerShot = 0.1f;  // 발사당 차오르는 예열량
@@ -53,6 +54,7 @@ public class MGWeapon : DefaultWeaponBase
             if (rapture != null && !rapture.IsDead)
             {
                 rapture.TakeDamage(CalculateDamage(owner, 1.0f));
+                NotifyHit(owner);
             }
         }
         ConsumeAmmo(1);
