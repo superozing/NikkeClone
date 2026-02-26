@@ -15,11 +15,11 @@ public class CombatHUDViewModel : ViewModelBase
 
     public ReactiveProperty<string> TimeText { get; } = new();
 
+    // Phase 8 & 9: 버스트 시스템
+    public ReactiveProperty<BurstGaugeViewModel> BurstGauge { get; } = new(null);
+
     public CombatHUDViewModel(CombatNikke[] nikkes)
     {
         Nikkes = nikkes;
     }
-
-    // TODO Phase 4: 진행률
-    // TODO Phase 8: 버스트 게이지
 }
