@@ -13,7 +13,7 @@ public class AutoAimStrategy : IAimStrategy
     /// Caller: CombatNikke.UpdateAimPosition()
     public Vector2 GetAimScreenPosition(CombatNikke owner, Vector2 currentAimPos, float deltaTime)
     {
-        var target = owner.TargetingSystem?.GetTarget(owner.Weapon.PreferredZone);
+        var target = owner.CombatTargetingSystem?.GetTarget(owner.Weapon.PreferredZone);
         if (target == null || target.IsDead) return currentAimPos;
 
         Vector3 worldPos = target.transform.position;

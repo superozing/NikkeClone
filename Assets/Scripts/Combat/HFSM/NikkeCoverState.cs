@@ -22,7 +22,7 @@ public class NikkeCoverState : IState<CombatNikke>
 
     public void Enter(CombatNikke owner)
     {
-        owner.View.UpdateVisualState(eNikkeState.Cover);
+        owner.UpdateState(eNikkeState.Cover);
 
         if (owner.Weapon.CurrentAmmo.Value < owner.Weapon.MaxAmmo)
             _subStateMachine.ChangeState(_reloadState);

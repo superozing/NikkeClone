@@ -26,7 +26,7 @@ public class NikkeStunState : IState<CombatNikke>
         Debug.Log($"[{owner.name}] Stunned for {_stunDuration}s!");
         _elapsedTime = 0f;
         _isFinished = false;
-        owner.View.UpdateVisualState(eNikkeState.Stunned);
+        owner.UpdateState(eNikkeState.Stunned);
     }
 
     public void Execute(CombatNikke owner)
