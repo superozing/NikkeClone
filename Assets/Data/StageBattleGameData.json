@@ -32,5 +32,28 @@
             1
         ],
         "timeLimitSec": 120
+    },
+    "3": {
+        "id": 3,
+        "phaseIds": [
+            6,
+            7,
+            8,
+            9,
+            10
+        ],
+        "phaseProgressWeights": [
+            0.2,
+            0.2,
+            0.2,
+            0.2,
+            0.2
+        ],
+        "appearingRaptureIds": [
+            1,
+            2,
+            3
+        ],
+        "timeLimitSec": 120
     }
 }
