@@ -16,9 +16,12 @@ public class CombatSystem : MonoBehaviour
     private UI_CombatHUD _combatHUD;
 
     // ==================== State ====================
-
-    public float BurstGauge { get; set; } // Phase 9
+    private CombatBurstSystem _burstSystem;
+    public CombatBurstSystem BurstSystem => _burstSystem;
     public int AliveNikkeCount { get; private set; }
+
+    private IWeapon[] _weapons;
+    private System.Action<CombatNikke>[] _onHitCallbacks;
 
     private bool _isCombatEnded;
     private float _timeLimitSec;
@@ -27,8 +30,8 @@ public class CombatSystem : MonoBehaviour
     private int _lastRemainingSec = -1;
 
     // ==================== Phase 8 ====================
-    private TargetingSystem _targetingSystem;
-    public TargetingSystem TargetingSystem => _targetingSystem;
+    private CombatTargetingSystem _targetingSystem;
+    public CombatTargetingSystem CombatTargetingSystem => _targetingSystem;
 
     // 적정 사거리 피드백용
 
@@ -91,11 +94,11 @@ public class CombatSystem : MonoBehaviour
             // _waveSystem.StartBattleAsync 호출은 아래에서
         }
 
-        // TargetingSystem 초기화
+        // CombatTargetingSystem 초기화
         var raptureField = FindFirstObjectByType<RaptureField>();
         if (raptureField != null)
         {
-            _targetingSystem = new TargetingSystem();
+            _targetingSystem = new CombatTargetingSystem();
             _targetingSystem.Initialize(raptureField);
         }
 
@@ -116,8 +119,13 @@ public class CombatSystem : MonoBehaviour
             Managers.Input.BindAction($"SelectNikke{index + 1}", _onSelectNikkeInputs[i]);
         }
 
-        // 3. UI, Nikke 초기화
+        // 3. 버스트 매니저 초기화 (니케 초기화 및 HUD 초기화 이전에 수행)
+        _burstSystem = new CombatBurstSystem(_nikkes);
+        _burstSystem.SetAutoMode(_isAutoMode);
+
+        // 3.1 UI, Nikke 초기화
         await InitializeNikkesAsync(squadId);
+
         await InitializeHUDAsync();
 
         // 3.5 조준선 시스템 초기화 (Phase 7.1 Refactor v2)
@@ -292,6 +300,23 @@ public class CombatSystem : MonoBehaviour
         // Phase 7.1 Refactor v2: 조준선 시스템 정리
         _crosshairSystem?.Cleanup();
 
+        // Phase 9: 버스트 매니저 정리
+        _burstSystem?.Cleanup();
+
+        // Phase 9-2: 무기 이벤트 해제
+        if (_weapons != null && _onHitCallbacks != null)
+        {
+            for (int i = 0; i < _weapons.Length; i++)
+            {
+                if (_weapons[i] is WeaponBase weaponBase && _onHitCallbacks[i] != null)
+                {
+                    weaponBase.OnHit -= _onHitCallbacks[i];
+                }
+            }
+            _onHitCallbacks = null;
+            _weapons = null;
+        }
+
         // 이벤트 해제 등
     }
 
@@ -304,6 +329,7 @@ public class CombatSystem : MonoBehaviour
         if (!_isInitialized || _isCombatEnded) return;
 
         _targetingSystem?.Tick(Time.deltaTime);
+        _burstSystem?.Tick(Time.deltaTime);
 
         // 타이머 업데이트 (Phase 6.1 Optimization: 초 단위 변경 시에만 갱신)
         _remainingTime -= Time.deltaTime;
@@ -350,18 +376,38 @@ public class CombatSystem : MonoBehaviour
             return;
         }
 
+        _weapons = new IWeapon[_nikkes.Length];
+        _onHitCallbacks = new System.Action<CombatNikke>[_nikkes.Length];
+        var gameDatas = new NikkeGameData[_nikkes.Length];
+
         for (int i = 0; i < _nikkes.Length && i < squadData.slot.Count; i++)
         {
             if (_nikkes[i] == null) continue;
 
             int nikkeId = squadData.slot[i];
             var gameData = Managers.Data.Get<NikkeGameData>(nikkeId);
+            gameDatas[i] = gameData;
             var userData = Managers.Data.UserData.Nikkes[nikkeId];
 
-            await _nikkes[i].InitializeAsync(gameData, userData, i, this);
+            // 1. 무기 생성 (CombatSystem이 직접 책임)
+            var weapon = WeaponFactory.CreateWeapon(gameData?.weapon, gameData?.WeaponType ?? eNikkeWeapon.AR);
+            _weapons[i] = weapon;
+
+            // 2. OnHit -> BurstSystem 바인딩 (WeaponBase에만 존재하므로 캐스팅)
+            if (weapon is WeaponBase weaponBase)
+            {
+                _onHitCallbacks[i] = _ => _burstSystem?.AddGauge(weaponBase.GaugeChargePerHit);
+                weaponBase.OnHit += _onHitCallbacks[i];
+            }
+
+            // 3. 니케 초기화 (무기 주입)
+            await _nikkes[i].InitializeAsync(gameData, userData, i, this, weapon);
 
             AliveNikkeCount++;
         }
+
+        // 모든 니케가 초기화된 후 버스트 시스템 데이터 세팅
+        _burstSystem?.Initialize(gameDatas);
     }
 
     /// <summary>
@@ -371,6 +417,7 @@ public class CombatSystem : MonoBehaviour
     private void OnToggleAuto()
     {
         _isAutoMode = !_isAutoMode;
+        _burstSystem?.SetAutoMode(_isAutoMode);
 
         // Selected 니케의 AutoToggle만 변경
         if (_currentSelectedSlot >= 0 && _currentSelectedSlot < _nikkes.Length)
@@ -391,6 +438,14 @@ public class CombatSystem : MonoBehaviour
         {
             // ViewModel 생성 및 데이터 주입
             _hudViewModel = new CombatHUDViewModel(_nikkes);
+
+            // Phase 9: 버스트 시스템 연결
+            if (_burstSystem != null)
+            {
+                var burstGaugeVM = new BurstGaugeViewModel(_burstSystem);
+                await burstGaugeVM.InitializeAsync();
+                _hudViewModel.BurstGauge.Value = burstGaugeVM;
+            }
 
             // UI 매니저를 통해 HUD 생성 (ViewModel 전달)
             _combatHUD = await Managers.UI.ShowAsync<UI_CombatHUD>(_hudViewModel);
