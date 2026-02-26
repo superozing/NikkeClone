@@ -36,6 +36,7 @@ public class VerticalSlideFadeUIAnimation : IUIAnimation
 
         // 2. 시퀀스 구성 (Delay는 Sequence의 PrependInterval 사용)
         Sequence seq = DOTween.Sequence();
+        seq.SetTarget(_cg); // _cg.DOKill() 호출 시 이 시퀀스도 함께 중단되도록 설정
         seq.SetUpdate(true);
 
         if (delay > 0)
