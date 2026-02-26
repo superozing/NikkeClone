@@ -51,7 +51,14 @@ public class NikkeAttackState : IState<CombatNikke>
 
     public void Exit(CombatNikke owner)
     {
-        owner.Weapon?.Exit(owner, isCancel: true);
+        // 차지형 무기 + 수동 사격 중이었다면 → 발사로 종료
+        // Exit 시점에서 IsMousePressed는 이미 false이므로,
+        // 차지가 누적되어 있고(ChargeProgress > 0) 차지형 무기인 경우에만 발사 판정
+        bool isManualChargeFire = owner.IsMousePressed == false
+            && owner.Weapon is ChargeWeaponBase
+            && owner.Weapon.ChargeProgress.Value > 0f;
+
+        owner.Weapon?.Exit(owner, isCancel: !isManualChargeFire);
         if (owner.Weapon != null)
         {
             owner.Weapon.IsInPreferredZone.Value = false;

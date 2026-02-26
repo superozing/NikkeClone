@@ -3,7 +3,10 @@
 /// </summary>
 public class NikkeCoverIdleState : IState<CombatNikke>
 {
-    public void Enter(CombatNikke owner) { }
+    public void Enter(CombatNikke owner)
+    {
+        owner.UpdateState(eNikkeState.Cover);
+    }
     public void Execute(CombatNikke owner) { }
     public void Exit(CombatNikke owner) { }
 }
