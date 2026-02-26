@@ -26,12 +26,9 @@ public class FadeUIAnimation : IUIAnimation
         // 1. 초기 상태 설정
         _target.alpha = _from;
 
-        // 2. 딜레이 대기
-        if (delay > 0)
-            await Task.Delay(System.TimeSpan.FromSeconds(delay));
-
-        // 3. 실행
+        // 2. 실행 (SetDelay 사용)
         await _target.DOFade(_to, _duration)
+            .SetDelay(delay)
             .SetEase(_ease)
             .SetUpdate(true)
             .AsyncWaitForCompletion();
