@@ -7,6 +7,7 @@ using UnityEngine;
 public class SRWeapon : ChargeWeaponBase
 {
     public SRWeapon(WeaponData data) : base(data, eNikkeWeapon.SR) { }
+    public override float GaugeChargePerHit => 0.100f;
 
     public override eRangeZone PreferredZone => eRangeZone.Far;
 
@@ -21,6 +22,7 @@ public class SRWeapon : ChargeWeaponBase
             if (rapture != null && !rapture.IsDead)
             {
                 rapture.TakeDamage(damage);
+                NotifyHit(owner);
             }
         }
     }

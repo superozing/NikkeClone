@@ -10,6 +10,7 @@ public class SGWeapon : DefaultWeaponBase
     private float _spreadAngle = 5f;
 
     public SGWeapon(WeaponData data) : base(data, eNikkeWeapon.SG) { }
+    public override float GaugeChargePerHit => 0.030f;
 
     public override eRangeZone PreferredZone => eRangeZone.Near;
 
@@ -32,6 +33,7 @@ public class SGWeapon : DefaultWeaponBase
                 if (rapture != null && !rapture.IsDead)
                 {
                     rapture.TakeDamage(perPelletDamage);
+                    NotifyHit(owner);
                 }
             }
         }

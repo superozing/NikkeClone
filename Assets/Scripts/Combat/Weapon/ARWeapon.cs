@@ -7,6 +7,7 @@ using UnityEngine;
 public class ARWeapon : DefaultWeaponBase
 {
     public ARWeapon(WeaponData data) : base(data, eNikkeWeapon.AR) { }
+    public override float GaugeChargePerHit => 0.010f;
 
     protected override void TryFire(CombatNikke owner, Vector3 targetWorldPos)
     {
@@ -21,6 +22,7 @@ public class ARWeapon : DefaultWeaponBase
             if (rapture != null && !rapture.IsDead)
             {
                 rapture.TakeDamage(CalculateDamage(owner, 1.0f));
+                NotifyHit(owner);
             }
         }
         ConsumeAmmo(1);

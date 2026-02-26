@@ -7,6 +7,7 @@ using UnityEngine;
 public class SMGWeapon : DefaultWeaponBase
 {
     public SMGWeapon(WeaponData data) : base(data, eNikkeWeapon.SMG) { }
+    public override float GaugeChargePerHit => 0.006f;
 
     public override eRangeZone PreferredZone => eRangeZone.Near;
 
@@ -21,6 +22,7 @@ public class SMGWeapon : DefaultWeaponBase
             if (rapture != null && !rapture.IsDead)
             {
                 rapture.TakeDamage(CalculateDamage(owner, 1.0f));
+                NotifyHit(owner);
             }
         }
         ConsumeAmmo(1);
