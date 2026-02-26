@@ -10,6 +10,7 @@ public class NikkeStateViewModel : ViewModelBase
     public ReactiveProperty<float> HpRatio { get; } = new();
     public ReactiveProperty<eNikkeState> CurrentState { get; } = new();
     public ReactiveProperty<bool> IsSelected { get; } = new();
+    public ReactiveProperty<bool> IsGlobalCover { get; } = new();
 
     // Phase 5: 신규 연동 데이터
     public ReactiveProperty<Sprite> CodeIcon { get; } = new();
@@ -35,6 +36,13 @@ public class NikkeStateViewModel : ViewModelBase
             _nikke.OnHpChanged += UpdateHp;
             _nikke.State.OnValueChanged += OnStateChanged;
             _nikke.IsSelected.OnValueChanged += OnSelectedChanged;
+
+            // 전역 엄폐 상태 초기화 및 구독
+            if (_nikke.CombatSystem != null)
+            {
+                IsGlobalCover.Value = _nikke.CombatSystem.IsAllCover.Value;
+                _nikke.CombatSystem.IsAllCover.OnValueChanged += OnGlobalCoverChanged;
+            }
 
             // Phase 5: 신규 바인딩
             CodeType = _nikke.GameData?.CodeType ?? eNikkeCode.None;
@@ -67,6 +75,11 @@ public class NikkeStateViewModel : ViewModelBase
         CurrentState.Value = state;
     }
 
+    private void OnGlobalCoverChanged(bool isCover)
+    {
+        IsGlobalCover.Value = isCover;
+    }
+
     private void OnAmmoChanged(int current)
     {
         CurrentAmmo.Value = current;
@@ -94,6 +107,11 @@ public class NikkeStateViewModel : ViewModelBase
             _nikke.OnHpChanged -= UpdateHp;
             _nikke.State.OnValueChanged -= OnStateChanged;
             _nikke.IsSelected.OnValueChanged -= OnSelectedChanged;
+
+            if (_nikke.CombatSystem != null)
+            {
+                _nikke.CombatSystem.IsAllCover.OnValueChanged -= OnGlobalCoverChanged;
+            }
 
             if (_nikke.Weapon != null)
             {
