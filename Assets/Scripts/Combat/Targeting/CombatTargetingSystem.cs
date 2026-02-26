@@ -6,7 +6,7 @@ using UnityEngine;
 /// CombatSystem이 소유하며, 주기적으로 RaptureField의 Zone별
 /// 최소 HP 랩쳐를 캐싱합니다.
 /// </summary>
-public class TargetingSystem
+public class CombatTargetingSystem
 {
     private RaptureField _raptureField;
     private Dictionary<eRangeZone, CombatRapture> _cachedTargets;
