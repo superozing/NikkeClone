@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using UnityEngine;
 using System.Collections.Generic;
@@ -14,6 +15,10 @@ public class CombatSystem : MonoBehaviour
     [SerializeField] private CombatWaveSystem _waveSystem;
     [SerializeField] private CombatCrosshairSystem _crosshairSystem;
     private UI_CombatHUD _combatHUD;
+
+    // ==================== Trigger & Skill (Phase 10) ====================
+    private CombatTriggerSystem _triggerSystem;
+    private CombatSkillSystem _skillSystem;
 
     // ==================== State ====================
     private CombatBurstSystem _burstSystem;
@@ -36,10 +41,7 @@ public class CombatSystem : MonoBehaviour
     // 적정 사거리 피드백용
 
 
-    private System.Action<UnityEngine.InputSystem.InputAction.CallbackContext> _onToggleAutoCombat;
-    private System.Action<UnityEngine.InputSystem.InputAction.CallbackContext> _onToggleAutoBurst;
-    private System.Action<UnityEngine.InputSystem.InputAction.CallbackContext> _onToggleAllCover;
-    private System.Action<UnityEngine.InputSystem.InputAction.CallbackContext>[] _onSelectNikkeInputs;
+    private System.Action<UnityEngine.InputSystem.InputAction.CallbackContext>[] _onSelectNikkeWrappers;
 
     private bool _isAutoCombatMode = false;
     private bool _isAutoBurstMode = false;
@@ -65,6 +67,10 @@ public class CombatSystem : MonoBehaviour
         Debug.Log("[CombatSystem] InitializeAsync Start");
 
         _isCombatEnded = false;
+
+        // 0. 트리거 및 스킬 시스템 초기화 (Phase 10)
+        _triggerSystem = new CombatTriggerSystem();
+        _skillSystem = new CombatSkillSystem();
 
         // 1. 데이터 로드
         var stageData = Managers.Data.Get<StageGameData>(stageId);
@@ -95,7 +101,6 @@ public class CombatSystem : MonoBehaviour
             // CombatWaveSystem 리팩토링 시 Initialize에 의존성 주입 고려
             // 현재는 기존 WaveSystem 구조 유지하며 이름만 변경 예정
             _waveSystem.OnAllPhasesComplete += OnAllPhasesComplete;
-            // _waveSystem.StartBattleAsync 호출은 아래에서
         }
 
         // CombatTargetingSystem 초기화
@@ -107,24 +112,17 @@ public class CombatSystem : MonoBehaviour
         }
 
         // ToggleAuto(Combat) 입력 바인딩
-        _onToggleAutoCombat = _ => OnToggleAutoCombat();
-        Managers.Input.BindAction("ToggleAuto", _onToggleAutoCombat);
-
-        // ToggleAutoBurst 입력 바인딩
-        _onToggleAutoBurst = _ => OnToggleAutoBurst();
-        Managers.Input.BindAction("ToggleAutoBurst", _onToggleAutoBurst);
-
-        // ToggleAllCover 입력 바인딩
-        _onToggleAllCover = _ => ToggleAllCover();
-        Managers.Input.BindAction("ToggleAllCover", _onToggleAllCover);
+        Managers.Input.BindAction("ToggleAuto", OnToggleAutoCombatWrapper);
+        Managers.Input.BindAction("ToggleAutoBurst", OnToggleAutoBurstWrapper);
+        Managers.Input.BindAction("ToggleAllCover", OnToggleAllCoverWrapper);
 
         // NIKKE 선택 입력 바인딩
-        _onSelectNikkeInputs = new System.Action<UnityEngine.InputSystem.InputAction.CallbackContext>[5];
+        _onSelectNikkeWrappers = new System.Action<UnityEngine.InputSystem.InputAction.CallbackContext>[5];
         for (int i = 0; i < 5; i++)
         {
             int index = i; // Closure capture
-            _onSelectNikkeInputs[i] = _ => SelectNikke(index);
-            Managers.Input.BindAction($"SelectNikke{index + 1}", _onSelectNikkeInputs[i]);
+            _onSelectNikkeWrappers[i] = _ => SelectNikke(index);
+            Managers.Input.BindAction($"SelectNikke{index + 1}", _onSelectNikkeWrappers[i]);
         }
 
         // 3. 버스트 매니저 초기화 (니케 초기화 및 HUD 초기화 이전에 수행)
@@ -282,34 +280,20 @@ public class CombatSystem : MonoBehaviour
             _waveSystem.OnAllPhasesComplete -= OnAllPhasesComplete;
         }
 
-        if (_onToggleAutoCombat != null)
-        {
-            Managers.Input.UnbindAction("ToggleAuto", _onToggleAutoCombat);
-            _onToggleAutoCombat = null;
-        }
+        Managers.Input.UnbindAction("ToggleAuto", OnToggleAutoCombatWrapper);
+        Managers.Input.UnbindAction("ToggleAutoBurst", OnToggleAutoBurstWrapper);
+        Managers.Input.UnbindAction("ToggleAllCover", OnToggleAllCoverWrapper);
 
-        if (_onToggleAutoBurst != null)
-        {
-            Managers.Input.UnbindAction("ToggleAutoBurst", _onToggleAutoBurst);
-            _onToggleAutoBurst = null;
-        }
-
-        if (_onToggleAllCover != null)
-        {
-            Managers.Input.UnbindAction("ToggleAllCover", _onToggleAllCover);
-            _onToggleAllCover = null;
-        }
-
-        if (_onSelectNikkeInputs != null)
+        if (_onSelectNikkeWrappers != null)
         {
             for (int i = 0; i < 5; i++)
             {
-                if (_onSelectNikkeInputs[i] != null)
+                if (_onSelectNikkeWrappers[i] != null)
                 {
-                    Managers.Input.UnbindAction($"SelectNikke{i + 1}", _onSelectNikkeInputs[i]);
+                    Managers.Input.UnbindAction($"SelectNikke{i + 1}", _onSelectNikkeWrappers[i]);
                 }
             }
-            _onSelectNikkeInputs = null;
+            _onSelectNikkeWrappers = null;
         }
 
         // Phase 7.1 Refactor v2: 조준선 시스템 정리
@@ -345,6 +329,7 @@ public class CombatSystem : MonoBehaviour
 
         _targetingSystem?.Tick(Time.deltaTime);
         _burstSystem?.Tick(Time.deltaTime);
+        _skillSystem?.Tick(Time.deltaTime); // Phase 10: 스킬 쿨타임 업데이트
 
         // 타이머 업데이트 (Phase 6.1 Optimization: 초 단위 변경 시에만 갱신)
         _remainingTime -= Time.deltaTime;
@@ -408,10 +393,14 @@ public class CombatSystem : MonoBehaviour
             var weapon = WeaponFactory.CreateWeapon(gameData?.weapon, gameData?.WeaponType ?? eNikkeWeapon.AR);
             _weapons[i] = weapon;
 
-            // 2. OnHit -> BurstSystem 바인딩 (WeaponBase에만 존재하므로 캐스팅)
+            // 2. OnHit -> BurstSystem 및 TriggerSystem 바인딩
             if (weapon is WeaponBase weaponBase)
             {
-                _onHitCallbacks[i] = _ => _burstSystem?.AddGauge(weaponBase.GaugeChargePerHit);
+                int slotIdx = i; // Closure capture
+                _onHitCallbacks[i] = (targetNikke) =>
+                {
+                    _burstSystem?.AddGauge(weaponBase.GaugeChargePerHit);
+                };
                 weaponBase.OnHit += _onHitCallbacks[i];
             }
 
@@ -423,6 +412,12 @@ public class CombatSystem : MonoBehaviour
 
         // 모든 니케가 초기화된 후 버스트 시스템 데이터 세팅
         _burstSystem?.Initialize(gameDatas);
+
+        // Phase 10: 트리거 시스템 초기화 (관찰 시작)
+        _triggerSystem?.Initialize(_waveSystem, _weapons);
+
+        // Phase 10: 스킬 로딩 (TriggerSystem 주입)
+        _skillSystem?.LoadNikkeSkills(this, _triggerSystem, gameDatas);
     }
 
     /// <summary>
@@ -518,4 +513,18 @@ public class CombatSystem : MonoBehaviour
         Debug.Log($"[CombatSystem] ForceEndCombat: {result}");
         EndCombat(result);
     }
+
+    public CombatEntity GetEntityById(int entityId)
+    {
+        if (entityId >= 0 && entityId < _nikkes.Length)
+            return _nikkes[entityId];
+
+        return null;
+    }
+
+    // ==================== Input Wrappers ====================
+
+    private void OnToggleAutoCombatWrapper(UnityEngine.InputSystem.InputAction.CallbackContext ctx) => OnToggleAutoCombat();
+    private void OnToggleAutoBurstWrapper(UnityEngine.InputSystem.InputAction.CallbackContext ctx) => OnToggleAutoBurst();
+    private void OnToggleAllCoverWrapper(UnityEngine.InputSystem.InputAction.CallbackContext ctx) => ToggleAllCover();
 }
