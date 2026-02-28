@@ -40,6 +40,11 @@ public class CombatWaveSystem : MonoBehaviour
     /// </summary>
     public event Action OnAllPhasesComplete;
 
+    /// <summary>
+    /// 랩쳐 사망 시 발생
+    /// </summary>
+    public event Action<CombatRapture> OnRaptureDied;
+
     // ==================== Properties ====================
 
     /// <summary>
@@ -212,6 +217,9 @@ public class CombatWaveSystem : MonoBehaviour
 
         _totalKilledCount++;
         _currentPhaseKillCount++;
+
+        // 트리거 시스템 알림용 이벤트 발행
+        OnRaptureDied?.Invoke(rapture);
 
         // PoolManager로 반환 (ResourceManager를 통해)
         Managers.Resource.Destroy(rapture.gameObject);
