@@ -28,7 +28,6 @@ public class CombatRapture : CombatEntity
     public eRangeZone CurrentZone => _currentZone;
 
     /// <summary>사망 시 발생</summary>
-    /// <remarks>Caller: CombatScene (테스트용 로그)</remarks>
     public event System.Action<CombatRapture> OnDeath;
 
     // ==================== Public Methods ====================

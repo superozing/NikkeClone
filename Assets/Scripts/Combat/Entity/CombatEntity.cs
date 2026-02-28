@@ -36,10 +36,8 @@ public abstract class CombatEntity : MonoBehaviour
 
     // ==================== Public Methods ====================
 
-    // Phase 3: 데미지 처리 및 사망 로직 구현
     /// <summary>
     /// 데미지를 입습니다.
-    /// Caller: CombatNikke.Fire()
     /// </summary>
     /// <param name="damage">입을 데미지 양</param>
     /// <returns>실제 적용된 데미지</returns>
@@ -47,12 +45,10 @@ public abstract class CombatEntity : MonoBehaviour
     {
         if (IsDead) return 0;
 
-        long actualDamage = damage;// Mathf.Max(1, damage);
+        long actualDamage = damage;
         _currentHp -= actualDamage;
 
         OnHpChanged?.Invoke(_currentHp, MaxHp);
-
-        Debug.Log($"[{GetType().Name}] Took {actualDamage} damage. HP: {_currentHp}/{MaxHp}");
 
         if (_currentHp <= 0)
         {
@@ -65,11 +61,9 @@ public abstract class CombatEntity : MonoBehaviour
 
     /// <summary>
     /// 사망 처리입니다.
-    /// Caller: TakeDamage()
     /// </summary>
     public virtual void Die()
     {
         Debug.Log($"[{GetType().Name}] Died");
-        // 하위 클래스에서 override하여 상태 전환 등을 처리합니다.
     }
 }
