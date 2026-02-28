@@ -24,7 +24,7 @@ public class CombatSkillSystem
             foreach (var skillData in data.skills)
             {
                 // 패시브 타입인 것만 로딩 (버스트는 BurstSystem에서 별도 관리하거나 통합 가능)
-                if (skillData.skillTypeName != "Passive") continue;
+                if (skillData.skillTypeName != "패시브") continue;
 
                 SkillBase newSkill = SkillFactory.CreateSkill(skillData.skillID);
                 if (newSkill != null)
