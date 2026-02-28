@@ -26,7 +26,7 @@
     },
     "skills": [
       {
-        "skillID": 1001,
+        "skillID": 1,
         "burstStage": 0,
         "name": "포메이션 F.F",
         "description": "{0}회 피격 시 자신에게\n[공격력 {1}%▲] [{2}초 유지]",
@@ -46,7 +46,7 @@
         ]
       },
       {
-        "skillID": 1002,
+        "skillID": 2,
         "burstStage": 0,
         "name": "미사일",
         "description": "공격력이 가장 높은 적 {0}기에게\n[최종 공격력 {1}% 추가 대미지]\n[도발] [{2}초 유지]",
@@ -66,7 +66,7 @@
         ]
       },
       {
-        "skillID": 1003,
+        "skillID": 3,
         "burstStage": 3,
         "name": "다탄두 미사일",
         "description": "공격력이 가장 높은 적 {0}기에게\n[최종 공격력 {1}% 대미지]\n자신에게\n[공격력 {2}% ▲][{3}초 유지]",
@@ -124,7 +124,7 @@
     },
     "skills": [
       {
-        "skillID": 1101,
+        "skillID": 4,
         "burstStage": 0,
         "name": "포메이션 D.H",
         "description": "{0}회 피격 시 자신에게\n[방어력 {1}% ▲] [{2}초 유지]",
@@ -144,7 +144,7 @@
         ]
       },
       {
-        "skillID": 1102,
+        "skillID": 5,
         "burstStage": 0,
         "name": "포메이션 C.H",
         "description": "자신과 자신을 제외한 공격력이 가장 높은 아군 {0}기에게\n[방어력 {1}% ▲] [{2}초 유지]\n[피격 대미지 균등 분배] [{3}초 유지]",
@@ -167,7 +167,7 @@
         ]
       },
       {
-        "skillID": 1103,
+        "skillID": 6,
         "burstStage": 2,
         "name": "핀 포인트 미사일",
         "description": "공격 범위 내 적들에게\n[최종 공격력 {0}% 대미지]\n[방어력 {1}% ▼] [{2}초 유지]",
@@ -220,7 +220,7 @@
     },
     "skills": [
       {
-        "skillID": 1201,
+        "skillID": 7,
         "burstStage": 0,
         "name": "네온 특제탄",
         "description": "적 처치 시 공격력이 가장 높은 아군 {0}기에게\n[크리티컬 확률 {1}% ▲] [{2}초 유지]",
@@ -240,7 +240,7 @@
         ]
       },
       {
-        "skillID": 1202,
+        "skillID": 8,
         "burstStage": 0,
         "name": "화력 만세!",
         "description": "풀 버스트 타임 시작 시 아군 전체에게\n[크리티컬 확률 {0}% ▲] [{1}발 유지]",
@@ -257,7 +257,7 @@
         ]
       },
       {
-        "skillID": 1203,
+        "skillID": 9,
         "burstStage": 1,
         "name": "오직 화력!",
         "description": "방어력이 가장 높은 적 {0}기에게\n[최종 공격력 {1}% 대미지]\n샷건 소지 아군 전체에게\n[최대 장탄수 {2}발 ▲] [{3}초 유지]",
@@ -313,7 +313,7 @@
     },
     "skills": [
       {
-        "skillID": 1301,
+        "skillID": 10,
         "burstStage": 0,
         "name": "딸기향 이끌림",
         "description": "풀 버스트 타임 시작 시 자신에게\n[방어력 {0}% ▲] [{1}초 유지]\n풀 버스트 타임 지속 시간 중 피격 시 자신에게\n[시전자의 최종 최대 체력 비례 {2}% 회복]",
@@ -333,7 +333,7 @@
         ]
       },
       {
-        "skillID": 1302,
+        "skillID": 11,
         "burstStage": 0,
         "name": "딸기 사탕의 힘",
         "description": "일반 공격 {0}회 명중 시 자신에게\n[딸기 사탕: 최대 장탄 수 {1}% ▲] [{2}중첩] [{3}초 유지]\n자신이 딸기 사탕 최대 중첩 상태라면 중첩 해제 후 아군 전체에게\n[탄환 충전 {4}%]",
@@ -359,7 +359,7 @@
         ]
       },
       {
-        "skillID": 1303,
+        "skillID": 12,
         "burstStage": 2,
         "name": "스트로베리 쇼크",
         "description": "공격력이 가장 높은 적 {0}기에게\n[최종 공격력 {1}% 대미지]\n[도발] [{2}초 유지]",
@@ -414,7 +414,7 @@
     },
     "skills": [
       {
-        "skillID": 1401,
+        "skillID": 13,
         "burstStage": 0,
         "name": "힘나는 당근",
         "description": "풀 버스트 타임 시작 시 공격력이 가장 높은 아군 {0}기에게\n[시전자 기준 차지 속도 {1}% ▲] [{2}초 유지]\n[차지 대미지 {3}% ▲] [{4}초 유지]",
@@ -440,7 +440,7 @@
         ]
       },
       {
-        "skillID": 1402,
+        "skillID": 14,
         "burstStage": 0,
         "name": "건강한 당근",
         "description": "자신의 체력이 {0}% 이상이라면 자신에게\n[관통 특화] [지속]\n자신의 체력이 {1}% 미만이라면 자신에게\n[공격 대미지 비례 {2}% 회복] [지속]",
@@ -460,7 +460,7 @@
         ]
       },
       {
-        "skillID": 1403,
+        "skillID": 15,
         "burstStage": 3,
         "name": "신기하고 이상한 나라",
         "description": "자신에게\n[차지 속도 {0}% ▲] [{1}초 유지]\n[공격력 {2}% ▲] [{3}초 유지]",
@@ -516,7 +516,7 @@
     },
     "skills": [
       {
-        "skillID": 90001,
+        "skillID": 16,
         "burstStage": 0,
         "name": "이 것은 임시 스킬 1이다",
         "description": "DORO",
@@ -526,7 +526,7 @@
         "values": []
       },
       {
-        "skillID": 90002,
+        "skillID": 17,
         "burstStage": 0,
         "name": "이 것은 임시 스킬 2이다",
         "description": "DORO",
@@ -536,7 +536,7 @@
         "values": []
       },
       {
-        "skillID": 90003,
+        "skillID": 18,
         "burstStage": 1,
         "name": "이 것은 임시 버스트이다",
         "description": "DORO",
@@ -579,7 +579,7 @@
     },
     "skills": [
       {
-        "skillID": 90001,
+        "skillID": 19,
         "burstStage": 0,
         "name": "이 것은 임시 스킬 1이다",
         "description": "DORO",
@@ -589,7 +589,7 @@
         "values": []
       },
       {
-        "skillID": 90002,
+        "skillID": 20,
         "burstStage": 0,
         "name": "이 것은 임시 스킬 2이다",
         "description": "DORO",
@@ -599,7 +599,7 @@
         "values": []
       },
       {
-        "skillID": 90003,
+        "skillID": 21,
         "burstStage": 2,
         "name": "이 것은 임시 버스트이다",
         "description": "DORO",
@@ -642,7 +642,7 @@
     },
     "skills": [
       {
-        "skillID": 90001,
+        "skillID": 22,
         "burstStage": 0,
         "name": "이 것은 임시 스킬 1이다",
         "description": "DORO",
@@ -652,7 +652,7 @@
         "values": []
       },
       {
-        "skillID": 90002,
+        "skillID": 23,
         "burstStage": 0,
         "name": "이 것은 임시 스킬 2이다",
         "description": "DORO",
@@ -662,7 +662,7 @@
         "values": []
       },
       {
-        "skillID": 90003,
+        "skillID": 24,
         "burstStage": 3,
         "name": "이 것은 임시 버스트이다",
         "description": "DORO",
@@ -707,7 +707,7 @@
     },
     "skills": [
       {
-        "skillID": 90001,
+        "skillID": 25,
         "burstStage": 0,
         "name": "이 것은 임시 스킬 1이다",
         "description": "DORO",
@@ -717,7 +717,7 @@
         "values": []
       },
       {
-        "skillID": 90002,
+        "skillID": 26,
         "burstStage": 0,
         "name": "이 것은 임시 스킬 2이다",
         "description": "DORO",
@@ -727,7 +727,7 @@
         "values": []
       },
       {
-        "skillID": 90003,
+        "skillID": 27,
         "burstStage": 1,
         "name": "이 것은 임시 버스트이다",
         "description": "DORO",
@@ -772,7 +772,7 @@
     },
     "skills": [
       {
-        "skillID": 90001,
+        "skillID": 28,
         "burstStage": 0,
         "name": "이 것은 임시 스킬 1이다",
         "description": "DORO",
@@ -782,7 +782,7 @@
         "values": []
       },
       {
-        "skillID": 90002,
+        "skillID": 29,
         "burstStage": 0,
         "name": "이 것은 임시 스킬 2이다",
         "description": "DORO",
@@ -792,7 +792,7 @@
         "values": []
       },
       {
-        "skillID": 90003,
+        "skillID": 30,
         "burstStage": 2,
         "name": "이 것은 임시 버스트이다",
         "description": "DORO",
@@ -835,7 +835,7 @@
     },
     "skills": [
       {
-        "skillID": 90001,
+        "skillID": 31,
         "burstStage": 0,
         "name": "이 것은 임시 스킬 1이다",
         "description": "DORO",
@@ -845,7 +845,7 @@
         "values": []
       },
       {
-        "skillID": 90002,
+        "skillID": 32,
         "burstStage": 0,
         "name": "이 것은 임시 스킬 2이다",
         "description": "DORO",
@@ -855,7 +855,7 @@
         "values": []
       },
       {
-        "skillID": 90003,
+        "skillID": 33,
         "burstStage": 3,
         "name": "이 것은 임시 버스트이다",
         "description": "DORO",
@@ -898,7 +898,7 @@
     },
     "skills": [
       {
-        "skillID": 90001,
+        "skillID": 34,
         "burstStage": 0,
         "name": "이 것은 임시 스킬 1이다",
         "description": "DORO",
@@ -908,7 +908,7 @@
         "values": []
       },
       {
-        "skillID": 90002,
+        "skillID": 35,
         "burstStage": 0,
         "name": "이 것은 임시 스킬 2이다",
         "description": "DORO",
@@ -918,7 +918,7 @@
         "values": []
       },
       {
-        "skillID": 90003,
+        "skillID": 36,
         "burstStage": 1,
         "name": "이 것은 임시 버스트이다",
         "description": "DORO",
@@ -961,7 +961,7 @@
     },
     "skills": [
       {
-        "skillID": 90001,
+        "skillID": 37,
         "burstStage": 0,
         "name": "이 것은 임시 스킬 1이다",
         "description": "DORO",
@@ -971,7 +971,7 @@
         "values": []
       },
       {
-        "skillID": 90002,
+        "skillID": 38,
         "burstStage": 0,
         "name": "이 것은 임시 스킬 2이다",
         "description": "DORO",
@@ -981,7 +981,7 @@
         "values": []
       },
       {
-        "skillID": 90003,
+        "skillID": 39,
         "burstStage": 2,
         "name": "이 것은 임시 버스트이다",
         "description": "DORO",
@@ -1024,7 +1024,7 @@
     },
     "skills": [
       {
-        "skillID": 90001,
+        "skillID": 40,
         "burstStage": 0,
         "name": "이 것은 임시 스킬 1이다",
         "description": "DORO",
@@ -1034,7 +1034,7 @@
         "values": []
       },
       {
-        "skillID": 90002,
+        "skillID": 41,
         "burstStage": 0,
         "name": "이 것은 임시 스킬 2이다",
         "description": "DORO",
@@ -1044,7 +1044,7 @@
         "values": []
       },
       {
-        "skillID": 90003,
+        "skillID": 42,
         "burstStage": 3,
         "name": "이 것은 임시 버스트이다",
         "description": "DORO",
@@ -1089,7 +1089,7 @@
     },
     "skills": [
       {
-        "skillID": 90001,
+        "skillID": 43,
         "burstStage": 0,
         "name": "이 것은 임시 스킬 1이다",
         "description": "DORO",
@@ -1099,7 +1099,7 @@
         "values": []
       },
       {
-        "skillID": 90002,
+        "skillID": 44,
         "burstStage": 0,
         "name": "이 것은 임시 스킬 2이다",
         "description": "DORO",
@@ -1109,7 +1109,7 @@
         "values": []
       },
       {
-        "skillID": 90003,
+        "skillID": 45,
         "burstStage": 1,
         "name": "이 것은 임시 버스트이다",
         "description": "DORO",
