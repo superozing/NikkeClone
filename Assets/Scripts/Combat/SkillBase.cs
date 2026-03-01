@@ -7,18 +7,16 @@ using UnityEngine;
 public abstract class SkillBase
 {
     protected CombatSystem _combatSystem;
-    protected CombatTriggerSystem _triggerSystem;
 
     protected int _ownerIdx; // 이 스킬을 소유한 니케의 슬롯 인덱스 (0~4)
     protected SkillData _skillData;
 
     /// <summary>
-    /// 스킬 인스턴스를 초기화하고 필요한 트리거를 구독합니다.
+    /// 스킬 인스턴스를 초기화합니다.
     /// </summary>
-    public void Initialize(CombatSystem combatSystem, CombatTriggerSystem triggerSystem, int ownerIdx, SkillData data)
+    public void Initialize(CombatSystem combatSystem, int ownerIdx, SkillData data)
     {
         _combatSystem = combatSystem;
-        _triggerSystem = triggerSystem;
         _ownerIdx = ownerIdx;
         _skillData = data;
 
