@@ -91,7 +91,8 @@ public class CombatNikke : CombatEntity
 
     // ==================== Events ====================
 
-    public event System.Action<CombatNikke> OnDeath;
+    /// <summary>니케 사망 시 발생하는 이벤트 (상속된 OnDeath 외에 니케 전용 정보 포함)</summary>
+    public new event System.Action<CombatNikke> OnDeath;
 
     // ==================== Public Methods ====================
 
@@ -107,8 +108,9 @@ public class CombatNikke : CombatEntity
         _combatSystem = combatSystem;
         _targetingSystem = combatSystem.CombatTargetingSystem;
 
-        // 스탯 계산
+        // 스탯 계산 및 초기화
         CalculateStatus();
+        InitializeStatus();
         _currentHp = MaxHp;
 
         // View 초기화
@@ -310,8 +312,9 @@ public class CombatNikke : CombatEntity
         _baseStatus.defense = (long)(_baseStatus.defense * levelMultiplier);
     }
 
-    private void Update()
+    protected override void Update()
     {
+        base.Update();
         UpdateAimPosition();        // (1) 조준 좌표 (State 무관, 항상 실행)
         _hfsm?.Update();            // (2) 상태 실행 + 전환 평가
 

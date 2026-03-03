@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 /// <summary>
 /// 무기 시스템의 최상위 추상 클래스.
@@ -132,7 +132,7 @@ public abstract class WeaponBase : IWeapon
     {
         // owner.Status.attack가 기본 공격력이지만, 버프 등이 적용된 최종 공격력을 고려할 수 있음
         // 지금은 BaseStatus 기반으로 적용
-        float baseAttack = owner.Status.attack;
+        float baseAttack = owner.Status.Current.Attack;
         float finalDamage = baseAttack * (_damagePercent / 100f) * multiplier * rangeAdvantage;
         return (long)finalDamage;
     }

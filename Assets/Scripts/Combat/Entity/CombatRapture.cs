@@ -27,8 +27,8 @@ public class CombatRapture : CombatEntity
     /// <summary>현재 위치 구역</summary>
     public eRangeZone CurrentZone => _currentZone;
 
-    /// <summary>사망 시 발생</summary>
-    public event System.Action<CombatRapture> OnDeath;
+    /// <summary>사망 시 발생 (상속된 OnDeath 외에 랩쳐 전용 정보 포함)</summary>
+    public new event System.Action<CombatRapture> OnDeath;
 
     // ==================== Public Methods ====================
 
@@ -45,6 +45,7 @@ public class CombatRapture : CombatEntity
         if (_gameData != null)
         {
             _baseStatus = _gameData.status;
+            InitializeStatus();
             _currentHp = MaxHp;
         }
 
@@ -93,8 +94,9 @@ public class CombatRapture : CombatEntity
 
     // ==================== Test Code (Phase 2 Only) ====================
 
-    private void Update()
+    protected override void Update()
     {
+        base.Update();
         _stateMachine?.Update();
     }
 }
