@@ -20,6 +20,16 @@ public class CombatTriggerSystem
     /// <summary>버스트 스킬이 사용되었을 때 발생. 파라미터: 시전자 인덱스, 버스트 단계</summary>
     public event Action<int, eBurstStage> OnBurstSkillUsed;
 
+    /// <summary>아군(니케)이 피격되었을 때 발생. 파라미터: 피격자 슬롯 인덱스, 데미지량</summary>
+    public event Action<int, long> OnAllyDamaged;
+
+    /// <summary>아군(니케)이 회복되었을 때 발생. 파라미터: 회복 대상 슬롯 인덱스, 회복량</summary>
+    public event Action<int, long> OnAllyHealed;
+
+    /// <summary>아군(니케)이 적에게 데미지를 입혔을 때 발생. 파라미터: 공격자 슬롯 인덱스, 데미지량</summary>
+    public event Action<int, long> OnEnemyDamagedByAlly;
+
+
     // ==========================================
     // 2. 초기화 및 외부 컴포넌트 관찰 설정
     // ==========================================

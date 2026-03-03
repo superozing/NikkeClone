@@ -19,6 +19,8 @@ public class CombatSystem : MonoBehaviour
     // ==================== Trigger & Skill (Phase 10) ====================
     private CombatTriggerSystem _triggerSystem;
     private CombatSkillSystem _skillSystem;
+    private CombatStatRecordSystem _statRecordSystem;
+    public CombatStatRecordSystem StatRecordSystem => _statRecordSystem;
 
     // ==================== State ====================
     private CombatBurstSystem _burstSystem;
@@ -71,6 +73,8 @@ public class CombatSystem : MonoBehaviour
         // 0. 트리거 및 스킬 시스템 초기화 (Phase 10)
         _triggerSystem = new CombatTriggerSystem();
         _skillSystem = new CombatSkillSystem();
+        _statRecordSystem = new CombatStatRecordSystem();
+        _statRecordSystem.Initialize(_triggerSystem, _nikkes);
 
         // 1. 데이터 로드
         var stageData = Managers.Data.Get<StageGameData>(stageId);
@@ -115,6 +119,7 @@ public class CombatSystem : MonoBehaviour
         Managers.Input.BindAction("ToggleAuto", OnToggleAutoCombatWrapper);
         Managers.Input.BindAction("ToggleAutoBurst", OnToggleAutoBurstWrapper);
         Managers.Input.BindAction("ToggleAllCover", OnToggleAllCoverWrapper);
+        Managers.Input.BindAction("Pause", OnPauseWrapper);
 
         // NIKKE 선택 입력 바인딩
         _onSelectNikkeWrappers = new System.Action<UnityEngine.InputSystem.InputAction.CallbackContext>[5];
@@ -283,6 +288,7 @@ public class CombatSystem : MonoBehaviour
         Managers.Input.UnbindAction("ToggleAuto", OnToggleAutoCombatWrapper);
         Managers.Input.UnbindAction("ToggleAutoBurst", OnToggleAutoBurstWrapper);
         Managers.Input.UnbindAction("ToggleAllCover", OnToggleAllCoverWrapper);
+        Managers.Input.UnbindAction("Pause", OnPauseWrapper);
 
         if (_onSelectNikkeWrappers != null)
         {
@@ -397,9 +403,11 @@ public class CombatSystem : MonoBehaviour
             if (weapon is WeaponBase weaponBase)
             {
                 int slotIdx = i; // Closure capture
-                _onHitCallbacks[i] = (targetNikke) =>
+                weaponBase.OnHit += (targetNikke) =>
                 {
                     _burstSystem?.AddGauge(weaponBase.GaugeChargePerHit);
+                    // 데미지 기록 (현재 데미지 수치를 정확히 가져오기 위해 IWeapon 수정이 필요할 수 있으나 우선 기록 로직 구축)
+                    // _statTracker.RecordDamageDealt(slotIdx, lastDamage); 
                 };
                 weaponBase.OnHit += _onHitCallbacks[i];
             }
@@ -527,4 +535,18 @@ public class CombatSystem : MonoBehaviour
     private void OnToggleAutoCombatWrapper(UnityEngine.InputSystem.InputAction.CallbackContext ctx) => OnToggleAutoCombat();
     private void OnToggleAutoBurstWrapper(UnityEngine.InputSystem.InputAction.CallbackContext ctx) => OnToggleAutoBurst();
     private void OnToggleAllCoverWrapper(UnityEngine.InputSystem.InputAction.CallbackContext ctx) => ToggleAllCover();
+    private void OnPauseWrapper(UnityEngine.InputSystem.InputAction.CallbackContext ctx) => OnPause();
+
+    private void OnPause()
+    {
+        if (_isCombatEnded) return;
+
+        Managers.Time.PauseGame();
+
+        // 팝업 표시 
+        /*
+        var viewModel = new CombatPausePopupViewModel(_hudViewModel.TimeText.Value, _statRecordSystem);
+        _ = Managers.UI.ShowAsync<UI_CombatPausePopup>(viewModel);
+        */
+    }
 }
