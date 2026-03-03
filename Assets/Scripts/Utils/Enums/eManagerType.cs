@@ -10,6 +10,7 @@ public enum eManagerType
     Sound,
     Resource,
     GameSystem,
+    Time,
 
     End,
 }
