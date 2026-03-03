@@ -949,7 +949,7 @@ MonoBehaviour:
   - {fileID: 3883948040938453599}
   - {fileID: 910265196773760058}
   _coverColor: {r: 0.53, g: 0.81, b: 0.98, a: 1}
-  _attackColor: {r: 1, g: 0.3, b: 0.3, a: 1}
+  _defaultColor: {r: 0, g: 0, b: 0, a: 1}
   _fadeDuration: 0.2
 --- !u!225 &3365986883234195602
 CanvasGroup:
