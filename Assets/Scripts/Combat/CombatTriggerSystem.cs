@@ -1,4 +1,5 @@
 using System;
+using NikkeClone.Utils;
 
 /// <summary>
 /// 전투 내 발생하는 이벤트를 중계하고 시스템 간의 결합도를 낮추는 트리거 시스템입니다.
@@ -16,6 +17,9 @@ public class CombatTriggerSystem
     /// <summary>랩쳐(적)가 사망했을 때 발생. 파라미터: 사망한 랩쳐 객체</summary>
     public event Action<CombatRapture> OnEnemyDied;
 
+    /// <summary>버스트 스킬이 사용되었을 때 발생. 파라미터: 시전자 인덱스, 버스트 단계</summary>
+    public event Action<int, eBurstStage> OnBurstSkillUsed;
+
     // ==========================================
     // 2. 초기화 및 외부 컴포넌트 관찰 설정
     // ==========================================
@@ -23,7 +27,7 @@ public class CombatTriggerSystem
     /// <summary>
     /// 외부 핵심 시스템들을 주입받아 이벤트를 관찰 대상으로 연결합니다.
     /// </summary>
-    public void Initialize(CombatWaveSystem waveSystem, IWeapon[] nikkeWeapons)
+    public void Initialize(CombatWaveSystem waveSystem, IWeapon[] nikkeWeapons, CombatBurstSystem burstSystem)
     {
         // 1. 랩쳐 처치 이벤트 바인딩
         if (waveSystem != null)
@@ -42,6 +46,12 @@ public class CombatTriggerSystem
                     weapon.OnHit += (_) => HandleAllyHit(slotIdx);
                 }
             }
+        }
+
+        // 3. 버스트 시스템 이벤트 바인딩
+        if (burstSystem != null)
+        {
+            burstSystem.OnBurstTriggered += (idx, stage) => OnBurstSkillUsed?.Invoke(idx, stage);
         }
     }
 
@@ -67,6 +77,7 @@ public class CombatTriggerSystem
         // Note: 통상적으로 전투 시스템 수명과 함께 하므로 Clear만 수행
         OnAllyHitEnemy = null;
         OnEnemyDied = null;
+        OnBurstSkillUsed = null;
     }
 }
 

@@ -3,18 +3,17 @@ using UnityEngine;
 /// <summary>
 /// 테스트용 패시브 스킬: 아군(Ally)이 적을 3회 처치할 때마다 발동합니다.
 /// </summary>
-public class Passive_Test : SkillBase
+public class Passive_Test : SkillBase, ITriggerOnEnemyDied
 {
     private int _targetKillCount = 3;
     private int _currentKills = 0;
 
     protected override void OnInitialize()
     {
-        // 명시적 이벤트 구독
-        _triggerSystem.OnEnemyDied += HandleEnemyDied;
+        // 중앙 라우팅 방식을 사용하므로 별도의 구독 로직이 필요 없습니다.
     }
 
-    private void HandleEnemyDied(CombatRapture deadRapture)
+    public void OnEnemyDied(CombatRapture deadRapture)
     {
         // 글로벌 킬 (누가 죽였는지는 상관없이 적이 죽으면 카운트)
         _currentKills++;
@@ -44,10 +43,7 @@ public class Passive_Test : SkillBase
 
     public override void Dispose()
     {
-        if (_triggerSystem != null)
-        {
-            _triggerSystem.OnEnemyDied -= HandleEnemyDied;
-        }
+        base.Dispose();
     }
 }
 

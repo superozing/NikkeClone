@@ -414,7 +414,7 @@ public class CombatSystem : MonoBehaviour
         _burstSystem?.Initialize(gameDatas);
 
         // Phase 10: 트리거 시스템 초기화 (관찰 시작)
-        _triggerSystem?.Initialize(_waveSystem, _weapons);
+        _triggerSystem?.Initialize(_waveSystem, _weapons, _burstSystem);
 
         // Phase 10: 스킬 로딩 (TriggerSystem 주입)
         _skillSystem?.LoadNikkeSkills(this, _triggerSystem, gameDatas);
