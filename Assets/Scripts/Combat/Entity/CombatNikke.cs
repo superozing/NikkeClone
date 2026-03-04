@@ -30,6 +30,7 @@ public class CombatNikke : CombatEntity
     // ==================== Properties ====================
 
     public int NikkeId => _gameData?.id ?? -1;
+    public int Level => _userData?.level.Value ?? 1;
     public int SlotIndex => _slotIndex;
     public IWeapon Weapon => _weapon;
     public NikkeView View => _view;

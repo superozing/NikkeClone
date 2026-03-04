@@ -22,7 +22,7 @@ public class SRWeapon : ChargeWeaponBase
             if (rapture != null && !rapture.IsDead)
             {
                 rapture.TakeDamage(damage);
-                NotifyHit(owner);
+                NotifyHit(owner, damage);
             }
         }
     }

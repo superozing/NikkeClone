@@ -28,7 +28,7 @@ public class CombatSystem : MonoBehaviour
     public int AliveNikkeCount { get; private set; }
 
     private IWeapon[] _weapons;
-    private System.Action<CombatNikke>[] _onHitCallbacks;
+    private System.Action<CombatNikke, long>[] _onHitCallbacks;
 
     private bool _isCombatEnded;
     private float _timeLimitSec;
@@ -383,7 +383,7 @@ public class CombatSystem : MonoBehaviour
         }
 
         _weapons = new IWeapon[_nikkes.Length];
-        _onHitCallbacks = new System.Action<CombatNikke>[_nikkes.Length];
+        _onHitCallbacks = new System.Action<CombatNikke, long>[_nikkes.Length];
         var gameDatas = new NikkeGameData[_nikkes.Length];
 
         for (int i = 0; i < _nikkes.Length && i < squadData.slot.Count; i++)
@@ -403,11 +403,9 @@ public class CombatSystem : MonoBehaviour
             if (weapon is WeaponBase weaponBase)
             {
                 int slotIdx = i; // Closure capture
-                weaponBase.OnHit += (targetNikke) =>
+                weaponBase.OnHit += (owner, damage) =>
                 {
                     _burstSystem?.AddGauge(weaponBase.GaugeChargePerHit);
-                    // 데미지 기록 (현재 데미지 수치를 정확히 가져오기 위해 IWeapon 수정이 필요할 수 있으나 우선 기록 로직 구축)
-                    // _statTracker.RecordDamageDealt(slotIdx, lastDamage); 
                 };
                 weaponBase.OnHit += _onHitCallbacks[i];
             }
@@ -422,7 +420,7 @@ public class CombatSystem : MonoBehaviour
         _burstSystem?.Initialize(gameDatas);
 
         // Phase 10: 트리거 시스템 초기화 (관찰 시작)
-        _triggerSystem?.Initialize(_waveSystem, _weapons, _burstSystem);
+        _triggerSystem?.Initialize(_waveSystem, _weapons, _burstSystem, _nikkes);
 
         // Phase 10: 스킬 로딩 (TriggerSystem 주입)
         _skillSystem?.LoadNikkeSkills(this, _triggerSystem, gameDatas);
@@ -544,9 +542,7 @@ public class CombatSystem : MonoBehaviour
         Managers.Time.PauseGame();
 
         // 팝업 표시 
-        /*
-        var viewModel = new CombatPausePopupViewModel(_hudViewModel.TimeText.Value, _statRecordSystem);
+        var viewModel = new CombatPausePopupViewModel(_hudViewModel.TimeText.Value, _statRecordSystem, _nikkes);
         _ = Managers.UI.ShowAsync<UI_CombatPausePopup>(viewModel);
-        */
     }
 }
