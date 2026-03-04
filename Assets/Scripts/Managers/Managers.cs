@@ -15,6 +15,7 @@ public class Managers : MonoBehaviour
     public static SoundManager Sound { get; private set; }
     public static ResourceManagerEx Resource { get; private set; }
     public static GameSystemManager GameSystem { get; private set; }
+    public static TimeManager Time { get; private set; }
 
     private readonly IManagerBase[] _managers = new IManagerBase[(int)eManagerType.End];
 
@@ -41,10 +42,10 @@ public class Managers : MonoBehaviour
 
         UI = new UIManager();
         _managers[(int)eManagerType.UI] = UI;
-        
+
         Data = new DataManager();
         _managers[(int)eManagerType.Data] = Data;
-        
+
         Pool = new PoolManager();
         _managers[(int)eManagerType.Pool] = Pool;
 
@@ -53,15 +54,18 @@ public class Managers : MonoBehaviour
 
         Input = new InputManager();
         _managers[(int)eManagerType.Input] = Input;
-        
+
         Sound = new SoundManager();
         _managers[(int)eManagerType.Sound] = Sound;
-        
+
         Resource = new ResourceManagerEx();
         _managers[(int)eManagerType.Resource] = Resource;
 
         GameSystem = new GameSystemManager();
         _managers[(int)eManagerType.GameSystem] = GameSystem;
+
+        Time = new TimeManager();
+        _managers[(int)eManagerType.Time] = Time;
 
         // 모든 매니저에 Init() 호출
         foreach (IManagerBase manager in _managers)

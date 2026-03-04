@@ -21,8 +21,9 @@ public class SMGWeapon : DefaultWeaponBase
             var rapture = hit.collider.GetComponent<CombatRapture>();
             if (rapture != null && !rapture.IsDead)
             {
-                rapture.TakeDamage(CalculateDamage(owner, 1.0f));
-                NotifyHit(owner);
+                long damage = CalculateDamage(owner, 1.0f);
+                rapture.TakeDamage(damage);
+                NotifyHit(owner, damage);
             }
         }
         ConsumeAmmo(1);

@@ -142,12 +142,29 @@ public class CombatWaveSystem : MonoBehaviour
 
             if (waitTime > 0)
             {
-                // TimeSpan.FromSeconds (float -> double implicit)
-                await Task.Delay(TimeSpan.FromSeconds(waitTime));
+                await WaitGameTimeAsync(waitTime);
             }
 
             await SpawnRapture(entry);
             lastSpawnTime = entry.spawnDelaySec;
+        }
+    }
+
+    /// <summary>
+    /// 게임 시간 기준으로 대기합니다. (IsPaused 상태일 때는 시간이 흐르지 않음)
+    /// </summary>
+    private async Task WaitGameTimeAsync(float duration)
+    {
+        float elapsed = 0f;
+        while (elapsed < duration)
+        {
+            await Task.Yield();
+
+            // TimeManager의 일시정지 상태 확인
+            if (Managers.Time != null && !Managers.Time.IsPaused)
+            {
+                elapsed += Time.deltaTime;
+            }
         }
     }
 

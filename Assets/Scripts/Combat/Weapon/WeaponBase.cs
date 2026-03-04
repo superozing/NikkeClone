@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 /// <summary>
 /// 무기 시스템의 최상위 추상 클래스.
@@ -22,8 +22,8 @@ public abstract class WeaponBase : IWeapon
     protected bool CanFire => _currentAmmo.Value > 0;
 
     // ==================== Burst Related ====================
-    /// <summary>적중 시 발생하는 이벤트</summary>
-    public event System.Action<CombatNikke> OnHit;
+    /// <summary>적중 시 발생하는 이벤트 (공격자, 데미지량)</summary>
+    public event System.Action<CombatNikke, long> OnHit;
     /// <summary>적중 당 게이지 충전량 (무기별 오버라이드)</summary>
     public virtual float GaugeChargePerHit => 0.01f;
 
@@ -100,9 +100,9 @@ public abstract class WeaponBase : IWeapon
     /// <summary>
     /// 적중 성공을 알립니다. 파생 클래스나 투사체에서 호출합니다.
     /// </summary>
-    public void NotifyHit(CombatNikke owner)
+    public void NotifyHit(CombatNikke owner, long damage)
     {
-        OnHit?.Invoke(owner);
+        OnHit?.Invoke(owner, damage);
     }
 
     public void Reload()
@@ -132,7 +132,7 @@ public abstract class WeaponBase : IWeapon
     {
         // owner.Status.attack가 기본 공격력이지만, 버프 등이 적용된 최종 공격력을 고려할 수 있음
         // 지금은 BaseStatus 기반으로 적용
-        float baseAttack = owner.Status.attack;
+        float baseAttack = owner.Status.Current.Attack;
         float finalDamage = baseAttack * (_damagePercent / 100f) * multiplier * rangeAdvantage;
         return (long)finalDamage;
     }

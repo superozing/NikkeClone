@@ -19,6 +19,8 @@ public class CombatSystem : MonoBehaviour
     // ==================== Trigger & Skill (Phase 10) ====================
     private CombatTriggerSystem _triggerSystem;
     private CombatSkillSystem _skillSystem;
+    private CombatStatRecordSystem _statRecordSystem;
+    public CombatStatRecordSystem StatRecordSystem => _statRecordSystem;
 
     // ==================== State ====================
     private CombatBurstSystem _burstSystem;
@@ -26,7 +28,7 @@ public class CombatSystem : MonoBehaviour
     public int AliveNikkeCount { get; private set; }
 
     private IWeapon[] _weapons;
-    private System.Action<CombatNikke>[] _onHitCallbacks;
+    private System.Action<CombatNikke, long>[] _onHitCallbacks;
 
     private bool _isCombatEnded;
     private float _timeLimitSec;
@@ -71,6 +73,8 @@ public class CombatSystem : MonoBehaviour
         // 0. 트리거 및 스킬 시스템 초기화 (Phase 10)
         _triggerSystem = new CombatTriggerSystem();
         _skillSystem = new CombatSkillSystem();
+        _statRecordSystem = new CombatStatRecordSystem();
+        _statRecordSystem.Initialize(_triggerSystem, _nikkes);
 
         // 1. 데이터 로드
         var stageData = Managers.Data.Get<StageGameData>(stageId);
@@ -115,6 +119,7 @@ public class CombatSystem : MonoBehaviour
         Managers.Input.BindAction("ToggleAuto", OnToggleAutoCombatWrapper);
         Managers.Input.BindAction("ToggleAutoBurst", OnToggleAutoBurstWrapper);
         Managers.Input.BindAction("ToggleAllCover", OnToggleAllCoverWrapper);
+        Managers.Input.BindAction("Pause", OnPauseWrapper);
 
         // NIKKE 선택 입력 바인딩
         _onSelectNikkeWrappers = new System.Action<UnityEngine.InputSystem.InputAction.CallbackContext>[5];
@@ -283,6 +288,7 @@ public class CombatSystem : MonoBehaviour
         Managers.Input.UnbindAction("ToggleAuto", OnToggleAutoCombatWrapper);
         Managers.Input.UnbindAction("ToggleAutoBurst", OnToggleAutoBurstWrapper);
         Managers.Input.UnbindAction("ToggleAllCover", OnToggleAllCoverWrapper);
+        Managers.Input.UnbindAction("Pause", OnPauseWrapper);
 
         if (_onSelectNikkeWrappers != null)
         {
@@ -377,7 +383,7 @@ public class CombatSystem : MonoBehaviour
         }
 
         _weapons = new IWeapon[_nikkes.Length];
-        _onHitCallbacks = new System.Action<CombatNikke>[_nikkes.Length];
+        _onHitCallbacks = new System.Action<CombatNikke, long>[_nikkes.Length];
         var gameDatas = new NikkeGameData[_nikkes.Length];
 
         for (int i = 0; i < _nikkes.Length && i < squadData.slot.Count; i++)
@@ -397,7 +403,7 @@ public class CombatSystem : MonoBehaviour
             if (weapon is WeaponBase weaponBase)
             {
                 int slotIdx = i; // Closure capture
-                _onHitCallbacks[i] = (targetNikke) =>
+                weaponBase.OnHit += (owner, damage) =>
                 {
                     _burstSystem?.AddGauge(weaponBase.GaugeChargePerHit);
                 };
@@ -414,7 +420,7 @@ public class CombatSystem : MonoBehaviour
         _burstSystem?.Initialize(gameDatas);
 
         // Phase 10: 트리거 시스템 초기화 (관찰 시작)
-        _triggerSystem?.Initialize(_waveSystem, _weapons, _burstSystem);
+        _triggerSystem?.Initialize(_waveSystem, _weapons, _burstSystem, _nikkes);
 
         // Phase 10: 스킬 로딩 (TriggerSystem 주입)
         _skillSystem?.LoadNikkeSkills(this, _triggerSystem, gameDatas);
@@ -527,4 +533,16 @@ public class CombatSystem : MonoBehaviour
     private void OnToggleAutoCombatWrapper(UnityEngine.InputSystem.InputAction.CallbackContext ctx) => OnToggleAutoCombat();
     private void OnToggleAutoBurstWrapper(UnityEngine.InputSystem.InputAction.CallbackContext ctx) => OnToggleAutoBurst();
     private void OnToggleAllCoverWrapper(UnityEngine.InputSystem.InputAction.CallbackContext ctx) => ToggleAllCover();
+    private void OnPauseWrapper(UnityEngine.InputSystem.InputAction.CallbackContext ctx) => OnPause();
+
+    private void OnPause()
+    {
+        if (_isCombatEnded) return;
+
+        Managers.Time.PauseGame();
+
+        // 팝업 표시 
+        var viewModel = new CombatPausePopupViewModel(_hudViewModel.TimeText.Value, _statRecordSystem, _nikkes);
+        _ = Managers.UI.ShowAsync<UI_CombatPausePopup>(viewModel);
+    }
 }

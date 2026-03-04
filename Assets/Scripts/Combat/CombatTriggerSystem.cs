@@ -20,6 +20,16 @@ public class CombatTriggerSystem
     /// <summary>버스트 스킬이 사용되었을 때 발생. 파라미터: 시전자 인덱스, 버스트 단계</summary>
     public event Action<int, eBurstStage> OnBurstSkillUsed;
 
+    /// <summary>아군(니케)이 피격되었을 때 발생. 파라미터: 피격자 슬롯 인덱스, 데미지량</summary>
+    public event Action<int, long> OnAllyDamaged;
+
+    /// <summary>아군(니케)이 회복되었을 때 발생. 파라미터: 회복 대상 슬롯 인덱스, 회복량</summary>
+    public event Action<int, long> OnAllyHealed;
+
+    /// <summary>아군(니케)이 적에게 데미지를 입혔을 때 발생. 파라미터: 공격자 슬롯 인덱스, 데미지량</summary>
+    public event Action<int, long> OnEnemyDamagedByAlly;
+
+
     // ==========================================
     // 2. 초기화 및 외부 컴포넌트 관찰 설정
     // ==========================================
@@ -27,7 +37,7 @@ public class CombatTriggerSystem
     /// <summary>
     /// 외부 핵심 시스템들을 주입받아 이벤트를 관찰 대상으로 연결합니다.
     /// </summary>
-    public void Initialize(CombatWaveSystem waveSystem, IWeapon[] nikkeWeapons, CombatBurstSystem burstSystem)
+    public void Initialize(CombatWaveSystem waveSystem, IWeapon[] nikkeWeapons, CombatBurstSystem burstSystem, CombatNikke[] nikkes)
     {
         // 1. 랩쳐 처치 이벤트 바인딩
         if (waveSystem != null)
@@ -35,7 +45,7 @@ public class CombatTriggerSystem
             waveSystem.OnRaptureDied += HandleRaptureDied;
         }
 
-        // 2. 아군 무기 타격 이벤트 바인팅
+        // 2. 아군 무기 타격 및 데미지 이벤트 관찰
         if (nikkeWeapons != null)
         {
             for (int i = 0; i < nikkeWeapons.Length; i++)
@@ -43,12 +53,26 @@ public class CombatTriggerSystem
                 if (nikkeWeapons[i] is WeaponBase weapon)
                 {
                     int slotIdx = i; // Closure capture 방지
-                    weapon.OnHit += (_) => HandleAllyHit(slotIdx);
+                    weapon.OnHit += (owner, damage) => HandleAllyHit(slotIdx, damage);
                 }
             }
         }
 
-        // 3. 버스트 시스템 이벤트 바인딩
+        // 3. 아군 피격 및 회복 이벤트 관찰 (CombatNikke 엔터티 레벨 이벤트 구독)
+        if (nikkes != null)
+        {
+            for (int i = 0; i < nikkes.Length; i++)
+            {
+                var nikke = nikkes[i];
+                if (nikke == null) continue;
+
+                int slotIdx = i;
+                nikke.OnDamaged += (damage, currentHp, maxHp) => OnAllyDamaged?.Invoke(slotIdx, damage);
+                nikke.OnHealed += (heal, currentHp, maxHp) => OnAllyHealed?.Invoke(slotIdx, heal);
+            }
+        }
+
+        // 4. 버스트 시스템 이벤트 바인딩
         if (burstSystem != null)
         {
             burstSystem.OnBurstTriggered += (idx, stage) => OnBurstSkillUsed?.Invoke(idx, stage);
@@ -64,9 +88,10 @@ public class CombatTriggerSystem
         OnEnemyDied?.Invoke(rapture);
     }
 
-    private void HandleAllyHit(int attackerIdx)
+    private void HandleAllyHit(int attackerIdx, long damage)
     {
         OnAllyHitEnemy?.Invoke(attackerIdx);
+        OnEnemyDamagedByAlly?.Invoke(attackerIdx, damage);
     }
 
     /// <summary>
