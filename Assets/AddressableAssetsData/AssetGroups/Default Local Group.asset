@@ -185,6 +185,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5273a4344933c56469c38d2b11cf7d79
+    m_Address: UI/Popup/UI_CombatPausePopup
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 567ad6c9ba084f2438685610511fb06e
     m_Address: "Assets/Textures/Nikke/\uB124\uC628_Stand"
     m_ReadOnly: 0
@@ -420,6 +425,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d88bf2e7cd208ea439d6427ef30e7b6f
+    m_Address: UI/View/UI_NikkeCombatSlot
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d88d8c31494bf904ca26e6a22f7ab9d3
     m_Address: "Assets/Textures/Nikke/\uC544\uB2C8\uC2A4_Crop"
     m_ReadOnly: 0
@@ -487,6 +497,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: fbc459a2112c7604e8cb6c16167b72e3
     m_Address: Assets/Textures/Icon/Weapon/MG
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fcf710188bcff3b48bd3cdf9a6217bce
+    m_Address: UI/Popup/UI_NikkeCombatDetailPopup
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
