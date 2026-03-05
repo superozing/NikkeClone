@@ -14,14 +14,30 @@ public class CombatCrosshairSystem : MonoBehaviour
     private Dictionary<eNikkeWeapon, UI_CrosshairBase> _crosshairMap;
     private UI_CrosshairBase _activeCrosshair;
     private CrosshairViewModel _viewModel;
+    private CombatTriggerSystem _triggerSystem;
+    private System.Func<int> _getCurrentSlotIndex;
+
+    /// <summary>
+    /// 현재 조준선 시스템에서 사용 중인 공유 뷰모델입니다.
+    /// </summary>
+    public CrosshairViewModel ViewModel => _viewModel;
 
     /// <summary>
     /// 스쿼드 내 존재하는 유효한 무기 타입의 크로스헤어 프리팹만 로드하고 Dictionary에 캐싱합니다.
     /// 초기에 모든 크로스헤어는 Hide 상태를 유지합니다.
     /// Caller: CombatSystem.InitializeAsync()
     /// </summary>
-    public async Task InitializeAsync(IEnumerable<eNikkeWeapon> squadWeaponTypes)
+    public async Task InitializeAsync(IEnumerable<eNikkeWeapon> squadWeaponTypes, CombatTriggerSystem triggerSystem, System.Func<int> getCurrentSlotIndex)
     {
+        _triggerSystem = triggerSystem;
+        _getCurrentSlotIndex = getCurrentSlotIndex;
+
+        // 트리거 시스템 이벤트 바인딩 (수동 조작 중인 니케가 적중했을 때만 뷰모델 트리거)
+        if (_triggerSystem != null)
+        {
+            _triggerSystem.OnAllyHitEnemy += HandleAllyHitEnemy;
+        }
+
         _crosshairMap = new Dictionary<eNikkeWeapon, UI_CrosshairBase>();
         _viewModel = new CrosshairViewModel();
 
@@ -102,6 +118,11 @@ public class CombatCrosshairSystem : MonoBehaviour
     /// </summary>
     public void Cleanup()
     {
+        if (_triggerSystem != null)
+        {
+            _triggerSystem.OnAllyHitEnemy -= HandleAllyHitEnemy;
+        }
+
         _activeCrosshair = null;
 
         if (_crosshairMap != null)
@@ -118,5 +139,14 @@ public class CombatCrosshairSystem : MonoBehaviour
         }
 
         _viewModel = null;
+    }
+
+    private void HandleAllyHitEnemy(int attackerIdx)
+    {
+        // 현재 플레이어가 조작 중인 슬롯인 경우에만 히트 연출 발동
+        if (_getCurrentSlotIndex != null && attackerIdx == _getCurrentSlotIndex.Invoke())
+        {
+            _viewModel?.NotifyHit();
+        }
     }
 }
