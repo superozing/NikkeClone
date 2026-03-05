@@ -15,6 +15,7 @@ public class CombatSystem : MonoBehaviour
     [SerializeField] private CombatWaveSystem _waveSystem;
     [SerializeField] private CombatCrosshairSystem _crosshairSystem;
     private UI_CombatHUD _combatHUD;
+    private UI_HealthBarBoard _healthBarBoard;
 
     // ==================== Trigger & Skill (Phase 10) ====================
     private CombatTriggerSystem _triggerSystem;
@@ -102,9 +103,9 @@ public class CombatSystem : MonoBehaviour
         if (_waveSystem != null)
         {
             // RaptureField 처리 (WaveSystem 내부에서 필요시 찾음, 여기선 생략 가능하지만 명시적 초기화가 좋음)
-            // CombatWaveSystem 리팩토링 시 Initialize에 의존성 주입 고려
-            // 현재는 기존 WaveSystem 구조 유지하며 이름만 변경 예정
             _waveSystem.OnAllPhasesComplete += OnAllPhasesComplete;
+            _waveSystem.OnRaptureSpawned += OnWaveRaptureSpawned;
+            _waveSystem.OnRaptureDied += OnWaveRaptureDied;
         }
 
         // CombatTargetingSystem 초기화
@@ -150,7 +151,8 @@ public class CombatSystem : MonoBehaviour
                     squadWeaponTypes.Add(nikke.Weapon.WeaponType);
                 }
             }
-            await _crosshairSystem.InitializeAsync(squadWeaponTypes);
+            // 외부 트리거 시스템과 델리게이트 주입
+            await _crosshairSystem.InitializeAsync(squadWeaponTypes, _triggerSystem, () => _currentSelectedSlot);
 
         }
 
@@ -216,6 +218,7 @@ public class CombatSystem : MonoBehaviour
     public void OnNikkeDied(CombatNikke nikke)
     {
         AliveNikkeCount--;
+        _healthBarBoard?.UnregisterEntity(nikke);
         Debug.Log($"[CombatSystem] Nikke Died: {nikke.NikkeName}. Alive: {AliveNikkeCount}");
 
         if (AliveNikkeCount <= 0)
@@ -283,6 +286,8 @@ public class CombatSystem : MonoBehaviour
         if (_waveSystem != null)
         {
             _waveSystem.OnAllPhasesComplete -= OnAllPhasesComplete;
+            _waveSystem.OnRaptureSpawned -= OnWaveRaptureSpawned;
+            _waveSystem.OnRaptureDied -= OnWaveRaptureDied;
         }
 
         Managers.Input.UnbindAction("ToggleAuto", OnToggleAutoCombatWrapper);
@@ -469,13 +474,23 @@ public class CombatSystem : MonoBehaviour
             // Phase 9: 버스트 시스템 연결
             if (_burstSystem != null)
             {
-                var burstGaugeVM = new BurstGaugeViewModel(_burstSystem);
-                await burstGaugeVM.InitializeAsync();
-                _hudViewModel.BurstGauge.Value = burstGaugeVM;
+                var burstGaugeViewModel = new BurstGaugeViewModel(_burstSystem);
+                await burstGaugeViewModel.InitializeAsync();
+                _hudViewModel.BurstGauge.Value = burstGaugeViewModel;
             }
 
-            // UI 매니저를 통해 HUD 생성 (ViewModel 전달)
+            // UI 매니저를 통해 HUD 생성
             _combatHUD = await Managers.UI.ShowAsync<UI_CombatHUD>(_hudViewModel);
+
+            // [추가] 통합 체력바 보드 생성 및 니케 등록
+            _healthBarBoard = await Managers.UI.ShowAsync<UI_HealthBarBoard>();
+            if (_healthBarBoard != null)
+            {
+                foreach (var nikke in _nikkes)
+                {
+                    if (nikke != null) _healthBarBoard.RegisterEntity(nikke);
+                }
+            }
 
             if (_combatHUD == null)
             {
@@ -485,10 +500,21 @@ public class CombatSystem : MonoBehaviour
         }
     }
 
+    private void OnWaveRaptureSpawned(CombatRapture rapture)
+    {
+        _healthBarBoard?.RegisterEntity(rapture);
+    }
+
+    private void OnWaveRaptureDied(CombatRapture rapture)
+    {
+        _healthBarBoard?.UnregisterEntity(rapture);
+    }
+
     private void OnAllPhasesComplete()
     {
         EndCombat(eCombatResult.Victory);
     }
+
 
     private void EndCombat(eCombatResult result)
     {

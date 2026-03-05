@@ -116,13 +116,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4376745576988128989}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.07384739, y: -0, z: -0, w: 0.9972696}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 3.1499999, z: -7.01}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1734463104392382201}
-  m_LocalEulerAnglesHint: {x: 8.47, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2246298638360263891
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -197,6 +197,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 6831086596453310153}
   - {fileID: 1437976529157659057}
   - {fileID: 6221431840942689208}
   - {fileID: 509431662116887932}
@@ -214,6 +215,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b821db67b1bc4b4cb61b92515a33325, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CombatNikke
+  _healthBarTrackingAnchor: {fileID: 6831086596453310153}
   _view: {fileID: 7682150193057454033}
   _vcam: {fileID: 2246298638360263891}
 --- !u!114 &7682150193057454033
@@ -229,6 +231,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NikkeView
   _spriteRenderer: {fileID: 644184696145053191}
+--- !u!1 &6385642824744111908
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6831086596453310153}
+  m_Layer: 0
+  m_Name: HPBarAnchor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6831086596453310153
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6385642824744111908}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 2.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1734463104392382201}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6483713520964651655
 GameObject:
   m_ObjectHideFlags: 0

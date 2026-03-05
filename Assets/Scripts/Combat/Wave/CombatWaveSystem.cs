@@ -41,6 +41,11 @@ public class CombatWaveSystem : MonoBehaviour
     public event Action OnAllPhasesComplete;
 
     /// <summary>
+    /// 랩쳐 스폰 시 발생
+    /// </summary>
+    public event Action<CombatRapture> OnRaptureSpawned;
+
+    /// <summary>
     /// 랩쳐 사망 시 발생
     /// </summary>
     public event Action<CombatRapture> OnRaptureDied;
@@ -210,6 +215,9 @@ public class CombatWaveSystem : MonoBehaviour
         rapture.OnDeath += OnRaptureKilled;
 
         _aliveRaptures.Add(rapture);
+
+        // [추가] 스폰 이벤트 발행 (UI 등록용)
+        OnRaptureSpawned?.Invoke(rapture);
 
         // Zone에 등록
         var targetZone = _raptureField.GetZones(zone);
