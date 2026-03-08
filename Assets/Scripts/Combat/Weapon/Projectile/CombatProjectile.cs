@@ -62,7 +62,7 @@ public class CombatProjectile : MonoBehaviour
             // 버스트 게이지 충전을 위해 무기에 적중 알림 (데미지 포함)
             if (_owner != null && _owner.Weapon is WeaponBase weaponBase)
             {
-                weaponBase.NotifyHit(_owner, _damage);
+                weaponBase.NotifyHit(_owner, _damage, transform.position);
             }
         }
 

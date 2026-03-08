@@ -23,7 +23,7 @@ public class SMGWeapon : DefaultWeaponBase
             {
                 long damage = CalculateDamage(owner, 1.0f);
                 rapture.TakeDamage(damage);
-                NotifyHit(owner, damage);
+                NotifyHit(owner, damage, hit.point);
             }
         }
         ConsumeAmmo(1);
