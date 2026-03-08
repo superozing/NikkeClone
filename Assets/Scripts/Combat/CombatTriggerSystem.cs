@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 using NikkeClone.Utils;
 
 /// <summary>
@@ -26,8 +27,8 @@ public class CombatTriggerSystem
     /// <summary>아군(니케)이 회복되었을 때 발생. 파라미터: 회복 대상 슬롯 인덱스, 회복량</summary>
     public event Action<int, long> OnAllyHealed;
 
-    /// <summary>아군(니케)이 적에게 데미지를 입혔을 때 발생. 파라미터: 공격자 슬롯 인덱스, 데미지량</summary>
-    public event Action<int, long> OnEnemyDamagedByAlly;
+    /// <summary>아군(니케)이 적에게 데미지를 입혔을 때 발생. 파라마터: 공격자 슬롯 인덱스, 데미지량, 적중 좌표</summary>
+    public event Action<int, long, Vector3> OnEnemyDamagedByAlly;
 
 
     // ==========================================
@@ -53,7 +54,7 @@ public class CombatTriggerSystem
                 if (nikkeWeapons[i] is WeaponBase weapon)
                 {
                     int slotIdx = i; // Closure capture 방지
-                    weapon.OnHit += (owner, damage) => HandleAllyHit(slotIdx, damage);
+                    weapon.OnHit += (owner, damage, hitPos) => HandleAllyHit(slotIdx, damage, hitPos);
                 }
             }
         }
@@ -88,10 +89,10 @@ public class CombatTriggerSystem
         OnEnemyDied?.Invoke(rapture);
     }
 
-    private void HandleAllyHit(int attackerIdx, long damage)
+    private void HandleAllyHit(int attackerIdx, long damage, Vector3 hitPos)
     {
         OnAllyHitEnemy?.Invoke(attackerIdx);
-        OnEnemyDamagedByAlly?.Invoke(attackerIdx, damage);
+        OnEnemyDamagedByAlly?.Invoke(attackerIdx, damage, hitPos);
     }
 
     /// <summary>

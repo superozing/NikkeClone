@@ -22,8 +22,8 @@ public abstract class WeaponBase : IWeapon
     protected bool CanFire => _currentAmmo.Value > 0;
 
     // ==================== Burst Related ====================
-    /// <summary>적중 시 발생하는 이벤트 (공격자, 데미지량)</summary>
-    public event System.Action<CombatNikke, long> OnHit;
+    /// <summary>적중 시 발생하는 이벤트 (공격자, 데미지량, 적중 좌표)</summary>
+    public event System.Action<CombatNikke, long, Vector3> OnHit;
     /// <summary>적중 당 게이지 충전량 (무기별 오버라이드)</summary>
     public virtual float GaugeChargePerHit => 0.01f;
 
@@ -100,9 +100,9 @@ public abstract class WeaponBase : IWeapon
     /// <summary>
     /// 적중 성공을 알립니다. 파생 클래스나 투사체에서 호출합니다.
     /// </summary>
-    public void NotifyHit(CombatNikke owner, long damage)
+    public void NotifyHit(CombatNikke owner, long damage, Vector3 hitWorldPos)
     {
-        OnHit?.Invoke(owner, damage);
+        OnHit?.Invoke(owner, damage, hitWorldPos);
     }
 
     public void Reload()
