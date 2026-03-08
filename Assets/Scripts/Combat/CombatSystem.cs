@@ -16,6 +16,7 @@ public class CombatSystem : MonoBehaviour
     [SerializeField] private CombatCrosshairSystem _crosshairSystem;
     private UI_CombatHUD _combatHUD;
     private UI_HealthBarBoard _healthBarBoard;
+    private DamageNumberViewModel _damageNumberVM;
 
     // ==================== Trigger & Skill (Phase 10) ====================
     private CombatTriggerSystem _triggerSystem;
@@ -29,7 +30,7 @@ public class CombatSystem : MonoBehaviour
     public int AliveNikkeCount { get; private set; }
 
     private IWeapon[] _weapons;
-    private System.Action<CombatNikke, long>[] _onHitCallbacks;
+    private System.Action<CombatNikke, long, Vector3>[] _onHitCallbacks;
 
     private bool _isCombatEnded;
     private float _timeLimitSec;
@@ -70,6 +71,9 @@ public class CombatSystem : MonoBehaviour
         Debug.Log("[CombatSystem] InitializeAsync Start");
 
         _isCombatEnded = false;
+
+        // B-1: 데미지 넘버 뷰모델 초기화
+        _damageNumberVM = new DamageNumberViewModel();
 
         // 0. 트리거 및 스킬 시스템 초기화 (Phase 10)
         _triggerSystem = new CombatTriggerSystem();
@@ -310,8 +314,13 @@ public class CombatSystem : MonoBehaviour
         // Phase 7.1 Refactor v2: 조준선 시스템 정리
         _crosshairSystem?.Cleanup();
 
-        // Phase 9: 버스트 매니저 정리
         _burstSystem?.Cleanup();
+
+        // Phase G-2: 데미지 숫자 시스템 이벤트 해제
+        if (_triggerSystem != null)
+        {
+            _triggerSystem.OnEnemyDamagedByAlly -= HandleDamageNumber;
+        }
 
         // Phase 9-2: 무기 이벤트 해제
         if (_weapons != null && _onHitCallbacks != null)
@@ -388,7 +397,7 @@ public class CombatSystem : MonoBehaviour
         }
 
         _weapons = new IWeapon[_nikkes.Length];
-        _onHitCallbacks = new System.Action<CombatNikke, long>[_nikkes.Length];
+        _onHitCallbacks = new System.Action<CombatNikke, long, Vector3>[_nikkes.Length];
         var gameDatas = new NikkeGameData[_nikkes.Length];
 
         for (int i = 0; i < _nikkes.Length && i < squadData.slot.Count; i++)
@@ -408,7 +417,7 @@ public class CombatSystem : MonoBehaviour
             if (weapon is WeaponBase weaponBase)
             {
                 int slotIdx = i; // Closure capture
-                weaponBase.OnHit += (owner, damage) =>
+                weaponBase.OnHit += (owner, damage, hitPos) =>
                 {
                     _burstSystem?.AddGauge(weaponBase.GaugeChargePerHit);
                 };
@@ -426,6 +435,9 @@ public class CombatSystem : MonoBehaviour
 
         // Phase 10: 트리거 시스템 초기화 (관찰 시작)
         _triggerSystem?.Initialize(_waveSystem, _weapons, _burstSystem, _nikkes);
+
+        // Phase B: 데미지 숫자 표출 이벤트 연결
+        _triggerSystem.OnEnemyDamagedByAlly += HandleDamageNumber;
 
         // Phase 10: 스킬 로딩 (TriggerSystem 주입)
         _skillSystem?.LoadNikkeSkills(this, _triggerSystem, gameDatas);
@@ -497,6 +509,9 @@ public class CombatSystem : MonoBehaviour
                 Debug.LogError("[CombatSystem] Failed to load UI_CombatHUD");
                 return;
             }
+
+            // [추가] B-1: 데미지 넘버 시스템 생성
+            await Managers.UI.ShowAsync<UI_DamageNumberSystem>(_damageNumberVM);
         }
     }
 
@@ -570,5 +585,15 @@ public class CombatSystem : MonoBehaviour
         // 팝업 표시 
         var viewModel = new CombatPausePopupViewModel(_hudViewModel.TimeText.Value, _statRecordSystem, _nikkes);
         _ = Managers.UI.ShowAsync<UI_CombatPausePopup>(viewModel);
+    }
+
+    private void HandleDamageNumber(int slotIdx, long damage, Vector3 hitPos)
+    {
+        // 1. 현재 조작 중인 슬롯의 데미지만 표시
+        // 2. DamageNumber ViewModel에 요청
+        if (slotIdx == _currentSelectedSlot && _damageNumberVM != null)
+        {
+            _damageNumberVM.RequestDamageNumber(damage, hitPos);
+        }
     }
 }
