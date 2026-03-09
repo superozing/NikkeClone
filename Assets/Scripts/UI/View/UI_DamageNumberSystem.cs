@@ -19,6 +19,11 @@ public class UI_DamageNumberSystem : UI_View
     // 텍스처 배치: [1][2][3][4] / [5][6][7][8] / [9][0][ ][ ]
     private static readonly int[] DigitToCellIndex = { 9, 0, 1, 2, 3, 4, 5, 6, 7, 8 };
 
+    // UIManager가 SortingGroup 정렬 시 이 값을 사용합니다.
+    // ParticleSystem은 URP Transparent Queue를 통해 렌더링되므로,
+    // 다른 Canvas UI(Order 0+)보다 뒤에 그려지기 위해 음수 오더를 지정합니다.
+    public override int? SortingOrderOverride => -100;
+
     private DamageNumberViewModel _viewModel;
     private RectTransform _parentRect;
     private List<Vector4> _customDataBuffer = new List<Vector4>();
@@ -32,7 +37,6 @@ public class UI_DamageNumberSystem : UI_View
         _uiCamera = Managers.UI.UICamera;
         _mainCamera = Camera.main;
 
-        // 최적화: 버퍼 용량을 최대 파티클 수만큼 예약하여 런타임 재할당 방지
         if (_particleSystem != null)
         {
             _customDataBuffer.Capacity = _particleSystem.main.maxParticles;

@@ -13,6 +13,14 @@ namespace UI
         public ViewModelBase ViewModel { get; private set; }
 
         /// <summary>
+        /// UIManager가 SortingGroup의 sortingOrder를 설정할 때 사용하는 오버라이드 값입니다.
+        /// null이면 UIManager의 기본 로직(Popup: 자동 증가, View: 0)을 따릅니다.
+        /// 값이 있으면 UIManager는 해당 값을 SortingGroup.sortingOrder에 직접 할당합니다.
+        /// Caller: UIManager.SetSortingGroupOrder()
+        /// </summary>
+        public virtual int? SortingOrderOverride => null;
+
+        /// <summary>
         /// UI 연출을 제어하기 위한 CanvasGroup
         /// </summary>
         protected CanvasGroup _canvasGroup;
