@@ -34,6 +34,7 @@ public class ScaleUIAnimation : IUIAnimation
         await _target.DOScale(_targetScale, _duration)
             .SetDelay(delay)
             .SetEase(_ease)
+            .SetUpdate(true)
             .AsyncWaitForCompletion();
     }
 }
