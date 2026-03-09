@@ -100,7 +100,7 @@ public class UIManager : IManagerBase
         rectTransform.localScale = Vector3.one;
 
         // Sorting Group 순서를 설정합니다.
-        SetSortingGroupOrder(go, view is UI_Popup);
+        SetSortingGroupOrder(go, view is UI_Popup, view.SortingOrderOverride);
 
         // 뷰모델을 설정합니다. (내부에서 AddRef)
         view.SetViewModel(viewModel);
@@ -144,7 +144,7 @@ public class UIManager : IManagerBase
         rectTransform.localScale = Vector3.one;
 
         // Sorting Group 순서를 설정합니다.
-        SetSortingGroupOrder(go, view is UI_Popup);
+        SetSortingGroupOrder(go, view is UI_Popup, view.SortingOrderOverride);
 
         view.gameObject.SetActive(true);
         return view;
@@ -256,10 +256,16 @@ public class UIManager : IManagerBase
     /// <summary>
     /// UI GameObject에 SortingGroup을 세팅하고 Sorting Order를 지정합니다.
     /// </summary>
-    private void SetSortingGroupOrder(GameObject go, bool useSortingOrder)
+    private void SetSortingGroupOrder(GameObject go, bool useSortingOrder, int? overrideOrder = null)
     {
         SortingGroup sortingGroup = go.GetOrAddComponent<SortingGroup>();
-        if (useSortingOrder)
+
+        // View가 자체적인 정렬 순서를 요구하는 경우 (예: ParticleSystem 혼용 UI)
+        if (overrideOrder.HasValue)
+        {
+            sortingGroup.sortingOrder = overrideOrder.Value;
+        }
+        else if (useSortingOrder)
         {
             _sortingOrder += ORDER_STEP;
             sortingGroup.sortingOrder = _sortingOrder;
