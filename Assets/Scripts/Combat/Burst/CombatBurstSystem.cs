@@ -48,6 +48,16 @@ public class CombatBurstSystem
     /// </summary>
     public event Action<eBurstStage> OnStageChanged;
 
+    /// <summary>
+    /// 풀버스트 모드가 시작되었을 때 발생하는 이벤트
+    /// </summary>
+    public event Action OnFullBurstStarted;
+
+    /// <summary>
+    /// 풀버스트 모드가 종료되었을 때 발생하는 이벤트
+    /// </summary>
+    public event Action OnFullBurstEnded;
+
     // ==================== Public Methods ====================
 
     public CombatBurstSystem(CombatNikke[] nikkes)
@@ -232,6 +242,8 @@ public class CombatBurstSystem
         SetStage(eBurstStage.FullBurst);
         IsFullBurst.Value = true;
         _fullBurstTimer = _fullBurstDuration;
+
+        OnFullBurstStarted?.Invoke();
         Debug.Log("[BurstManager] Full Burst Started!");
     }
 
@@ -241,6 +253,8 @@ public class CombatBurstSystem
         _gauge = 0f;
         Gauge.Value = 0f;
         SetStage(eBurstStage.None);
+
+        OnFullBurstEnded?.Invoke();
         Debug.Log("[BurstManager] Full Burst Ended.");
     }
 

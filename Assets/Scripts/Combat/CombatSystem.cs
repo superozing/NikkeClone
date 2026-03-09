@@ -17,6 +17,8 @@ public class CombatSystem : MonoBehaviour
     private UI_CombatHUD _combatHUD;
     private UI_HealthBarBoard _healthBarBoard;
     private DamageNumberViewModel _damageNumberVM;
+    private FullBurstFilterController _fullBurstFilterController;
+    private GameObject _vfxControllerInstance;
 
     // ==================== Trigger & Skill (Phase 10) ====================
     private CombatTriggerSystem _triggerSystem;
@@ -138,6 +140,15 @@ public class CombatSystem : MonoBehaviour
         // 3. 버스트 매니저 초기화 (니케 초기화 및 HUD 초기화 이전에 수행)
         _burstSystem = new CombatBurstSystem(_nikkes);
         _burstSystem.SetAutoMode(_isAutoBurstMode);
+        _burstSystem.OnFullBurstStarted += HandleFullBurstStarted;
+
+        // [Refactor] 필드 VFX 컨트롤러 (필터 등) 동적 생성
+        _vfxControllerInstance = await Managers.Resource.InstantiateAsync("Prefabs/Combat/CombatVFXController");
+        if (_vfxControllerInstance != null)
+        {
+            _fullBurstFilterController = _vfxControllerInstance.GetComponent<FullBurstFilterController>();
+            _fullBurstFilterController?.Initialize(_burstSystem);
+        }
 
         // 3.1 UI, Nikke 초기화
         await InitializeNikkesAsync(squadId);
@@ -314,7 +325,18 @@ public class CombatSystem : MonoBehaviour
         // Phase 7.1 Refactor v2: 조준선 시스템 정리
         _crosshairSystem?.Cleanup();
 
-        _burstSystem?.Cleanup();
+        if (_burstSystem != null)
+        {
+            _burstSystem.OnFullBurstStarted -= HandleFullBurstStarted;
+            _burstSystem.Cleanup();
+        }
+
+        if (_vfxControllerInstance != null)
+        {
+            Managers.Resource.Destroy(_vfxControllerInstance);
+            _vfxControllerInstance = null;
+            _fullBurstFilterController = null;
+        }
 
         // Phase G-2: 데미지 숫자 시스템 이벤트 해제
         if (_triggerSystem != null)
@@ -335,8 +357,6 @@ public class CombatSystem : MonoBehaviour
             _onHitCallbacks = null;
             _weapons = null;
         }
-
-        // 이벤트 해제 등
     }
 
     // ==================== Private Methods ====================
@@ -595,5 +615,10 @@ public class CombatSystem : MonoBehaviour
         {
             _damageNumberVM.RequestDamageNumber(damage, hitPos);
         }
+    }
+
+    private void HandleFullBurstStarted()
+    {
+        _ = Managers.UI.ShowAsync<UI_FullBurstPopup>();
     }
 }
