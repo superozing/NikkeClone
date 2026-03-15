@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,6 +12,8 @@ public class UI_CombatResultVictoryPopup : UI_Popup, IUIShowHideable
 
     [SerializeField] private UI_Icon[] _rewardItemSlots;
     [SerializeField] private Button _btnBackground;
+
+    [SerializeField] private TextMeshProUGUI _txtStageInfo;
 
     private CombatResultVictoryPopupViewModel _viewModel;
     private IUIAnimation _showAnim;
@@ -51,6 +53,7 @@ public class UI_CombatResultVictoryPopup : UI_Popup, IUIShowHideable
         if (_viewModel != null)
         {
             Bind(_viewModel.RewardItemViewModels, OnRewardListChanged);
+            Bind(_viewModel.StageInfo, info => { if (_txtStageInfo != null) _txtStageInfo.text = info; });
         }
     }
 

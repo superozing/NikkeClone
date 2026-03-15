@@ -1,14 +1,21 @@
+using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UI;
 using UnityEngine;
 
 public class CombatResultVictoryPopupViewModel : ViewModelBase
 {
+    //"{Chapter}-{Stage}" 형식의 정보
+    public ReactiveProperty<string> StageInfo { get; } = new("");
+
     // View에서 바인딩할 아이콘 뷰모델 리스트
     public ReactiveProperty<List<StageRewardItemIconViewModel>> RewardItemViewModels { get; private set; } = new(new());
 
-    public CombatResultVictoryPopupViewModel(List<RewardData> rewards)
+    public CombatResultVictoryPopupViewModel(List<RewardData> rewards, string stageInfo)
     {
+        StageInfo.Value = stageInfo;
+
         var list = new List<StageRewardItemIconViewModel>();
         foreach (var reward in rewards)
         {
@@ -20,10 +27,19 @@ public class CombatResultVictoryPopupViewModel : ViewModelBase
         RewardItemViewModels.Value = list;
     }
 
-    public void OnScreenClicked()
+    public async void OnScreenClicked()
     {
-        // 캠페인 씬으로 돌아가기(이때 비동기로드를 하면 좋겠죠?)
-        Managers.Scene.LoadSceneAsync(eSceneType.CampaignScene);
+        // 캠페인 씬으로 돌아가기
+        // 전투 데이터 정리
+        Managers.Data.UserData.Combat = null;
+
+        Func<Task> loadTask = async () =>
+        {
+            await Managers.Scene.LoadSceneAsync(eSceneType.CampaignScene);
+        };
+
+        var loadingVM = new LoadingPopupViewModel(loadTask);
+        await Managers.UI.ShowDontDestroyAsync<UI_LoadingPopup>(loadingVM);
     }
 
     protected override void OnDispose()

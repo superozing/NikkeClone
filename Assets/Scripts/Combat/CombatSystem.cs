@@ -303,6 +303,7 @@ public class CombatSystem : MonoBehaviour
             _waveSystem.OnAllPhasesComplete -= OnAllPhasesComplete;
             _waveSystem.OnRaptureSpawned -= OnWaveRaptureSpawned;
             _waveSystem.OnRaptureDied -= OnWaveRaptureDied;
+            _waveSystem.Cleanup();
         }
 
         Managers.Input.UnbindAction("ToggleAuto", OnToggleAutoCombatWrapper);
@@ -557,12 +558,52 @@ public class CombatSystem : MonoBehaviour
         _isCombatEnded = true;
 
         Debug.Log($"[CombatSystem] EndCombat: {result}");
-        OnCombatEnded?.Invoke(result); // CombatScene에게 알림 (팝업 등 처리는 CombatScene이 할 수도, System이 할 수도 있음. 설계상 System이 주도)
+
+        // Bug #1 Fix: 풀버스트 진행 중이라면 필터 해제를 위해 즉시 종료
+        _burstSystem?.ForceEndFullBurst();
+
+        OnCombatEnded?.Invoke(result); // CombatScene에게 알림
 
         // 팝업 표시
         if (result == eCombatResult.Victory)
         {
-            var viewModel = new CombatResultVictoryPopupViewModel(_stageGameData?.rewards ?? new List<RewardData>());
+            // [추가] 스테이지 클리어 마킹 및 데이터 저장
+            var combatData = Managers.Data.UserData.Combat;
+            if (combatData != null)
+            {
+                Managers.Data.UserData.Chapter.MarkStageCleared(combatData.stageId);
+                Managers.Data.SaveUserData();
+            }
+
+            // [추가] 챕터-스테이지 정보 계산
+            string stageInfoText = "";
+            var chapterTable = Managers.Data.GetTable<ChapterGameData>();
+            if (chapterTable != null && _stageGameData != null)
+            {
+                foreach (var chapter in chapterTable.Values)
+                {
+                    int stageIdx = -1;
+                    if (chapter.stageIds != null)
+                    {
+                        for (int i = 0; i < chapter.stageIds.Length; i++)
+                        {
+                            if (chapter.stageIds[i] == _stageGameData.id)
+                            {
+                                stageIdx = i + 1;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (stageIdx != -1)
+                    {
+                        stageInfoText = $"{chapter.order}-{stageIdx} STAGE";
+                        break;
+                    }
+                }
+            }
+
+            var viewModel = new CombatResultVictoryPopupViewModel(_stageGameData?.rewards ?? new List<RewardData>(), stageInfoText);
             _ = Managers.UI.ShowAsync<UI_CombatResultVictoryPopup>(viewModel);
         }
         else
