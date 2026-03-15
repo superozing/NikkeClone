@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using TMPro;
 using UI;
 using UnityEngine;
@@ -74,7 +74,6 @@ public class UI_Icon : UI_View
         if (_clickButton != null)
             _clickButton.onClick.RemoveListener(OnButtonClick);
 
-        (_viewModel as IDisposable)?.Dispose();
         _viewModel = null;
     }
 }

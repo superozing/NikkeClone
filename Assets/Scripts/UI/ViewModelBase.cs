@@ -1,11 +1,12 @@
-﻿using System;
+using System;
 using UI;
 using UnityEngine;
 
-public abstract class ViewModelBase : IDisposable
+public abstract class ViewModelBase
 {
     private int _refCount = 0;
     private bool _boundOnce = false; // 생성 직후 바로 해제되는 것을 방지하기 위한 플래그
+    private bool _disposed = false;
 
     /// <summary>
     /// View가 이 ViewModel을 참조하기 시작할 때(SetViewModel) 호출합니다.
@@ -32,13 +33,14 @@ public abstract class ViewModelBase : IDisposable
         // Debug.Log($"[ViewModelBase] {this.GetType().Name} Release. Count: {_refCount}");
 
         if (_refCount <= 0)
-            Dispose();
-    }
-
-    public void Dispose()
-    {
-        OnDispose();
-        // Debug.Log($"[ViewModelBase] {this.GetType().Name} Disposed.");
+        {
+            if (!_disposed)
+            {
+                _disposed = true;
+                OnDispose();
+                // Debug.Log($"[ViewModelBase] {this.GetType().Name} Disposed.");
+            }
+        }
     }
 
     /// <summary>

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UI;
 using UnityEngine;
 
@@ -80,7 +80,6 @@ public class UI_TabGroupPopup : UI_Popup
         base.OnDestroy();
 
         _tabs = null;
-        (_viewModel as IDisposable)?.Dispose();
         _viewModel = null;
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using TMPro;
 using UI;
 using UnityEngine;
@@ -61,7 +61,6 @@ public class UI_MissionButton : UI_View
 
         _missionButton.onClick.RemoveAllListeners();
 
-        (_viewModel as IDisposable)?.Dispose();
         _viewModel = null;
     }
 }
