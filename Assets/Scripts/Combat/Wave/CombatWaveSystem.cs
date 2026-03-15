@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -22,6 +23,7 @@ public class CombatWaveSystem : MonoBehaviour
     private int _currentPhaseIndex;
     private List<CombatRapture> _aliveRaptures = new List<CombatRapture>();
     private int _totalKilledCount;
+    private CancellationTokenSource _cts;
 
     // Phase Progress
     private float _accumulatedWeight; // 이전 페이즈들 가중치 합
@@ -93,6 +95,10 @@ public class CombatWaveSystem : MonoBehaviour
     /// </summary>
     public async Task StartBattleAsync(StageBattleGameData battleData)
     {
+        // 이전 작업 취소
+        Cleanup();
+        _cts = new CancellationTokenSource();
+
         _battleData = battleData;
         _currentPhaseIndex = 0;
         _totalKilledCount = 0;
@@ -102,12 +108,12 @@ public class CombatWaveSystem : MonoBehaviour
         Debug.Log($"[CombatWaveSystem] StartBattleAsync: BattleID {battleData.ID}");
 
         // 1. 첫 페이즈 시작
-        StartPhase(_currentPhaseIndex);
+        StartPhase(_currentPhaseIndex, _cts.Token);
     }
 
     // ==================== Private Methods ====================
 
-    private void StartPhase(int index)
+    private void StartPhase(int index, CancellationToken token)
     {
         if (index >= _battleData.PhaseCount)
         {
@@ -131,38 +137,55 @@ public class CombatWaveSystem : MonoBehaviour
         }
 
         _currentPhaseSpawnCount = phaseData.SpawnCount;
-        SpawnPhaseRaptures(phaseData);
+        _ = SpawnPhaseRaptures(phaseData, token);
     }
 
-    private async void SpawnPhaseRaptures(PhaseGameData phase)
+    private async Task SpawnPhaseRaptures(PhaseGameData phase, CancellationToken token)
     {
         // 시간순 정렬 (절대 시간 기준)
         var sortedSpawns = phase.spawns.OrderBy(x => x.spawnDelaySec).ToList();
         float lastSpawnTime = 0f;
 
-        foreach (var entry in sortedSpawns)
+        try
         {
-            // 이전 스폰 시간과의 차이만큼 대기
-            float waitTime = entry.spawnDelaySec - lastSpawnTime;
-
-            if (waitTime > 0)
+            foreach (var entry in sortedSpawns)
             {
-                await WaitGameTimeAsync(waitTime);
-            }
+                if (token.IsCancellationRequested) return;
 
-            await SpawnRapture(entry);
-            lastSpawnTime = entry.spawnDelaySec;
+                // 이전 스폰 시간과의 차이만큼 대기
+                float waitTime = entry.spawnDelaySec - lastSpawnTime;
+
+                if (waitTime > 0)
+                {
+                    await WaitGameTimeAsync(waitTime, token);
+                }
+
+                if (token.IsCancellationRequested) return;
+
+                await SpawnRapture(entry, token);
+                lastSpawnTime = entry.spawnDelaySec;
+            }
+        }
+        catch (OperationCanceledException)
+        {
+            // 정상적인 취소 처리
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"[CombatWaveSystem] SpawnPhaseRaptures Error: {e.Message}");
         }
     }
 
     /// <summary>
     /// 게임 시간 기준으로 대기합니다. (IsPaused 상태일 때는 시간이 흐르지 않음)
     /// </summary>
-    private async Task WaitGameTimeAsync(float duration)
+    private async Task WaitGameTimeAsync(float duration, CancellationToken token)
     {
         float elapsed = 0f;
         while (elapsed < duration)
         {
+            if (token.IsCancellationRequested) return;
+
             await Task.Yield();
 
             // TimeManager의 일시정지 상태 확인
@@ -173,8 +196,10 @@ public class CombatWaveSystem : MonoBehaviour
         }
     }
 
-    private async Task SpawnRapture(PhaseSpawnEntry entry)
+    private async Task SpawnRapture(PhaseSpawnEntry entry, CancellationToken token)
     {
+        if (token.IsCancellationRequested) return;
+
         // ==================== TEST CODE: Random Spawn Position ====================
         // TODO: 정식 스폰 시스템 구현 후 GetSpawnPosition()으로 교체
         // 1. 스폰 위치 결정 (랜덤)
@@ -184,6 +209,12 @@ public class CombatWaveSystem : MonoBehaviour
         // 2. InstantiateAsync (내부적으로 풀링 사용 가능)
         // Managers.Resource.InstantiateAsync는 풀링 여부를 리소스 매니저/풀 매니저 정책에 따름
         GameObject go = await Managers.Resource.InstantiateAsync(RAPTURE_PREFAB_KEY, spawnPos);
+
+        if (token.IsCancellationRequested)
+        {
+            if (go != null) Managers.Resource.Destroy(go);
+            return;
+        }
 
         if (go == null)
         {
@@ -260,6 +291,19 @@ public class CombatWaveSystem : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 시스템 종료 시 호출하여 진행 중인 비동기 작업을 중단합니다.
+    /// </summary>
+    public void Cleanup()
+    {
+        if (_cts != null)
+        {
+            _cts.Cancel();
+            _cts.Dispose();
+            _cts = null;
+        }
+    }
+
     private void FinishPhase()
     {
         Debug.Log($"[CombatWaveSystem] Phase {_currentPhaseIndex} Complete!");
@@ -271,7 +315,7 @@ public class CombatWaveSystem : MonoBehaviour
         OnPhaseComplete?.Invoke(_currentPhaseIndex);
 
         // 다음 페이즈
-        StartPhase(_currentPhaseIndex + 1);
+        StartPhase(_currentPhaseIndex + 1, _cts.Token);
     }
 
     private eRangeZone ParseZoneFromSpawnerId(string spawnerId)
