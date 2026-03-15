@@ -24,6 +24,10 @@ public abstract class WeaponBase : IWeapon
     // ==================== Burst Related ====================
     /// <summary>적중 시 발생하는 이벤트 (공격자, 데미지량, 적중 좌표)</summary>
     public event System.Action<CombatNikke, long, Vector3> OnHit;
+
+    /// <summary>발사 시각 연출 이벤트 (무기타입, 타겟좌표)</summary>
+    public event System.Action<eNikkeWeapon, Vector3> OnFireVisual;
+
     /// <summary>적중 당 게이지 충전량 (무기별 오버라이드)</summary>
     public virtual float GaugeChargePerHit => 0.01f;
 
@@ -113,6 +117,15 @@ public abstract class WeaponBase : IWeapon
     protected void ConsumeAmmo(int amount)
     {
         _currentAmmo.Value = Mathf.Max(0, _currentAmmo.Value - amount);
+    }
+
+    /// <summary>
+    /// 발사 시각 연출 이벤트를 발행합니다.
+    /// Caller: DefaultWeaponBase, ChargeWeaponBase (격발 시점)
+    /// </summary>
+    protected void NotifyFireVisual(Vector3 targetWorldPos)
+    {
+        OnFireVisual?.Invoke(_weaponType, targetWorldPos);
     }
 
 

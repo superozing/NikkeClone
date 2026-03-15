@@ -135,8 +135,18 @@ public class CombatNikke : CombatEntity
         // HFSM 초기화 (V2: 고정 상태 생성)
         _hfsm = new NikkeHFSM(this);
 
+        // [추가] 격발 시각 연출 이벤트 구독
+        if (_weapon != null)
+        {
+            _weapon.OnFireVisual += OnWeaponFired;
+        }
 
         Debug.Log($"[CombatNikke] Initialized: {name}");
+    }
+
+    private void OnWeaponFired(eNikkeWeapon weaponType, Vector3 targetWorldPos)
+    {
+        _view?.PlayFireEffects(weaponType, targetWorldPos);
     }
 
     // 사망 처리
@@ -342,6 +352,11 @@ public class CombatNikke : CombatEntity
 
     private void OnDestroy()
     {
+        if (_weapon != null)
+        {
+            _weapon.OnFireVisual -= OnWeaponFired;
+        }
+
         if (_view != null)
             _view.DestroyView();
     }
