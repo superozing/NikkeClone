@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 
@@ -34,7 +34,7 @@ public class FullBurstFilterUIAnimation : IUIAnimation
         {
             // 1. Alpha Fade In
             _filterMaterial.DOKill();
-            var fadeTween = _filterMaterial.DOFloat(1f, PropAlpha, _fadeDuration)
+            var fadeTween = _filterMaterial.DOFloat(0.15f, PropAlpha, _fadeDuration)
                 .SetDelay(delay)
                 .SetEase(Ease.OutQuad)
                 .SetUpdate(true);
