@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using TMPro;
 using UI;
 using UnityEngine;
@@ -68,7 +68,6 @@ public class UI_MissionSlot : UI_View
     protected override void OnDestroy()
     {
         base.OnDestroy();
-        (_viewModel as IDisposable)?.Dispose();
         _viewModel = null;
     }
 }

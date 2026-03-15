@@ -1,10 +1,10 @@
 ﻿using System;
+using System.Threading.Tasks;
 using UI;
 
 public class LobbyTabViewModel : ViewModelBase
 {
     public event Action OnRequestUnusedButton; // 사용하지 않는 버튼
-    public event Action OnRequestCampaignButton; // 캠페인 버튼
 
     public MissionButtonViewModel MissionButtonViewModel { get; private set; }
 
@@ -23,11 +23,18 @@ public class LobbyTabViewModel : ViewModelBase
     }
 
     /// <summary>
-    /// 캠페인 버튼 클릭 이벤트
+    /// 캠페인 버튼 클릭 시 UI_LoadingPopup을 통해 CampaignScene으로 전환합니다.
+    /// Caller: UI_LobbyTab.OnCampaignButtonClick() (Button.onClick -> 래퍼)
     /// </summary>
-    public void OnCampaignButtonClicked()
+    public async void OnCampaignButtonClicked()
     {
-        OnRequestCampaignButton?.Invoke();
+        Func<Task> loadTask = async () =>
+        {
+            await Managers.Scene.LoadSceneAsync(eSceneType.CampaignScene);
+        };
+
+        var loadingVM = new LoadingPopupViewModel(loadTask);
+        await Managers.UI.ShowDontDestroyAsync<UI_LoadingPopup>(loadingVM);
     }
 
     protected override void OnDispose()
@@ -39,6 +46,5 @@ public class LobbyTabViewModel : ViewModelBase
         }
 
         OnRequestUnusedButton = null;
-        OnRequestCampaignButton = null;
     }
 }

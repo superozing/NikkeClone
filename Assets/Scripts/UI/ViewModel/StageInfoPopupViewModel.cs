@@ -250,7 +250,13 @@ public class StageInfoPopupViewModel : ViewModelBase
         Managers.Data.UserData.Combat = combatData;
 
         // 2. 전투 씬으로 전환
-        await Managers.Scene.LoadSceneAsync(eSceneType.CombatScene);
+        Func<Task> loadTask = async () =>
+        {
+            await Managers.Scene.LoadSceneAsync(eSceneType.CombatScene);
+        };
+
+        var loadingVM = new LoadingPopupViewModel(loadTask);
+        await Managers.UI.ShowDontDestroyAsync<UI_LoadingPopup>(loadingVM);
 
         // 기존 이벤트 호출 유지 (필요한 경우)
         OnBattleRequested?.Invoke(StageId);

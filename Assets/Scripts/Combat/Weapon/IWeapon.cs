@@ -55,6 +55,12 @@ public interface IWeapon
     /// </summary>
     ReactiveProperty<Vector2> CurrentAimScreenPosition { get; }
 
+    /// <summary>적중 시 발생하는 이벤트 (공격자, 데미지량, 적중 좌표)</summary>
+    event System.Action<CombatNikke, long, Vector3> OnHit;
+
+    /// <summary>발사 시각 연출 이벤트 (무기타입, 타겟좌표)</summary>
+    event System.Action<eNikkeWeapon, Vector3> OnFireVisual;
+
 
     /// <summary>
     /// 타겟이 적정 사거리에 있는지 여부

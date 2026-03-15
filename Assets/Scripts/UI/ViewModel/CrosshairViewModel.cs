@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 using UI;
 
 /// <summary>
@@ -17,6 +18,11 @@ public class CrosshairViewModel : ViewModelBase
     public ReactiveProperty<Vector2> TargetPosition { get; } = new ReactiveProperty<Vector2>(Vector2.zero);
 
     public ReactiveProperty<bool> IsAutoMode { get; } = new ReactiveProperty<bool>(true);
+
+    /// <summary>
+    /// 피격 연출을 위한 단순 이벤트 트리거입니다.
+    /// </summary>
+    public event Action OnHitTriggered;
 
     private IWeapon _currentWeapon;
 
@@ -78,4 +84,12 @@ public class CrosshairViewModel : ViewModelBase
         TargetPosition.Value = position;
     }
 
+    /// <summary>
+    /// 피격 성공 시 호출되어 View에 피격 이벤트를 알립니다.
+    /// Caller: CombatCrosshairSystem (TriggerSystem 구독을 통해)
+    /// </summary>
+    public void NotifyHit()
+    {
+        OnHitTriggered?.Invoke();
+    }
 }

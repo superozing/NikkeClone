@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 using System.Threading.Tasks;
 using UI;
@@ -27,6 +27,9 @@ public class CampaignScene : MonoBehaviour, IScene
     private StageInfoPopupViewModel _stageInfoPopupViewModel;
     private SquadDetailPopupViewModel _squadDetailPopupViewModel;
     private CampaignHUDViewModel _campaignHUDViewModel;
+
+    [Header("스쿼드")]
+    [SerializeField] private CampaignSquad _squad;
 
     /// <summary>
     /// 스테이지 전투 상태 진입 시 호출됩니다.
@@ -69,14 +72,23 @@ public class CampaignScene : MonoBehaviour, IScene
         // 2. 전투 상태 탈출
         if (_currentCombatStageId != -1 && _stageObjects != null)
         {
+            CampaignStage targetStage = null;
             foreach (var stage in _stageObjects)
             {
                 if (stage != null && stage.StageId == _currentCombatStageId)
                 {
                     stage.ExitCombat();
+                    targetStage = stage;
                     break;
                 }
             }
+
+            // Bug #5 Fix: 스쿼드를 스테이지 시선 방향으로 이동시켜 충돌체에서 벗어나게 함
+            if (_squad != null && targetStage != null)
+            {
+                _squad.ExitCombat(targetStage.ForwardDirection);
+            }
+
             _currentCombatStageId = -1;
         }
     }
@@ -122,11 +134,6 @@ public class CampaignScene : MonoBehaviour, IScene
         }
     }
 
-    private void OnBackButtonClicked()
-    {
-        // TODO: 이전 씬으로 돌아가는 로직
-        Debug.Log("[CampaignScene] Back button clicked");
-    }
 
     private void Awake()
     {
@@ -143,9 +150,9 @@ public class CampaignScene : MonoBehaviour, IScene
         }
     }
 
-    void IScene.Init()
+    async Task IScene.InitAsync()
     {
-        Debug.Log($"CampaignScene Init() - ChapterId: {_chapterId}");
+        Debug.Log($"CampaignScene InitAsync() - ChapterId: {_chapterId}");
 
         // ViewModel 생성 및 명시적 참조 카운트 증가
         _stageInfoPopupViewModel = new StageInfoPopupViewModel();
@@ -154,7 +161,6 @@ public class CampaignScene : MonoBehaviour, IScene
         // HUD ViewModel 생성 및 연결
         _campaignHUDViewModel = new CampaignHUDViewModel();
         _campaignHUDViewModel.AddRef();
-        _campaignHUDViewModel.OnBackButtonClicked += OnBackButtonClicked;
 
         // HUD 동적 생성 요청 (비동기)
         InitializeHUD();
@@ -185,10 +191,14 @@ public class CampaignScene : MonoBehaviour, IScene
             _stageObjects[i].SetStageId(curChapter.stageIds[i]);
             bool isCleared = userData.IsStageCleared(curChapter.stageIds[i]);
 
+            // TODO: 전투 승리 후 캠페인 복귀 시 dead 연출을 재생하려면,
+            //       Init()이 아닌 별도 시점(e.g. 복귀 직후 플래그 기반)에서 Die()를 트리거해야 합니다.
+            //       Init() 시점에서는 즉시 비활성화하여 안정성을 확보합니다.
             _stageObjects[i].gameObject.SetActive(!isCleared);
         }
 
-        Debug.Log($"[CampaignScene] CampaignScene Init() 완료");
+        Debug.Log($"[CampaignScene] CampaignScene InitAsync() 완료");
+        await Task.CompletedTask;
     }
 
     void IScene.Clear()
@@ -214,7 +224,6 @@ public class CampaignScene : MonoBehaviour, IScene
         // HUD ViewModel 정리
         if (_campaignHUDViewModel != null)
         {
-            _campaignHUDViewModel.OnBackButtonClicked -= OnBackButtonClicked;
             _campaignHUDViewModel.Release();
             _campaignHUDViewModel = null;
         }

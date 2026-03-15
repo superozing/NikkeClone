@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 /// <summary>
@@ -20,7 +21,8 @@ public class CombatScene : MonoBehaviour, IScene
         "PhaseGameData.json",
         "RaptureGameData.json",
         "MissionGameData.json",
-        "ItemGameData.json"
+        "ItemGameData.json",
+        "ChapterGameData.json"
     };
 
     // ==================== SerializeFields ====================
@@ -42,7 +44,7 @@ public class CombatScene : MonoBehaviour, IScene
 
     // ==================== IScene Logic ====================
 
-    async void IScene.Init()
+    async Task IScene.InitAsync()
     {
         // 1. 유저 데이터에서 전투 파라미터 읽기
         var combatData = Managers.Data.UserData.Combat;
@@ -90,8 +92,8 @@ public class CombatScene : MonoBehaviour, IScene
         // Input 비우기
         Managers.Input.Clear();
 
-        // 전투 데이터 초기화
-        Managers.Data.UserData.Combat = null;
+        // 전투 데이터 초기화 (재시작 시 필요하므로 여기서 하지 않고 Exit 시점에 처리합니다)
+        // Managers.Data.UserData.Combat = null;
     }
 
     private void NotifyCombatEnded(eCombatResult result)

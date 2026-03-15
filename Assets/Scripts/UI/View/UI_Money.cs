@@ -1,4 +1,4 @@
-﻿using UI;
+using UI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -68,6 +68,6 @@ public class UI_Money : UI_View
         base.OnDestroy();
 
         // 뷰모델 리소스 정리
-        _viewModel?.Dispose();
+        _viewModel = null;
     }
 }

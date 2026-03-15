@@ -14,6 +14,7 @@ public class NikkeAttackState : IState<CombatNikke>
     {
         owner.UpdateState(eNikkeState.Attack);
         owner.Weapon?.Enter(owner);
+        owner.View?.SetWeaponVisible(true);
     }
 
     public void Execute(CombatNikke owner)
@@ -47,6 +48,9 @@ public class NikkeAttackState : IState<CombatNikke>
 
         // (4) 사격 판단을 무기에 위임
         owner.Weapon.ProcessCombat(owner, targetWorldPos, rapture != null);
+
+        // [추가] 총기 회전 및 조준 레이저 갱신
+        owner.View?.UpdateWeaponAim(targetWorldPos);
     }
 
     public void Exit(CombatNikke owner)
@@ -59,6 +63,9 @@ public class NikkeAttackState : IState<CombatNikke>
             && owner.Weapon.ChargeProgress.Value > 0f;
 
         owner.Weapon?.Exit(owner, isCancel: !isManualChargeFire);
+
+        owner.View?.SetWeaponVisible(false);
+
         if (owner.Weapon != null)
         {
             owner.Weapon.IsInPreferredZone.Value = false;

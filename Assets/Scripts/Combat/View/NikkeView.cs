@@ -8,11 +8,19 @@ using Unity.Cinemachine;
 public class NikkeView : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer _spriteRenderer;
-    
+
+    [Header("Weapon & VFX")]
+    [SerializeField] private Transform _weaponPivot;
+    [SerializeField] private Transform _muzzlePoint;
+    [SerializeField] private GameObject _weaponModel;
+    [SerializeField] private ParticleSystem _muzzleFlashFX;
+    [SerializeField] private ParticleSystem _bulletTrailFX;
+    [SerializeField] private LineRenderer _aimLaser;
+
     // 캐싱된 스프라이트
     private Sprite _idleSprite;
     private Sprite _shootSprite; // 임시: 공격 모션 스프라이트 (실제론 애니메이션일 수 있음)
-    
+
     // 카메라
     private CinemachineCamera _vcam;
     private string _cameraKey;
@@ -83,6 +91,63 @@ public class NikkeView : MonoBehaviour
         else
         {
             Managers.Camera.Deactivate(_cameraKey);
+        }
+    }
+
+    /// <summary>
+    /// 총기 모델 및 레이저 가시성을 설정합니다.
+    /// Caller: NikkeAttackState.Enter/Exit
+    /// </summary>
+    public void SetWeaponVisible(bool visible)
+    {
+        if (_weaponModel != null) _weaponModel.SetActive(visible);
+        if (_aimLaser != null) _aimLaser.enabled = visible;
+    }
+
+    /// <summary>
+    /// 총기 피벗 회전 및 에임 레이저 위치를 갱신합니다.
+    /// Caller: NikkeAttackState.Execute
+    /// </summary>
+    public void UpdateWeaponAim(Vector3 targetWorldPos)
+    {
+        if (_weaponPivot != null)
+        {
+            Vector3 dir = (targetWorldPos - _weaponPivot.position).normalized;
+            if (dir != Vector3.zero)
+            {
+                _weaponPivot.rotation = Quaternion.LookRotation(dir, Vector3.up);
+            }
+        }
+
+        if (_aimLaser != null && _aimLaser.enabled && _muzzlePoint != null)
+        {
+            _aimLaser.SetPosition(0, _muzzlePoint.position);
+            _aimLaser.SetPosition(1, targetWorldPos);
+        }
+    }
+
+    /// <summary>
+    /// 사격 효과(Muzzle Flash, Bullet Trail)를 재생합니다.
+    /// Caller: CombatNikke (Event Callback)
+    /// </summary>
+    public void PlayFireEffects(eNikkeWeapon weaponType, Vector3 targetWorldPos)
+    {
+        _muzzleFlashFX?.Play();
+
+        // RL, SG, SR은 탄환 궤적 제외
+        bool hasBulletTrail = weaponType != eNikkeWeapon.RL
+                           && weaponType != eNikkeWeapon.SG
+                           && weaponType != eNikkeWeapon.SR;
+
+        if (hasBulletTrail && _bulletTrailFX != null && _muzzlePoint != null)
+        {
+            var emitParams = new ParticleSystem.EmitParams
+            {
+                position = _muzzlePoint.position,
+                velocity = (targetWorldPos - _muzzlePoint.position).normalized * 80f,
+                applyShapeToPosition = true
+            };
+            _bulletTrailFX.Emit(emitParams, 1);
         }
     }
 

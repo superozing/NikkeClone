@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.UI;
 using UI;
 
 /// <summary>
@@ -16,11 +17,15 @@ public abstract class UI_CrosshairBase : UI_View
 
     [Header("Ammo Shared UI")]
     [SerializeField] protected TMPro.TMP_Text _ammoText;
-    [SerializeField] protected UnityEngine.UI.Image _ammoFillImage;
+    [SerializeField] protected Image _ammoFillImage;
 
     [Header("Color Feedback")]
-    [SerializeField] protected UnityEngine.UI.Graphic[] _crosshairGraphics;
+    [SerializeField] protected Graphic[] _crosshairGraphics;
 
+    [Header("Hit Feedback")]
+    [SerializeField] protected Image _hitMarker;
+
+    private IUIAnimation _hitAnim;
     private Camera _uiCamera;
     private RectTransform _parentRect;
 
@@ -34,6 +39,20 @@ public abstract class UI_CrosshairBase : UI_View
 
         // 최적화: 렌더 카메라를 매니저에서 직접 획득 (UI_Camera) 
         _uiCamera = Managers.UI.UICamera;
+
+        // 히트 피드백 애니메이션 초기화
+        if (_hitMarker != null)
+        {
+            // [Fix] 히트마커 전용 CanvasGroup 확보하여 전체 조준선이 깜빡이는 문제 해결
+            var hitCg = _hitMarker.gameObject.GetOrAddComponent<CanvasGroup>();
+
+            _hitAnim = new UIAnimationComposite(
+                new PunchScaleUIAnimation(_hitMarker.rectTransform, Vector3.one * 1.5f, 0.1f),
+                new FadeUIAnimation(hitCg, 1f, 0f, 0.15f)
+            );
+
+            hitCg.alpha = 0f;
+        }
     }
 
     /// <summary>
@@ -61,6 +80,11 @@ public abstract class UI_CrosshairBase : UI_View
             {
                 _viewModel.ActiveWeapon.Value.IsInPreferredZone.OnValueChanged += OnPreferredZoneChanged;
             }
+
+            // 히트 피드백 바인딩
+            // ReactiveProperty가 아니므로 직접 C# event에 구독합니다. 
+            // 해제는 OnDisable 및 OnDestroy에서 명시적으로 처리합니다.
+            _viewModel.OnHitTriggered += OnNotifyHit;
         }
     }
 
@@ -161,6 +185,17 @@ public abstract class UI_CrosshairBase : UI_View
     protected virtual void OnReloadStateChanged(bool isReloading) { }
     protected virtual void OnChargeRatioChanged(float ratio) { }
 
+    /// <summary>
+    /// 피격 알림 수신 시 연출을 트리거합니다.
+    /// </summary>
+    protected virtual void OnNotifyHit()
+    {
+        if (_hitMarker == null) return;
+
+        _hitMarker.gameObject.SetActive(true);
+        _ = _hitAnim?.ExecuteAsync();
+    }
+
     protected virtual void UpdateAmmoUI(int current, int max)
     {
         float ratio = max > 0 ? (float)current / max : 0f;
@@ -198,6 +233,11 @@ public abstract class UI_CrosshairBase : UI_View
 
     protected override void OnDestroy()
     {
+        if (_viewModel != null)
+        {
+            _viewModel.OnHitTriggered -= OnNotifyHit;
+        }
+
         base.OnDestroy();
         _viewModel = null;
     }

@@ -35,6 +35,7 @@ public abstract class DefaultWeaponBase : WeaponBase
         {
             _lastFireTime = Time.time;
             TryFire(owner, targetWorldPos);
+            NotifyFireVisual(targetWorldPos);
         }
     }
 

@@ -58,6 +58,7 @@ public abstract class ChargeWeaponBase : WeaponBase
         long damage = CalculateDamage(owner, currentMultiplier);
 
         FireOnRelease(owner, damage, _lastTargetPos);
+        NotifyFireVisual(_lastTargetPos);
 
         ConsumeAmmo(1); // 격발 후 탄약 1 감소
         _chargeProgress.Value = 0f;

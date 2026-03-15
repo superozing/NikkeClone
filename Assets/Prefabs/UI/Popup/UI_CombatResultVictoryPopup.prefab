@@ -291,6 +291,7 @@ MonoBehaviour:
   - {fileID: 8506896095553354698}
   - {fileID: 8528404582513818278}
   _btnBackground: {fileID: 1928349712619980044}
+  _txtStageInfo: {fileID: 8493201839260259484}
 --- !u!1 &1842526655965219785
 GameObject:
   m_ObjectHideFlags: 0

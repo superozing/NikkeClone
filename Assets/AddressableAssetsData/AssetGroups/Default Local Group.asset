@@ -25,6 +25,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 05e6274859b323440b453b354dc12a5e
+    m_Address: UI/Popup/UI_FullBurstPopup
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 11b0e73c6769e7b4d890800d839fa18a
     m_Address: Assets/Textures/Icon/Burst/burst_1
     m_ReadOnly: 0
@@ -190,6 +195,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5351d170c95881a43825c0b8ac8d6ba3
+    m_Address: Prefabs/Combat/CombatVFXController
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 567ad6c9ba084f2438685610511fb06e
     m_Address: "Assets/Textures/Nikke/\uB124\uC628_Stand"
     m_ReadOnly: 0
@@ -262,6 +272,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7311a8f316678774f8e7473012ecf844
     m_Address: "Assets/Textures/Nikke/\uB77C\uD53C_Face"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 742427998d3544647b4ca1ddc6ce8526
+    m_Address: UI/View/UI_DamageNumberSystem
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -380,8 +395,18 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c037bcc70baa81440942697f4a90d872
+    m_Address: UI/View/WorldHealthBar
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c3788e7b1806a664f91898638828653d
     m_Address: UI/View/UI_Icon
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c6600fb6a6a9d444a990cdf5d3349fa1
+    m_Address: UI/View/UI_HealthBarBoard
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

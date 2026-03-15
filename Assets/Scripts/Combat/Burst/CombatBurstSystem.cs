@@ -48,6 +48,16 @@ public class CombatBurstSystem
     /// </summary>
     public event Action<eBurstStage> OnStageChanged;
 
+    /// <summary>
+    /// 풀버스트 모드가 시작되었을 때 발생하는 이벤트
+    /// </summary>
+    public event Action OnFullBurstStarted;
+
+    /// <summary>
+    /// 풀버스트 모드가 종료되었을 때 발생하는 이벤트
+    /// </summary>
+    public event Action OnFullBurstEnded;
+
     // ==================== Public Methods ====================
 
     public CombatBurstSystem(CombatNikke[] nikkes)
@@ -166,6 +176,18 @@ public class CombatBurstSystem
     }
 
     /// <summary>
+    /// 전투 종료 시 풀버스트가 진행 중이라면 즉시 종료합니다.
+    /// Caller: CombatSystem.EndCombat()
+    /// </summary>
+    public void ForceEndFullBurst()
+    {
+        if (IsFullBurst.Value)
+        {
+            EndFullBurst();
+        }
+    }
+
+    /// <summary>
     /// 해당 슬롯의 니케가 현재 단계에서 버스트 스킬을 사용할 수 있는지 확인합니다.
     /// </summary>
     public bool CanUseBurst(int slotIndex)
@@ -232,6 +254,8 @@ public class CombatBurstSystem
         SetStage(eBurstStage.FullBurst);
         IsFullBurst.Value = true;
         _fullBurstTimer = _fullBurstDuration;
+
+        OnFullBurstStarted?.Invoke();
         Debug.Log("[BurstManager] Full Burst Started!");
     }
 
@@ -241,6 +265,8 @@ public class CombatBurstSystem
         _gauge = 0f;
         Gauge.Value = 0f;
         SetStage(eBurstStage.None);
+
+        OnFullBurstEnded?.Invoke();
         Debug.Log("[BurstManager] Full Burst Ended.");
     }
 

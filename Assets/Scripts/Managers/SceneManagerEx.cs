@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -49,8 +49,8 @@ public class SceneManagerEx : IManagerBase
         // 씬 기본 액션맵으로 전환
         Managers.Input.SwitchActionMap(scene.DefaultActionMapKey);
 
-        // 현재 씬 스크립트 초기화
-        scene.Init();
+        // 현재 씬 스크립트 비동기 초기화 대기
+        await scene.InitAsync();
     }
 
     public void Init()

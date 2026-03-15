@@ -1,4 +1,4 @@
-﻿using UI;
+using UI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -129,7 +129,6 @@ public class UI_ItemDetailPopup : UI_Popup, IUIShowHideable
         if (_viewModel != null)
             _viewModel.OnClose -= OnCloseRequested;
 
-        (_viewModel as IDisposable)?.Dispose();
         _viewModel = null;
     }
 }

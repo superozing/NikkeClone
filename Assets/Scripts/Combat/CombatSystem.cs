@@ -15,6 +15,10 @@ public class CombatSystem : MonoBehaviour
     [SerializeField] private CombatWaveSystem _waveSystem;
     [SerializeField] private CombatCrosshairSystem _crosshairSystem;
     private UI_CombatHUD _combatHUD;
+    private UI_HealthBarBoard _healthBarBoard;
+    private DamageNumberViewModel _damageNumberVM;
+    private FullBurstFilterController _fullBurstFilterController;
+    private GameObject _vfxControllerInstance;
 
     // ==================== Trigger & Skill (Phase 10) ====================
     private CombatTriggerSystem _triggerSystem;
@@ -28,7 +32,7 @@ public class CombatSystem : MonoBehaviour
     public int AliveNikkeCount { get; private set; }
 
     private IWeapon[] _weapons;
-    private System.Action<CombatNikke, long>[] _onHitCallbacks;
+    private System.Action<CombatNikke, long, Vector3>[] _onHitCallbacks;
 
     private bool _isCombatEnded;
     private float _timeLimitSec;
@@ -70,6 +74,9 @@ public class CombatSystem : MonoBehaviour
 
         _isCombatEnded = false;
 
+        // B-1: 데미지 넘버 뷰모델 초기화
+        _damageNumberVM = new DamageNumberViewModel();
+
         // 0. 트리거 및 스킬 시스템 초기화 (Phase 10)
         _triggerSystem = new CombatTriggerSystem();
         _skillSystem = new CombatSkillSystem();
@@ -102,9 +109,9 @@ public class CombatSystem : MonoBehaviour
         if (_waveSystem != null)
         {
             // RaptureField 처리 (WaveSystem 내부에서 필요시 찾음, 여기선 생략 가능하지만 명시적 초기화가 좋음)
-            // CombatWaveSystem 리팩토링 시 Initialize에 의존성 주입 고려
-            // 현재는 기존 WaveSystem 구조 유지하며 이름만 변경 예정
             _waveSystem.OnAllPhasesComplete += OnAllPhasesComplete;
+            _waveSystem.OnRaptureSpawned += OnWaveRaptureSpawned;
+            _waveSystem.OnRaptureDied += OnWaveRaptureDied;
         }
 
         // CombatTargetingSystem 초기화
@@ -133,6 +140,15 @@ public class CombatSystem : MonoBehaviour
         // 3. 버스트 매니저 초기화 (니케 초기화 및 HUD 초기화 이전에 수행)
         _burstSystem = new CombatBurstSystem(_nikkes);
         _burstSystem.SetAutoMode(_isAutoBurstMode);
+        _burstSystem.OnFullBurstStarted += HandleFullBurstStarted;
+
+        // [Refactor] 필드 VFX 컨트롤러 (필터 등) 동적 생성
+        _vfxControllerInstance = await Managers.Resource.InstantiateAsync("Prefabs/Combat/CombatVFXController");
+        if (_vfxControllerInstance != null)
+        {
+            _fullBurstFilterController = _vfxControllerInstance.GetComponent<FullBurstFilterController>();
+            _fullBurstFilterController?.Initialize(_burstSystem);
+        }
 
         // 3.1 UI, Nikke 초기화
         await InitializeNikkesAsync(squadId);
@@ -150,7 +166,8 @@ public class CombatSystem : MonoBehaviour
                     squadWeaponTypes.Add(nikke.Weapon.WeaponType);
                 }
             }
-            await _crosshairSystem.InitializeAsync(squadWeaponTypes);
+            // 외부 트리거 시스템과 델리게이트 주입
+            await _crosshairSystem.InitializeAsync(squadWeaponTypes, _triggerSystem, () => _currentSelectedSlot);
 
         }
 
@@ -216,6 +233,7 @@ public class CombatSystem : MonoBehaviour
     public void OnNikkeDied(CombatNikke nikke)
     {
         AliveNikkeCount--;
+        _healthBarBoard?.UnregisterEntity(nikke);
         Debug.Log($"[CombatSystem] Nikke Died: {nikke.NikkeName}. Alive: {AliveNikkeCount}");
 
         if (AliveNikkeCount <= 0)
@@ -283,6 +301,9 @@ public class CombatSystem : MonoBehaviour
         if (_waveSystem != null)
         {
             _waveSystem.OnAllPhasesComplete -= OnAllPhasesComplete;
+            _waveSystem.OnRaptureSpawned -= OnWaveRaptureSpawned;
+            _waveSystem.OnRaptureDied -= OnWaveRaptureDied;
+            _waveSystem.Cleanup();
         }
 
         Managers.Input.UnbindAction("ToggleAuto", OnToggleAutoCombatWrapper);
@@ -305,8 +326,24 @@ public class CombatSystem : MonoBehaviour
         // Phase 7.1 Refactor v2: 조준선 시스템 정리
         _crosshairSystem?.Cleanup();
 
-        // Phase 9: 버스트 매니저 정리
-        _burstSystem?.Cleanup();
+        if (_burstSystem != null)
+        {
+            _burstSystem.OnFullBurstStarted -= HandleFullBurstStarted;
+            _burstSystem.Cleanup();
+        }
+
+        if (_vfxControllerInstance != null)
+        {
+            Managers.Resource.Destroy(_vfxControllerInstance);
+            _vfxControllerInstance = null;
+            _fullBurstFilterController = null;
+        }
+
+        // Phase G-2: 데미지 숫자 시스템 이벤트 해제
+        if (_triggerSystem != null)
+        {
+            _triggerSystem.OnEnemyDamagedByAlly -= HandleDamageNumber;
+        }
 
         // Phase 9-2: 무기 이벤트 해제
         if (_weapons != null && _onHitCallbacks != null)
@@ -321,8 +358,6 @@ public class CombatSystem : MonoBehaviour
             _onHitCallbacks = null;
             _weapons = null;
         }
-
-        // 이벤트 해제 등
     }
 
     // ==================== Private Methods ====================
@@ -383,7 +418,7 @@ public class CombatSystem : MonoBehaviour
         }
 
         _weapons = new IWeapon[_nikkes.Length];
-        _onHitCallbacks = new System.Action<CombatNikke, long>[_nikkes.Length];
+        _onHitCallbacks = new System.Action<CombatNikke, long, Vector3>[_nikkes.Length];
         var gameDatas = new NikkeGameData[_nikkes.Length];
 
         for (int i = 0; i < _nikkes.Length && i < squadData.slot.Count; i++)
@@ -403,7 +438,7 @@ public class CombatSystem : MonoBehaviour
             if (weapon is WeaponBase weaponBase)
             {
                 int slotIdx = i; // Closure capture
-                weaponBase.OnHit += (owner, damage) =>
+                weaponBase.OnHit += (owner, damage, hitPos) =>
                 {
                     _burstSystem?.AddGauge(weaponBase.GaugeChargePerHit);
                 };
@@ -421,6 +456,9 @@ public class CombatSystem : MonoBehaviour
 
         // Phase 10: 트리거 시스템 초기화 (관찰 시작)
         _triggerSystem?.Initialize(_waveSystem, _weapons, _burstSystem, _nikkes);
+
+        // Phase B: 데미지 숫자 표출 이벤트 연결
+        _triggerSystem.OnEnemyDamagedByAlly += HandleDamageNumber;
 
         // Phase 10: 스킬 로딩 (TriggerSystem 주입)
         _skillSystem?.LoadNikkeSkills(this, _triggerSystem, gameDatas);
@@ -469,20 +507,43 @@ public class CombatSystem : MonoBehaviour
             // Phase 9: 버스트 시스템 연결
             if (_burstSystem != null)
             {
-                var burstGaugeVM = new BurstGaugeViewModel(_burstSystem);
-                await burstGaugeVM.InitializeAsync();
-                _hudViewModel.BurstGauge.Value = burstGaugeVM;
+                var burstGaugeViewModel = new BurstGaugeViewModel(_burstSystem);
+                await burstGaugeViewModel.InitializeAsync();
+                _hudViewModel.BurstGauge.Value = burstGaugeViewModel;
             }
 
-            // UI 매니저를 통해 HUD 생성 (ViewModel 전달)
+            // UI 매니저를 통해 HUD 생성
             _combatHUD = await Managers.UI.ShowAsync<UI_CombatHUD>(_hudViewModel);
+
+            // [추가] 통합 체력바 보드 생성 및 니케 등록
+            _healthBarBoard = await Managers.UI.ShowAsync<UI_HealthBarBoard>();
+            if (_healthBarBoard != null)
+            {
+                foreach (var nikke in _nikkes)
+                {
+                    if (nikke != null) _healthBarBoard.RegisterEntity(nikke);
+                }
+            }
 
             if (_combatHUD == null)
             {
                 Debug.LogError("[CombatSystem] Failed to load UI_CombatHUD");
                 return;
             }
+
+            // [추가] B-1: 데미지 넘버 시스템 생성
+            await Managers.UI.ShowAsync<UI_DamageNumberSystem>(_damageNumberVM);
         }
+    }
+
+    private void OnWaveRaptureSpawned(CombatRapture rapture)
+    {
+        _healthBarBoard?.RegisterEntity(rapture);
+    }
+
+    private void OnWaveRaptureDied(CombatRapture rapture)
+    {
+        _healthBarBoard?.UnregisterEntity(rapture);
     }
 
     private void OnAllPhasesComplete()
@@ -490,18 +551,59 @@ public class CombatSystem : MonoBehaviour
         EndCombat(eCombatResult.Victory);
     }
 
+
     private void EndCombat(eCombatResult result)
     {
         if (_isCombatEnded) return;
         _isCombatEnded = true;
 
         Debug.Log($"[CombatSystem] EndCombat: {result}");
-        OnCombatEnded?.Invoke(result); // CombatScene에게 알림 (팝업 등 처리는 CombatScene이 할 수도, System이 할 수도 있음. 설계상 System이 주도)
+
+        // Bug #1 Fix: 풀버스트 진행 중이라면 필터 해제를 위해 즉시 종료
+        _burstSystem?.ForceEndFullBurst();
+
+        OnCombatEnded?.Invoke(result); // CombatScene에게 알림
 
         // 팝업 표시
         if (result == eCombatResult.Victory)
         {
-            var viewModel = new CombatResultVictoryPopupViewModel(_stageGameData?.rewards ?? new List<RewardData>());
+            // [추가] 스테이지 클리어 마킹 및 데이터 저장
+            var combatData = Managers.Data.UserData.Combat;
+            if (combatData != null)
+            {
+                Managers.Data.UserData.Chapter.MarkStageCleared(combatData.stageId);
+                Managers.Data.SaveUserData();
+            }
+
+            // [추가] 챕터-스테이지 정보 계산
+            string stageInfoText = "";
+            var chapterTable = Managers.Data.GetTable<ChapterGameData>();
+            if (chapterTable != null && _stageGameData != null)
+            {
+                foreach (var chapter in chapterTable.Values)
+                {
+                    int stageIdx = -1;
+                    if (chapter.stageIds != null)
+                    {
+                        for (int i = 0; i < chapter.stageIds.Length; i++)
+                        {
+                            if (chapter.stageIds[i] == _stageGameData.id)
+                            {
+                                stageIdx = i + 1;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (stageIdx != -1)
+                    {
+                        stageInfoText = $"{chapter.order}-{stageIdx} STAGE";
+                        break;
+                    }
+                }
+            }
+
+            var viewModel = new CombatResultVictoryPopupViewModel(_stageGameData?.rewards ?? new List<RewardData>(), stageInfoText);
             _ = Managers.UI.ShowAsync<UI_CombatResultVictoryPopup>(viewModel);
         }
         else
@@ -544,5 +646,20 @@ public class CombatSystem : MonoBehaviour
         // 팝업 표시 
         var viewModel = new CombatPausePopupViewModel(_hudViewModel.TimeText.Value, _statRecordSystem, _nikkes);
         _ = Managers.UI.ShowAsync<UI_CombatPausePopup>(viewModel);
+    }
+
+    private void HandleDamageNumber(int slotIdx, long damage, Vector3 hitPos)
+    {
+        // 1. 현재 조작 중인 슬롯의 데미지만 표시
+        // 2. DamageNumber ViewModel에 요청
+        if (slotIdx == _currentSelectedSlot && _damageNumberVM != null)
+        {
+            _damageNumberVM.RequestDamageNumber(damage, hitPos);
+        }
+    }
+
+    private void HandleFullBurstStarted()
+    {
+        _ = Managers.UI.ShowAsync<UI_FullBurstPopup>();
     }
 }

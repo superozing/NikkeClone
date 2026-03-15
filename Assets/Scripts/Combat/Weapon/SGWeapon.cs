@@ -33,7 +33,7 @@ public class SGWeapon : DefaultWeaponBase
                 if (rapture != null && !rapture.IsDead)
                 {
                     rapture.TakeDamage(perPelletDamage);
-                    NotifyHit(owner, perPelletDamage);
+                    NotifyHit(owner, perPelletDamage, hit.point);
                 }
             }
         }

@@ -37,7 +37,7 @@ public class CombatStatRecordSystem
         // 이벤트 구독
         if (_triggerSystem != null)
         {
-            _triggerSystem.OnEnemyDamagedByAlly += (idx, val) => UpdateRecord(idx, r => r.TotalDamageDealt += val);
+            _triggerSystem.OnEnemyDamagedByAlly += (idx, val, hitPos) => UpdateRecord(idx, r => r.TotalDamageDealt += val);
             _triggerSystem.OnAllyDamaged += (idx, val) => UpdateRecord(idx, r => r.TotalDamageTaken += val);
             _triggerSystem.OnAllyHealed += (idx, val) => UpdateRecord(idx, r => r.TotalHealReceived += val);
         }

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -19,12 +19,13 @@ public class TestScene : MonoBehaviour, IScene
         Debug.Log("Test Scene Awake() 합니다.");
     }
 
-    void IScene.Init()
+    async Task IScene.InitAsync()
     {
-        Debug.Log("Test Scene Init() 합니다.");
+        Debug.Log("Test Scene InitAsync() 합니다.");
         Debug.Log($"persistentDataPath: {Application.persistentDataPath}");
 
         ShowTestUI();
+        await Task.CompletedTask;
     }
 
     /// <summary>

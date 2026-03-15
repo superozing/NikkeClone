@@ -27,6 +27,11 @@ public abstract class CombatEntity : MonoBehaviour
     public long CurrentHp => _currentHp;
     public bool IsDead => _currentHp <= 0;
 
+    // ==================== Visuals ====================
+
+    [SerializeField] private Transform _healthBarTrackingAnchor;
+    public Transform HealthBarTrackingAnchor => _healthBarTrackingAnchor != null ? _healthBarTrackingAnchor : transform;
+
     // ==================== Unity Lifecycle ====================
 
     protected virtual void Awake()
