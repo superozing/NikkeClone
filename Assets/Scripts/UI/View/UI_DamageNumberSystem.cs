@@ -26,7 +26,6 @@ public class UI_DamageNumberSystem : UI_View
 
     private DamageNumberViewModel _viewModel;
     private RectTransform _parentRect;
-    private List<Vector4> _customDataBuffer = new List<Vector4>();
 
     private Camera _uiCamera;
     private Camera _mainCamera;
@@ -36,19 +35,6 @@ public class UI_DamageNumberSystem : UI_View
         base.Awake();
         _uiCamera = Managers.UI.UICamera;
         _mainCamera = Camera.main;
-
-        if (_particleSystem != null)
-        {
-            _customDataBuffer.Capacity = _particleSystem.main.maxParticles;
-        }
-    }
-
-    private void EnsureParentRect()
-    {
-        if (_parentRect == null)
-        {
-            _parentRect = transform.parent as RectTransform;
-        }
     }
 
     public override void SetViewModel(ViewModelBase viewModel)
@@ -70,8 +56,11 @@ public class UI_DamageNumberSystem : UI_View
     /// <param name="worldPos">3D 월드 좌표</param>
     private void EmitDamageNumber(long damage, Vector3 worldPos)
     {
-        EnsureParentRect();
-        if (_particleSystem == null || _uiCamera == null || _parentRect == null || _mainCamera == null) return;
+        if (_parentRect == null)
+            _parentRect = transform.parent as RectTransform;
+
+        if (_particleSystem == null || _uiCamera == null || _parentRect == null || _mainCamera == null)
+            return;
 
         // 1. World -> Screen -> Canvas Local 좌표계 변환
         Vector2 screenPos = _mainCamera.WorldToScreenPoint(worldPos);
@@ -86,8 +75,6 @@ public class UI_DamageNumberSystem : UI_View
             // 전체 너비 계산하여 중앙 정렬 시작점 산출
             float totalWidth = (digitCount - 1) * _digitSpacing;
             float startX = basePos.x - totalWidth * 0.5f;
-
-            int beforeEmitCount = _particleSystem.particleCount;
 
             // 3. 자릿수별 파티클 방출 (우측 1의 자리부터 역순으로 계산)
             long remaining = damage;
@@ -104,30 +91,12 @@ public class UI_DamageNumberSystem : UI_View
                 emitParams.startSize3D = new Vector3(_baseSize, _baseSize, 1f);
                 emitParams.applyShapeToPosition = false;
 
+                // startColor의 R 채널에 셀 인덱스를 (0~1) 범위로 압축하여 저장 (분모 15)
+                // 셰이더에서 VertexColor.R * 15.0 을 round() 하여 복원함
+                emitParams.startColor = new Color(cellIndex / 15f, 1f, 1f, 1f);
+
                 _particleSystem.Emit(emitParams, 1);
             }
-
-            // 4. [Optimization] CustomData Batching (루프 밖에서 1회만 수행)
-            _particleSystem.GetCustomParticleData(_customDataBuffer, ParticleSystemCustomData.Custom1);
-
-            while (_customDataBuffer.Count < _particleSystem.particleCount)
-                _customDataBuffer.Add(Vector4.zero);
-
-            remaining = damage;
-            for (int i = digitCount - 1; i >= 0; i--)
-            {
-                int digit = (int)(remaining % 10);
-                remaining /= 10;
-                int cellIndex = DigitToCellIndex[digit];
-
-                int targetIndex = beforeEmitCount + i;
-                if (targetIndex < _customDataBuffer.Count)
-                {
-                    _customDataBuffer[targetIndex] = new Vector4(cellIndex, 0, 0, 0);
-                }
-            }
-
-            _particleSystem.SetCustomParticleData(_customDataBuffer, ParticleSystemCustomData.Custom1);
         }
     }
 
