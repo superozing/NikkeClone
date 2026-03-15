@@ -1,4 +1,4 @@
-﻿using UI;
+using UI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -99,6 +99,15 @@ public class UI_MissionPopup : UI_Popup, IUIShowHideable
         if (_viewModel == null || _missionSlotRoot == null || _viewModel.SlotViewModels == null)
             return;
 
+        // Bug #3 Fix: 기존 슬롯 제거 (중복 생성 방지)
+        for (int i = _missionSlotRoot.childCount - 1; i >= 0; i--)
+        {
+            var child = _missionSlotRoot.GetChild(i);
+            var slot = child.GetComponent<UI_MissionSlot>();
+            if (slot != null)
+                Managers.UI.Close(slot);
+        }
+
         // ViewModel 리스트를 순회하며 UIManager에 생성을 요청합니다.
         foreach (var slotViewModel in _viewModel.SlotViewModels)
             await Managers.UI.ShowAsync<UI_MissionSlot>(slotViewModel, _missionSlotRoot);
@@ -124,7 +133,6 @@ public class UI_MissionPopup : UI_Popup, IUIShowHideable
         if (_viewModel != null)
             _viewModel.OnCloseRequested -= OnCloseRequested;
 
-        (_viewModel as IDisposable)?.Dispose();
         _viewModel = null;
     }
 }
