@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using UI;
 using UnityEngine;
@@ -21,14 +21,27 @@ public class UIManager : IManagerBase
     public Camera UICamera => _uiCamera;
 
     /// <summary>
-    /// UI Popup 관리를 위한 Sorting Order 입니다.
+    /// View(비팝업) UI의 기본 sorting order.
     /// </summary>
-    private int _sortingOrder = 50;
+    private const int VIEW_BASE_ORDER = 0;
 
     /// <summary>
-    /// Sorting Group 증가용 order 단계
+    /// 첫 번째 Popup의 sorting order 시작값.
+    /// View(0)보다 위에 표시되어야 하므로 충분한 간격을 둡니다.
     /// </summary>
-    private const int ORDER_STEP = 10;
+    private const int POPUP_BASE_ORDER = 100;
+
+    /// <summary>
+    /// Popup 간 sorting order 간격.
+    /// 팝업 내부에 자식 SortingGroup이 있을 경우를 대비한 여유 공간.
+    /// </summary>
+    private const int POPUP_ORDER_STEP = 10;
+
+    /// <summary>
+    /// DontDestroy 팝업의 sorting order.
+    /// 어떤 상황에서도 최상위에 표시됩니다.
+    /// </summary>
+    private const int DONT_DESTROY_ORDER = 999999;
 
     public void Init()
     {
@@ -60,7 +73,6 @@ public class UIManager : IManagerBase
     public void Clear()
     {
         _popupStack.Clear();
-        _sortingOrder = 10;
         _sceneRoot = null;
         Debug.Log($"{ManagerType} Manager Clear 합니다.");
     }
@@ -108,6 +120,44 @@ public class UIManager : IManagerBase
         view.gameObject.SetActive(true);
         return view;
     }
+
+    /// <summary>
+    /// UI_View를 닫고 Pool에 반환합니다.
+    /// 팝업인 경우, 스택 관리 및 오더 정리도 수행합니다.
+    /// </summary>
+    /// <param name="view"> 닫을 UI_View 객체입니다.</param>
+    public void Close(UI_View view)
+    {
+        if (view == null) return;
+
+        if (view is UI_Popup popup && view is not UI_DontDestroyPopup)
+        {
+            if (_popupStack.Count > 0 && _popupStack.Peek() == popup)
+            {
+                _popupStack.Pop();
+
+                // 다음 Popup의 ActionMapKey로 전환
+                if (_popupStack.Count > 0)
+                {
+                    var nextPopup = _popupStack.Peek();
+                    Managers.Input.SwitchActionMap(nextPopup.ActionMapKey);
+                }
+                // 팝업이 없으면 현재 씬의 기본 액션맵으로 복귀
+                else
+                {
+                    string defaultActionMap = Managers.Scene.CurrentScene?.DefaultActionMapKey ?? "None";
+                    Managers.Input.SwitchActionMap(defaultActionMap);
+                }
+            }
+        }
+
+        // UI를 풀에 반환하거나 파괴하기 전에 ViewModel 연결을 끊습니다.
+        // 기존 ViewModel의 Release()를 호출하여 참조 카운트를 감소시키고, 필요 시 OnDispose()를 호출합니다.
+        view.SetViewModel(null);
+
+        Managers.Resource.Destroy(view.gameObject);
+    }
+
 
     /// <summary>
     /// 특정 UI_View 팝업을 생성하고 반환합니다.
@@ -175,7 +225,7 @@ public class UIManager : IManagerBase
         rectTransform.localScale = Vector3.one;
 
         SortingGroup sortingGroup = go.GetOrAddComponent<SortingGroup>();
-        sortingGroup.sortingOrder = 999999;
+        sortingGroup.sortingOrder = DONT_DESTROY_ORDER;
 
         view.SetViewModel(viewModel);
 
@@ -208,72 +258,35 @@ public class UIManager : IManagerBase
         rectTransform.localScale = Vector3.one;
 
         SortingGroup sortingGroup = go.GetOrAddComponent<SortingGroup>();
-        sortingGroup.sortingOrder = 999999;
+        sortingGroup.sortingOrder = DONT_DESTROY_ORDER;
 
         view.gameObject.SetActive(true);
         return view;
     }
 
 
-    /// <summary>
-    /// UI_View를 닫고 Pool에 반환합니다.
-    /// 팝업인 경우, 스택 관리 및 오더 정리도 수행합니다.
-    /// </summary>
-    /// <param name="view"> 닫을 UI_View 객체입니다.</param>
-    public void Close(UI_View view)
-    {
-        if (view == null) return;
-
-        if (view is UI_Popup popup && view is not UI_DontDestroyPopup)
-        {
-            if (_popupStack.Count > 0 && _popupStack.Peek() == popup)
-            {
-                _popupStack.Pop();
-                _sortingOrder -= ORDER_STEP;
-
-                // 다음 Popup의 ActionMapKey로 전환
-                if (_popupStack.Count > 0)
-                {
-                    var nextPopup = _popupStack.Peek();
-                    Managers.Input.SwitchActionMap(nextPopup.ActionMapKey);
-                }
-                // 팝업이 없으면 현재 씬의 기본 액션맵으로 복귀
-                else
-                {
-                    string defaultActionMap = Managers.Scene.CurrentScene?.DefaultActionMapKey ?? "None";
-                    Managers.Input.SwitchActionMap(defaultActionMap);
-                }
-            }
-        }
-
-        // UI를 풀에 반환하거나 파괴하기 전에 ViewModel 연결을 끊습니다.
-        // 기존 ViewModel의 Release()를 호출하여 참조 카운트를 감소시키고, 필요 시 OnDispose()를 호출합니다.
-        view.SetViewModel(null);
-
-        Managers.Resource.Destroy(view.gameObject);
-    }
 
     /// <summary>
-    /// UI GameObject에 SortingGroup을 세팅하고 Sorting Order를 지정합니다.
+    /// UI GameObject에 SortingGroup을 세팅합니다.
+    /// Popup: 스택 깊이 기반으로 자동 계산.
+    /// View: VIEW_BASE_ORDER 고정.
+    /// SortingOrderOverride가 있으면 해당 값을 직접 사용.
     /// </summary>
-    private void SetSortingGroupOrder(GameObject go, bool useSortingOrder, int? overrideOrder = null)
+    private void SetSortingGroupOrder(GameObject go, bool isPopup, int? overrideOrder = null)
     {
         SortingGroup sortingGroup = go.GetOrAddComponent<SortingGroup>();
 
-        // View가 자체적인 정렬 순서를 요구하는 경우 (예: ParticleSystem 혼용 UI)
         if (overrideOrder.HasValue)
         {
             sortingGroup.sortingOrder = overrideOrder.Value;
         }
-        else if (useSortingOrder)
+        else if (isPopup)
         {
-            _sortingOrder += ORDER_STEP;
-            sortingGroup.sortingOrder = _sortingOrder;
+            sortingGroup.sortingOrder = POPUP_BASE_ORDER + (_popupStack.Count * POPUP_ORDER_STEP);
         }
         else
         {
-            // sortingOrder 미사용 (UI_Popup 아님) 시 sortingOrder 0
-            sortingGroup.sortingOrder = 0;
+            sortingGroup.sortingOrder = VIEW_BASE_ORDER;
         }
     }
 
@@ -336,7 +349,7 @@ public class UIManager : IManagerBase
             EnsureUICamera();
             canvas.worldCamera = _uiCamera;
 
-            canvas.sortingOrder = 999999;
+            canvas.sortingOrder = DONT_DESTROY_ORDER;
 
             CanvasScaler scaler = dontDestroyGo.AddComponent<CanvasScaler>();
             scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
