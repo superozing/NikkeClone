@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 
 public class CampaignHUDViewModel : ViewModelBase
 {
@@ -20,8 +21,19 @@ public class CampaignHUDViewModel : ViewModelBase
         MissionButtonViewModel.AddRef();
     }
 
-    public void HandleBackButtonClicked()
+    /// <summary>
+    /// 뒤로가기 버튼 클릭 시 UI_LoadingPopup을 통해 MainScene으로 전환합니다.
+    /// </summary>
+    public async void HandleBackButtonClicked()
     {
+        Func<Task> loadTask = async () =>
+        {
+            await Managers.Scene.LoadSceneAsync(eSceneType.MainScene);
+        };
+
+        var loadingVM = new LoadingPopupViewModel(loadTask);
+        await Managers.UI.ShowDontDestroyAsync<UI_LoadingPopup>(loadingVM);
+
         OnBackButtonClicked?.Invoke();
     }
 

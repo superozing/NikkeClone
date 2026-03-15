@@ -41,7 +41,6 @@ public class UI_LobbyTab : UI_TabBase
         if (_viewModel != null)
         {
             _viewModel.OnRequestUnusedButton -= ShowUnusedLog;
-            _viewModel.OnRequestCampaignButton -= LoadCampaignScene;
         }
 
         _viewModel = viewModel as LobbyTabViewModel;
@@ -62,7 +61,6 @@ public class UI_LobbyTab : UI_TabBase
 
             // 뷰모델 이벤트 구독
             _viewModel.OnRequestUnusedButton += ShowUnusedLog;
-            _viewModel.OnRequestCampaignButton += LoadCampaignScene;
         }
     }
 
@@ -77,12 +75,6 @@ public class UI_LobbyTab : UI_TabBase
     private void ShowUnusedLog()
     {
         Debug.Log("미구현 기능입니다.");
-    }
-
-    private void LoadCampaignScene()
-    {
-        // 씬 생명주기 문제 해결 후 추가하기.
-        Debug.Log("캠페인 씬을 엽니다.");
     }
 
     protected override void OnDestroy()
@@ -101,7 +93,6 @@ public class UI_LobbyTab : UI_TabBase
         if (_viewModel != null)
         {
             _viewModel.OnRequestUnusedButton -= ShowUnusedLog;
-            _viewModel.OnRequestCampaignButton -= LoadCampaignScene;
         }
 
         // 뷰모델 해제 (Base에서 Release 호출되지만 명시적으로 null 처리)

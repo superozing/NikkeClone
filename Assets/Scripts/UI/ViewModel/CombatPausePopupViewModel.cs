@@ -1,3 +1,5 @@
+using System;
+using System.Threading.Tasks;
 using UI;
 
 /// <summary>
@@ -59,18 +61,35 @@ public class CombatPausePopupViewModel : ViewModelBase
         Managers.UI.Close(popup);
     }
 
-    public void OnRetryClicked(UI_Popup popup)
+    public async void OnRetryClicked(UI_Popup popup)
     {
         Managers.Time.ResumeGame();
         Managers.UI.Close(popup);
-        Managers.Scene.LoadSceneAsync(eSceneType.CombatScene);
+
+        Func<Task> loadTask = async () =>
+        {
+            await Managers.Scene.LoadSceneAsync(eSceneType.CombatScene);
+        };
+
+        var loadingVM = new LoadingPopupViewModel(loadTask);
+        await Managers.UI.ShowDontDestroyAsync<UI_LoadingPopup>(loadingVM);
     }
 
-    public void OnEndCombatClicked(UI_Popup popup)
+    public async void OnEndCombatClicked(UI_Popup popup)
     {
         Managers.Time.ResumeGame();
         Managers.UI.Close(popup);
-        Managers.Scene.LoadSceneAsync(eSceneType.CampaignScene);
+
+        // 전투 데이터 정리
+        Managers.Data.UserData.Combat = null;
+
+        Func<Task> loadTask = async () =>
+        {
+            await Managers.Scene.LoadSceneAsync(eSceneType.CampaignScene);
+        };
+
+        var loadingVM = new LoadingPopupViewModel(loadTask);
+        await Managers.UI.ShowDontDestroyAsync<UI_LoadingPopup>(loadingVM);
     }
 
     public void OnSlotClicked(int slotIndex)
